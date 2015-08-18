@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] OpenRecord Data Model
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenRecord%20Data%20Model&In-Reply-To=%3C38f56b160602140608g7398bad5j76106c8dbded34eb%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000272.html">
+   <LINK REL="Next"  HREF="000277.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] OpenRecord Data Model</H1>
+    <B>bio</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenRecord%20Data%20Model&In-Reply-To=%3C38f56b160602140608g7398bad5j76106c8dbded34eb%40mail.gmail.com%3E"
+       TITLE="[openrecord-dev] OpenRecord Data Model">biosemantics at gmail.com
+       </A><BR>
+    <I>Tue Feb 14 15:09:00 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000272.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+        <LI>Next message: <A HREF="000277.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#274">[ date ]</a>
+              <a href="thread.html#274">[ thread ]</a>
+              <a href="subject.html#274">[ subject ]</a>
+              <a href="author.html#274">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+
+On 2/11/06, Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt; wrote:
+
+&gt;<i> For example, an rdf store (also listed) could subsume any of
+</I>&gt;<i> &gt; the models you mentioned
+</I>&gt;<i>
+</I>&gt;<i> RDF is appealing.  It's been a couple years since I last looked at RDF
+</I>&gt;<i> datastores, but at the time I had trouble finding something that fit.
+</I>&gt;<i> In particular, I had trouble finding a datastore with built-in support
+</I>&gt;<i> for tracking change histories and version info.  For example, on the
+</I>&gt;<i> Wikipedia site, each page has a &quot;history&quot; tab, where you can see all the
+</I>&gt;<i> previous versions of the page, as well as the diffs.
+</I>&gt;<i>
+</I>&gt;<i> Do you know of any RDF datastore that has built in support for the idea
+</I>&gt;<i> of versions and version histories?  Without built in versioning support,
+</I>&gt;<i> I think we would maybe end up having to represent every single statement
+</I>&gt;<i> as a reified statement, and if we did that I'm worried that queries
+</I>&gt;<i> would be a pain and performance would suck.
+</I>
+
+Have you looked into the 'named graph' or quad support some of the RDF
+stores have added? Sesame 2 is very nice, although still in alpha, and now
+supports context. It also has an HTTP api, and supports the new W3C rdf
+query language, SPARQL, for extracting subgraphs. I agree reification can
+get messy quickly, depending on how you use it - although indexing
+strategies can get around some headaches.
+
+You may also want to take a look at C-Store - which has some similarities to
+Google's BigTable work. It's a column store open source implementation.
+
+What I am more critical of with triplestores is the scaling issues, and data
+management issues. By data management issues, I mean Daisy has a nice
+division in the form of 'parts' that allows you to store a typed blob and
+attach a bunch of key/values to it (i.e. creating a 'document'). You can
+always dereference a bunch of blobs via URIs referenced from an RDF store,
+but there isn't an established API for this in any of the rdf stores - you
+would have to setup your own blobstore and extend the query api's, and end
+up rolling something similar to daisy, I imagine. Then there is ACL's, etc.
+and other niceties that are not supported by most of the RDF stores. Daisy
+abstracts many of these issues nicely in their HTTP APIs. That having been
+said, I often find myself split down the middle to dump daisy for an RDF
+store, as I watch daisy evolve more extensions to their own query language,
+etc.. But theoretically, most anything can be layered on a triple/quad -
+it's just that the implemantations still have a ways to go.
+
+One other weakness, that is probably easily fixed, is that XML is the only
+return type for the Daisy api - JSON would be nice.
+
+I think we agree there are no ideal solutions at the moment, which is how I
+stumbled on to your list.:-) Incidentally, I am working with life sciences
+data - if the email didn't give that away.
+
+I've also been playing with Daisy for a while now, and would be happy to
+answer any questions - if I am able. Otherwise, the developers are always
+very helpful on the mailing list, and pretty open to discussion of
+extensions.
+
+&gt;<i> daisy also mentioned, seems like a nice model with a ReST api.
+</I>&gt;<i>
+</I>&gt;<i> The Daisy CMS seems cool.  I don't know much about it, but there are a
+</I>&gt;<i> bunch of sweet features that seem like they would be useful for
+</I>&gt;<i> OpenRecord: the ReST API, multi-valued fields, versioning, language
+</I>&gt;<i> variants, retired documents, transclusion, embedded queries, fields
+</I>&gt;<i> shared across different document types, unique IDs instead of
+</I>&gt;<i> hierarchical directory paths.
+</I>&gt;<i>
+</I>&gt;<i> But, in other ways Daisy doesn't seem like a fit for the OpenRecord data
+</I>&gt;<i> model.  For OpenRecord, I think the biggest problems are that in Daisy:
+</I>&gt;<i>   - fields can hold literal values, but I can't find any documentation
+</I>&gt;<i> about fields being able to hold pointers to other documents
+</I>
+
+I think this is possible now -  if I understood your request correctly. I'm
+not sure if it was 1.4 or 1.5 (this is the current Trunk version, and what I
+am currently working with).
+
+from one of the developer's posts on the mailing list:
+&quot;A link field is a field which links to another document (or documents, in
+case of multivalue fields). This allows for structured linking between
+documents.&quot;
+
+much less
+&gt;<i> automatic bi-directional connections
+</I>
+
+ By &quot;automatic bi-directional connections&quot; do you mean &quot;inverse properties&quot;?
+In RDF world, this would look like Car:hasName:CoolCar &lt;--&gt;
+CoolCar:isNameof:Car
+
+Also interesting about Daisy, you can define a query to populate a
+SelectionList now - something I had been waiting for - this is from the new
+linktype support mentioned above. And defining ACL's using queries is also
+nice.
+
+  - a document must belong to a document type, can only belong to one
+&gt;<i> document type,
+</I>
+
+Yes, these are assumptions in the Daisy model - and have led me to consider
+rolling my own solution. I've been able to fit most of my current use into
+these assumptions though. But there has to be some organizing unit by which
+you create versions off of, no? Perhaps you can comment on your thinking for
+this..
+
+and can only have the fields that are defined for its
+&gt;<i> document type
+</I>
+
+Actually you can always extend the fields associated with a document type -
+I do this all the time. Maybe I am misunderstanding your question though.
+Their UI, if you used the daisy cocoon wiki on top of the repository was not
+very friendly for this though. I have only been working with the repository
+lately though, so this may have changed over the last 6 months.
+
+  - language variants are at a per-document level rather than a
+&gt;<i> per-field level, which is what OpenRecord needs
+</I>
+
+I can't comment too much on this since I haven't looked into their i18n
+support - my current use is as a personal knowledgebase. Funny, since I used
+to do a lot of i18n work during my NLP days. But since 'document' is the
+root entity for all instance data, I assume you have to associate lang
+variants at this level for instance data. However, the same 'field type' (
+e.g. hasName) can be referenced in multiple documents, and you can have a
+collection of locales associated with the labels of a 'fields type' (e.g.
+hasName:en~someFoo:cn). But if you create a Chinese document variant, those
+fields are assumed to have Chinese content.
+
+I struggled with the notion of everything being a 'document' for instance
+data in Daisy, but if I create a 'version' of an RDF graph I'll still need a
+semantically similar concept in the form of a quad, named graph, or rely on
+a lot of reification. I'm sorry I'm not more familiar with your project, but
+how did you plan to handle this?
+
+&gt;<i> Regarding the charting code mentioned in the last update, you
+</I>&gt;<i> &gt; may also want to look at this recent code:
+</I>&gt;<i> &gt; <A HREF="http://webfx.eae.net/dhtml/chart/chart.html">http://webfx.eae.net/dhtml/chart/chart.html</A>
+</I>&gt;<i>
+</I>&gt;<i> Thanks for the pointer.  The WebFX charts look great.  Unfortunately the
+</I>&gt;<i> WebFX licenses are too restrictive for us to use WebFX code in
+</I>&gt;<i> OpenRecord.  But hopefully the Dojo chart widget will gradually start to
+</I>&gt;<i> have more and more features.
+</I>
+
+Sorry, I know little about licensing. I think it is an MIT license in the
+source files, although he mentions some of his code being GNU on the
+website. Not sure how this conflicts with your licensing model though.
+
+&gt;<i> Thanks! The project sounds very interesting.
+</I>&gt;<i>
+</I>&gt;<i> Thanks for all the suggestions.  Let me know if you have any other ideas
+</I>&gt;<i> about the data store -- with enough searching I'm hopefully that we'll
+</I>&gt;<i> eventually find a fit!
+</I>
+
+I think you've covered most of the data models I've looked at, but here's
+another random project that you may be interested in. Not much to it, but
+interesting - I just happened to see it this evening.
+<A HREF="http://www.jpaulmorrison.com/cgi-bin/wiki.pl?ImmutableStore">http://www.jpaulmorrison.com/cgi-bin/wiki.pl?ImmutableStore</A>
+<A HREF="http://www.javaforge.com/proj/summary.do?proj_id=519">http://www.javaforge.com/proj/summary.do?proj_id=519</A>
+
+Hope this didn't ramble too much, I stayed up a little too late working this
+evening... well I guess it's morning now. :-)
+
+cheers,
+Ian
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060214/55d03c39/attachment.html">https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060214/55d03c39/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000272.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+	<LI>Next message: <A HREF="000277.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#274">[ date ]</a>
+              <a href="thread.html#274">[ thread ]</a>
+              <a href="subject.html#274">[ subject ]</a>
+              <a href="author.html#274">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] bug with table layout code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20bug%20with%20table%20layout%20code&In-Reply-To=%3C200506231949.j5NJnqI08032%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000161.html">
+   <LINK REL="Next"  HREF="000163.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] bug with table layout code</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20bug%20with%20table%20layout%20code&In-Reply-To=%3C200506231949.j5NJnqI08032%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] bug with table layout code">brian.skinner at gumption.org
+       </A><BR>
+    <I>Thu Jun 23 21:50:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000161.html">[openrecord-dev] Implementing a &quot;lozenge&quot;
+</A></li>
+        <LI>Next message: <A HREF="000163.html">[openrecord-dev] testing, 1, 2, 3...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+I ran into a bug with the new table layout code.  Here are the steps to
+reproduce the problem:
+
+  1) open demo_page.html
+  2) sign in (if you weren't automatically signed in)
+  3) press &quot;Edit&quot;
+  4) press the &quot;New Page&quot; button
+  5) click on &quot;Welcome!&quot; in the navbar
+  6) sign out but clicking on the &quot;Sign out&quot; link
+  7) click on &quot;New Page&quot; in the navbar
+  result:
+  ============================
+  Util.handleError()
+  uncaught exception: Error: No user is logged in.  
+  You can't write to the repository when nobody is logged in.
+  ============================
+
+
+That's what the problem looks like when you're not logged in.  If you are
+logged in, then the problem has a different symptom:
+
+  1) open demo_page.html
+  2) sign in (if you weren't automatically signed in)
+  3) press &quot;Edit&quot;
+  4) press the &quot;New Page&quot; button
+  5) click on &quot;Welcome!&quot; in the navbar
+  6) click on &quot;New Page&quot; in the navbar
+  7) repeat steps 5 and 6 another 20 times
+  8) now go look at the JSON repository file
+  result:
+  At the end of the JSON repository file, there are 20 pairs 
+  of record, where each pair contains:
+    a Vote record, deleting the table column for Name
+    an Entry record, recreating the table column for Name
+
+
+I had a quick look at the TablePlugin code, but I didn't see any simple way
+to fix the problem.  Seems like we might need to restructure things a bit.
+I can have a go at fixing this if you like, but I thought you might want to
+jump in since you're more familiar with that code.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000161.html">[openrecord-dev] Implementing a &quot;lozenge&quot;
+</A></li>
+	<LI>Next message: <A HREF="000163.html">[openrecord-dev] testing, 1, 2, 3...
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Input Width weirdness
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Input%20Width%20weirdness&In-Reply-To=%3C200506081851.j58IpX124713%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000120.html">
+   <LINK REL="Next"  HREF="000126.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Input Width weirdness</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Input%20Width%20weirdness&In-Reply-To=%3C200506081851.j58IpX124713%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Input Width weirdness">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed Jun  8 20:52:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000120.html">[openrecord-dev] Input Width weirdness
+</A></li>
+        <LI>Next message: <A HREF="000126.html">[openrecord-dev] Input Width weirdness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#121">[ date ]</a>
+              <a href="thread.html#121">[ thread ]</a>
+              <a href="subject.html#121">[ subject ]</a>
+              <a href="author.html#121">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Chao,
+ 
+&gt;<i> OK, I'm at my wits end with this bug and could use 
+</I>&gt;<i> some help.
+</I>&gt;<i> 
+</I>&gt;<i> First, the bug:
+</I>&gt;<i> In Edit Mode, if you click to edit a cell, and the 
+</I>&gt;<i> column width of the cell was originally not very wide, 
+</I>&gt;<i> my guess is less than 20 characters, then the cell 
+</I>&gt;<i> width suddenly expands to about 20 characters wide.
+</I>
+I see what you're describing, but unfortunately I have no idea what's
+causing it, so I may not be much help.
+
+
+&gt;<i> On inspection, I set the TextView's Input HTMLElement's
+</I>&gt;<i> style.width to &quot;100%&quot;. This seems to cause this weird 
+</I>&gt;<i> behavior. I'm not sure why. It seems like a Firefox bug 
+</I>&gt;<i> to me.
+</I>
+If you have the patience for it, one thing you could do is try to make a
+very simple stand-alone web page that reproduces the bug -- something where
+you have just one file with some HTML and inline CSS and JavaScript.  Then
+you could open that in Firefox and IE and Safari, and see how they each
+handle it.  If Firefox seems out of line, you could file a bug report and
+include the HTML file that demonstrates the problem.
+
+
+&gt;<i> I can't think of a clean solution to work-around this 
+</I>&gt;<i> yet. My best hack is for the TextView's startEditing() 
+</I>&gt;<i> method to check if it's superview implements a method, 
+</I>&gt;<i> say &quot;getTextViewWidth&quot; and if it does to call that 
+</I>&gt;<i> method, so that the superview gets a chance to decide  
+</I>&gt;<i> what the width of the TextView should be.
+</I>
+That seems reasonable to me.
+
+
+&gt;<i> Am I understanding something wrongly? Can you think 
+</I>&gt;<i> of a better work-around?
+</I>
+Another alternative would be to do something like this:
+
+  var inputElement = document.createElement(&quot;input&quot;);
+  var parentElement = (the HTML element the Input field will go in)
+  var widthOfParentElement = parentElement.offsetWidth;
+  var breathingRoom = 2; // make a little room for borders or padding
+  var widthForInputElement = widthOfParentElement - breathingRoom;
+  inputElement.style.width = widthForInputElement + &quot;px&quot;;
+  parentElement.replaceChild(inputElement, textNode)
+
+Or, you could also experiment with this:
+
+  var inputElement = document.createElement(&quot;input&quot;);
+  inputElement.size = 1; // make it just wide enough for one character
+  inputElement.style.width = &quot;100%&quot;;
+  parentElement.replaceChild(inputElement, textNode)
+
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000120.html">[openrecord-dev] Input Width weirdness
+</A></li>
+	<LI>Next message: <A HREF="000126.html">[openrecord-dev] Input Width weirdness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#121">[ date ]</a>
+              <a href="thread.html#121">[ thread ]</a>
+              <a href="subject.html#121">[ subject ]</a>
+              <a href="author.html#121">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

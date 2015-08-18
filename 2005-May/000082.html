@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] weblog tidbits
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20weblog%20tidbits&In-Reply-To=%3C79243ECD-756D-435A-BEEC-EC76D020F609%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000052.html">
+   <LINK REL="Next"  HREF="000053.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] weblog tidbits</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20weblog%20tidbits&In-Reply-To=%3C79243ECD-756D-435A-BEEC-EC76D020F609%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] weblog tidbits">chao at cs.stanford.edu
+       </A><BR>
+    <I>Sun May 29 19:00:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000052.html">[openrecord-dev] weblog tidbits
+</A></li>
+        <LI>Next message: <A HREF="000053.html">[openrecord-dev] Interesting article on AJAX usability
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#82">[ date ]</a>
+              <a href="thread.html#82">[ thread ]</a>
+              <a href="subject.html#82">[ subject ]</a>
+              <a href="author.html#82">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Two more issues to bring up:
+
+1) We should think about conventions or patterns on separating blocks  
+of view set up code from data model code which could have view  
+observers that call possibly interfering view code. This bit me a few  
+times when implementing the &quot;add new row&quot; feature.
+
+e.g. when a TextView stopEditing() is called, it replaces the  
+editField with a text node, and writes out the new value to the  
+repository. If the latter is done first, an observer could be called,  
+say on the enclosing TablePlugin to add a new row (if the edited item  
+is a provisional item). Adding a new row, causes onblur to be called  
+on the TextView, which calls stopEditing() again!
+There are definitely ways to prevent this from happening, but I think  
+having conventions would make such issues less prevalent.
+
+2) We should think about a convention to prevent malicious Javascript/ 
+HTML code from executing as user input as Joel describes in the  
+article below that Brian that Brian sent out.
+
+chao
+
+&gt;<i> Joel on Hungarian notation, and how it went wrong:
+</I>&gt;<i>   <A HREF="http://www.joelonsoftware.com/articles/Wrong.html">http://www.joelonsoftware.com/articles/Wrong.html</A>
+</I>&gt;<i>
+</I>Joel also has a specific point
+&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000052.html">[openrecord-dev] weblog tidbits
+</A></li>
+	<LI>Next message: <A HREF="000053.html">[openrecord-dev] Interesting article on AJAX usability
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#82">[ date ]</a>
+              <a href="thread.html#82">[ thread ]</a>
+              <a href="subject.html#82">[ subject ]</a>
+              <a href="author.html#82">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

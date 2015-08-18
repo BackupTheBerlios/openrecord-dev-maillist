@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Re: Rhizome and OpenRecord
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20Rhizome%20and%20OpenRecord&In-Reply-To=%3Cd7cee4a70604080233v27c7b14cu4e9519f131a488cc%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000295.html">
+   <LINK REL="Next"  HREF="000297.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Re: Rhizome and OpenRecord</H1>
+    <B>Adam Souzis</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20Rhizome%20and%20OpenRecord&In-Reply-To=%3Cd7cee4a70604080233v27c7b14cu4e9519f131a488cc%40mail.gmail.com%3E"
+       TITLE="[openrecord-dev] Re: Rhizome and OpenRecord">adamsz at gmail.com
+       </A><BR>
+    <I>Sat Apr  8 11:34:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000295.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+        <LI>Next message: <A HREF="000297.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#296">[ date ]</a>
+              <a href="thread.html#296">[ thread ]</a>
+              <a href="subject.html#296">[ subject ]</a>
+              <a href="author.html#296">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi brian &amp;c,
+
+a couple of comments below...
+-- adam
+
+On 4/7/06, Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt; wrote:
+&gt;<i> And my reply to Adam's mail...
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -------- Original Message --------
+</I>&gt;<i> Subject: Re: [swikig] ANNOUNCE: Rhizome 0.6.0
+</I>&gt;<i> Date: Fri, 07 Apr 2006 15:32:56 -0700
+</I>&gt;<i> From: Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt;
+</I>&gt;<i> To: Adam Souzis
+</I>&gt;<i>
+</I>&gt;<i> Hi Adam,
+</I>&gt;<i>
+</I>&gt;<i>  &gt; now that i finally got that out of the way ... i have
+</I>&gt;<i>  &gt; some time look at open record again.
+</I>&gt;<i>
+</I>&gt;<i> Cool, let me know how I can help.
+</I>&gt;<i>
+</I>&gt;<i>  &gt; Right now i'm thinking about trying to hack the tableplugin
+</I>&gt;<i>  &gt; into rhizome.  It'll be messy and not a 100% AJAX-y but
+</I>&gt;<i>  &gt; this is fastest path i can think of to get something that
+</I>&gt;<i>  &gt; can actually be used.
+</I>&gt;<i>
+</I>&gt;<i> Yup, sounds good.  Unfortunately the tableplugin hasn't been designed as
+</I>&gt;<i> a stand alone component, so there may be a bunch of crude hacking
+</I>&gt;<i> involved to provide it with an environment that it thinks it can live in.
+</I>&gt;<i>
+</I>&gt;<i>  &gt;  Here's how I am thinking of implementing this:
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt; * map RDF resource to Items
+</I>&gt;<i>  &gt; ** treat the resource URI as the UUID
+</I>&gt;<i>  &gt; ** multiple valued entries map to multiple statements with
+</I>&gt;<i>  &gt; the same attribute as the property
+</I>&gt;<i>  &gt; ** map orp data types to the XML schema datatypes that RDF uses
+</I>&gt;<i>  &gt; ** map rdf:type to Category attribute, rdfs:range to
+</I>&gt;<i>  &gt; ExpectedType, rdfs:label to shortname, rdfs:comment to name
+</I>&gt;<i>  &gt; ** ignore inverse attributes for now
+</I>&gt;<i>
+</I>&gt;<i> Yes, those mappings sounds good.  It's not entirely clear to me what the
+</I>&gt;<i> name/label mappings should be, and I'm not fluent enough in RDF to know
+</I>&gt;<i> how rdfs:label and rdfs:comment are typically used.  You might think
+</I>&gt;<i> about mapping rdfs:label to name and rdfs:comment to summary, and then
+</I>&gt;<i> figuring out something else to do with shortname.
+</I>&gt;<i>
+</I>&gt;<i>  &gt; * Have the server generate a list of all the items that the
+</I>&gt;<i>  &gt; table plugin may need to access:
+</I>&gt;<i>  &gt; Here are the RxPath queries for this, assuming the table
+</I>&gt;<i>  &gt; contains all resource of given Category/RDF class:
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt; ** items = /*[rdf:type=$category]
+</I>&gt;<i>  &gt; ** attributes = id($items/*)
+</I>&gt;<i>  &gt; ** expectedTypes = id($attributes/rdfs:range/*)
+</I>&gt;<i>  &gt; ** suggestedItems = /*[rdf:type = $expectedTypes]
+</I>&gt;<i>  &gt; ** plus the layout item resource for this table instance
+</I>&gt;<i>
+</I>&gt;<i> I don't know XPath (or RxPath), but those queries look good as far as I
+</I>&gt;<i> can tell.
+</I>&gt;<i>
+</I>&gt;<i>  &gt; * derive an simple archive class from StubArchive. The archive
+</I>&gt;<i>  &gt; is initialized with only these items (plus it loads the axiomatic
+</I>&gt;<i>  &gt;  ones). When committing a transaction it converts the items back
+</I>&gt;<i>  &gt; to RDF (probably in JSON format) and sends it back to the server.
+</I>&gt;<i>
+</I>&gt;<i> Yup, sounds good.  I'd be interested in talking to you sometime about
+</I>&gt;<i> different JSON representations for RDF.  I just recently learned that
+</I>&gt;<i> there are RDF stores that return SPARQL results as JSON, which would be
+</I>&gt;<i> very convenient for an AJAX app.  I'm curious about other flavors of
+</I>&gt;<i> JSON/RDF.
+</I>&gt;<i>
+</I>
+oh, I haven't heard of any JSON RDF representatioins myself, I'd be
+interested looking at that too if you have any references. I was just
+planning to do something very simple, e.g. a list of statements in
+json like:
+
+[ ['subject', 'predicate', 'object', 'objectType'], etc. ]
+
+which can be &quot;parsed&quot; in one line of Python code:
+
+listOfStatements = [Statement(*s) for s in eval(jsonString)]
+the only tricky thing would be escaping the strings
+
+&gt;<i>  &gt; I'm not sure I understand what records can be in the transaction
+</I>&gt;<i>  &gt; list: It looks like votes represent items added or removed, Items
+</I>&gt;<i>  &gt; can be added to the transaction list directly and then there are
+</I>&gt;<i>  &gt; these Ordinal things that I don't understand.
+</I>&gt;<i>
+</I>&gt;<i> There are four types of records: Entries, Items, Votes, and Ordinals.
+</I>&gt;<i>
+</I>&gt;<i> Most records will just be Entries, and most Entries are essentially RDF
+</I>&gt;<i> statements.
+</I>&gt;<i>
+</I>&gt;<i> Item records have *only* the UUID of the item, and just serve to state
+</I>&gt;<i> that the Item exists.  You might be able to get rid of the notion of the
+</I>&gt;<i> Item record, and simply infer the existence of the Item from the fact
+</I>&gt;<i> that some Entry is making a statement about it.
+</I>&gt;<i>
+</I>&gt;<i> A &quot;Vote&quot; (perhaps poorly named) just flags an Item or Entry as having
+</I>&gt;<i> been deleted by a user, or undeleted again by the same user or another user.
+</I>&gt;<i>
+</I>&gt;<i> The Ordinal records are a mechanism for representing ordered lists --
+</I>&gt;<i> ordered lists of items (resources) or ordered list of entries
+</I>&gt;<i> (statements)...
+</I>&gt;<i>
+</I>&gt;<i>  &gt; ** multiple valued entries map to multiple statements with
+</I>&gt;<i>  &gt; the same attribute as the property (this doesn't preserve
+</I>&gt;<i>  &gt; the order of the values in the entry but its not clear to
+</I>&gt;<i>  &gt; me if that's part of your model)
+</I>&gt;<i>
+</I>&gt;<i> I know RDF has some mechanism(s) for representing ordered lists, but I
+</I>&gt;<i> don't know much about it.  Probably my notion of Ordinal values doesn't
+</I>&gt;<i> map cleanly to any RDF notion.  The goal with the Ordinal mechanism was
+</I>&gt;<i> to come up with a representation of the ordering that would work
+</I>&gt;<i> smoothly with multi-user concurrent access and with a distributed
+</I>&gt;<i> datastore.  I wanted users to be able to independently move two of
+</I>&gt;<i> the elements in a list, and then be able to merge those actions later.
+</I>&gt;<i>
+</I>&gt;<i> So the idea is that each element in a list has an ordinal number --
+</I>&gt;<i> ordered lists themselves are never explicitly represented -- you can
+</I>&gt;<i> take any query result set (a set of items/resources or a set of
+</I>&gt;<i> entries/statements) and view the results as an ordered list simply by
+</I>&gt;<i> sorting the results based on their ordinal numbers.
+</I>
+ok, i think i get it now. It's a little unusual in that this
+establishes a total order over every item and entry -- looking at the
+source code, it seems that if an ordinal has not been explicity set,
+you use the record's timestamp as the ordinal.
+
+The closest notion RDF has to this is an infinite set of properties
+named rdf:_1 through rdf:_n that are uses to establish ordered
+relations, but not any sort of global order.  Besides saving the order
+of columns in a table, are explicitly ordered relationships used
+elsewhere in OpenRecord?
+
+So... to deal with this: when converting an entry to RDF, if an entry
+has an explicit ordinal associated with, instead of adding a single
+statement, add two statements:
+
+item attribute rdf:Seq
+and
+rdf:Seq rdf:_&lt;ordinal&gt; value
+where rdf:Seq is a blank node whose identifier is derived from
+concatenating the item and attribute UUIDs.
+
+&gt;<i>  &gt; * write a new View class for containing the plugin view and
+</I>&gt;<i>  &gt; intializing everything; hack tableplugin, plugin view, entry
+</I>&gt;<i>  &gt; view, etc. as necessary
+</I>&gt;<i>  &gt;
+</I>&gt;<i>  &gt; Does this make sense? Am I missing anything?
+</I>&gt;<i>
+</I>&gt;<i> Sounds great.  You're all over it.  I can't think of anything you're
+</I>&gt;<i> missing!
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000295.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+	<LI>Next message: <A HREF="000297.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#296">[ date ]</a>
+              <a href="thread.html#296">[ thread ]</a>
+              <a href="subject.html#296">[ subject ]</a>
+              <a href="author.html#296">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

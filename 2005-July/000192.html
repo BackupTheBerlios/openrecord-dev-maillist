@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Context menu code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Context%20menu%20code&In-Reply-To=%3C200507180000.j6I00lI32477%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000191.html">
+   <LINK REL="Next"  HREF="000193.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Context menu code</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Context%20menu%20code&In-Reply-To=%3C200507180000.j6I00lI32477%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Context menu code">brian.skinner at gumption.org
+       </A><BR>
+    <I>Mon Jul 18 02:01:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000191.html">[openrecord-dev] Item.getValue()
+</A></li>
+        <LI>Next message: <A HREF="000193.html">[openrecord-dev] Delicious Director
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#192">[ date ]</a>
+              <a href="thread.html#192">[ thread ]</a>
+              <a href="subject.html#192">[ subject ]</a>
+              <a href="author.html#192">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Chao,
+
+Sorry it's taken me so long to reply to this!
+
+&gt;<i> regarding importing of data, what do you think of 
+</I>&gt;<i> supporting data importing just in the context of 
+</I>&gt;<i> a TablePlugin? We can import a CSV file with the 
+</I>&gt;<i> fields described by the Table columns. No need to  
+</I>&gt;<i> support cross references - semantics would be as 
+</I>&gt;<i> if user typed in all the items by hand in that 
+</I>&gt;<i> TablePlugin. Bonus feature is that TablePlugin 
+</I>&gt;<i> already has the code to support transforming 
+</I>&gt;<i> strings to Expect Types and to create new items 
+</I>&gt;<i> where necessary.
+</I>
+I like that idea.  It sounds pretty simple to implement, and it would
+certainly be useful.
+
+When you started working on this, did you run into problems with the
+JavaScript security restrictions and not being able to load the CSV file
+that you wanted to import from?  If so, here's an idea for a simple hack --
+instead of a reading from a file, the import tool could just create a big
+empty text area right below the table, so that the user could paste in the
+ASCII contents of the CSV file that they want to import.  It's an uglier UI
+than just reading the file, but the implementation might be a lot simpler
+and more reliable.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000191.html">[openrecord-dev] Item.getValue()
+</A></li>
+	<LI>Next message: <A HREF="000193.html">[openrecord-dev] Delicious Director
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#192">[ date ]</a>
+              <a href="thread.html#192">[ thread ]</a>
+              <a href="subject.html#192">[ subject ]</a>
+              <a href="author.html#192">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] RE: rationalizing outline view with a table
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20RE%3A%20rationalizing%20outline%20view%20with%20a%20table&In-Reply-To=%3C200506082024.j58KOI127234%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000123.html">
+   <LINK REL="Next"  HREF="000125.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] RE: rationalizing outline view with a table</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20RE%3A%20rationalizing%20outline%20view%20with%20a%20table&In-Reply-To=%3C200506082024.j58KOI127234%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] RE: rationalizing outline view with a table">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed Jun  8 22:25:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000123.html">[openrecord-dev] RE: failure notice
+</A></li>
+        <LI>Next message: <A HREF="000125.html">[openrecord-dev] RE: rationalizing outline view with a table
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#124">[ date ]</a>
+              <a href="thread.html#124">[ thread ]</a>
+              <a href="subject.html#124">[ subject ]</a>
+              <a href="author.html#124">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Mimi,
+
+I'm psyched that you're exploring that question.  I'd love it if we could
+come up with a simple, intuitive UI that let's people naturally transition
+from an outline view to a table view without running into problems.
+
+I've never used Omni-Outliner, so I don't know how it feels, but I like your
+proposals about letting an item live in more than one place in the
+hierarchy, and letting people sort on any column and having it flatten the
+hierarchy and sort on all the items, not just the top-level ones.  
+
+I think we'll have to experiment some to see what turns out to feel good and
+be useful.  Unfortunately, we may be swamped for the next few weeks just
+doing non-UI work to get the back-end solid, and getting our first working
+&quot;dogfood&quot; site up and running smoothly enough that we actually feel safe
+about saving our data in it.  But hopefully in July we'll get back to
+focusing more on the UI -- cleaning up the current UI, as well as adding new
+features!
+
+:<i>o) Brian
+</I>
+
+
+________________________________
+
+From: Mimi Yin [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">mimi at osafoundation.org</A>] 
+Sent: Tuesday, June 07, 2005 6:21 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-svn at lists.berlios.de</A>; Brian Douglas Skinner
+Cc: Katie Capps Parlante; Chih-Chao Lam
+Subject: rationalizing outline view with a table
+	
+	
+Hi Brian, 
+
+After our meeting today, I thought a little more about how to make outline
+view and table view one in the same thing such that users can start out by
+creating data in an outline (which is an extremely intuitive way to go about
+structuring data) without regretting it afterwards.
+
+Katie, I've cc:d you because you were the one who brought this to my
+attention.
+
+Omni-outliner also conflates an outline view with a table...however as we
+discussed, it runs into a few problems:
+
+1. If you try to sort by a column (ie. status = Done), because items are
+organized in a hierarchical tree, the user can never really see all of their
+Done items clumped together because Omni-Outliner refuses to break the tree.
+So the best you can do is sort by the top node, which wouldn't get you very
+far.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Sparkling apple juice (Later)
+	Scallions (Now)
+	Marjoram (Now)
+	Swordfish (Now)
+	Lime (Now)
+	Wine (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+	Look up Jamie's allergies (Now)
+
+	Restock spices (Later)
+	Marjoram (Now)
+	Cinnamon (Later)
+	Nutmeg (Later)
+
+2. Omni-outliner also doesn't understand about a single item living in
+multiple places (ie. Marjoram lives in both Dinner party&gt;&gt;Albertson's AND
+Restock spices.
+
+Proposal: What if...You could sort for real thereby flattening out the
+hierarchy. However, from any item in the list, you can open up the thread or
+hierarchy that the item belongs to. 
+
+Step 1: I've sorted the hierarchical tree above by status, therby flattening
+the tree into a plain list.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Scallions (Now)
+	+ Marjoram (Now)
+	Swordfish (Now)
+	Lime (Now)
+	Look up Jamie's allergies (Now)
+	Sparkling apple juice (Later)
+	Wine (Later)
+	Restock spices (Later) 
+	Cinnamon (Later)
+	Nutmeg (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+
+
+
+Step 2: I've opened the item Marjoram so I can see its hierarchical context.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Scallions (Now)
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Sparkling apple juice (Later)
+	Scallions (Now)
+	- Marjoram (Now)
+	Swordfish (Now)
+	Lime (Now)
+	Wine (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+	Look up Jamie's allergies (Now)
+
+	Swordfish (Now)
+	Lime (Now)
+	Look up Jamie's allergies (Now)
+	Sparkling apple juice (Later)
+	Wine (Later)
+	Restock spices (Later) 
+	Cinnamon (Later)
+	Nutmeg (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+
+
+Step 3: The item Marjoram actually belongs to more than 1 tree. Here, I've
+chosen to view it in the context of the Dinner party tree.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Scallions (Now)
+
+	Restock spices (Later)
+	- Marjoram (Now)
+	Cinnamon (Later)
+	Nutmeg (Later
+
+	Swordfish (Now)
+	Lime (Now)
+	Look up Jamie's allergies (Now)
+	Sparkling apple juice (Later)
+	Wine (Later)
+	Restock spices (Later) 
+	Cinnamon (Later)
+	Nutmeg (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+
+This is sort of like clusters in Chandler, the only tweak is that these
+would be hierarchical clusters.
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000123.html">[openrecord-dev] RE: failure notice
+</A></li>
+	<LI>Next message: <A HREF="000125.html">[openrecord-dev] RE: rationalizing outline view with a table
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#124">[ date ]</a>
+              <a href="thread.html#124">[ thread ]</a>
+              <a href="subject.html#124">[ subject ]</a>
+              <a href="author.html#124">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

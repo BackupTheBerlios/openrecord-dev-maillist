@@ -1,0 +1,31 @@
+From brian.skinner at gumption.org  Thu Mar 24 03:35:07 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed, 23 Mar 2005 18:35:07 -0800
+Subject: [openrecord-dev] test message #1
+Message-ID: <200503240235.j2O2Z7h09316@bat.berlios.de>
+
+test message #1
+
+
+
+From brian.skinner at gumption.org  Fri Mar 25 04:31:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Mar 25 04:31:00 2005
+Subject: [openrecord-dev] test message #2
+In-Reply-To: <200503240235.j2O2Z7h09316@bat.berlios.de>
+Message-ID: <200503250330.j2P3UJh23378@bat.berlios.de>
+
+test message #2
+
+
+
+From brian.skinner at gumption.org  Fri Mar 25 05:35:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Mar 25 05:35:00 2005
+Subject: [openrecord-dev] test message #3
+Message-ID: <200503250434.j2P4Y1h24668@bat.berlios.de>
+
+test message #3
+
+
+

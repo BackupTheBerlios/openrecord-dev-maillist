@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] better lint test error messages
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20better%20lint%20test%20error%20messages&In-Reply-To=%3C200506012011.j51KBYm26079%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000103.html">
+   <LINK REL="Next"  HREF="000096.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] better lint test error messages</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20better%20lint%20test%20error%20messages&In-Reply-To=%3C200506012011.j51KBYm26079%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] better lint test error messages">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed Jun  1 22:12:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000103.html">[openrecord-dev] Re: interaction design
+</A></li>
+        <LI>Next message: <A HREF="000096.html">[openrecord-dev] RE: Mac vs. PC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#95">[ date ]</a>
+              <a href="thread.html#95">[ thread ]</a>
+              <a href="subject.html#95">[ subject ]</a>
+              <a href="author.html#95">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao &amp; Mignon,
+
+I made some minor improvements in how the unit tests report error messages
+from the JSLint checks.
+
+I think you now can completely avoid ever going to the JSLint web page and
+doing the copy &amp; paste thing.  Instead you can just run the unit test suite
+and see the error messages from there.  
+
+If the LintTest fails during the unit tests, then just double click on the
+&quot;LintTest&quot; line in the scroll-view-list at the bottom of the unit test
+TestRunner.html page.  
+
+When you double click, you'll get an alert box that gives info about the
+lint error, like this:
+  _______________________________________________
+
+  Util.js
+  (779): error at character 2: Expected ';' and instead saw '(end)'.
+  _______________________________________________
+  
+  TablePlugin.js
+  (458): error at character 10: Unreachable 'nextRow' after 'return'.
+  _______________________________________________
+
+
+If there are lint errors in more than one file, the error message will tell
+you about all the errors at once.  
+
+(Unfortunately, the error message will still only report a single lint error
+for each file, even if the file has more than one lint error.  I don't think
+there's anything to do about that without changing Douglas Crockford's
+jslint code, which is an exercise for another day.)
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000103.html">[openrecord-dev] Re: interaction design
+</A></li>
+	<LI>Next message: <A HREF="000096.html">[openrecord-dev] RE: Mac vs. PC
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#95">[ date ]</a>
+              <a href="thread.html#95">[ thread ]</a>
+              <a href="subject.html#95">[ subject ]</a>
+              <a href="author.html#95">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

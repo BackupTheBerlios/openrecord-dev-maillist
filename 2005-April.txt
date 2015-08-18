@@ -1,0 +1,2631 @@
+From brian.skinner at gumption.org  Wed Apr  6 00:59:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Apr  6 00:59:01 2005
+Subject: [openrecord-dev] Welcome to the openrecord-dev list!
+Message-ID: <200504052258.j35Mw4m14668@bat.berlios.de>
+
+Hi Chao, 
+Hi Mignon,
+
+Welcome to the openrecord-dev mailing list!
+
+I just did a bunch of big checkins involving lots of file renaming and some
+file deletion and creation.  Next time you're looking at the source code, be
+sure to do a subversion "update" before you begin.  Or if you're feeling
+cautious, you might just want to delete your working copy and do a fresh
+"checkout" to start from scratch.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Apr  6 08:43:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Apr  6 08:43:01 2005
+Subject: [openrecord-dev] Client-Server API -- first thoughts
+Message-ID: <200504060642.j366gQm23538@bat.berlios.de>
+
+Hey Mignon & Chao,
+
+Here are some first thoughts about what we might want our client-server API
+to look like. I don't have a lot of experience with web-based client-server
+APIs, and I haven't thought this all through carefully, but maybe we can use
+this as a starting point to iterate on.
+
+:o) Brian
+
+
+==============================================================
+Client-Server API
+
+I can think of four or five types of calls that we might want the web
+browser to make to the server:
+  (1) Queries
+  (2) Additions
+  (3) Notifications
+  (4) Page Views
+  (5) RSS
+  
+
+--------------------------
+(1) Queries
+
+Context: 
+  The JavaScript client code is running in the browser, and the user browses
+within a page such that the client code needs to fetch more data from the
+server.
+
+Example: 
+  In outline view, a user "zooms in" on an item, so that the client code now
+needs to show all the attributes of the item, rather than just the item's
+name.
+
+Summary: 
+  The JavaScript client code sends a query to the server, and the server
+responds with the query result set.
+
+Transport: 
+  The query message should probably be an HTTP POST, but could maybe be an
+HTTP GET. The server replies with the query result set in the response to
+the HTTP POST/GET.
+
+Data format: 
+  The query message should probably be in JSON or XML, and the query result
+set also in JSON or XML. Here's an example of what a JSON query might look
+like:
+  
+  { "query":               /* Query for all items in category "Book" */
+    { "uuid": 873902,      /* Unique id for the query itself */
+      "category": 544862   /* Books */
+    }
+  }
+  
+What's in the query message:
+  A garden variety query will be something like, "tell me all the current
+attribute values for the item identified by UUID=834577 (The Hobbit)", or
+maybe, "tell me all the current attribute values for all the items that are
+in the category identified by UUID=544862 (Books)".
+  
+  In the far-term future, we might want to have more complicated queries,
+like queries that ask for all the books with "Tower" as part of their title.
+But for now I don't think we need to worry about that.  
+  
+  In the nearer-term future, we might want to have queries that ask for just
+particular attributes of the result set items. For example, it might be very
+common to have views that would need to make queries like, "tell me about
+all the items that are in the category identified by UUID=544862 (Books),
+but only tell me the current attribute values for the attribute identified
+by UUID=216653 (Title)"
+  
+  We'll also want to have queries that ask for information about previous
+version of items, or ask about what changes have been made to an item. Maybe
+something like, "tell me about all the previous versions of the item
+identified by UUID=834577 (The Hobbit)", or "for the item identified by
+UUID=834577 (The Hobbit), tell me what all the attribute values were as of
+revision number 47", or "... as of 2005/10/24 2:34". 
+  
+  Each query sent to the server should have its own unique identifier, so
+that the client and server can have follow-up conversations where they refer
+back to the original query.
+
+What's in the result set:
+  A garden variety result set will just be a collection of items, including
+values for all the attributes of all the items. Some result sets might only
+include some attribute values for some attributes, based on what the query
+asked for. Or, a result set might include revision history info.  
+  
+  
+--------------------------
+(2) Additions
+
+Context: 
+  The JavaScript client code is running in the browser, and the user changes
+the value of some attribute. Or, the user creates a new item, or adds a
+"deleted" mark to an item.
+
+Example: 
+  In table view, a user clicks on a cell, and changes a text string from
+"Tolkien" to "J.R.R. Tolkien".
+  
+Summary: 
+  The JavaScript client code sends a change object to the server to inform
+the server of the new change to be added to the repository. The server
+records the change in the repository and returns a confirmation to the
+client.
+
+Transport: 
+  I'm assuming the addition message should be an HTTP POST. The server
+replies with a confirmation in the response to the HTTP POST.
+
+Data format: 
+  The addition message should probably be in JSON or XML.
+  
+What's in the addition message:
+  An addition message will probably just have a single change object, or a
+list of change objects. I think we'll want to have at least a few different
+types of change objects: change objects for creating new items, change
+objects for assigning attribute values, and change objects for marking items
+as deleted.
+  
+  In a simple change object for assigning an attribute value, there might
+just be the UUID of the item being changed, the UUID of the attribute being
+set, and the new data value. But, the change objects could get more
+complicated, depending on what the core data model ends up looking like.
+More on that later.
+
+ 
+--------------------------
+(3) Notifications
+
+Context: 
+  The JavaScript client code is running in the browser, and it periodically
+checks with the server to find out if any of the other clients have made any
+changes to any of the items being displayed in this client.
+  
+Example: 
+  Pat is looking at a list of the 24 books that were returned in the result
+set of some query. Pat goes to the bathroom. Chris happens to also be
+looking at one of those books. Chris changes the author of one of the books
+from "Tolkien" to "J.R.R. Tolkien". When Pat comes back from the bathroom,
+Pat's screen shows the author as "J.R.R. Tolkien".
+
+Summary: 
+  The client code polls the server to check for any update notifications
+associated with a previous query. If there have been any changes that impact
+the query result set, the server returns information about the changes, and
+the client code refreshes the screen to show the changes.
+
+Transport: 
+  The notification request message should probably be an HTTP POST, but
+could maybe be an HTTP GET. The server replies with update notifications in
+the response to the HTTP POST/GET.
+  
+Data format: 
+  The notification request message and the resulting update notifications
+should probably both be in JSON or XML.
+  
+What's in the notification request message:
+  I think the notification request message just needs to provide the unique
+identifier of the original query.
+  
+What's in the resulting update notification:
+  Most of the time, there won't have been any changes that impact the query
+result set, so the update notification will just have to say that: "no
+changes". When there have been changes, the update notification will be a
+list of change objects. Potentially, these might be the exact same change
+objects that the server received in the addition messages when some client
+originally made the changes. 
+
+
+--------------------------
+(4) Page Views
+
+Context:
+  A user launches their browser, and types in a URL for a web page served by
+the server. No OpenRecord page has been loaded yet, and no JavaScript client
+code is running in the browser. 
+  
+Example 1: 
+  A search engine like Google is trying to index my page of favorite books,
+after following a link to the page from some page on some other web site.
+For Google to be able to index the page, our server needs to return a bunch
+of HTML that's already laid out with lists and tables containing strings
+that reflect the attribute values of my favorite books. We can't rely on
+JavaScript client code to execute a query and fill in the page.
+  
+Example 2:
+  90% of users will just view static pages, without ever editing anything.
+If a user follows a link to one of our pages, the page should appear
+quickly, without the need for loading JavaScript client code and running
+queries and whatnot. Ideally pages should be viewable by people using
+browsers that don't have JavaScript.
+  
+Summary: 
+  The server has a cache of static HTML pages that it can hand out in
+response to requests. The server updates the cached pages when needed (or
+drops pages from the cache). If the server gets a request for a page that
+isn't in the cache, the server can build a new static HTML page from the
+information in the repository, and add that page to the cache.
+  
+Transport: 
+  The request is a simple HTTP GET.  The response is some static HTML.
+ 
+  
+--------------------------
+(5) RSS
+
+Example:
+  In Pat's RSS reader, Pat has subscribed to an RSS feed for all the new
+Bugs filed against a product. Or, in Chris's RSS reader, Chris has
+subscribed to an RSS feed to see all the comments posted in response to a
+proposal.
+  
+Summary: 
+  I don't know much about RSS, so I don't know what the server needs to do
+to provide the info the RSS reader needs. I don't think this is too hard to
+do, but it's certainly not a near-term feature anyway.
+
+
+
+From brian.skinner at gumption.org  Thu Apr  7 03:48:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Apr  7 03:48:00 2005
+Subject: [openrecord-dev] Proposal: Item Ordering in Query Result Sets
+Message-ID: <200504070147.j371lkm26630@bat.berlios.de>
+
+One of the open questions with our data model is how to represent the
+ordering of items in a list. Here's one proposal for how to handle ordering.
+
+
+Let me know what you think. Is this a practical solution, or will it leave
+problems unsolved? Is there some better solution?
+
+:o) Brian
+
+
+==============================================================
+Proposal: Item Ordering in Query Result Sets
+
+Example:
+  Pat is looking at a list of things that Pat has to do. The list of items
+is being displayed by the TablePlugin or the OutlinePlugin, probably within
+a section on the page. The list of items being shown is the result set of
+some query, like maybe a query for "all items assigned to the category
+'task'", or "all items with an attribute 'assigned to', where the value of
+the 'assigned to' attribute is 'Pat'.
+  
+Problem:
+  Let's say the list has for items: "book flight", "reserve car", "call
+Chris", and "write speech". Pat drags "write speech" to the top of the list,
+because Pat wants it to be at the top. How do we record the fact that "write
+speech" belongs at the top of the list?
+
+Problem:
+  Pat is looking at a different list of tasks, on some other page. That list
+has 20 items on it, including "book flight", "reserve car", "call Chris",
+and "write speech". Should "write speech" be at the top of the list? Should
+it at least be above "book flight", "reserve car", and "call Chris"?
+
+Proposal:
+  I propose that we have a standard attribute called "Ordinal". By default,
+new items do not have an Ordinal attribute, but any item can have a value
+assigned to its Ordinal attribute. 
+  
+  There will be a TablePlugin or OutlinePlugin (or other View code) that
+displays the result set, and it's up to that code to decide what order to
+display the items in. The View code may ignore the Ordinal ordering, and
+instead show the items in alphabetical order, or in order based on creation
+timestamp, or whatever. But if the View code wants to, it can show the items
+based on their Ordinal ordering.   
+ 
+  When a query returns a query result set, the result set is ordered based
+on the Ordinal values of the items in the result set. If none of the items
+have Ordinal values, the items will be in a random order. If any item has an
+Ordinal value, that item will be placed above all the items without an
+Ordinal value. Ordinal values will normally be positive floating point
+numbers. If two items have Ordinal values, the one with the bigger value
+will be placed above the one with the smaller value.
+ 
+  When Pat drags "write speech" up above "book flight", all we need to do is
+set the Ordinal value of "write speech" to be some number larger than the
+Ordinal value of "book flight". If Pat drags "write speech" and drops it
+*between* "book flight" and "reserve car", we set the Ordinal value of "book
+flight" to be the average of the Ordinal values of "book flight" and
+"reserve car".
+  
+  When Pat drags and drops and item in a list, we only ever change the
+Ordinal value of the item Pat dragged. We don't change any attribute values
+of other items.
+
+
+
+
+
+From mignon_belongie at yahoo.com  Thu Apr  7 09:15:05 2005
+From: mignon_belongie at yahoo.com (Mignon Belongie)
+Date: Thu Apr  7 09:15:05 2005
+Subject: [openrecord-dev] Proposal: Item Ordering in Query Result Sets
+In-Reply-To: 6667
+Message-ID: <20050407071450.14971.qmail@web51004.mail.yahoo.com>
+
+--- Brian Douglas Skinner <brian.skinner at gumption.org> wrote:
+
+> If Pat drags "write speech" and drops it
+> *between* "book flight" and "reserve car", we set the Ordinal value
+> of "book flight" [I think you meant "write speech"] to be the average
+
+> of the Ordinal values of "book flight" and "reserve car".
+>   
+> When Pat drags and drops and item in a list, we only ever change the
+> Ordinal value of the item Pat dragged. We don't change any attribute
+> values of other items.
+
+So, what if "book flight" and "reserve car" didn't have Ordinal values
+before?  How would you keep "write speech" between them?
+
+Mignon 
+
+
+From brian.skinner at gumption.org  Fri Apr  8 05:06:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Apr  8 05:06:00 2005
+Subject: [openrecord-dev] Proposal: Item Ordering in Query Result Sets
+In-Reply-To: <20050407071450.14971.qmail@web51004.mail.yahoo.com>
+Message-ID: <200504080305.j38353m05619@bat.berlios.de>
+
+| > If Pat drags "write speech" and drops it
+| > *between* "book flight" and "reserve car", 
+| > we set the Ordinal value of "book flight" 
+| 
+| [I think you meant "write speech"] 
+| 
+| > to be the average of the Ordinal values of 
+| > "book flight" and "reserve car".
+
+Yup, I meant "write speech". We set the Ordinal value of "write speech" to
+be the average of the Ordinal values of the other two.
+
+
+| > When Pat drags and drops and item in a list, 
+| > we only ever change the Ordinal value of the 
+| > item Pat dragged. We don't change any attribute
+| > values of other items.
+| 
+| So, what if "book flight" and "reserve car" didn't 
+| have Ordinal values before?  How would you keep 
+| "write speech" between them?
+
+Doh! Thanks for pointing that out. I think that might be a fatal flaw in the
+whole Ordinal attribute approach. If an item is on a list with 100 other
+items, none of which have Ordinal values yet, then moving one item in the
+list would have to have a side effect of changing 100 other items, which
+might dramatically change where those items appear in other lists on other
+pages. That's no good.
+
+Back to the drawing board. Maybe each query needs to be able to have an
+explicit ordering associated with it, which can be applied to the query
+result set whenever the query is run?
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Tue Apr 12 07:19:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Apr 12 07:19:00 2005
+Subject: [openrecord-dev] test #4
+Message-ID: <200504120518.j3C5Iam29807@bat.berlios.de>
+
+test #4: post to <openrecord-dev at berlios.de>
+test #5: post to <openrecord-dev at lists.berlios.de>
+
+
+
+From brian.skinner at gumption.org  Tue Apr 12 07:19:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Apr 12 07:19:01 2005
+Subject: [openrecord-dev] test #5
+Message-ID: <200504120518.j3C5Iem29811@bat.berlios.de>
+
+test #4: post to <openrecord-dev at berlios.de>
+test #5: post to <openrecord-dev at lists.berlios.de>
+
+
+
+From chao at cs.stanford.edu  Tue Apr 12 07:21:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Apr 12 07:21:00 2005
+Subject: [openrecord-dev] test #5
+In-Reply-To: <200504120518.j3C5Iem29811@bat.berlios.de>
+References: <200504120518.j3C5Iem29811@bat.berlios.de>
+Message-ID: <228d7904edf541e1f1bd5c221ffa1fcf@cs.stanford.edu>
+
+Got your test post!
+
+Testing a reply.
+
+chao
+
+On Apr 11, 2005, at 10:18 PM, Brian Douglas Skinner wrote:
+
+> test #4: post to <openrecord-dev at berlios.de>
+> test #5: post to <openrecord-dev at lists.berlios.de>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Tue Apr 12 07:21:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Apr 12 07:21:01 2005
+Subject: [openrecord-dev] test #5
+In-Reply-To: <200504120518.j3C5Iem29811@bat.berlios.de>
+References: <200504120518.j3C5Iem29811@bat.berlios.de>
+Message-ID: <228d7904edf541e1f1bd5c221ffa1fcf@cs.stanford.edu>
+
+Got your test post!
+
+Testing a reply.
+
+chao
+
+On Apr 11, 2005, at 10:18 PM, Brian Douglas Skinner wrote:
+
+> test #4: post to <openrecord-dev at berlios.de>
+> test #5: post to <openrecord-dev at lists.berlios.de>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Tue Apr 12 07:24:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Apr 12 07:24:00 2005
+Subject: [openrecord-dev] mailing list working again!
+In-Reply-To: <228d7904edf541e1f1bd5c221ffa1fcf@cs.stanford.edu>
+Message-ID: <200504120523.j3C5Nvm29927@bat.berlios.de>
+
+Our mailing list seems to be working again.  I'll move our current e-mail
+thread over here...
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Tue Apr 12 07:32:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Apr 12 07:32:00 2005
+Subject: [openrecord-dev] RE: single-line text widgets
+In-Reply-To: <fc77bf18bf6bc6f2106e07fc67bb1e81@cs.stanford.edu>
+Message-ID: <200504120531.j3C5VZm30075@bat.berlios.de>
+
+> | Are you sure the single-line use case actually 
+> | requires an <input type=text> instead of a 
+> | <textarea>?  I wonder if maybe the <textarea> 
+> | would work fine for displaying strings that 
+> | happen to be only one line long.
+>
+> Hmm, you're right <textarea> can handle single 
+> lines too. The biggest difference I see is that 
+> <input type=text> really restricts you to just 
+> one line of text e.g. it filters out <return> 
+> and <enter> keystrokes. Not sure if there are 
+> other germane differences too.
+
+I think that even for the multi-line use case, we'll probably need to have
+the <textarea> filter out the <return> and <enter> keystrokes.  
+
+My understanding is that Firefox has the textarea convert <enter> into a \n,
+while IE on Windows has the textarea treat <enter> as a \r\n, and IE on the
+Mac has the textarea treat <enter> as a \r.  
+
+We could just decide not to allow text strings to have any sort of
+paragraphs breaks at all, at least for the short term.  Which means we need
+to filter out the <enter> strokes as the user types, or after the user
+finishes.
+
+Or, if we do allow text strings to have paragraphs, we need to pick a
+standard format for how we store the string in the datastore.  Probably \n
+is a good convention, except that with our current JSON file format, the app
+bombs out if there's a \n in a string literal.  
+
+When we're not in edit mode, then the string will be displayed in an <h1> or
+a <p> or something, and the \n won't create a line feed, so we'll need to
+replace the \n with a <br/> or a </p><p> or something.  That's maybe more
+trouble than it's worth, at least for now.  Plus I like the idea of
+restricting text attributes to only being a single paragraph.  It fits in
+with my whole agenda for having the app be a tool that focuses on items and
+attributes, not pages of text!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Apr 13 01:50:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Apr 13 01:50:01 2005
+Subject: [openrecord-dev] RE: Extreme Programming
+In-Reply-To: <afce18540694d7c12f5ae3c890006f40@cs.stanford.edu>
+Message-ID: <200504122349.j3CNnmm01124@bat.berlios.de>
+
+Hey Chao,
+
+I'm cc'ing this thread to the dev list, because I think Mignon might be
+interested too...
+
+> | Hey Chao,
+> | 
+> | I was wrong yesterday when I was talking about 
+> | the Extreme Programming guideline about "do risky 
+> | things first".  The real Extreme Programming
+> | guideline is about using spike solutions to reduce 
+> | risk.
+> | 
+> | Here's a nice Extreme Programming summary page:
+> |   http://www.extremeprogramming.org/rules.html
+> | 
+> | :o) Brian
+> 
+> 
+> This is a great link!
+
+Yup, I added it to our bookmarks page.  I want to look at it some more
+sometime.
+
+
+> I think a "quick & dirty" way of doing the simplest 
+> versioning would fall into spike solutions?
+
+Agreed.  Or, perhaps a spike solution isn't worth the effort.  Maybe the
+thing to do is add versioning when there are user-facing features that call
+for it -- maybe things like undo, or UI for viewing changes and old
+versions, or client/server performance issues. 
+
+
+> What do you think of creating user stories for our 
+> first "release"? 
+
+I think that's a good idea.  
+
+So far, I think I've been more-or-less following the original OpenRecord
+spec doc, and the staged implementation roadmap listed there:
+  http://openrecord.org/spec.html
+
+Do you think we could draw on that spec & roadmap to get user stories?  I
+want to try doing things in a more extreme programming style, but it's all
+new to me, so without doing more reading I don't really have a sense of what
+our set of user stories should look like.  And I want to avoid duplicating
+effort, if the existing spec covers a lot the same ground that user stories
+would.
+
+
+> I think we're fast approaching the time where we 
+> should focus on getting something usable rather 
+> than catering to different plausible directions we 
+> can move towards. 
+
+Agreed.  
+
+
+> Being concrete on the user stories will also help 
+> tease out tradeoffs on which direction we should 
+> point towards first?
+
+Yes, and having concrete user stories might help highlight the similarities
+and differences between the UIs we need for OpenAgenda and CoolChaser and a
+dog-food release for keeping track of OpenRecord work itself.
+
+
+> Maybe a group meeting or conf call?
+
+I'm available for a group meeting or conference call, but I wonder if that's
+the right next step.  If our next goal is to create user stories and/or
+define the first release, is that something that we can do in a meeting or a
+conference call?  Maybe one person needs to go off and make an initial
+draft, and then we work collaboratively to refine that?
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Apr 13 01:58:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Apr 13 01:58:00 2005
+Subject: [openrecord-dev] Data model ideas
+Message-ID: <200504122357.j3CNvem01232@bat.berlios.de>
+
+Data model ideas
+
+Caveat:
+  Chao and I have been talking lately about Extreme Programming (XP), and
+how to apply XP guidelines to the OpenRecord project. These ideas look more
+like "old school" design than XP, so we might want to take them with a grain
+of salt. But I figured I'd post this document anyway, since I'd written up
+most of it already. Even if we don't act on it now, we'll have it future
+reference.
+
+Background:
+  A lot of the OpenRecord design was inspired by existing web-based
+collaboration projects, like Wikipedia and del.icio.us. I've never actually
+used del.icio.us, and I'm only a little more familiar with Wikipedia, but I
+still want to draw on them as collaboration examples.
+  
+  Wikipedia and del.icio.us are both "outsider-oriented" collaboration
+projects, rather than "workgroup-scale" collaboration projects. By
+"outsider-oriented", I mean that there's a single repository that's
+potentially viewed and edited by thousands or millions of people, and those
+people generally don't know each other. By "workgroup-scale", I mean that
+each workgroup has its own little repository, with any given workgroup only
+having a few dozen people. An example of a workgroup-scale collaboration
+tool might be the bug-tracking tool used by corporate software development
+team.
+  
+  In workgroup-scale collaboration, you can safely assume that everyone is
+pretty much on the same page, and you don't need a lot of formal process and
+structure. Or, even if people aren't on the same page, you can assume that
+they're able to get together in a room and figure out what they want to do,
+so they don't need the collaboration tool itself to have features for
+dealing with differences of opinion. In practice, everyone can have full
+read/edit permission to everything.
+  
+  With outsider-oriented collaboration, you begin to have more substantial
+problems with differences of opinion. For example, some Wikipedia pages are
+prone to "edit wars", where different users keep pushing a page in different
+directions. I think the Wikipedia project has evolved some mechanisms to
+deal with edit wars. I think those mechanisms involve having different
+classes of users (editors vs. authors), and maybe some structure for how
+things happen (propose, discuss, vote, action). 
+  
+  In contrast, I believe that del.icio.us does not have any mechanisms for
+dealing with differences of opinion. There are no editors, no procedures, no
+discussion, and no edit wars. And I think that's because Wikipedia is a
+Cathedral, where del.icio.us is a Bazaar. They're both outsider-oriented
+collaboration projects, but with del.icio.us the collaboration is a
+lightweight, emergent thing. 
+  
+  With del.icio.us, each person adds their own content, and each person can
+only edit the content that they created. The collaboration value simply
+comes from showing aggregate views of the content that lots of people have
+contributed. Collaboration is easy, because each user can make edits
+entirely independently from everybody else.
+  
+  Wikipedia has some Bazaar-like qualities too. Each Wikipedia page is
+almost completely independent of all the other pages. In some sense, you can
+think of Wikipedia as a collection of 500,000 independent collaboration
+projects, one for each page. So if I'm editing one page, and you're editing
+another, then we're both collaborating to create Wikipedia, but the
+collaboration is really just Bazaar-style aggregation, just like
+del.icio.us.
+  
+  However, any single Wikipedia page is like a little Cathedral. All of the
+contributors to a page work together to create a coherent unified whole. One
+person adds some content, and a second person edits that content. The
+changes that people make build on previous changes. Each contribution is
+highly dependent on the previous contributions, not independent like in the
+del.icio.us case.
+
+Goal #1, outsider-oriented:
+  My goal with OpenRecord is to create an outsider-oriented collaboration
+tool, not a workgroup-scale collaboration tool. A workgroup-scale tool would
+be easier to build, so it's tempting to start with that goal, but I think
+that would lead us astray. I believe both CoolChaser and OpenAgenda are
+inherently outsider-oriented projects. 
+
+Goal #2, Bazaar-style:
+  If possible, I'd like to create more of a Bazaar-style tool instead of a
+Cathedral-style tool. As much as possible, I'd like users to be able to
+create and edit content more-or-less independently of each other, and then
+have the tool aggregate that content. That may not be a feasible goal, but
+I'd at least like to try. So, that said, here's my proposal for the next
+iteration of the core data structures and the data model API.
+  
+Data structures:
+  * The server keeps a database of items
+  * Items have values associated with them 
+    + an item has values "The Hobbit", "J.R.R. Tolkien", "1938"
+  * Values can be assigned to attributes 
+    + "The Hobbit" is assigned to the "Title" attribute
+    + "J.R.R. Tolkien" is assigned to the "Author" attribute
+    + "1938" is assigned to the "Publication Date" attribute
+  * An item can have values that are *not* assigned to an attribute
+    + an item can have value "Fiction"
+  * An attribute is itself just another item
+  * An item can have many values assigned to an attribute  
+    + "Star Wars" can have a "People" attribute with values "Luke
+Skywalker", "Princess Leia", "Han Solo", "Darth Vader"
+  * A value can be a literal, like a string or a number
+  * A value can be a reference to another item
+  * A value is not itself an item
+  * Values are immutable
+  * We start out with an initial set of common attributes:
+    + name, summary, category, start date, end date, short name
+  * We have a variety of types of literals
+    + string
+    + number
+    + date
+    + URL
+  * String literals can have an associated "language", which 
+    is a reference to an item representing a language, like 
+    "English" or "German"
+  * Number literals can have an associated "unit", which is a 
+    reference to an item representing a measurement unit, like 
+    "miles" or "dollars".
+  * Each item has a unique id -- unique across all servers
+  * Each value has a unique id -- unique within a single item
+  * Each item has a creation stamp, with a timestamp marking when 
+    it was created and a userstamp with a reference to an item 
+    representing the user who created it.
+  * Each value has a creation stamp with a timestamp and a userstamp.
+
+Operations -- single user:
+  * create a new item
+  * vote to delete an item 
+  * subsequent to deletion, vote to retain an item, thereby un-deleting it
+  * create a new value in an item, optionally assigned to an attribute
+  * add a new value to an attribute of an item
+    + add "C3PO" as one of the "People" in "Star Wars"
+  * vote to delete a value
+    + mark "Spock" as deleted, so that it no longer appears in "Star Wars"
+  * vote to replace a value with a corrected value
+    + replace "Luck Skywalker" with "Luke Skywalker"
+    + this creates a new value "Luke Skywalker", votes to delete 
+      the old value "Luck Skywalker", and marks the old value with 
+      a pointer to the new replacement value
+  * change the ordering of the values in an attribute of an item
+  * change the ordering of the items in a query result set
+
+Operations -- second user, editing the work of the first user:
+  * vote to retain -- mark a value as affirmed
+    + affirm that "C3PO" is one of the "People" in "Star Wars"
+  * add a new value to an attribute of an item
+    + add "R2D2" as one of the "People" in "Star Wars"
+  * vote to delete a value
+    + mark "Spock" as deleted, or affirm someone else's deletion
+  * replace a value with a corrected value
+    + creates a new value and votes to delete the old value
+  * vote to delete an item
+    + mark "Star Wars" as deleted, or affirm someone else's deletion 
+  * vote to retain an item
+  * change the ordering of the values in an attribute of an item
+  * change the ordering of the items in a query result set
+
+Data structures redux:
+  * Item
+     + uuid
+     + set of values
+     + creation stamp (timestamp and userstamp)
+     + creation ordinal (a default initial value)
+       - (T minus creation time) in milliseconds, 
+         where T is (January 1, 2000)
+       - optimization: can be derived from the creation stamp, 
+         no need to store it
+     + optional list of votes to delete and votes to retain
+       - each vote has a stamp (timestamp and userstamp)
+       - each vote has a delete/retain flag
+       - optimization: only stored if users have made retain/delete calls
+     + optional list of additional ordinals
+       - each ordinal has stamp (timestamp and userstamp)
+       - each ordinal has an ordinal floating point number
+       - optimization: only stored if users have re-ordered lists
+  * Value
+     + id
+     + owning item
+     + attribute assignment -- the attribute his value is assigned to
+     + creation stamp (timestamp and userstamp)
+     + creation ordinal (a default initial value)
+       - (T minus creation time) in milliseconds, 
+         where T is (January 1, 2000)
+       - optimization: can be derived from the creation stamp, 
+         no need to store it
+     + optional list of votes to delete and votes to retain
+       - each vote has a stamp (timestamp and userstamp)
+       - each vote has a delete/retain flag
+       - replacement pointer -- a deletion vote can have a pointer 
+         to a new value that replaces the deleted value
+       - optimization: only stored if users have made retain/delete calls
+     + optional list of additional ordinals
+       - each ordinal has stamp (timestamp and userstamp)
+       - each ordinal has an ordinal floating point number
+       - optimization: only stored if users have re-ordered lists
+     + maybe an optional source (a reference to another item)
+  * Literal Value
+     + data type (string, number, date, etc.)
+     + data ("C3PO", "482", "March 1, 1973", etc.)
+     + string literals can have a language ("English", "German")
+     + number literals can have a unit ("miles", "dollars")
+     + date literals can have a timezone
+  * Reference Value
+     + related item
+     + related attribute assignment
+     
+JavaScript API:
+
+  // Login as Lisa and create some items and values
+  datastore.login(userLisa, authenticationForLisa);
+  var starWars = datastore.newItem("Star Wars");
+  var peopleAttribute = datastore.newAttribute("People");
+  var luck = starWars.addAttributeValue(peopleAttribute, "Luck Skywalker");
+  var c3po = starWars.addAttributeValue(peopleAttribute, "C3PO");
+  var luke = starWars.replaceValueWithAttributeValue(luck, peopleAttribute,
+"Luke Skywalker");
+  var fiction = datastore.newItem("Fiction");
+  starWars.addValue(fiction);
+  var starWarsPeopleValues =
+starWars.getValuesForAttribute(peopleAttribute);
+  var allStarWarsValues = starWars.getValues();
+  var creator = luke.getCreationStamp().getUser();
+  Util.assert(creator == userLisa);
+  var creationDate = luke.getCreationStamp().getDate();
+  starWars.deleteValue(c3po);
+  datastore.logout();
+
+  // Login as Bart, and change some existing items and values
+  datastore.login(userBart, authenticationForBart);
+  var categoryMovie = datastore.getItemFromUuid(Movies.MOVIE_CATEGORY_UUID);
+  var movieQuery = datastore.newQuery(Query.CATEGORY_QUERY, categoryMovie);
+  var movies = movieQuery.getResultSet();
+  var starWars = null;
+  for (var uuid in movies) {
+    var movie = movies[uuid];
+    if (movie.getName() == "Star Wars") {
+      starWars = movie;
+    }
+  }
+  if (starWars) {
+    var attributes = starWars.getAttributes();
+    var peopleAttribute = null;
+    for (var uuid in attributes) {
+      var attribute = attributes[uuid];
+      if (attribute.getName() == "People") {
+        peopleAttribute = attribute;
+      }
+    }
+    if (peopleAttribute) {
+      var allValues = starWars.getValues();
+      var starWarsPeople = starWars.getValuesForAttribute(peopleAttribute);
+      for (var uuid in starWarsPeople) {
+        var person = starWarsPeople[uuid];
+        var msg = "Was " + person.getDisplayString() + " in Star Wars?";
+
+        // show panel and get user input
+        var yesNo = window.confirm(msg); 
+        if (yesNo) {
+          starWars.retainValue(character);
+        } else {
+          starWars.deleteValue(character);
+        }
+      }
+    }
+  }
+  datastore.logout();
+
+
+
+From brian.skinner at gumption.org  Wed Apr 13 05:20:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Apr 13 05:20:01 2005
+Subject: [openrecord-dev] task-tracking tools
+Message-ID: <200504130319.j3D3JKm04460@bat.berlios.de>
+
+Hey Chao and Mignon,
+
+Today I tried using some of the BerliOS tools for doing lightweight task
+tracking.  They have web-based tools available for doing:
+  * bug tracking
+  * feature request tracking
+  * to-do task tracking
+
+As soon as possible, I'd like to start using OpenRecord itself to keep track
+of the OpenRecord development tasks: bugs, features, and other tasks.  But,
+realistically, it's going to be another couple months until the OpenRecord
+data store is stable enough for that.
+
+In the meantime, it seems like we have a few options:
+ (1) We could just informally exchange e-mail messages to let each other
+know about bugs or new tasks that have to get done.
+ (2) We could use the BerliOS task tracking tools.  
+ (3) We could just have some simple text file with a list of tasks, and we
+could keep that file win the Subversion repository, and check it in and out
+along with the code.
+
+We don't need to make a decision right away, but I wanted to bring it up
+because I think it dovetails with the discussion about extreme programming
+(XP).  Right now I have about 20 "features" entered into the BerliOS feature
+tracking tool.  Those features seem somewhat similar to XP "user stories",
+although right now the feature descriptions are probably more fine-grained
+than XP user stories would be.  But, clearly we could use the BerliOS tools
+to track user stories and do XP-style iteration planning, and release
+planning, and "project velocity" tracking.
+
+Anyway, I'll keep using the BerliOS tools myself for a while to see what I
+think.  Feel free to use them too, if you'd like to check them out.  Here
+are the links:
+
+features to add:
+  http://developer.berlios.de/feature/?group_id=3396
+
+bugs:
+  http://developer.berlios.de/bugs/?group_id=3396
+
+other tasks:
+  http://developer.berlios.de/pm/?group_id=3396
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Apr 13 05:45:02 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Apr 13 05:45:02 2005
+Subject: [openrecord-dev] Proposal: Item Ordering in Query Result Sets
+In-Reply-To: <200504080305.j38353m05619@bat.berlios.de>
+Message-ID: <200504130344.j3D3iEm04815@bat.berlios.de>
+
+Okay, here's another attempt at an item ordering solution...
+
+> | > When Pat drags and drops and item in a list, 
+> | > we only ever change the Ordinal value of the 
+> | > item Pat dragged. We don't change any attribute
+> | > values of other items.
+> | 
+> | So, what if "book flight" and "reserve car" didn't 
+> | have Ordinal values before?  How would you keep 
+> | "write speech" between them?
+> 
+> Doh! Thanks for pointing that out. I think that might 
+> be a fatal flaw in the whole Ordinal attribute approach. 
+> If an item is on a list with 100 other items, none of 
+> which have Ordinal values yet, then moving one item in 
+> the list would have to have a side effect of changing 
+> 100 other items, which might dramatically change where 
+> those items appear in other lists on other pages. That's 
+> no good.
+
+How about if every new item automatically starts out with an initial ordinal
+value? The automatic initial ordinal value could be based on the time the
+item was created. 
+
+We could arrange it so that newer items always have lower ordinal values
+than older items, and therefore query result sets by default always have the
+newest items at the bottom of the list. That would match how the current
+TablePlugin UI works, and how you would expect an Outliner UI to work.
+
+For example, in the item's constructor you might have something like this:
+
+  var now = new Date();
+  this._myCreationTimestamp = now;
+
+  var tZeroInMilliseconds = januaryFirst2000.getTime();
+  var nowValueInMilliseconds = now.getTime();
+  this._myOrdinal = tZeroInMilliseconds - nowValueInMilliseconds;
+
+Or whatever. You could get the same kind of effect with some substantially
+different algorithm.
+
+Is that a workable solution? Is it better than a solution where we each
+query has support for having an explicit ordering associated with it, where
+that ordering could be applied to the query result set whenever the query is
+run? Are there other alternatives we should put on the table?
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Wed Apr 13 06:35:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Apr 13 06:35:01 2005
+Subject: [openrecord-dev] RE: Extreme Programming
+In-Reply-To: <200504122349.j3CNnmm01124@bat.berlios.de>
+References: <200504122349.j3CNnmm01124@bat.berlios.de>
+Message-ID: <5bb7144bedf8b4c79b604534b656b6ab@cs.stanford.edu>
+
+Hi Brian,
+
+Thanks for your helpful comments. I'll have a better look at your spec 
+again tomorrow but here's a more immediate reply:
+
+>> What do you think of creating user stories for our
+>> first "release"?
+>
+> I think that's a good idea.
+>
+> So far, I think I've been more-or-less following the original 
+> OpenRecord
+> spec doc, and the staged implementation roadmap listed there:
+>   http://openrecord.org/spec.html
+>
+> Do you think we could draw on that spec & roadmap to get user stories? 
+>  I
+> want to try doing things in a more extreme programming style, but it's 
+> all
+> new to me, so without doing more reading I don't really have a sense 
+> of what
+> our set of user stories should look like.  And I want to avoid 
+> duplicating
+> effort, if the existing spec covers a lot the same ground that user 
+> stories
+> would.
+>
+I think I'm conflating user stories with some higher-level issues:
+	- who are our "customers"?
+	- From your example use cases, should we prioritize the ones that we 
+should aim to target for the first release?
+		- can we be more concrete about sharing and collaborating? what is 
+the minimum we can shoot for?
+		- what specific workflows are we aiming for in the first release?
+	- how do we know we have succeeded in the first release? do we go by 
+the goals, use cases, features or some other metric?								
+Since we are coming at this project from different angles with 
+different motivations, it may help clear the air and align our goals if 
+we make all these meta-issues explicit. This isn't intended to slow 
+down our pretty decent (mainly your good work!) development momentum 
+tho'.
+
+Anyway, don't want to waste our time but learning from OSAF experience, 
+I think it's important to try to scope the project to be small (first 
+release in 3 months), innovative and usable right from the first 
+release onwards. Mitch even volunteered the same feedback today!
+
+chao
+
+
+
+From brian.skinner at gumption.org  Wed Apr 13 23:55:02 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Apr 13 23:55:02 2005
+Subject: [openrecord-dev] RE: Extreme Programming
+In-Reply-To: <5bb7144bedf8b4c79b604534b656b6ab@cs.stanford.edu>
+Message-ID: <200504132154.j3DLsam07975@bat.berlios.de>
+
+> Thanks for your helpful comments. I'll have a 
+> better look at your spec again tomorrow 
+
+Yup, feel free to call me if it would be good to talk about it as you're
+looking at it.
+
+
+> I think I'm conflating user stories with some 
+> higher-level issues:
+>   - who are our "customers"?
+>   - From your example use cases, should we 
+>     prioritize the ones that we should aim 
+>     to target for the first release?
+>   - can we be more concrete about sharing 
+>     and collaborating? what is the minimum 
+>     we can shoot for?
+>   - what specific workflows are we aiming 
+>     for in the first release?
+>   - how do we know we have succeeded in the 
+>     first release? do we go by the goals, use 
+>     cases, features or some other metric?
+
+Okay, now I understand better what you mean.  Thanks for the clarification.
+Yes, it would be good to get all that stuff straight.  Do you want to take a
+shot at drafting answers to those questions, or hosting a meeting or
+phone-call to arrive at answers?
+		
+
+> Since we are coming at this project from different
+> angles with different motivations, it may help clear
+> the air and align our goals if we make all these 
+> meta-issues explicit. 
+
+Yup, the high-level goals are the ones that are most important to make
+explicit.  And especially so in the case where different collaborators share
+some but not all of the goals.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Thu Apr 14 23:31:29 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Apr 14 23:31:29 2005
+Subject: [openrecord-dev] meet up on Saturday?
+In-Reply-To: <200504132154.j3DLsam07975@bat.berlios.de>
+Message-ID: <200504142126.j3ELQVm18733@bat.berlios.de>
+
+| > | > Maybe a group meeting or conf call?
+| >
+| >   - who are our "customers"?
+| >   - From your example use cases, should we 
+| >     prioritize the ones that we should aim 
+| >     to target for the first release?
+| >   - can we be more concrete about sharing 
+| >     and collaborating? what is the minimum 
+| >     we can shoot for?
+| >   - what specific workflows are we aiming 
+| >     for in the first release?
+| >   - how do we know we have succeeded in the 
+| >     first release? do we go by the goals, use 
+| >     cases, features or some other metric?
+| 
+| Yes, it would be good to get all that stuff straight.  
+| Do you want to take a shot at drafting answers to 
+| those questions, or hosting a meeting or phone-call 
+| to arrive at answers?
+		
+If you want to get together in person, I could come down on Saturday
+afternoon.  We could meet up in Burlingame or Redwood City.  If you're both
+free, it'd be a chance for me to introduce you to each other.
+
+:o) Brian
+
+
+
+From chao at osafoundation.org  Fri Apr 15 00:18:00 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Fri Apr 15 00:18:00 2005
+Subject: [openrecord-dev] RE: Extreme Programming
+In-Reply-To: <200504132154.j3DLsam07975@bat.berlios.de>
+References: <200504132154.j3DLsam07975@bat.berlios.de>
+Message-ID: <6ef9cda009da26094a611ab8f6795fd4@osafoundation.org>
+
+Hi Brian,
+
+> Okay, now I understand better what you mean.  Thanks for the 
+> clarification.
+> Yes, it would be good to get all that stuff straight.  Do you want to 
+> take a
+> shot at drafting answers to those questions, or hosting a meeting or
+> phone-call to arrive at answers?
+>
+OK, I can take a crack at leading this. I'll write up something to 
+frame the issues better and we can then decide the best venue for 
+discussion.
+
+Caveat is this will take a while - probably end of next week, if that's 
+ok.
+
+chao
+
+> 		
+>
+>> Since we are coming at this project from different
+>> angles with different motivations, it may help clear
+>> the air and align our goals if we make all these
+>> meta-issues explicit.
+>
+> Yup, the high-level goals are the ones that are most important to make
+> explicit.  And especially so in the case where different collaborators 
+> share
+> some but not all of the goals.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Fri Apr 15 00:22:14 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Apr 15 00:22:14 2005
+Subject: [openrecord-dev] RE: Extreme Programming
+In-Reply-To: <6ef9cda009da26094a611ab8f6795fd4@osafoundation.org>
+Message-ID: <200504142221.j3EMLvm20333@bat.berlios.de>
+
+> OK, I can take a crack at leading this. I'll write 
+> up something to frame the issues better and we can 
+> then decide the best venue for discussion.
+> 
+> Caveat is this will take a while - probably end of 
+> next week, if that's  ok.
+
+That sounds great.  Thanks!
+
+:o) Brian
+
+
+
+
+From chao at cs.stanford.edu  Sat Apr 16 00:04:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Apr 16 00:04:01 2005
+Subject: [openrecord-dev] SproutLiner
+Message-ID: <8f0266a0e3055b59046977d10fc808aa@cs.stanford.edu>
+
+Checkout http://sproutliner.com/
+
+Looks like an interesting project similar to open-record, but perhaps 
+without the deep and expressive data model that Brian has developed.
+
+chao
+
+
+
+From brian.skinner at gumption.org  Sat Apr 16 01:08:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Apr 16 01:08:00 2005
+Subject: [openrecord-dev] SproutLiner
+In-Reply-To: <8f0266a0e3055b59046977d10fc808aa@cs.stanford.edu>
+Message-ID: <200504152307.j3FN7qm30614@bat.berlios.de>
+
+> Checkout http://sproutliner.com/
+> 
+> Looks like an interesting project similar to 
+> open-record
+
+Very cool!
+
+
+
+From brian.skinner at gumption.org  Sat Apr 16 04:10:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Apr 16 04:10:01 2005
+Subject: [openrecord-dev] unit tests!
+Message-ID: <200504160208.j3G28xm01112@bat.berlios.de>
+
+I'm pleased to report that we now have some unit tests for our code!  
+
+I checked in the first unit tests yesterday, and a few more today.  We can
+add more tests as we go.
+
+When I was setting up the tests, I ran into problems with file paths, and
+unfortunately I ended up hard-coding some file paths, so right now our unit
+testing set-up is a little more brittle than I'd like.  But I figure brittle
+tests are better than no tests, so in the spirit of incremental iteration I
+went ahead and checked everything in.
+
+The unit tests are set up to run in the JsUnit framework written by Edward
+Hieatt.  To run the test you need to have a copy of the JsUnit framework,
+which you can get from Edward's web site:
+  http://www.edwardh.com/jsunit/
+
+The unit tests run within a testRunner.html page in the JsUnit framework.  I
+don't want to actually add that testRunner.html page and the rest of the
+JsUnit framework to our source tree, so on my machine I put the JsUnit
+framework in a directory next to the directory where I have our source code.
+Which leads to the file path problem...
+
+As the tests are running, our unit test files get loaded in the context of
+the testRunner.html page, and from that directory our code needs to "find
+its way home" to our source code directory in order to grab other files.
+And conversely, in order to automatically launch the testRunner from the
+unit test pages, the unit test files need to be able to find the
+testRunner.html in first place.
+
+Which means that if you want to try running the unit tests, you'll need to
+have your directories named exactly the same way mine are.  Sorry about
+that!  I couldn't figure out a way around the problem, but hopefully one of
+you will be able to solve it.
+
+Anyway, for now, if you want to run unit tests you need your directories set
+up like this:
+  openrecord/current/trunk/source/
+  openrecord/third_party/jsunit/
+
+The "openrecord" parent directory can be named whatever you like, and it can
+be anywhere in your file system.  But, below that, our OpenRecord source
+code has to be in "current/trunk/source/", and the jsunit framework has to
+be in "third_party/jsunit/".
+
+If you have an Apache server on your local machine, you can put all the
+files in a directory that Apache serves files from, and then you can run all
+the unit tests through your web browser.  
+
+To start the tests, point your web browser to:
+ "http://localhost/openrecord/third_party/jsunit/testRunner.html"
+
+and then in the form on the TestRunner page, enter:
+ "http://localhost/openrecord/current/trunk/source/TestSuite.html"
+
+Hit the "Run" button, and the TestRunner should report "Runs: 6", with a big
+green bar.
+
+Or, if you don't have an Apache server on your local machine, then you can
+run load the testRunner.html page as a file:
+ "file:///C:/openrecord/third_party/jsunit/testRunner.html"
+
+and then in the form on the TestRunner page, enter:
+ "C:\openrecord\current\trunk\source\TestSuite.html"
+
+Let me know how it goes, if you decide to try running the tests!  Feel free
+to call me if you have questions or run into problems.
+
+:o) Brian
+
+
+
+From chao at osafoundation.org  Sat Apr 16 08:56:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Sat Apr 16 08:56:01 2005
+Subject: [openrecord-dev] unit tests!
+In-Reply-To: <200504160208.j3G28xm01112@bat.berlios.de>
+References: <200504160208.j3G28xm01112@bat.berlios.de>
+Message-ID: <dcbaed64c410c9d4627376500c020d77@osafoundation.org>
+
+Hi Brian,
+
+Great work! I'll be trying it Monday. Have you thought of unit tests 
+for the AJAX code, e.g. validating the DOM? Not sure if it's doable.
+
+chao
+
+On Apr 15, 2005, at 7:09 PM, Brian Douglas Skinner wrote:
+
+> I'm pleased to report that we now have some unit tests for our code!
+>
+> I checked in the first unit tests yesterday, and a few more today.  We 
+> can
+> add more tests as we go.
+>
+> When I was setting up the tests, I ran into problems with file paths, 
+> and
+> unfortunately I ended up hard-coding some file paths, so right now our 
+> unit
+> testing set-up is a little more brittle than I'd like.  But I figure 
+> brittle
+> tests are better than no tests, so in the spirit of incremental 
+> iteration I
+> went ahead and checked everything in.
+>
+> The unit tests are set up to run in the JsUnit framework written by 
+> Edward
+> Hieatt.  To run the test you need to have a copy of the JsUnit 
+> framework,
+> which you can get from Edward's web site:
+>   http://www.edwardh.com/jsunit/
+>
+> The unit tests run within a testRunner.html page in the JsUnit 
+> framework.  I
+> don't want to actually add that testRunner.html page and the rest of 
+> the
+> JsUnit framework to our source tree, so on my machine I put the JsUnit
+> framework in a directory next to the directory where I have our source 
+> code.
+> Which leads to the file path problem...
+>
+> As the tests are running, our unit test files get loaded in the 
+> context of
+> the testRunner.html page, and from that directory our code needs to 
+> "find
+> its way home" to our source code directory in order to grab other 
+> files.
+> And conversely, in order to automatically launch the testRunner from 
+> the
+> unit test pages, the unit test files need to be able to find the
+> testRunner.html in first place.
+>
+> Which means that if you want to try running the unit tests, you'll 
+> need to
+> have your directories named exactly the same way mine are.  Sorry about
+> that!  I couldn't figure out a way around the problem, but hopefully 
+> one of
+> you will be able to solve it.
+>
+> Anyway, for now, if you want to run unit tests you need your 
+> directories set
+> up like this:
+>   openrecord/current/trunk/source/
+>   openrecord/third_party/jsunit/
+>
+> The "openrecord" parent directory can be named whatever you like, and 
+> it can
+> be anywhere in your file system.  But, below that, our OpenRecord 
+> source
+> code has to be in "current/trunk/source/", and the jsunit framework 
+> has to
+> be in "third_party/jsunit/".
+>
+> If you have an Apache server on your local machine, you can put all the
+> files in a directory that Apache serves files from, and then you can 
+> run all
+> the unit tests through your web browser.
+>
+> To start the tests, point your web browser to:
+>  "http://localhost/openrecord/third_party/jsunit/testRunner.html"
+>
+> and then in the form on the TestRunner page, enter:
+>  "http://localhost/openrecord/current/trunk/source/TestSuite.html"
+>
+> Hit the "Run" button, and the TestRunner should report "Runs: 6", with 
+> a big
+> green bar.
+>
+> Or, if you don't have an Apache server on your local machine, then you 
+> can
+> run load the testRunner.html page as a file:
+>  "file:///C:/openrecord/third_party/jsunit/testRunner.html"
+>
+> and then in the form on the TestRunner page, enter:
+>  "C:\openrecord\current\trunk\source\TestSuite.html"
+>
+> Let me know how it goes, if you decide to try running the tests!  Feel 
+> free
+> to call me if you have questions or run into problems.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Mon Apr 18 07:10:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Apr 18 07:10:01 2005
+Subject: [openrecord-dev] SproutLiner
+In-Reply-To: <8f0266a0e3055b59046977d10fc808aa@cs.stanford.edu>
+Message-ID: <200504180509.j3I59Mm04216@bat.berlios.de>
+
+> Checkout http://sproutliner.com/
+> 
+> Looks like an interesting project similar to 
+> open-record, but perhaps without the deep and 
+> expressive data model that Brian has developed.
+
+
+Hey Chao,
+
+In the header of the JavaScript code for SproutLiner, the author (Glen
+Murphy) says "feel free to copy at will":
+  http://sproutliner.com/sproutliner.js
+
+It'd be great if OpenRecord had a drag-and-drop outliner view too.  When we
+start working on that we might want to refer back to Glen Murphy SproutLiner
+code for ideas about how to do things.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Mon Apr 18 07:42:07 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Apr 18 07:42:07 2005
+Subject: [openrecord-dev] unit tests!
+In-Reply-To: <dcbaed64c410c9d4627376500c020d77@osafoundation.org>
+Message-ID: <200504180541.j3I5fEm04838@bat.berlios.de>
+
+> Have you thought of unit tests for the AJAX code, 
+> e.g. validating the DOM? Not sure if it's doable.
+
+I haven't tried doing anything like that, but I think it should be doable.
+Or at least some things should be doable.
+
+If you decide to look into that, here are a couple pages that might be
+useful...
+
+Here's KTree example page, where Edward Hieatt shows an example of using
+JsUnit on a test page with code that creates DOM elements:
+  http://www.edwardh.com/ktree/
+
+And, completely unrelated to JsUnit, here's the Burst Project, with includes
+"a fake DOM (for command-line testing), and unit testing":
+  http://burstproject.org/
+
+:o) Brian 
+
+
+
+
+From chao at cs.stanford.edu  Mon Apr 18 08:22:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon Apr 18 08:22:01 2005
+Subject: [openrecord-dev] SproutLiner
+In-Reply-To: <200504180509.j3I59Mm04216@bat.berlios.de>
+References: <200504180509.j3I59Mm04216@bat.berlios.de>
+Message-ID: <ab3673df3b356550b05235b1f7be3452@cs.stanford.edu>
+
+Hi Brian,
+
+Good thinking and it's good to know that SproutLiner allows us to learn 
+and copy from their code (that's the great thinking about Javascript 
+and other client-side scripting languages).
+
+A drag-and-drop editable outliner would be a really good to have. One 
+design issue to think about that I feel no one has really solved is how 
+outlines (which have an intrinsic containment hierarchy of items) and 
+attribute columns inter-relate. I feel they should, but I'm not sure 
+exactly how.
+
+e.g. I could have an item "buy flour" with an attribute "shopping 
+list". In another view, I could have an outline with the header 
+"shopping list" with a sub-item "buy flour".
+
+chao
+
+On Apr 17, 2005, at 10:09 PM, Brian Douglas Skinner wrote:
+
+>> Checkout http://sproutliner.com/
+>>
+>> Looks like an interesting project similar to
+>> open-record, but perhaps without the deep and
+>> expressive data model that Brian has developed.
+>
+>
+> Hey Chao,
+>
+> In the header of the JavaScript code for SproutLiner, the author (Glen
+> Murphy) says "feel free to copy at will":
+>   http://sproutliner.com/sproutliner.js
+>
+> It'd be great if OpenRecord had a drag-and-drop outliner view too.  
+> When we
+> start working on that we might want to refer back to Glen Murphy 
+> SproutLiner
+> code for ideas about how to do things.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Tue Apr 19 20:02:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Apr 19 20:02:01 2005
+Subject: [openrecord-dev] SproutLiner
+In-Reply-To: <ab3673df3b356550b05235b1f7be3452@cs.stanford.edu>
+Message-ID: <200504191801.j3JI1wm07420@bat.berlios.de>
+
+> A drag-and-drop editable outliner would be a really 
+> good to have. One design issue to think about that 
+> I feel no one has really solved is how outlines 
+> (which have an intrinsic containment hierarchy of 
+> items) and attribute columns inter-relate. I feel 
+> they should, but I'm not sure exactly how.
+> 
+> e.g. I could have an item "buy flour" with an 
+> attribute "shopping list". In another view, I could 
+> have an outline with the header "shopping list" with 
+> a sub-item "buy flour".
+
+Yup, that's going to take some thought.
+
+Just brainstorming a little, here's one idea...  
+What if we say 
+ + categories can have sub-categories
+ + any item can serve as a category for other items
+
+So, one view might show all the items that are selected by a query, where
+the query looks for items that are in the category "Task".  And then the
+view "groups" those items in outline view based on sub-category assignment.
+So the view looks like this:
+
+ + Wash car
+ + Plan party
+    + Send invitations
+    + Make reservation
+    + Order cake
+ + Tune piano
+ + Do taxes
+
+And another view might show all items in a table, with a column for the
+"Category" attribute.  So it would look like this:
+
+| Item Name        | Categories       |
+|==================|==================|
+| The Hobbit       | Book, Fiction    |
+| Wash car         | Task             |
+| Plan party       | Task             |
+| Send invitations | Task, Plan party |
+| Make reservation | Task, Plan party |
+| Order cake       | Task, Plan party |
+| Tune piano       | Task             |
+| Do taxes         | Task             |
+
+
+Needs more thought.  We may end up having to try out a few different ideas
+and see what works.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Thu Apr 21 02:21:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Apr 21 02:21:01 2005
+Subject: [openrecord-dev] RE: Extreme Programming
+In-Reply-To: <200504142221.j3EMLvm20333@bat.berlios.de>
+References: <200504142221.j3EMLvm20333@bat.berlios.de>
+Message-ID: <1a1658fcc8c888505aed1a44a3c98996@cs.stanford.edu>
+
+Hi Brian & Mignon,
+
+Brian asked me to elaborate some confusion about the higher-level 
+vision, goals and processes of OpenRecord I have, so I'm writing them 
+down below. Is this worth a meet up to discuss the issues?
+
+Thanks,
+chao
+
+-  What is the goal of the OpenRecord?
+	-  What is OpenRecord's long term vision?
+	-  How would we judge OpenRecord's success in 5 years?
+
+-  Can we go through Brian's goal as a starting point to see where 
+there's agreement vs divergence? and what needs further clarification?
+	-  Questions I have:
+		-  is this a tool or an application? or both?
+		- is there really a need for a spreadsheet on the web? what's wrong 
+with using Excel to collaborate? (I sort of get it, but I feel this 
+needs to be crystallized)
+		-  Are we just a neutral tool, or is there a social agenda to 
+OpenRecord too? e.g. force transparency?
+		-  Can we elaborate on what we mean by sharing and collaboration? 
+(maybe it's sufficiently explained in the use cases?)
+		-  What relevant metrics should we track and try to attain to ensure 
+that we are making progress towards OpenRecord's goals?
+		-  who are we serving? who do we want to help or make an impact on?
+
+-  How are we going to achieve the goals of OpenRecord?
+	-  Are we agreed that (for now):
+		-  We are using the Extreme Programming process to attain the 
+long-term goals of OpenRecord, so that at each small short release 
+cycle we are making the prioritized tangible progress towards 
+OpenRecord's goals
+		-  We should track metrics over time to see how well we are to 
+meeting the goals and determine if we need to make course corrections
+	-  If so,
+		-  Which parts of Extreme Programming are we not following?
+		-  What are the goals for the first release cycle?
+			-  can we have a target scenario?
+			-  who are our target customers for the first release cycle?
+		-  Can we chart out a rough schedule for the first release to aim for?
+
+-  Pivotal architectural questions
+	-  can OpenRecord be embedded in other web pages or is it mostly 
+self-contained as a website or mini-website?
+
+-  Personal motivations (why Chao's interested in this project):
+	-  Brian is a smart and fun guy to work with
+	-  hope to use this technology in some of more commercial and end-user 
+application projects I'm working on
+	-  learn more about DHTML/AJAX technology
+	-  hope to be part of something worthwhile and impactful to a lot of 
+people, from the ground level
+	-  I find the item-centric content model compelling - have much to 
+learn there
+
+
+
+From chao at cs.stanford.edu  Thu Apr 21 02:27:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Apr 21 02:27:01 2005
+Subject: [openrecord-dev] SproutLiner
+In-Reply-To: <200504191801.j3JI1wm07420@bat.berlios.de>
+References: <200504191801.j3JI1wm07420@bat.berlios.de>
+Message-ID: <eee2dbaa7b63eb18089ab414ccafc499@cs.stanford.edu>
+
+Hi Brian,
+
+Your idea seems like the way to approach the issue. To dig a little bit 
+more:
+
+- is "category" a special attribute?
+- can a sub-category have sub-categories? or is it just one level deep?
+- will *all* parent outline nodes denote a category? or is this view 
+dependent?
+
+chao
+
+On Apr 19, 2005, at 11:01 AM, Brian Douglas Skinner wrote:
+
+> Just brainstorming a little, here's one idea...
+> What if we say
+>  + categories can have sub-categories
+>  + any item can serve as a category for other items
+
+> So, one view might show all the items that are selected by a query, 
+> where
+> the query looks for items that are in the category "Task".  And then 
+> the
+> view "groups" those items in outline view based on sub-category 
+> assignment.
+> So the view looks like this:
+>
+>  + Wash car
+>  + Plan party
+>     + Send invitations
+>     + Make reservation
+>     + Order cake
+>  + Tune piano
+>  + Do taxes
+>
+> And another view might show all items in a table, with a column for the
+> "Category" attribute.  So it would look like this:
+>
+> | Item Name        | Categories       |
+> |==================|==================|
+> | The Hobbit       | Book, Fiction    |
+> | Wash car         | Task             |
+> | Plan party       | Task             |
+> | Send invitations | Task, Plan party |
+> | Make reservation | Task, Plan party |
+> | Order cake       | Task, Plan party |
+> | Tune piano       | Task             |
+> | Do taxes         | Task             |
+>
+>
+> Needs more thought.  We may end up having to try out a few different 
+> ideas
+> and see what works.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Apr 21 06:19:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Apr 21 06:19:01 2005
+Subject: [openrecord-dev] high-level goals
+In-Reply-To: <1a1658fcc8c888505aed1a44a3c98996@cs.stanford.edu>
+Message-ID: <200504210418.j3L4Icm29286@bat.berlios.de>
+
+> ... some confusion about the higher-level vision, 
+> goals and processes of OpenRecord ... 
+> Is this worth a meet up to discuss the issues?
+
+Hey Chao, thanks for coming up with that list of questions.  That should
+help structure our conversation about goals and motivations and target
+deliverables.
+
+I do think it's worth meeting up to discuss this stuff.  How about some
+afternoon in the next week or so?  Maybe this weekend?  Or Monday?
+
+I'm free almost any day from Saturday April 23 up until Monday May 2.  After
+that I'm headed out of town for a week or two.  I'll be back again around
+May 13.
+
+What's a good time for you two?  I'm happy to drive down to Burlingame or
+Redwood City.  
+
+:o) Brian
+
+
+
+
+From chao at osafoundation.org  Thu Apr 21 18:37:00 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Thu Apr 21 18:37:00 2005
+Subject: [openrecord-dev] Fwd: [Cosmo] jcr white paper
+Message-ID: <01c1028ac80053f343bff5b18f2b536b@osafoundation.org>
+
+FYI, OSAF is planning on standardizing on JCR (Java Content Repository) 
+based on Apache Slide and the WebDAV protocol as the remote sharing 
+server.
+> http://redirx.com/?30ur
+
+There's an Apache project called Jackrabbit that is doing a reference 
+implementation of a JCR server.
+http://incubator.apache.org/jackrabbit/
+
+May be worth considering for OpenRecord too?
+
+chao
+
+Begin forwarded message:
+
+> From: Brian Moseley <bcm at osafoundation.org>
+> Date: April 19, 2005 10:46:15 AM PDT
+> To: cosmo at osafoundation.org
+> Subject: [Cosmo] jcr white paper
+>
+> for those of you who are interested, roy fielding wrote a white paper 
+> on jcr, the content repository for java api that cosmo uses to store 
+> its share data. it's 16 pages, but not nearly as hefty a read as the 
+> spec ;)
+>
+> http://redirx.com/?30ur
+> _______________________________________________
+> Cosmo mailing list
+> Cosmo at osafoundation.org
+> http://lists.osafoundation.org/mailman/listinfo/cosmo
+
+
+
+From brian.skinner at gumption.org  Fri Apr 22 06:39:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Apr 22 06:39:00 2005
+Subject: [openrecord-dev] Fwd: [Cosmo] jcr white paper
+In-Reply-To: <01c1028ac80053f343bff5b18f2b536b@osafoundation.org>
+Message-ID: <200504220438.j3M4cKm06539@bat.berlios.de>
+
+> FYI, OSAF is planning on standardizing on 
+> JCR (Java Content Repository) based on Apache 
+> Slide and the WebDAV protocol as the remote 
+> sharing server.
+> http://redirx.com/?30ur
+> 
+> There's an Apache project called Jackrabbit 
+> that is doing a reference implementation of 
+> a JCR server.
+> http://incubator.apache.org/jackrabbit/
+
+
+Wow, that's interesting news.  Maybe when we get together I can ask you
+about more of the details.  
+
+Thanks for links.  I hadn't ever heard of JCR before, but it's remarkable
+how much it seems to have in common with the OSAF repository design circa
+2003/2004.  It'll be interesting to see how JCR develops.  Maybe a good
+alternative to the Longhorn WinFS vision of the future?
+
+
+> May be worth considering for OpenRecord too?
+
+Yup, might be a good choice.  At some point we should all spend some time
+talking about the details of the OpenRecord data structures and the
+operations we want to perform on them.  And then we need to figure out how
+those data structures map to the ones that are available in off-the-shelf
+the content repositories like JCR and MySQL and XML databases.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri Apr 22 09:12:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Apr 22 09:12:01 2005
+Subject: [openrecord-dev] MusicBrainz
+Message-ID: <200504220711.j3M7Bcm09149@bat.berlios.de>
+
+I just found out about the MusicBrainz project, and I wanted to share it
+with you:
+  http://www.musicbrainz.org/
+
+I've only spent an hour or so looking at it, but it's a cool project, and a
+bunch of what they're doing is similar to what I had in mind for OpenRecord
+and OpenAgenda.  I'm not actually much interested in music, but it's a
+wonderful example of a feature-rich web-based collaborative database...
+
+
+Things of interest:
+
+
+(1) A web-based collaborative database
+
+MusicBrainz is doing Wikipedia-style web-based collaboration and content
+aggregation, but MusicBrainz does it with structured database entries, not
+text-based wiki pages.
+
+
+
+(2) Item relationships
+
+MusicBrainz is *not* a big flat-file database, but rather a database where
+different types of records are all interrelated.  In MusicBrainz there are
+relationships between artists, bands, albums, tracks, URLs, etc.  (This is
+the way Wikiquotes should be set up, but isn't, with relationships between
+books, authors, quotes, etc. -- or at least, wasn't, last time I looked.)
+
+
+
+(3) Extensible schema
+
+MusicBrainz started out with a fixed content schema that only knew about
+artists, albums, tracks, and a couple other things.  They've now got an
+"Advanced Relationships" feature, which will allow for all sorts of new
+content types and relationships.  For more info, see:
+http://wiki.musicbrainz.org/wiki.pl?AdvancedRelationshipType
+
+
+
+(4) Voting to establish content
+
+MusicBrainz has a content moderation system based on voting and automatic
+resolution of votes, like what I'm proposing for OpenRecord.  In contrast to
+the wiki-style system of "last edit wins", or the Content Management System
+approach of "process and permissions".  For more info, see:
+http://www.musicbrainz.org/mod_intro.html
+
+
+
+(5) UUID-based URLs
+
+MusicBrainz uses UUIDs to identify content items, just like Chandler and
+JCR.  I think OpenRecord should do that too.  MusicBrainz also uses UUIDs
+for their permanent URLs, which I think is great.  For example:
+http://musicbrainz.org/album/5240094f-9d79-44fd-9985-77c7287bcc16.html
+  
+
+
+(6) RDF and Web Services
+
+MusicBrainz publishes all the database content not only on human-readable
+HTML pages, but also in machine-readable form via RDF and Web Services.  For
+more info see: http://logicerror.com/musicbrainzArticle or
+http://crschmidt.net/blog/archives/47/menow-and-musicbrainz/
+
+
+
+(7) Open source, open content
+
+The MusicBrainz source code is all either GPL and LGPL.  
+
+Some of the MusicBrainz database content is under the Creative Commons
+Attribution-NonCommercial-ShareAlike license.  The core MusicBrainz data is
+under the Creative Commons Public Domain Dedication, which is what the
+OpenRecord project is operating under.
+
+
+
+(8) Transparent finances
+
+MusicBrainz is run by the MetaBrainz foundation, which prides themselves on
+"transparent finances".  Very much in the same spirit as the openness stuff
+I was advocating on the OpenAgenda site.  For more info, see:
+http://metabrainz.org/finances/
+
+
+
+(9) Interesting people
+
+All sorts of interesting people have been involved:
+
+Board of directors includes:
+ * Dan Brickley of W3C and the FOAF Project
+ * Cory Doctorow of Electronic Frontier Foundation
+ * Lawrence Lessig of Stanford Law School and Creative Commons
+
+Sponsors include:
+ * O'Reilly and Associates
+
+Contributors include:
+ * Aaron Swartz of the W3C's RDF Core Working Group
+
+
+
+
+From chao at cs.stanford.edu  Sun Apr 24 21:36:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun Apr 24 21:36:01 2005
+Subject: [openrecord-dev] Data model ideas
+In-Reply-To: <200504122357.j3CNvem01232@bat.berlios.de>
+References: <200504122357.j3CNvem01232@bat.berlios.de>
+Message-ID: <9035d345002ec078ff9f567ad4433a99@cs.stanford.edu>
+
+Hi Brian,
+
+I really enjoyed reading this. You express the ideas beautifully. As 
+you allude to, I'm also in favor of 1) outsider-orientation 2) 
+bazaar-style emergent "collaboration".
+
+In a bazaar-style repository, wouldn't there be some data that would 
+still be cathedral style? e.g. the URL in a book, the tax id of a 
+charity or the title of a book? (maybe this is because I don't 
+understanding the voting methodology well enough)
+
+Two other issues occurred to me that seem related to this discussion:
+a) Distributed vs. centralized repository
+Where is the data stored? Can items only refer to other items in the 
+*same* repository? Both wikipedia and del.icio.us are centralized 
+repositories. Both use links as means to connect up with data from the 
+rest of the world, as kind of a second-class means. In contrast, the 
+web is the ultimate distributed repository.
+
+b) Where is the data used or deployed?
+While the wikipedia and del.icio.us websites are by far the main ways 
+in which users interact with the data stored in the two systems. What 
+is interesting about del.icio.us is that it has an open api to directly 
+access the data in both a *read* and *write* fashion for each user's 
+own data (since it's bazaar-style). A whole slew of del.icio.us related 
+apps and websites have sprouted leveraging on the api, contributing I 
+believe a great deal to the success of del.icio.us. Similarly, Flickr 
+is another good example of profiting from this direction. (b) is 
+obviously a grey-continuum rather than binary (how much do you want to 
+open up the api?). For example, wikipedia could offer RSS feeds to each 
+page.
+
+c) Kind of an amalgam of (a) & (b), do we want the ability to 
+incorporate data from other sources which have open APIs such as 
+del.icio.us and flickr, in a first-class (e.g. item-centric, not just 
+one-time import) kind of way?
+
+As Brian mentioned, I think we should use the XP model and use cases to 
+decide whether and when to incorporate the above features. My personal 
+bias would be to think about (b) web APIs sooner versus distributed 
+repositories or external data (a) & (c).
+
+On your "data structures" section and below, I think you'll have to 
+explain it to me in greater detail and maybe face-to-face. My head is 
+spinning a little. Some immediate questions:
+
+- what is the difference between an item and an attribute? are 
+attributes a special kind of item? in what way?
+	- is it that items cannot refer to other items except via an attribute?
+- is voting the only or the best way to create a bazaar-style system? I 
+would like to explore this area deeper before deciding on "voting" as 
+the means to aggregate the emergent "wisdom of the crowds" view. Is 
+voting done implicitly or explicitly by the user? I think this is where 
+we need to discuss ui and user scenarios together with data model.
+
+Apologies for not responding earlier, I've only caught up with the 
+mailing list now. But your email seems very appropriate for tomorrow's 
+discussion. I think we need to approach tomorrow's discussion from both 
+a top-down approach (e.g. like the questions I posed) and a bottoms-up 
+approach (what is technically do-able easily as a first step) which the 
+data model should shed light on.
+
+chao
+
+On Apr 12, 2005, at 4:57 PM, Brian Douglas Skinner wrote:
+
+> Data model ideas
+>
+> Caveat:
+>   Chao and I have been talking lately about Extreme Programming (XP), 
+> and
+> how to apply XP guidelines to the OpenRecord project. These ideas look 
+> more
+> like "old school" design than XP, so we might want to take them with a 
+> grain
+> of salt. But I figured I'd post this document anyway, since I'd 
+> written up
+> most of it already. Even if we don't act on it now, we'll have it 
+> future
+> reference.
+>
+> Background:
+>   A lot of the OpenRecord design was inspired by existing web-based
+> collaboration projects, like Wikipedia and del.icio.us. I've never 
+> actually
+> used del.icio.us, and I'm only a little more familiar with Wikipedia, 
+> but I
+> still want to draw on them as collaboration examples.
+>
+>   Wikipedia and del.icio.us are both "outsider-oriented" collaboration
+> projects, rather than "workgroup-scale" collaboration projects. By
+> "outsider-oriented", I mean that there's a single repository that's
+> potentially viewed and edited by thousands or millions of people, and 
+> those
+> people generally don't know each other. By "workgroup-scale", I mean 
+> that
+> each workgroup has its own little repository, with any given workgroup 
+> only
+> having a few dozen people. An example of a workgroup-scale 
+> collaboration
+> tool might be the bug-tracking tool used by corporate software 
+> development
+> team.
+>
+>   In workgroup-scale collaboration, you can safely assume that 
+> everyone is
+> pretty much on the same page, and you don't need a lot of formal 
+> process and
+> structure. Or, even if people aren't on the same page, you can assume 
+> that
+> they're able to get together in a room and figure out what they want 
+> to do,
+> so they don't need the collaboration tool itself to have features for
+> dealing with differences of opinion. In practice, everyone can have 
+> full
+> read/edit permission to everything.
+>
+>   With outsider-oriented collaboration, you begin to have more 
+> substantial
+> problems with differences of opinion. For example, some Wikipedia 
+> pages are
+> prone to "edit wars", where different users keep pushing a page in 
+> different
+> directions. I think the Wikipedia project has evolved some mechanisms 
+> to
+> deal with edit wars. I think those mechanisms involve having different
+> classes of users (editors vs. authors), and maybe some structure for 
+> how
+> things happen (propose, discuss, vote, action).
+>
+>   In contrast, I believe that del.icio.us does not have any mechanisms 
+> for
+> dealing with differences of opinion. There are no editors, no 
+> procedures, no
+> discussion, and no edit wars. And I think that's because Wikipedia is a
+> Cathedral, where del.icio.us is a Bazaar. They're both 
+> outsider-oriented
+> collaboration projects, but with del.icio.us the collaboration is a
+> lightweight, emergent thing.
+>
+>   With del.icio.us, each person adds their own content, and each 
+> person can
+> only edit the content that they created. The collaboration value simply
+> comes from showing aggregate views of the content that lots of people 
+> have
+> contributed. Collaboration is easy, because each user can make edits
+> entirely independently from everybody else.
+>
+>   Wikipedia has some Bazaar-like qualities too. Each Wikipedia page is
+> almost completely independent of all the other pages. In some sense, 
+> you can
+> think of Wikipedia as a collection of 500,000 independent collaboration
+> projects, one for each page. So if I'm editing one page, and you're 
+> editing
+> another, then we're both collaborating to create Wikipedia, but the
+> collaboration is really just Bazaar-style aggregation, just like
+> del.icio.us.
+>
+>   However, any single Wikipedia page is like a little Cathedral. All 
+> of the
+> contributors to a page work together to create a coherent unified 
+> whole. One
+> person adds some content, and a second person edits that content. The
+> changes that people make build on previous changes. Each contribution 
+> is
+> highly dependent on the previous contributions, not independent like 
+> in the
+> del.icio.us case.
+>
+> Goal #1, outsider-oriented:
+>   My goal with OpenRecord is to create an outsider-oriented 
+> collaboration
+> tool, not a workgroup-scale collaboration tool. A workgroup-scale tool 
+> would
+> be easier to build, so it's tempting to start with that goal, but I 
+> think
+> that would lead us astray. I believe both CoolChaser and OpenAgenda are
+> inherently outsider-oriented projects.
+>
+> Goal #2, Bazaar-style:
+>   If possible, I'd like to create more of a Bazaar-style tool instead 
+> of a
+> Cathedral-style tool. As much as possible, I'd like users to be able to
+> create and edit content more-or-less independently of each other, and 
+> then
+> have the tool aggregate that content. That may not be a feasible goal, 
+> but
+> I'd at least like to try. So, that said, here's my proposal for the 
+> next
+> iteration of the core data structures and the data model API.
+>
+> Data structures:
+>   * The server keeps a database of items
+>   * Items have values associated with them
+>     + an item has values "The Hobbit", "J.R.R. Tolkien", "1938"
+>   * Values can be assigned to attributes
+>     + "The Hobbit" is assigned to the "Title" attribute
+>     + "J.R.R. Tolkien" is assigned to the "Author" attribute
+>     + "1938" is assigned to the "Publication Date" attribute
+>   * An item can have values that are *not* assigned to an attribute
+>     + an item can have value "Fiction"
+>   * An attribute is itself just another item
+>   * An item can have many values assigned to an attribute
+>     + "Star Wars" can have a "People" attribute with values "Luke
+> Skywalker", "Princess Leia", "Han Solo", "Darth Vader"
+>   * A value can be a literal, like a string or a number
+>   * A value can be a reference to another item
+>   * A value is not itself an item
+>   * Values are immutable
+>   * We start out with an initial set of common attributes:
+>     + name, summary, category, start date, end date, short name
+>   * We have a variety of types of literals
+>     + string
+>     + number
+>     + date
+>     + URL
+>   * String literals can have an associated "language", which
+>     is a reference to an item representing a language, like
+>     "English" or "German"
+>   * Number literals can have an associated "unit", which is a
+>     reference to an item representing a measurement unit, like
+>     "miles" or "dollars".
+>   * Each item has a unique id -- unique across all servers
+>   * Each value has a unique id -- unique within a single item
+>   * Each item has a creation stamp, with a timestamp marking when
+>     it was created and a userstamp with a reference to an item
+>     representing the user who created it.
+>   * Each value has a creation stamp with a timestamp and a userstamp.
+>
+> Operations -- single user:
+>   * create a new item
+>   * vote to delete an item
+>   * subsequent to deletion, vote to retain an item, thereby 
+> un-deleting it
+>   * create a new value in an item, optionally assigned to an attribute
+>   * add a new value to an attribute of an item
+>     + add "C3PO" as one of the "People" in "Star Wars"
+>   * vote to delete a value
+>     + mark "Spock" as deleted, so that it no longer appears in "Star 
+> Wars"
+>   * vote to replace a value with a corrected value
+>     + replace "Luck Skywalker" with "Luke Skywalker"
+>     + this creates a new value "Luke Skywalker", votes to delete
+>       the old value "Luck Skywalker", and marks the old value with
+>       a pointer to the new replacement value
+>   * change the ordering of the values in an attribute of an item
+>   * change the ordering of the items in a query result set
+>
+> Operations -- second user, editing the work of the first user:
+>   * vote to retain -- mark a value as affirmed
+>     + affirm that "C3PO" is one of the "People" in "Star Wars"
+>   * add a new value to an attribute of an item
+>     + add "R2D2" as one of the "People" in "Star Wars"
+>   * vote to delete a value
+>     + mark "Spock" as deleted, or affirm someone else's deletion
+>   * replace a value with a corrected value
+>     + creates a new value and votes to delete the old value
+>   * vote to delete an item
+>     + mark "Star Wars" as deleted, or affirm someone else's deletion
+>   * vote to retain an item
+>   * change the ordering of the values in an attribute of an item
+>   * change the ordering of the items in a query result set
+>
+> Data structures redux:
+>   * Item
+>      + uuid
+>      + set of values
+>      + creation stamp (timestamp and userstamp)
+>      + creation ordinal (a default initial value)
+>        - (T minus creation time) in milliseconds,
+>          where T is (January 1, 2000)
+>        - optimization: can be derived from the creation stamp,
+>          no need to store it
+>      + optional list of votes to delete and votes to retain
+>        - each vote has a stamp (timestamp and userstamp)
+>        - each vote has a delete/retain flag
+>        - optimization: only stored if users have made retain/delete 
+> calls
+>      + optional list of additional ordinals
+>        - each ordinal has stamp (timestamp and userstamp)
+>        - each ordinal has an ordinal floating point number
+>        - optimization: only stored if users have re-ordered lists
+>   * Value
+>      + id
+>      + owning item
+>      + attribute assignment -- the attribute his value is assigned to
+>      + creation stamp (timestamp and userstamp)
+>      + creation ordinal (a default initial value)
+>        - (T minus creation time) in milliseconds,
+>          where T is (January 1, 2000)
+>        - optimization: can be derived from the creation stamp,
+>          no need to store it
+>      + optional list of votes to delete and votes to retain
+>        - each vote has a stamp (timestamp and userstamp)
+>        - each vote has a delete/retain flag
+>        - replacement pointer -- a deletion vote can have a pointer
+>          to a new value that replaces the deleted value
+>        - optimization: only stored if users have made retain/delete 
+> calls
+>      + optional list of additional ordinals
+>        - each ordinal has stamp (timestamp and userstamp)
+>        - each ordinal has an ordinal floating point number
+>        - optimization: only stored if users have re-ordered lists
+>      + maybe an optional source (a reference to another item)
+>   * Literal Value
+>      + data type (string, number, date, etc.)
+>      + data ("C3PO", "482", "March 1, 1973", etc.)
+>      + string literals can have a language ("English", "German")
+>      + number literals can have a unit ("miles", "dollars")
+>      + date literals can have a timezone
+>   * Reference Value
+>      + related item
+>      + related attribute assignment
+>
+> JavaScript API:
+>
+>   // Login as Lisa and create some items and values
+>   datastore.login(userLisa, authenticationForLisa);
+>   var starWars = datastore.newItem("Star Wars");
+>   var peopleAttribute = datastore.newAttribute("People");
+>   var luck = starWars.addAttributeValue(peopleAttribute, "Luck 
+> Skywalker");
+>   var c3po = starWars.addAttributeValue(peopleAttribute, "C3PO");
+>   var luke = starWars.replaceValueWithAttributeValue(luck, 
+> peopleAttribute,
+> "Luke Skywalker");
+>   var fiction = datastore.newItem("Fiction");
+>   starWars.addValue(fiction);
+>   var starWarsPeopleValues =
+> starWars.getValuesForAttribute(peopleAttribute);
+>   var allStarWarsValues = starWars.getValues();
+>   var creator = luke.getCreationStamp().getUser();
+>   Util.assert(creator == userLisa);
+>   var creationDate = luke.getCreationStamp().getDate();
+>   starWars.deleteValue(c3po);
+>   datastore.logout();
+>
+>   // Login as Bart, and change some existing items and values
+>   datastore.login(userBart, authenticationForBart);
+>   var categoryMovie = 
+> datastore.getItemFromUuid(Movies.MOVIE_CATEGORY_UUID);
+>   var movieQuery = datastore.newQuery(Query.CATEGORY_QUERY, 
+> categoryMovie);
+>   var movies = movieQuery.getResultSet();
+>   var starWars = null;
+>   for (var uuid in movies) {
+>     var movie = movies[uuid];
+>     if (movie.getName() == "Star Wars") {
+>       starWars = movie;
+>     }
+>   }
+>   if (starWars) {
+>     var attributes = starWars.getAttributes();
+>     var peopleAttribute = null;
+>     for (var uuid in attributes) {
+>       var attribute = attributes[uuid];
+>       if (attribute.getName() == "People") {
+>         peopleAttribute = attribute;
+>       }
+>     }
+>     if (peopleAttribute) {
+>       var allValues = starWars.getValues();
+>       var starWarsPeople = 
+> starWars.getValuesForAttribute(peopleAttribute);
+>       for (var uuid in starWarsPeople) {
+>         var person = starWarsPeople[uuid];
+>         var msg = "Was " + person.getDisplayString() + " in Star 
+> Wars?";
+>
+>         // show panel and get user input
+>         var yesNo = window.confirm(msg);
+>         if (yesNo) {
+>           starWars.retainValue(character);
+>         } else {
+>           starWars.deleteValue(character);
+>         }
+>       }
+>     }
+>   }
+>   datastore.logout();
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Mon Apr 25 06:45:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Apr 25 06:45:01 2005
+Subject: [openrecord-dev] data model ideas -- experimental prototype
+Message-ID: <200504250444.j3P4iOm16035@bat.berlios.de>
+
+Hi Chao & Mignon,
+
+This past week I experimented with implementing the sort of data model that
+I described last week in my "Data model ideas" posting.
+
+I just checked in all the new data model code I've been working on.  It's
+all in the "model" directory, under the main source directory.
+
+This is just a sort of experimental prototype, or maybe an extreme
+programming "spike solution".  It's still a work in progress, not a finished
+produce.   The code doesn't run yet, it doesn't pass its unit tests, and it
+isn't as clean and tidy as I would like it to be.  But all the pieces are in
+place, and there's enough detail to give us a good sense of what this
+solution would look like.  
+
+Our original source code is still completely independent of the new data
+model prototype code, so we can safely abandon the new prototype if it seems
+like a bad direction.  When we meet up on Monday we can think more about
+safe ways to proceed.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Tue Apr 26 08:53:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Apr 26 08:53:01 2005
+Subject: [openrecord-dev] SAJAX
+Message-ID: <7017e04d840253c884fdc89cb8e9c889@cs.stanford.edu>
+
+This may be a useful library for us:
+http://www.modernmethod.com/sajax/
+
+" Sajax is an open source tool to make programming websites using the 
+Ajax framework ? also known as XMLHTTPRequest or remote scripting ? as 
+easy as possible. Sajax makes it easy to call PHP, Perl or Python 
+functions from your webpages via JavaScript without performing a 
+browser refresh. The toolkit does 99% of the work for you so you have 
+no excuse to not use it."
+
+chao
+
+
+From chao at cs.stanford.edu  Fri Apr 29 23:14:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri Apr 29 23:14:01 2005
+Subject: [openrecord-dev] Microformats
+Message-ID: <64a1bc91956e3629f0625adac5f93b26@cs.stanford.edu>
+
+Following our Monday discussion, one area left undiscussed that has 
+been nagging me is whether our approach in OpenRecord is the right one. 
+Specifically, are we chunking our unit of collaboration in the right 
+packet size. I think items and attributes are absolutely the right way 
+to go, but should the unit of collaboration be one repository? one 
+data-driven website? (Brian, maybe I'm not getting the full vision of 
+OpenRecord?)
+
+Specific concerns:
+	- how do we leverage and interoperate with the rest of the world?
+		- how do we intertwingle with outside data?
+		- are we sufficiently leveraging and building on existing tools, 
+standards and infrastructure, especially web-related ones?
+	- as Brian Totty suggested, should we be thinking of embedding 
+OpenRecord in existing websites instead of building new ones from the 
+ground up?
+	- is the granularity of a repository too big that it reduces chances 
+of adoption of OpenRecord?
+
+Today, Mitch Kapor introduced me to an intriguing concept called 
+"Microformats", developed by folks at Technorati. I'm not quite sure 
+what it has to do with OpenRecord and the issues I brought up, but I 
+think it does in a deep way. I'm going to think about it more but I 
+thought I'll share this with you first.
+
+http://developers.technorati.com/wiki/MicroFormats
+http://complexspiral.com/events/archive/2005/sxsw/ [incidentally, this 
+cool presentation seems like a feature we should be aiming for in 
+OpenRecord too]
+
+Brian, this is all about "lower case" semantic web (i.e. emergent 
+non-top-down semantic web), so it'll probably interest you anyway 
+(regardless of OpenRecord issues).
+
+chao
+
+
+
+From brian.skinner at gumption.org  Sat Apr 30 04:32:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Apr 30 04:32:00 2005
+Subject: [openrecord-dev] Microformats
+In-Reply-To: <64a1bc91956e3629f0625adac5f93b26@cs.stanford.edu>
+Message-ID: <200504300231.j3U2Vkm32250@bat.berlios.de>
+
+Hey Chao,
+
+Thanks for the links!  The "lower case" semantic web is intriguing,
+especially since the "upper case" Semantic Web has so little momentum.  
+
+> Today, Mitch Kapor introduced me to an intriguing concept 
+> called "Microformats" ...
+> 
+> http://developers.technorati.com/wiki/MicroFormats
+> http://complexspiral.com/events/archive/2005/sxsw/ 
+
+I think Jon Udell is also an advocate of this kind of "Microformat" mark-up.
+I've been using the rel="license" mark-up on the pages I've been making.  
+
+We should keep an eye out to see what other Microformat standards emerge,
+and then have our pages play nicely with the de facto standards.  But, other
+than having our pages use those standards, I'm not sure what to do with the
+whole Microformat thing.  I mean, it's tempting to think that we could
+somehow simply just use the Microformats as our intrinsic data
+representation format, but I think that just doesn't work.  Let's talk more
+about it when we're in the same room.
+
+
+> Following our Monday discussion, one area left undiscussed 
+> that has been nagging me is whether our approach in OpenRecord 
+> is the right one. Specifically, are we chunking our unit of 
+> collaboration in the right packet size. I think items and 
+> attributes are absolutely the right way to go, but should the 
+> unit of collaboration be one repository? one data-driven 
+> website? (Brian, maybe I'm not getting the full vision of 
+> OpenRecord?)
+
+Let's talk more about this issue on Monday.  I've maybe been being vague
+about this, because I'm still mulling it over in my head.  The easiest thing
+to do would be to have each website have its own repository, so that each
+website/repository is a world unto itself.  That's the simplest thing to do,
+so that's probably where we should start.  
+
+Later on it would be cool to do all sorts of intertwingling of items across
+different web sites -- across both OpenRecord based sites and other sites
+that publish items in formats we can read, or other sites that can read
+formats that we can publish.
+
+
+> Specific concerns:
+> - how do we leverage and interoperate with the rest of the world?
+>    - how do we intertwingle with outside data?
+
+This needs more thought.  We could do a number of fairly simple things, like
+automatically generating pages with RDF format versions of our items, so
+that those pages can be reached by search engines, or by RDF-crawlers.  Or
+we could think about using RSS as our standard means for communicating
+update notifications from the server to the client.  Or we could have our
+server automatically import data from other servers.  But, in the spirit of
+extreme programming, we should maybe start off by identifying the user
+stories we want to cover, and then prioritizing those to see where that
+leads us.
+
+
+> - are we sufficiently leveraging and building on existing tools, 
+> standards and infrastructure, especially web-related ones?
+
+Yup, I'm also worried that we're building too much from scratch.  But, I
+don't see how to avoid it.  I keep looking at existing tools and frameworks,
+but they mostly don't look like clear wins for us.  
+
+This week I spent a couple hours reading about JCR, and JSR-170, and Apache
+Jackrabbit.  That seems like a big important piece of emerging standards and
+infrastructure, and I'd love to use that instead of building our own
+server/repository.  But I don't think that using Jackrabbit would actually
+help us.  Jackrabbit looks like a great fit for Chandler, but for OpenRecord
+it doesn't seem to match that well.  It looks like it's really good at a
+bunch of things we don't need, but doesn't seem to have features to address
+the problems that we expect to face.  Similarly, I spent some time this week
+reading about RDF, and Jena, and existing RDF servers and query languages
+and frameworks.  There's some cool stuff, but it doesn't seem to solve our
+problems.  Wanh. 
+
+
+> - as Brian Totty suggested, should we be thinking of embedding 
+> OpenRecord in existing websites instead of building new ones 
+> from the ground up?
+
+If we could embed OpenRecord in existing websites, I think that would lead
+to much faster and more widespread adoption of OpenRecord.  That would be
+great, if we could do it.
+
+However, that would only be practical if we could do it with a single
+"plug-and-play" snippet that we make available to people authoring pages at
+those sites.  That may be technically impossible, but I don't know for sure.
+If we can't do that, then in order to "serve" OpenRecord content into
+existing websites, all of the web servers for all of those sites would have
+to have code that knows about OpenRecord, which seems like a huge barrier to
+adoption.
+
+At some point when we have time, it would be great to do a little
+"spike-solution" experiment, to see if it's possible to embed an OpenRecord
+view on a page that's hosted by a server that's not an OpenRecord server,
+and then have the OpenRecord view fetch data from an OpenRecord server.
+
+
+I'm looking forward to meeting up on Monday.  We can talk more about all of
+this stuff!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Sat Apr 30 04:44:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Apr 30 04:44:01 2005
+Subject: [openrecord-dev] user stories + tasks
+Message-ID: <200504300243.j3U2h8m32482@bat.berlios.de>
+
+I typed up the list of "user stories" that we came up with last Monday.  
+
+I decided to just make a plain text file, and then check that into
+subversion alongside our source code.  That way any of us can easily add to
+the list, and we'll always have the list available wherever we're working.
+
+The file is called "release_planning.txt", and I checked it into the
+"documentation" directory.  You can see it online at:
+ 
+http://svn.berlios.de/viewcvs/openrecord/trunk/documentation/release_plannin
+g.txt?view=markup
+
+
+The release_planning.txt doc has "user stories", and it also has a section
+for keeping track of "tasks" and bugs.  That may grow to be unmanageable in
+a simple text file, but for now it seems way easier than trying to maintain
+that information using the BerliOS web-based tools.  
+
+Feel free to edit release_planning.txt and add more tasks whenever you think
+of them!
+
+:o) Brian 
+
+
+

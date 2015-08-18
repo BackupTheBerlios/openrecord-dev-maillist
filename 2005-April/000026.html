@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] unit tests!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20unit%20tests%21&In-Reply-To=%3Cdcbaed64c410c9d4627376500c020d77%40osafoundation.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000025.html">
+   <LINK REL="Next"  HREF="000028.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] unit tests!</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20unit%20tests%21&In-Reply-To=%3Cdcbaed64c410c9d4627376500c020d77%40osafoundation.org%3E"
+       TITLE="[openrecord-dev] unit tests!">chao at osafoundation.org
+       </A><BR>
+    <I>Sat Apr 16 08:56:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000025.html">[openrecord-dev] unit tests!
+</A></li>
+        <LI>Next message: <A HREF="000028.html">[openrecord-dev] unit tests!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#26">[ date ]</a>
+              <a href="thread.html#26">[ thread ]</a>
+              <a href="subject.html#26">[ subject ]</a>
+              <a href="author.html#26">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+Great work! I'll be trying it Monday. Have you thought of unit tests 
+for the AJAX code, e.g. validating the DOM? Not sure if it's doable.
+
+chao
+
+On Apr 15, 2005, at 7:09 PM, Brian Douglas Skinner wrote:
+
+&gt;<i> I'm pleased to report that we now have some unit tests for our code!
+</I>&gt;<i>
+</I>&gt;<i> I checked in the first unit tests yesterday, and a few more today.  We 
+</I>&gt;<i> can
+</I>&gt;<i> add more tests as we go.
+</I>&gt;<i>
+</I>&gt;<i> When I was setting up the tests, I ran into problems with file paths, 
+</I>&gt;<i> and
+</I>&gt;<i> unfortunately I ended up hard-coding some file paths, so right now our 
+</I>&gt;<i> unit
+</I>&gt;<i> testing set-up is a little more brittle than I'd like.  But I figure 
+</I>&gt;<i> brittle
+</I>&gt;<i> tests are better than no tests, so in the spirit of incremental 
+</I>&gt;<i> iteration I
+</I>&gt;<i> went ahead and checked everything in.
+</I>&gt;<i>
+</I>&gt;<i> The unit tests are set up to run in the JsUnit framework written by 
+</I>&gt;<i> Edward
+</I>&gt;<i> Hieatt.  To run the test you need to have a copy of the JsUnit 
+</I>&gt;<i> framework,
+</I>&gt;<i> which you can get from Edward's web site:
+</I>&gt;<i>   <A HREF="http://www.edwardh.com/jsunit/">http://www.edwardh.com/jsunit/</A>
+</I>&gt;<i>
+</I>&gt;<i> The unit tests run within a testRunner.html page in the JsUnit 
+</I>&gt;<i> framework.  I
+</I>&gt;<i> don't want to actually add that testRunner.html page and the rest of 
+</I>&gt;<i> the
+</I>&gt;<i> JsUnit framework to our source tree, so on my machine I put the JsUnit
+</I>&gt;<i> framework in a directory next to the directory where I have our source 
+</I>&gt;<i> code.
+</I>&gt;<i> Which leads to the file path problem...
+</I>&gt;<i>
+</I>&gt;<i> As the tests are running, our unit test files get loaded in the 
+</I>&gt;<i> context of
+</I>&gt;<i> the testRunner.html page, and from that directory our code needs to 
+</I>&gt;<i> &quot;find
+</I>&gt;<i> its way home&quot; to our source code directory in order to grab other 
+</I>&gt;<i> files.
+</I>&gt;<i> And conversely, in order to automatically launch the testRunner from 
+</I>&gt;<i> the
+</I>&gt;<i> unit test pages, the unit test files need to be able to find the
+</I>&gt;<i> testRunner.html in first place.
+</I>&gt;<i>
+</I>&gt;<i> Which means that if you want to try running the unit tests, you'll 
+</I>&gt;<i> need to
+</I>&gt;<i> have your directories named exactly the same way mine are.  Sorry about
+</I>&gt;<i> that!  I couldn't figure out a way around the problem, but hopefully 
+</I>&gt;<i> one of
+</I>&gt;<i> you will be able to solve it.
+</I>&gt;<i>
+</I>&gt;<i> Anyway, for now, if you want to run unit tests you need your 
+</I>&gt;<i> directories set
+</I>&gt;<i> up like this:
+</I>&gt;<i>   openrecord/current/trunk/source/
+</I>&gt;<i>   openrecord/third_party/jsunit/
+</I>&gt;<i>
+</I>&gt;<i> The &quot;openrecord&quot; parent directory can be named whatever you like, and 
+</I>&gt;<i> it can
+</I>&gt;<i> be anywhere in your file system.  But, below that, our OpenRecord 
+</I>&gt;<i> source
+</I>&gt;<i> code has to be in &quot;current/trunk/source/&quot;, and the jsunit framework 
+</I>&gt;<i> has to
+</I>&gt;<i> be in &quot;third_party/jsunit/&quot;.
+</I>&gt;<i>
+</I>&gt;<i> If you have an Apache server on your local machine, you can put all the
+</I>&gt;<i> files in a directory that Apache serves files from, and then you can 
+</I>&gt;<i> run all
+</I>&gt;<i> the unit tests through your web browser.
+</I>&gt;<i>
+</I>&gt;<i> To start the tests, point your web browser to:
+</I>&gt;<i>  &quot;<A HREF="http://localhost/openrecord/third_party/jsunit/testRunner.html">http://localhost/openrecord/third_party/jsunit/testRunner.html</A>&quot;
+</I>&gt;<i>
+</I>&gt;<i> and then in the form on the TestRunner page, enter:
+</I>&gt;<i>  &quot;<A HREF="http://localhost/openrecord/current/trunk/source/TestSuite.html">http://localhost/openrecord/current/trunk/source/TestSuite.html</A>&quot;
+</I>&gt;<i>
+</I>&gt;<i> Hit the &quot;Run&quot; button, and the TestRunner should report &quot;Runs: 6&quot;, with 
+</I>&gt;<i> a big
+</I>&gt;<i> green bar.
+</I>&gt;<i>
+</I>&gt;<i> Or, if you don't have an Apache server on your local machine, then you 
+</I>&gt;<i> can
+</I>&gt;<i> run load the testRunner.html page as a file:
+</I>&gt;<i>  &quot;<A HREF="file:///C:/openrecord/third_party/jsunit/testRunner.html">file:///C:/openrecord/third_party/jsunit/testRunner.html</A>&quot;
+</I>&gt;<i>
+</I>&gt;<i> and then in the form on the TestRunner page, enter:
+</I>&gt;<i>  &quot;C:\openrecord\current\trunk\source\TestSuite.html&quot;
+</I>&gt;<i>
+</I>&gt;<i> Let me know how it goes, if you decide to try running the tests!  Feel 
+</I>&gt;<i> free
+</I>&gt;<i> to call me if you have questions or run into problems.
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000025.html">[openrecord-dev] unit tests!
+</A></li>
+	<LI>Next message: <A HREF="000028.html">[openrecord-dev] unit tests!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#26">[ date ]</a>
+              <a href="thread.html#26">[ thread ]</a>
+              <a href="subject.html#26">[ subject ]</a>
+              <a href="author.html#26">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

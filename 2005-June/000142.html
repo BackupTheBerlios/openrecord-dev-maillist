@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Need to remove or delete entries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Need%20to%20remove%20or%20delete%20entries&In-Reply-To=%3C200506160536.j5G5a7I06222%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000141.html">
+   <LINK REL="Next"  HREF="000144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Need to remove or delete entries</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Need%20to%20remove%20or%20delete%20entries&In-Reply-To=%3C200506160536.j5G5a7I06222%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Need to remove or delete entries">brian.skinner at gumption.org
+       </A><BR>
+    <I>Thu Jun 16 07:37:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000141.html">[openrecord-dev] Need to remove or delete entries
+</A></li>
+        <LI>Next message: <A HREF="000144.html">[openrecord-dev] Need to remove or delete entries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#142">[ date ]</a>
+              <a href="thread.html#142">[ thread ]</a>
+              <a href="subject.html#142">[ subject ]</a>
+              <a href="author.html#142">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> I have a query with a matchingAttribute and 
+</I>&gt;<i> matchingValue(s). If I change a matchingAttribute, 
+</I>&gt;<i> say from &quot;Category&quot; to &quot;Status&quot;, then I really want 
+</I>&gt;<i> to get rid of the entries that were previously in 
+</I>&gt;<i> matchingValues, because they no longer make sense 
+</I>&gt;<i> for Status since the values are all Categories.
+</I>&gt;<i> 
+</I>&gt;<i> But I can't really delete entries, right? So, what 
+</I>&gt;<i> should I do?  Should I create a &quot;null&quot; data type 
+</I>&gt;<i> for Entries? (seems like that may break many areas 
+</I>&gt;<i> in the code?).
+</I>
+Yikes!  Okay, that's a little tricky.  It would be good to sit down and
+think about this some, but off the top of my head...
+
+You can't *really* delete entries, but you can come close.  In theory you
+can do this:
+
+  for (var key in listOfMatchingValueEntries) {
+    var entry = listOfMatchingValueEntries[key];
+    entry.voteToDelete();
+    Util.assert(entry.hasBeenDeleted() === true);
+  }
+
+That seems like a reasonable thing to do for now, and then we can think
+about whether there's some better option.
+
+BUT...  the voteToDelete code has never been tested, and I think the changes
+I just made today probably broke the existing implementation.  Sorry about
+that.  Give me a day to put it back together again.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000141.html">[openrecord-dev] Need to remove or delete entries
+</A></li>
+	<LI>Next message: <A HREF="000144.html">[openrecord-dev] Need to remove or delete entries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#142">[ date ]</a>
+              <a href="thread.html#142">[ thread ]</a>
+              <a href="subject.html#142">[ subject ]</a>
+              <a href="author.html#142">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

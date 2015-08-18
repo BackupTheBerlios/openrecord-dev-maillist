@@ -1,0 +1,509 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] ideas about the backend store
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20ideas%20about%20the%20backend%20store&In-Reply-To=%3C200510290201.j9T21Uw07222%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000247.html">
+   <LINK REL="Next"  HREF="000249.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] ideas about the backend store</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20ideas%20about%20the%20backend%20store&In-Reply-To=%3C200510290201.j9T21Uw07222%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] ideas about the backend store">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sat Oct 29 04:02:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000247.html">[openrecord-dev] openrecord news
+</A></li>
+        <LI>Next message: <A HREF="000249.html">[openrecord-dev] book recommendation: producing open source software
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#248">[ date ]</a>
+              <a href="thread.html#248">[ thread ]</a>
+              <a href="subject.html#248">[ subject ]</a>
+              <a href="author.html#248">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Mignon and Jason and Marty and I have been talking about 
+</I>&gt;<i> design ideas for an intermediate backend store.  
+</I>
+Hey Rowan,
+
+Here's a summary of what we've been talking about for the backend.  I'm
+cc'ing it to the openrecord-dev mailing list, as other people may be
+interested too.  Sorry I didn't get this to you yesterday.  I hope I'm not
+slowing you down too much.
+
+Just for context, let me start with some terminology...
+
+
+-----------
+Terminology
+-----------
+
+ * Item -- a recipe, a book, a camera, or whatever
+
+ * Attribute
+     examples: [author], [weight], [ingredients], etc.
+    (Each attribute is actually represented as an item, rather than
+     as a string token.  An attribute can have different names in 
+     different languages: &quot;author&quot;/&quot;verfasser&quot;/etc.  An attribute
+     can also have an expected type: text/number/date/URL/etc.  And
+     an attribute can also have some other info associated with it.)
+
+ * Value 
+     examples: &quot;J.R.R. Tolkien&quot;, 2005-10-28, 485 grams, &quot;a pinch of salt&quot;
+    (A value can be a literal value, like a string or a date, or a 
+     reference value that points to an item.)
+
+ * Entry
+     example: &quot;J.R.R. Tolkien&quot; is the value of the attribute [author] 
+               on the item [The Hobbit], and this entry was made 
+               by the user [Brian] at time 2005-10-28 11:15:28
+    (An item can have entries for different attributes.  Each entry
+     is an object that associates a value with an attribute for an 
+     item.  Each entry can also have some other associated info.)
+
+ * Repository
+     A data store that contains all of the items and entries for 
+     an OpenRecord web site.
+
+ * OpenRecord web site
+     example: <A HREF="http://openrecord.org/demo/old_2005_08_17/sandbox.html">http://openrecord.org/demo/old_2005_08_17/sandbox.html</A>
+
+ * Page -- a &quot;page&quot; within an OpenRecord web site
+     examples:
+ 
+<A HREF="http://openrecord.org/demo/old_2005_08_17/sandbox.html#page0fb69ad0-fe04-11d">http://openrecord.org/demo/old_2005_08_17/sandbox.html#page0fb69ad0-fe04-11d</A>
+9-8800-000c414ce854
+ 
+<A HREF="http://openrecord.org/demo/old_2005_08_17/sandbox.html#paged5e68550-fd6c-11d">http://openrecord.org/demo/old_2005_08_17/sandbox.html#paged5e68550-fd6c-11d</A>
+9-9654-000c414ce854
+
+ * Record -- any new piece of info that is recorded in a repository
+     (Each entry is a record, and there's a record to show the creation
+      of a new item, and another record if an item is deleted, etc.)
+
+ * Query
+     example: &quot;all the items that are in the category [Camera Lens]&quot;
+    (Each page can have any number of sections, and each section shows 
+     a collection of items (in the form of a list or a table or whatever).  
+     Each section has an associated query.  For example, a page about 
+     cameras may have a section with a list of all known Lenses, and
+     the list is populated by running the query for all items in the 
+     category [Camera Lens].)
+
+
+------------------------
+Transaction-log approach 
+------------------------
+
+  Okay, now let me offer a quick overview of the transaction-log approach
+that we've been using.  Here's the way it works today...
+
+  When the user visits an OpenRecord web site, the browser loads all the
+JavaScript code for OpenRecord, and the OpenRecord code immediately loads
+the *entire* contents of the repository associated with the OpenRecord web
+site.  
+
+  The repository is stored as a single file.  The repository is really just
+a simple transaction log, stored as JSON-format objects representing entries
+and other records.  When a user makes a change on a page, OpenRecord sends a
+little packet of JSON to the server.  The server is a very simple PHP script
+that just mindlessly appends the JSON to the end of the transaction-log
+repository file.  We're using JSON now, but we could just as easily use XML,
+if that seemed better for any reason.
+
+  So, for example, if the user is looking at a table of items, and she
+clicks in an empty cell and types &quot;Iggy Pop&quot;, then the client sends the
+server a JSON packet like this: 
+
+  { &quot;Entry&quot;: {
+           &quot;uuid&quot;: &quot;6a141400-f3f8-11d9-845f-e24829d2f59b&quot;,
+           &quot;type&quot;: &quot;00001020-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+      &quot;attribute&quot;: &quot;00001003-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+           &quot;item&quot;: &quot;99e90d10-e990-11d9-b90a-e24829d2f59b&quot;,
+          &quot;value&quot;: &quot;Iggy Pop.&quot;  }  }
+
+  That &quot;Iggy Pop&quot; entry is a simple literal value entry.  In other cases
+we'll have entries that represent bi-directional connections between items,
+like this:
+
+  { &quot;Entry&quot;: {
+           &quot;uuid&quot;: &quot;9a07dfb0-e990-11d9-b90a-e24829d2f59b&quot;,
+           &quot;type&quot;: &quot;00001050-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+           &quot;item&quot;: [&quot;9a071c60-e990-11d9-b90a-e24829d2f59b&quot;, 
+                    &quot;00040202-ce7f-11d9-8cd5-0011113ae5d6&quot;],
+      &quot;attribute&quot;: [&quot;00001005-ce7f-11d9-8cd5-0011113ae5d6&quot;, 
+                    &quot;0000100c-ce7f-11d9-8cd5-0011113ae5d6&quot;]  } }
+
+  Both of the entries above are simple atomic records.  In those cases, each
+entry is an implicit transaction.  In other cases, the user may do something
+more complicated, so that the OpenRecord client code sends several records
+together, wrapped up as a transaction.  
+
+  Here's an example of a transaction -- in this example the user just did
+some action that simultaneously (a) created a new item, (b) assigned the
+item the name &quot;J.R.R. Tolkien&quot;, and (c) created a bi-directional connection
+between the new Tolkien item and the existing item representing the category
+[People]: 
+
+  { &quot;Transaction&quot;: [
+    { &quot;Item&quot;: { &quot;uuid&quot;: &quot;c4755360-f3d4-11d9-972b-e24829d2f59b&quot; } },
+    { &quot;Entry&quot;: {
+             &quot;uuid&quot;: &quot;c475a180-f3d4-11d9-972b-e24829d2f59b&quot;,
+             &quot;type&quot;: &quot;00001020-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+        &quot;attribute&quot;: &quot;00001001-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+             &quot;item&quot;: &quot;c4755360-f3d4-11d9-972b-e24829d2f59b&quot;,
+            &quot;value&quot;: &quot;J.R.R. Tolkien&quot;  } },
+    { &quot;Entry&quot;: {
+             &quot;uuid&quot;: &quot;c47616b0-f3d4-11d9-972b-e24829d2f59b&quot;,
+             &quot;type&quot;: &quot;00001050-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+             &quot;item&quot;: [&quot;c4755360-f3d4-11d9-972b-e24829d2f59b&quot;, 
+                      &quot;00001201-ce7f-11d9-8cd5-0011113ae5d6&quot;],
+        &quot;attribute&quot;: [&quot;00001005-ce7f-11d9-8cd5-0011113ae5d6&quot;, 
+                      &quot;0000100c-ce7f-11d9-8cd5-0011113ae5d6&quot;]  } } ] }
+
+  For small repositories, the transaction-log approach has worked well so
+far.  It requires almost no server code, and the client code is fairly
+simple too.  With our current transaction-log approach, page loads get
+sluggish for repositories that have more than a few hundred items with a few
+thousand entries.  We don't yet need an industrial strength backend, but it
+would be good to have some intermediate solution that could handle thousands
+of items and hundreds of thousands of entries. 
+
+
+-------------------------
+File: mode and http: mode
+-------------------------
+
+  There's also been an unexpected benefit that we got from having a design
+without any real server; we can easily run in file: mode as well as http:
+mode.  If the user loads an OpenRecord page from a URL that starts with an
+<A HREF="http://">http://</A> prefix, then we load the repository file from over the network, and
+we POST changes back over the network (to the PHP code on the server, which
+appends the changes to the transaction-log file).
+
+  Alternatively, the user can keep a private repository on her local hard
+drive, and load an OpenRecord page from a URL that starts with a <A HREF="file:///">file:///</A>
+prefix.  In that case, we load the repository file from the local disk, and
+our JavaScript client code writes changes directly to the local file system,
+rather than sending a POST to a server.  
+
+  This file: use case might be useful in a few different scenarios.  One
+scenario is a private repository, where a user keeps a personal repository
+on the hard disk of his home PC (or keeps a personal repository on a USB
+keychain flash drive).  Another scenario is offline use.  For example, a
+business person is flying to a meeting in Tokyo, and before the trip she
+makes a copy of the department's OpenRecord repository, so that during the
+flight she can work on it without needing a network connection.  After the
+flight she can merge his changes back into the department repository (and we
+can do the merge simply by appending the new entries, or doing a simple
+union operation to get all the unique records from both repositories).  A
+third scenario is a file sharing network.  An example would be a chemistry
+department that has a group repository on a shared file server, so that
+faculty can access it from machines that are on the local area network.
+
+  We care far more about the http: case than we do about the file: case, but
+it would be cool if we could keep the file: working when we upgrade from the
+transaction-log approach to a better server design.
+
+
+------------------------
+Plan B
+------------------------
+
+  Here are some ideas that I've been talking about with Mignon and Jason and
+Marty.  I'll call this set of ideas Plan-B, for lack of a better name.
+These are just ideas.  Nobody is emotionally invested in this approach, and
+nobody has done any experimenting to see if this is practical.  If this
+seems interesting, then maybe there's something here we can use...
+
+  In Plan B, instead of having a single, monolithic transaction-log file, we
+would break apart all the records into a lot of smaller files.  Or,
+actually, we might want to use a MySQL database for storage instead of
+files.  I'll swing back to that idea later, but for now I'll just talk in
+terms of files.
+
+
+Item-files, page-files, and log-files
+
+  In Plan B, we would have one file for each item in the repository, and one
+file for each page in the OpenRecord web site for the repository.  And we
+would also have a number of files that together act as a sort of
+transaction-log for incoming changes that haven't yet been fully digested.
+So, if the repository contains 862 items that are displayed on 34 pages,
+then we have 862 item-files and 34 page-files and some number of log-files
+for undigested changes.
+
+
+JSON or XML packets
+
+  Let's say the user is looking at a page with a table of items, and he
+clicks in an empty cell and types &quot;Iggy Pop&quot;.  The client code would create
+a JSON packet representing the new entry:
+
+  { &quot;Entry&quot;: {
+           &quot;uuid&quot;: &quot;6a141400-f3f8-11d9-845f-e24829d2f59b&quot;,
+           &quot;type&quot;: &quot;00001020-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+      &quot;attribute&quot;: &quot;00001003-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+           &quot;item&quot;: &quot;99e90d10-e990-11d9-b90a-e24829d2f59b&quot;,
+          &quot;value&quot;: &quot;Iggy Pop.&quot;  }  }
+
+
+Appending packets to files
+
+  The information in that packet should then be written to 3 files.  For
+starters, the packet needs to be appended to the item-file that contains all
+known information about item number &quot;99e90d10-e990-11d9-b90a-e24829d2f59b&quot;.
+And the exact same packet also needs to be appended to the page-file that
+contains all the information needed to render the page, so that when the
+next user loads this page, the page will include the &quot;Iggy Pop&quot; cell.  And
+we'll also need to append the packet to some log-file, for future use.  All
+three of those operations are fast and simple.  The client knows exactly
+which files the new entry needs to be appended to.  
+
+
+Client vs. server appending
+
+  In file: mode, the client could simply append the information directly to
+the files in the local file system.  In http: mode, the client could send
+three POST requests to the server, one for each append operation.  Or, if
+the server was a little smarter, the client could send a single POST
+request, and the server could append the packet to all three files.  It
+would be far better to send just one POST request, both for performance and
+because we want to change to be atomic, and we want to keep all the
+repository files in sync for an atomic change.  (Also, by having the server
+act as gatekeeper, we make it harder for some hacker to invent a malicious
+client that writes bogus info into the repository.)
+
+
+More complicated packets
+
+  Okay, so in that &quot;Iggy Pop&quot; example above, the JSON packet just had a
+single Entry with a literal value.  In another case we might have an entry
+that represents a bi-directional connection between two items, in which case
+we we'll need to append the packet to both of two item-files that are
+connected by the entry, as well as the page-file and the log-file.  But,
+it's still easy for either the client or the server to figure out what files
+the packet needs to get appended to:
+
+  { &quot;Entry&quot;: {
+           &quot;uuid&quot;: &quot;9a07dfb0-e990-11d9-b90a-e24829d2f59b&quot;,
+           &quot;type&quot;: &quot;00001050-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+           &quot;item&quot;: [&quot;9a071c60-e990-11d9-b90a-e24829d2f59b&quot;, 
+                    &quot;00040202-ce7f-11d9-8cd5-0011113ae5d6&quot;],
+      &quot;attribute&quot;: [&quot;00001005-ce7f-11d9-8cd5-0011113ae5d6&quot;, 
+                    &quot;0000100c-ce7f-11d9-8cd5-0011113ae5d6&quot;]  } }
+
+  In the case of a longer transaction, there's a little more work to do.
+Here's a transaction with one item record and two entry records:
+
+  { &quot;Transaction&quot;: [
+    { &quot;Item&quot;: { &quot;uuid&quot;: &quot;c4755360-f3d4-11d9-972b-e24829d2f59b&quot; } },
+    { &quot;Entry&quot;: {
+             &quot;uuid&quot;: &quot;c475a180-f3d4-11d9-972b-e24829d2f59b&quot;,
+             &quot;type&quot;: &quot;00001020-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+        &quot;attribute&quot;: &quot;00001001-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+             &quot;item&quot;: &quot;c4755360-f3d4-11d9-972b-e24829d2f59b&quot;,
+            &quot;value&quot;: &quot;J.R.R. Tolkien&quot;  } },
+    { &quot;Entry&quot;: {
+             &quot;uuid&quot;: &quot;c47616b0-f3d4-11d9-972b-e24829d2f59b&quot;,
+             &quot;type&quot;: &quot;00001050-ce7f-11d9-8cd5-0011113ae5d6&quot;,
+             &quot;item&quot;: [&quot;c4755360-f3d4-11d9-972b-e24829d2f59b&quot;, 
+                      &quot;00001201-ce7f-11d9-8cd5-0011113ae5d6&quot;],
+        &quot;attribute&quot;: [&quot;00001005-ce7f-11d9-8cd5-0011113ae5d6&quot;, 
+                      &quot;0000100c-ce7f-11d9-8cd5-0011113ae5d6&quot;]  } } ] }
+
+  For this transaction, we would need to create a brand new item-file for
+the new item c4755360-f3d4-11d9-972b-e24829d2f59b, and write the entire
+transaction packet to the item file.  And we also need to write the entire
+packet to the page-file and the log-file.  And then we need to take split
+off just the last entry (the bi-directional connection) and append it to the
+existing item-file for the item 00001201-ce7f-11d9-8cd5-0011113ae5d6.  For a
+longer transaction with more entries, we might need to split off lots of
+different entries and write them to different files.  None of it is rocket
+science, but the server would need to do some work.
+
+
+Out-of-date page-files
+
+  Okay, so now all the item-files are up to date, and that one page-file is
+up to date.  But, there may be other pages that also display views that
+should now include &quot;Iggy Pop&quot;, depending on what queries are used to
+populate the views.  We could have the server re-run *all* the queries for
+*all* the pages and update the page-files, but it's expensive to do that
+every time any change is made.  It seems simpler and easier to just let all
+the other page-files fall slightly out of date.  
+
+
+Transaction sequence numbers
+
+  The next time some user loads one of these other slightly out-of-date
+page-files, we'll need to also load all the changes that have happened since
+the page-file fell out of date.  So these page-files and log-files need to
+have some sort of timestamps or sequence numbers associated with them.  I
+think simple server-assigned sequence numbers would work fine.  The first
+transaction is number 1, the second is number 2, and so on.  
+
+
+Updating old page-files
+
+  As an example, say a user opens a page that nobody has looked at for some
+time.  The client asks the server for the corresponding page-file, and the
+server returns it.  The client see that the page-file has been out-of-date
+since transaction 436, and the last transaction was number 872, so the
+client asks the server for all the log-file transactions from 436 onward.
+The server returns that info, and the client now has everything it needs to
+render the page.  The client may have to ignore a bunch of unrelated
+transactions, but that's okay.  In the process of rendering the page, the
+client is filtering the transactions and figuring out which ones impact this
+page, and which ones don't.  At this point it can do everyone a favor by
+updating the page-file.  It sends a whole new page-file to the server, with
+a stamp marking this page-file as up-to-date as of transaction 872.
+Alternatively, if we don't want to trust the client, we could have a
+low-priority server process that periodically does the updates.
+
+
+Creating new page-files
+
+  So that takes care of gradually keeping all the existing item-files and
+page-files up to date.  We also have the problem of needing to create brand
+new page-files.  Users can create new pages whenever they want, with new
+sections that have new queries.  Actually, for that matter, users can also
+add new sections to old pages, or change the queries of old sections.  So,
+we need to be able to evaluate queries.  In the worst case, we know we can
+evaluate any new query by looking at all the information about all the
+items.  The server could traverse all the item-files and calculate the query
+result set, or the client could ask the server for all the item-files (not
+necessarily all at once) and calculate the query result set.  
+
+  Reading all the item-files would be too expensive in some repositories
+(for example, a comprehensive world almanac site), but might be okay in
+smaller repositories (a little bug tracking repository) if users aren't
+creating new pages and new queries too often.  Probably 95% of the time,
+users are just looking at existing pages, not making any changes.  Maybe 5%
+of the time users are making changes, but almost all of those changes are
+small (for example, just entering a new bug, or recording the fact that some
+president just died).  I think it will be rare for users to create new
+pages, or adding sections to pages, or changing the queries of existing
+sections.
+
+
+Restricting queries
+
+  Alternatively, we could decide to put some limits on what type of queries
+we allow.  One simple restriction would be to only allow queries within the
+context of a category: for example, &quot;all the items in the category [city]
+where the attribute [population] has a value over 200,000&quot;.  Then we just
+need to load the item-file for the item that represents the category city,
+and in that file we'll find bi-directional connection items that point to
+all of the city items.  Then we can ask the server for all of those city
+files, and hopefully there won't be more than we can handle.  
+
+
+MySQL, or Lucene, or something else
+
+  Or, if all of this seems overly complicated and not that scalable anyway,
+then we might want to look at having a server that uses some kind of
+database tool or indexing tool instead of simple files -- something like
+MySQL, Lucene, Berkeley DB, or maybe an RDF data store and query language.
+Or maybe something like the googlebase storage service, or the ning.com data
+store.  Then our <A HREF="http://">http://</A> story begins to look quite different from our
+<A HREF="file:///">file:///</A> story, but maybe that's okay.  Maybe we just decide not to support
+the file: use cases any more, or maybe we do support them still, but with an
+entirely different approach from what we use on the server.
+
+
+Files and file paths
+
+  If we do use files in the file system, we'll need to think a little about
+where we put them.  Every item has a unique UUID, as does every page, so we
+could use the UUIDs as file names, and look up the file based on UUID.  So
+we might have file paths that look like this:
+  .../repository/items/99e90d10-e990-11d9-b90a-e24829d2f59b.json
+
+  Unfortunately, many file systems don't cope well if you put thousands of
+files all in one directory, so we may want to divvy up all the item files
+into sub-directories.  The UUIDs include some encoded timestamp and
+userstamp information, so it's easy to imagine simple algorithms to divvy up
+the item files into sub-directories.
+
+
+MySQL tables
+
+  Or, if we use MySQL, we could keep a few different types of info in
+different database tables.  We could have one database table for all the
+Entries, with one record in the table for each Entry.  The table could
+include columns for:
+  EntryUUID:     UUID of this entry
+  ItemUUID:      UUID of the item this is an entry on
+  AttributeUUID: UUID of the attribute this is an entry for
+  Value:         value of the entry
+  etc.
+
+  To find out everything about an item, you could do an SQL query on the
+Entry table, asking for all Entry records WHERE ItemUUID is equal to the
+UUID of the item.  
+
+  If we wanted, we could also have a database table for all the Items, with
+only two columns, where one column is the key (the UUID of the item), and
+the other column is a huge blob of XML (or JSON) with all the entries about
+that item.
+  ItemUUID:   UUID of this item
+  ItemJSON:   big text blob, with same contents as an item-file
+
+
+-------------------------
+
+Okay, that's my big brain-dump about the server ideas we've been talking
+about lately.  Let me know what you think.  If these seem like good ideas,
+we can use them as a starting point.  Or if these don't seem so promising,
+then maybe we want to think about some entirely different approach.
+
+Let me know if there's anything I can do to be helpful as you're getting up
+to speed with the existing OpenRecord code base.  I can start hanging out on
+IRC more often if that would be useful, or we could set up a wiki and I can
+start populating it with documentation, or maybe you have other ideas for
+different things we could do.  Hopefully we'll have a few other people start
+to code in the months to come, so I'm eager to figure out how to set things
+up so that it's not too daunting for people as they get started!
+
+Cheers,
+  Brian
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000247.html">[openrecord-dev] openrecord news
+</A></li>
+	<LI>Next message: <A HREF="000249.html">[openrecord-dev] book recommendation: producing open source software
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#248">[ date ]</a>
+              <a href="thread.html#248">[ thread ]</a>
+              <a href="subject.html#248">[ subject ]</a>
+              <a href="author.html#248">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

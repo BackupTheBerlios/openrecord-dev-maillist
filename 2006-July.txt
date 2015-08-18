@@ -1,0 +1,1087 @@
+From skinner at dojotoolkit.org  Fri Jul  7 07:55:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Jul  7 07:55:02 2006
+Subject: [openrecord-dev] new committer -- Hiran Ganegedara
+Message-ID: <44ADF6F4.4050103@dojotoolkit.org>
+
+Hey all,
+
+I'm happy to announce that Hiran Ganegedara is the newest committer on 
+the OpenRecord project!
+
+Hiran is working on a set of new plugins for OpenRecord, as part of 
+Google's generous Summer of Code program.  Hiran's been hard at work on 
+a cool interactive bar chart plugin, with integrated color picker, 
+tooltips, drag-resizing, etc.  I think he'll be checking the bar chart 
+code into SVN shortly, and he's recently started on a scatter plot 
+plugin as well, with other plugins to follow.
+
+:o) Brian
+
+
+
+From skinner at dojotoolkit.org  Fri Jul  7 08:00:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Jul  7 08:00:02 2006
+Subject: [openrecord-dev] welcome to the openrecord-dev list
+Message-ID: <44ADF834.4070403@dojotoolkit.org>
+
+Hey,
+
+I also want to welcome everybody who has recently subscribed to the
+openrecord-dev mailing list.
+
+It's been a couple months since I last sent out a welcome message, and 
+in that time another 10 or 20 people have signed up.  There are now 
+about 40 of us subscribed:
+   http://lists.berlios.de/mailman/roster/openrecord-dev
+
+Feel free to ask lots of questions on the mailing list.  We don't yet
+have much documentation about OpenRecord, so this is the best place for
+learning more about OpenRecord.  Or you can send questions directly to
+me, if you prefer not to have them archived on the mailing list.
+
+Cheers,
+    Brian Skinner
+    skinner at dojotoolkit.org
+
+
+From alex at dojotoolkit.org  Fri Jul  7 08:07:01 2006
+From: alex at dojotoolkit.org (Alex Russell)
+Date: Fri Jul  7 08:07:01 2006
+Subject: [openrecord-dev] new committer -- Hiran Ganegedara
+In-Reply-To: <44ADF6F4.4050103@dojotoolkit.org>
+References: <44ADF6F4.4050103@dojotoolkit.org>
+Message-ID: <200607062306.04630.alex@dojotoolkit.org>
+
+On Thursday 06 July 2006 10:53 pm, Brian Douglas Skinner wrote:
+> Hey all,
+>
+> I'm happy to announce that Hiran Ganegedara is the newest committer
+> on the OpenRecord project!
+
+Congrats Hiran!
+
+Regards
+
+-- 
+Alex Russell
+alex at sitepen.com     A99F 8785 F491 D5FD 04D7 ACD9 4158 FFDF 2894 6876
+alex at dojotoolkit.org BE03 E88D EABB 2116 CC49 8259 CF78 E242 59C3 9723
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 188 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060707/0457a263/attachment.pgp>
+
+From alex at dojotoolkit.org  Fri Jul  7 08:07:02 2006
+From: alex at dojotoolkit.org (Alex Russell)
+Date: Fri Jul  7 08:07:02 2006
+Subject: [openrecord-dev] new committer -- Hiran Ganegedara
+In-Reply-To: <44ADF6F4.4050103@dojotoolkit.org>
+References: <44ADF6F4.4050103@dojotoolkit.org>
+Message-ID: <200607062306.04630.alex@dojotoolkit.org>
+
+On Thursday 06 July 2006 10:53 pm, Brian Douglas Skinner wrote:
+> Hey all,
+>
+> I'm happy to announce that Hiran Ganegedara is the newest committer
+> on the OpenRecord project!
+
+Congrats Hiran!
+
+Regards
+
+-- 
+Alex Russell
+alex at sitepen.com     A99F 8785 F491 D5FD 04D7 ACD9 4158 FFDF 2894 6876
+alex at dojotoolkit.org BE03 E88D EABB 2116 CC49 8259 CF78 E242 59C3 9723
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 188 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060707/0457a263/attachment-0001.pgp>
+
+From skinner at dojotoolkit.org  Wed Jul 12 08:57:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Wed Jul 12 08:57:02 2006
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data
+Message-ID: <44B49CF7.2030709@dojotoolkit.org>
+
+Here's a great talk by Hans Roslings, from the 2006 TED conference, if 
+you've got Flash installed, and a broadband connection:
+   http://www.ted.com/tedtalks/tedtalksplayer.cfm?key=hans_rosling
+
+Hans Rosling is a public health expert, and the talk is nominally about 
+global development, but the talk also serves a great example of what can 
+be done with the visual display of quantitative information.  In 
+particular, Rosling makes a lot of use of bubble plots, which is 
+especially topical for OpenRecord, since Hiran is working this week on a 
+scatter-plot/bubble-plot plugin for OpenRecord.
+
+The whole talk is about 20 minutes long.  Watching just the first 5 
+minutes, that's enough to see some of the cool plots.  If you watch the 
+whole thing, in the last 5 or 6 minutes he talks about data 
+visualization software, and accessing database over the Internet.
+
+Rosling shows a bunch of plots that are animated, displaying 40 years of 
+time-series data in a 30-second animation.  We've talked about having 
+animated views in OpenRecord too, and there's no reason we can't do that 
+(just a small matter of programming).
+
+Rosling's talk is also a nice reminder about the importance of time 
+series data.  The current OpenRecord data model doesn't have any sort of 
+intrinsic support for time-series data, nor does the experimental 
+dojo.data code that I wrote earlier this year, nor does the data model 
+code that IBM is contributing to dojo.  It would be cool to have time as 
+a first-class notion in the data model, but maybe that's too ambitious. 
+  I'm known for undertaking efforts that are too ambitious!
+
+One last cool thing -- Rosling's talk is released under a Creative 
+Commons license.  I'm psyched to see the CC licenses becoming more and 
+more common.
+
+:o) Brian
+
+
+
+
+
+From adamsz at gmail.com  Wed Jul 12 09:28:01 2006
+From: adamsz at gmail.com (Adam Souzis)
+Date: Wed Jul 12 09:28:01 2006
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data
+In-Reply-To: <44B49CF7.2030709@dojotoolkit.org>
+References: <44B49CF7.2030709@dojotoolkit.org>
+Message-ID: <d7cee4a70607120027w289ff377je0f983bc5a1f13ee@mail.gmail.com>
+
+check out this really cool open source javascript timeline widget:
+
+http://simile.mit.edu/timeline/
+
+It uses a simple XML format as input so it seems like it could be
+integrated in openrecord relatively easily (and its part of the Simile
+RDF project at MIT, so hopefully they're thinking about how to
+represent time series in RDF)
+
+While I'm at it, I recently stumbled across some open source pivot
+table and OLAP apps. If OpenRecord ever takes on Wikipedia size data
+sets (e.g. a WikiAlmanac) it will probably have to go down the OLAP
+route, so it's nice to know there are some serious open source options
+out there.
+
+http://jpivot.sourceforge.net/index.html
+
+its made by
+http://www.jasperreports.com/
+which is trying to to be an open source OLAP/Business Intelligence vendor.
+
+(see also http://en.wikipedia.org/wiki/Open_Source_BI )
+
+And here's another open source web app that uses jpivot to navigate data cubes:
+http://rubik.sourceforge.net/
+
+-- adam
+
+On 7/11/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+> Here's a great talk by Hans Roslings, from the 2006 TED conference, if
+> you've got Flash installed, and a broadband connection:
+>    http://www.ted.com/tedtalks/tedtalksplayer.cfm?key=hans_rosling
+>
+> Hans Rosling is a public health expert, and the talk is nominally about
+> global development, but the talk also serves a great example of what can
+> be done with the visual display of quantitative information.  In
+> particular, Rosling makes a lot of use of bubble plots, which is
+> especially topical for OpenRecord, since Hiran is working this week on a
+> scatter-plot/bubble-plot plugin for OpenRecord.
+>
+> The whole talk is about 20 minutes long.  Watching just the first 5
+> minutes, that's enough to see some of the cool plots.  If you watch the
+> whole thing, in the last 5 or 6 minutes he talks about data
+> visualization software, and accessing database over the Internet.
+>
+> Rosling shows a bunch of plots that are animated, displaying 40 years of
+> time-series data in a 30-second animation.  We've talked about having
+> animated views in OpenRecord too, and there's no reason we can't do that
+> (just a small matter of programming).
+>
+> Rosling's talk is also a nice reminder about the importance of time
+> series data.  The current OpenRecord data model doesn't have any sort of
+> intrinsic support for time-series data, nor does the experimental
+> dojo.data code that I wrote earlier this year, nor does the data model
+> code that IBM is contributing to dojo.  It would be cool to have time as
+> a first-class notion in the data model, but maybe that's too ambitious.
+>   I'm known for undertaking efforts that are too ambitious!
+>
+> One last cool thing -- Rosling's talk is released under a Creative
+> Commons license.  I'm psyched to see the CC licenses becoming more and
+> more common.
+>
+> :o) Brian
+>
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+From skinner at dojotoolkit.org  Fri Jul 14 05:43:58 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Thu, 13 Jul 2006 20:43:58 -0700
+Subject: [openrecord-dev] Pivot Table ideas
+In-Reply-To: <67ab68d0607122316v763809e9p735f0d626f07b75e@mail.gmail.com>
+References: <67ab68d0607122316v763809e9p735f0d626f07b75e@mail.gmail.com>
+Message-ID: <44B712FE.2@dojotoolkit.org>
+
+Hi Hiran,
+
+I'm cc'ing this message to the openrecord-dev mailing list because I 
+think it might be interesting to other people (like Adam and Mignon) and 
+I'm hoping to get their suggestions about different approaches.
+
+If you decide to work on the Pivot Table next, I have some old 
+JavaScript Pivot Table code that might be useful to you.  Here's the 
+demo page, with two example tables:
+  http://openrecord.org/pivot_table/test_page.html
+
+And here are the source code files:
+  http://openrecord.org/pivot_table/pivot_table.js
+  http://openrecord.org/pivot_table/data_vortex.js
+  http://openrecord.org/pivot_table/
+
+I wrote that code back in 2004 when I was first learning JavaScript, 
+before I knew about Dojo, and before we started the OpenRecord project. 
+  The code is old is clumsy, but it does work, so it might be useful to 
+you.
+
+For the Pivot Table, I think the biggest problem will be figuring out 
+how to take the data structures of Items and Attributes and transform 
+that data into something that makes sense to display in a Pivot Table. 
+The first problem isn't so much a programming problem as a conceptual 
+problem, or perhaps a UI design problem...
+
+Pivot Tables work best when there are a small number of axes that can be 
+pivoted (maybe 2 to 6), and where each axis has a small number of 
+possible buckets (maybe 2 to 20).  On my demo page there are two example 
+tables: "Gas Tax Accounting" and "Population":
+   * The Population table has 4 axes: Gender (male/female/both), 
+Rural/Urban, Country (India/China/All), and Year (1948/1949).  Each axis 
+has only 2 or 3 possible buckets -- for example, Country has "Rural", 
+"Urban", and "Both".
+   * The Gas Tax table has only 3 axes: Year, Charity, and 
+Form-of-donation.  The Year axes has 3 buckets (2001, 2002, 2003), the 
+Form axes has 4 buckets (Cash, Stock, Goods, Services), and the Charity 
+axis has 9 buckets.  So the Gas Tax table has a total of 108 data cells 
+(3 * 4 * 9).
+
+In OpenRecord, Items have Attributes with values, and those values can 
+be strings, dates, numbers, or references to other items.  It seems to 
+me that there might be more than one approach for mapping the ideas of 
+Items/Attributes/values to the ideas of Axes/Buckets/cells...
+
+Here's one approach... To display a Pivot Table with 3 axes and 108 
+cells, you might populate the table from a set of 108 OpenRecord Items. 
+  So, for a table like the Gas Tax table, you might have 108 Items all 
+in the Category "Donation", where each Donation Item has a 3 attributes 
+called "Year", "Form", and "Charity", plus an additional attribute 
+called "Amount".  An individual Donation Item might look like this:
+   Category: Donation
+   Year:     2001
+   Form:     Cash
+   Charity:  Greenbelt Alliance
+   Amount:   $61.46
+
+That first approach will only work well if the number of Donation Items 
+is the same as the number of cells in the Pivot Table.
+
+A better approach might be to allow for there to be many more Donation 
+Items, and then have the Pivot Table automatically calculate the totals. 
+  So in this second approach, there could be 5 different Donation Items 
+that are all donations of Cash in 2001 to the Greenbelt Alliance, and 
+the Pivot Table will add all 5 of the Amount values and show that total 
+in the corresponding cell of the Pivot Table.
+
+That second approach will work smoothly if all of the Items in the 
+category Donation all have values for the 4 Attributes Year, Form, 
+Charity, and Amount.  I'm not sure what the Pivot Table code should do 
+if some of the Items are missing some Attributes, or if some of the 
+Items have Amount values that are not Numbers, or if one of the Items 
+has a multi-valued Amount Attribute.  This second approach also only 
+works well if the values that the user wants to see in the cell are 
+things that can be totaled up, like numbers.  In some other scenarios, 
+the user might not want to see the sum of a set of Attribute values, but 
+might instead want to see an average of the values, or see a count of 
+the number of Items that fall into that cell.
+
+Maybe you can think up good solutions to some of those problems.  I'll 
+keep thinking about it too, and I'll let you know if I have new ideas. 
+Also, maybe other people on the openrecord-dev mailing list will be able 
+to propose solutions.
+
+:o) Brian
+
+
+
+
+
+
+From skinner at dojotoolkit.org  Fri Jul 14 07:14:39 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Thu, 13 Jul 2006 22:14:39 -0700
+Subject: [openrecord-dev] Gantt Chart ideas
+In-Reply-To: <67ab68d0607122316v763809e9p735f0d626f07b75e@mail.gmail.com>
+References: <67ab68d0607122316v763809e9p735f0d626f07b75e@mail.gmail.com>
+Message-ID: <44B7283F.4060304@dojotoolkit.org>
+
+Hi Hiran,
+
+If you decide to work on the OpenRecord Gantt Chart plugin next, you 
+should look into using the Timeline widget from the SIMILE project. 
+Adam Souzis just posted a message about it to the openrecord-dev list 
+yesterday -- I don't know if you've had a chance to look at it yet.
+
+Here are a few demo pages...
+
+Try dragging left and right, and clicking on the dots and bars:
+  http://simile.mit.edu/timeline/
+
+Check out the text-highlighting feature, by typing in one of the colored 
+text-boxes:
+  http://simile.mit.edu/timeline/examples/religions/religions.html
+
+And here's one that has 4 bands to scroll time at 4 different time-scales:
+  http://simile.mit.edu/timeline/examples/dinosaurs/dinosaurs2.html
+
+Also available in both vertical and horizontal:
+  http://simile.mit.edu/timeline/docs/basics.html
+
+And it seems be extremely well documented:
+  http://simile.mit.edu/timeline/docs/
+
+The code is available under a BSD license, so we can safely include that 
+code in our own SVN repository as long as we're careful to preserve and 
+include the original copyright and license statements.
+
+The Timeline widget can be populated with data in JSON format, so it 
+should be fairly easy to feed it data from OpenRecord.  Realistically, I 
+imagine that there'll be a ton of little issues involved in actually 
+getting the Timeline wired up to work within OpenRecord, but the work 
+involved in resolving those issues is probably a small fraction of what 
+it would take to do a good Gantt Chart from scratch.  There's also some 
+overlap/duplication where both the Timeline widget and Dojo each have 
+their own way of doing something (localization, for example), but that's 
+okay.
+
+:o) Brian
+
+
+
+
+From hsgane at gmail.com  Wed Jul 19 07:28:13 2006
+From: hsgane at gmail.com (Hiran Ganegedara)
+Date: Wed, 19 Jul 2006 10:58:13 +0530
+Subject: [openrecord-dev] Pivot Table ideas
+In-Reply-To: <44B712FE.2@dojotoolkit.org>
+References: <67ab68d0607122316v763809e9p735f0d626f07b75e@mail.gmail.com>
+	<44B712FE.2@dojotoolkit.org>
+Message-ID: <67ab68d0607182228u2b9686c4y58a7dd100ae1a9ff@mail.gmail.com>
+
+Hello Brian,
+
+I thought of writing the pivot chart first since a heavy research part is
+not involved in it.
+
+Thanks for the explanation and I did an analysis based on it.
+
+> For the Pivot Table, I think the biggest problem will be figuring out
+> how to take the data structures of Items and Attributes and transform
+> that data into something that makes sense to display in a Pivot Table.
+> The first problem isn't so much a programming problem as a conceptual
+> problem, or perhaps a UI design problem...
+>
+> Pivot Tables work best when there are a small number of axes that can be
+> pivoted (maybe 2 to 6), and where each axis has a small number of
+> possible buckets (maybe 2 to 20).
+
+I agree. I think a drop down should be provided for the user to select chart
+attributes. It is better to have an upper bound for the number of axes(E.g.:
+6). But there could be attributes which are not suitable for the pivot table
+( E.g.: Attributes with a unique value). The plugin can either exclude such
+attributes from the drop down or display a warning that the table may be too
+big to display if that attribute is selected. In order to determine suitable
+attributes, I thought of comparing the item count with distinct attribute
+value count and decide based on a standard (E.g.: If the item count is 50
+and the an attribute has 15 distinct values, the attribute is a suitable
+attribute for the chart). There could also be an upper bound for the number
+of buckets (E.g.: 20).
+
+Please tell me what you think about it.
+
+> In OpenRecord, Items have Attributes with values, and those values can
+> be strings, dates, numbers, or references to other items.  It seems to
+> me that there might be more than one approach for mapping the ideas of
+> Items/Attributes/values to the ideas of Axes/Buckets/cells...
+>
+> Here's one approach... To display a Pivot Table with 3 axes and 108
+> cells, you might populate the table from a set of 108 OpenRecord Items.
+>   So, for a table like the Gas Tax table, you might have 108 Items all
+> in the Category "Donation", where each Donation Item has a 3 attributes
+> called "Year", "Form", and "Charity", plus an additional attribute
+> called "Amount".  An individual Donation Item might look like this:
+>    Category: Donation
+>    Year:     2001
+>    Form:     Cash
+>    Charity:  Greenbelt Alliance
+>    Amount:   $61.46
+>
+> That first approach will only work well if the number of Donation Items
+> is the same as the number of cells in the Pivot Table.
+>
+> A better approach might be to allow for there to be many more Donation
+> Items, and then have the Pivot Table automatically calculate the totals.
+>   So in this second approach, there could be 5 different Donation Items
+> that are all donations of Cash in 2001 to the Greenbelt Alliance, and
+> the Pivot Table will add all 5 of the Amount values and show that total
+> in the corresponding cell of the Pivot Table.
+>
+> That second approach will work smoothly if all of the Items in the
+> category Donation all have values for the 4 Attributes Year, Form,
+> Charity, and Amount.  I'm not sure what the Pivot Table code should do
+> if some of the Items are missing some Attributes, or if some of the
+> Items have Amount values that are not Numbers, or if one of the Items
+> has a multi-valued Amount Attribute.  This second approach also only
+> works well if the values that the user wants to see in the cell are
+> things that can be totaled up, like numbers.  In some other scenarios,
+> the user might not want to see the sum of a set of Attribute values, but
+> might instead want to see an average of the values, or see a count of
+> the number of Items that fall into that cell.
+
+I thought of going for the second approach, which is complete and user
+friendly. For missing information, some logic can be used to compare the
+attributes values and if all nonempty attribute values are matched, the
+missing information can be predicted. But if the value that appears in the
+cells (additional attribute) is missing, the item can be ignored. Handling
+multiple items with same data needs to be figured out. The plugin can
+provide a drop down list specifying the treatment of the multiple items. For
+example, the drop down can have options for numeric addition, average
+calculation, and string addition. But this approach would not be effective
+if the user wants average for one axis and addition for another. I'll let
+you know if I find a more effective method to do this.
+
+Again, I need your opinion.
+
+Cheers,
+Hiran
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060719/d6283925/attachment.html>
+
+From skinner at dojotoolkit.org  Wed Jul 19 08:00:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue, 18 Jul 2006 23:00:01 -0700
+Subject: [openrecord-dev] Pivot Table ideas
+In-Reply-To: <67ab68d0607182228u2b9686c4y58a7dd100ae1a9ff@mail.gmail.com>
+References: <67ab68d0607122316v763809e9p735f0d626f07b75e@mail.gmail.com>	
+	<44B712FE.2@dojotoolkit.org>
+	<67ab68d0607182228u2b9686c4y58a7dd100ae1a9ff@mail.gmail.com>
+Message-ID: <44BDCA61.7010404@dojotoolkit.org>
+
+Hi Hiran,
+
+>>  For the Pivot Table, I think the biggest problem will be figuring out
+>>  how to take the data structures of Items and Attributes and transform
+>>  that data into something that makes sense to display in a Pivot Table.
+>>  The first problem isn't so much a programming problem as a conceptual
+>>  problem, or perhaps a UI design problem...
+>>
+>>  Pivot Tables work best when there are a small number of axes that can be
+>>  pivoted (maybe 2 to 6), and where each axis has a small number of
+>>  possible buckets (maybe 2 to 20).
+> 
+> I agree. I think a drop down should be provided for the user to select 
+> chart attributes. It is better to have an upper bound for the number of 
+> axes(E.g.: 6). But there could be attributes which are not suitable for 
+> the pivot table ( E.g.: Attributes with a unique value). The plugin can 
+> either exclude such attributes from the drop down or display a warning 
+> that the table may be too big to display if that attribute is selected. 
+> In order to determine suitable attributes, I thought of comparing the 
+> item count with distinct attribute value count and decide based on a 
+> standard ( E.g.: If the item count is 50 and the an attribute has 15 
+> distinct values, the attribute is a suitable attribute for the chart). 
+> There could also be an upper bound for the number of buckets (E.g.: 20).
+> 
+> Please tell me what you think about it.
+
+That sounds like a good approach.
+
+
+>>  In OpenRecord, Items have Attributes with values, and those values can
+>>  be strings, dates, numbers, or references to other items.  It seems to
+>>  me that there might be more than one approach for mapping the ideas of
+>>  Items/Attributes/values to the ideas of Axes/Buckets/cells...
+>>
+>>  Here's one approach... To display a Pivot Table with 3 axes and 108
+>>  cells, you might populate the table from a set of 108 OpenRecord Items.
+>>    So, for a table like the Gas Tax table, you might have 108 Items all
+>>  in the Category "Donation", where each Donation Item has a 3 attributes
+>>  called "Year", "Form", and "Charity", plus an additional attribute
+>>  called "Amount".  An individual Donation Item might look like this:
+>>     Category: Donation
+>>     Year:     2001
+>>     Form:     Cash
+>>     Charity:  Greenbelt Alliance
+>>     Amount:   $61.46
+>>
+>>  That first approach will only work well if the number of Donation Items
+>>  is the same as the number of cells in the Pivot Table.
+>>
+>>  A better approach might be to allow for there to be many more Donation
+>>  Items, and then have the Pivot Table automatically calculate the totals.
+>>    So in this second approach, there could be 5 different Donation Items
+>>  that are all donations of Cash in 2001 to the Greenbelt Alliance, and
+>>  the Pivot Table will add all 5 of the Amount values and show that total
+>>  in the corresponding cell of the Pivot Table.
+>>
+>>  That second approach will work smoothly if all of the Items in the
+>>  category Donation all have values for the 4 Attributes Year, Form,
+>>  Charity, and Amount.  I'm not sure what the Pivot Table code should do
+>>  if some of the Items are missing some Attributes, or if some of the
+>>  Items have Amount values that are not Numbers, or if one of the Items
+>>  has a multi-valued Amount Attribute.  This second approach also only
+>>  works well if the values that the user wants to see in the cell are
+>>  things that can be totaled up, like numbers.  In some other scenarios,
+>>  the user might not want to see the sum of a set of Attribute values, but
+>>  might instead want to see an average of the values, or see a count of
+>>  the number of Items that fall into that cell.
+> 
+> I thought of going for the second approach, which is complete and user 
+> friendly. 
+
+Okay, sounds good.
+
+
+> For missing information, some logic can be used to compare the 
+> attributes values and if all nonempty attribute values are matched, the 
+> missing information can be predicted. 
+
+I don't think I understand that idea.  It sounds like a feature that you 
+would add once other things are already working, so maybe we don't need 
+to discuss it yet, but when the time comes maybe you can tell me more 
+about the idea or give an example.
+
+
+> Handling multiple items with same data needs to be figured out. The 
+> plugin can provide a drop down list specifying the treatment of the 
+> multiple items. For example, the drop down can have options for numeric 
+> addition, average calculation, and string addition. But this approach 
+> would not be effective if the user wants average for one axis and 
+> addition for another. I'll let you know if I find a more effective 
+> method to do this.
+
+I like your idea of using a drop down to let the user pick different 
+ways of combining values (numeric addition, average, string 
+concatenation).  You could have just one drop down for the whole pivot 
+table, so that the user could not pick "average" for one axis and 
+"addition" for another.
+
+:o) Brian
+
+
+
+
+From chandrasaurabh at gmail.com  Tue Jul 25 19:23:25 2006
+From: chandrasaurabh at gmail.com (Saurabh Chandra)
+Date: Tue, 25 Jul 2006 22:53:25 +0530
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots
+	and time-series data
+In-Reply-To: <d7cee4a70607120027w289ff377je0f983bc5a1f13ee@mail.gmail.com>
+References: <44B49CF7.2030709@dojotoolkit.org>
+	<d7cee4a70607120027w289ff377je0f983bc5a1f13ee@mail.gmail.com>
+Message-ID: <69e8df2c0607251023l618aaf31s9a480e6d6394f9d5@mail.gmail.com>
+
+------- Brian tells me that my earlier email did not reach the group.
+Resending again as plain text. Please ignore if it is a repeat for
+some. --------
+
+The charts are available over the web at http://tools.google.com/gapminder/
+They are using flash to generate it. I have a limited understanding of
+dojo right now but it seems to have flash support inside it so we could
+think of reusing the component from gapminder.
+
+Saurabh
+p.s. My first mail to the list. Hello Everyone :-) I was designing a
+very similar product to open record in my previous job using proprietary
+technologies and hence my interest here.
+
+On 7/12/06, Adam Souzis <adamsz at gmail.com> wrote:
+> check out this really cool open source javascript timeline widget:
+>
+> http://simile.mit.edu/timeline/
+>
+> It uses a simple XML format as input so it seems like it could be
+> integrated in openrecord relatively easily (and its part of the Simile
+> RDF project at MIT, so hopefully they're thinking about how to
+> represent time series in RDF)
+>
+> While I'm at it, I recently stumbled across some open source pivot
+> table and OLAP apps. If OpenRecord ever takes on Wikipedia size data
+> sets (e.g. a WikiAlmanac) it will probably have to go down the OLAP
+> route, so it's nice to know there are some serious open source options
+> out there.
+>
+> http://jpivot.sourceforge.net/index.html
+>
+> its made by
+> http://www.jasperreports.com/
+> which is trying to to be an open source OLAP/Business Intelligence vendor.
+>
+> (see also http://en.wikipedia.org/wiki/Open_Source_BI )
+>
+> And here's another open source web app that uses jpivot to navigate data cubes:
+> http://rubik.sourceforge.net/
+>
+> -- adam
+>
+> On 7/11/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+> > Here's a great talk by Hans Roslings, from the 2006 TED conference, if
+> > you've got Flash installed, and a broadband connection:
+> >    http://www.ted.com/tedtalks/tedtalksplayer.cfm?key=hans_rosling
+> >
+> > Hans Rosling is a public health expert, and the talk is nominally about
+> > global development, but the talk also serves a great example of what can
+> > be done with the visual display of quantitative information.  In
+> > particular, Rosling makes a lot of use of bubble plots, which is
+> > especially topical for OpenRecord, since Hiran is working this week on a
+> > scatter-plot/bubble-plot plugin for OpenRecord.
+> >
+> > The whole talk is about 20 minutes long.  Watching just the first 5
+> > minutes, that's enough to see some of the cool plots.  If you watch the
+> > whole thing, in the last 5 or 6 minutes he talks about data
+> > visualization software, and accessing database over the Internet.
+> >
+> > Rosling shows a bunch of plots that are animated, displaying 40 years of
+> > time-series data in a 30-second animation.  We've talked about having
+> > animated views in OpenRecord too, and there's no reason we can't do that
+> > (just a small matter of programming).
+> >
+> > Rosling's talk is also a nice reminder about the importance of time
+> > series data.  The current OpenRecord data model doesn't have any sort of
+> > intrinsic support for time-series data, nor does the experimental
+> > dojo.data code that I wrote earlier this year, nor does the data model
+> > code that IBM is contributing to dojo.  It would be cool to have time as
+> > a first-class notion in the data model, but maybe that's too ambitious.
+> >   I'm known for undertaking efforts that are too ambitious!
+> >
+> > One last cool thing -- Rosling's talk is released under a Creative
+> > Commons license.  I'm psyched to see the CC licenses becoming more and
+> > more common.
+> >
+> > :o) Brian
+> >
+> >
+> >
+> > ___________________________________________________________________
+> > Copyright rights relinquished. This work is in the Public Domain.
+> > For details see: http://creativecommons.org/licenses/publicdomain/
+> >
+> > openrecord-dev mailing list
+> > openrecord-dev at lists.berlios.de
+> > http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> >
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+From adamsz at gmail.com  Tue Jul 25 20:18:57 2006
+From: adamsz at gmail.com (Adam Souzis)
+Date: Tue, 25 Jul 2006 11:18:57 -0700
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots
+	and time-series data
+In-Reply-To: <69e8df2c0607251023l618aaf31s9a480e6d6394f9d5@mail.gmail.com>
+References: <44B49CF7.2030709@dojotoolkit.org>
+	<d7cee4a70607120027w289ff377je0f983bc5a1f13ee@mail.gmail.com>
+	<69e8df2c0607251023l618aaf31s9a480e6d6394f9d5@mail.gmail.com>
+Message-ID: <d7cee4a70607251118u11cddeffjf9db97afa412d572@mail.gmail.com>
+
+AFAIK gapminder's components are not open source -- how were you thinking of
+reusing it?
+
+-- adam
+
+On 7/25/06, Saurabh Chandra <chandrasaurabh at gmail.com> wrote:
+>
+> ------- Brian tells me that my earlier email did not reach the group.
+> Resending again as plain text. Please ignore if it is a repeat for
+> some. --------
+>
+> The charts are available over the web at
+> http://tools.google.com/gapminder/
+> They are using flash to generate it. I have a limited understanding of
+> dojo right now but it seems to have flash support inside it so we could
+> think of reusing the component from gapminder.
+>
+> Saurabh
+> p.s. My first mail to the list. Hello Everyone :-) I was designing a
+> very similar product to open record in my previous job using proprietary
+> technologies and hence my interest here.
+>
+> On 7/12/06, Adam Souzis <adamsz at gmail.com> wrote:
+> > check out this really cool open source javascript timeline widget:
+> >
+> > http://simile.mit.edu/timeline/
+> >
+> > It uses a simple XML format as input so it seems like it could be
+> > integrated in openrecord relatively easily (and its part of the Simile
+> > RDF project at MIT, so hopefully they're thinking about how to
+> > represent time series in RDF)
+> >
+> > While I'm at it, I recently stumbled across some open source pivot
+> > table and OLAP apps. If OpenRecord ever takes on Wikipedia size data
+> > sets (e.g. a WikiAlmanac) it will probably have to go down the OLAP
+> > route, so it's nice to know there are some serious open source options
+> > out there.
+> >
+> > http://jpivot.sourceforge.net/index.html
+> >
+> > its made by
+> > http://www.jasperreports.com/
+> > which is trying to to be an open source OLAP/Business Intelligence
+> vendor.
+> >
+> > (see also http://en.wikipedia.org/wiki/Open_Source_BI )
+> >
+> > And here's another open source web app that uses jpivot to navigate data
+> cubes:
+> > http://rubik.sourceforge.net/
+> >
+> > -- adam
+> >
+> > On 7/11/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+> > > Here's a great talk by Hans Roslings, from the 2006 TED conference, if
+> > > you've got Flash installed, and a broadband connection:
+> > >    http://www.ted.com/tedtalks/tedtalksplayer.cfm?key=hans_rosling
+> > >
+> > > Hans Rosling is a public health expert, and the talk is nominally
+> about
+> > > global development, but the talk also serves a great example of what
+> can
+> > > be done with the visual display of quantitative information.  In
+> > > particular, Rosling makes a lot of use of bubble plots, which is
+> > > especially topical for OpenRecord, since Hiran is working this week on
+> a
+> > > scatter-plot/bubble-plot plugin for OpenRecord.
+> > >
+> > > The whole talk is about 20 minutes long.  Watching just the first 5
+> > > minutes, that's enough to see some of the cool plots.  If you watch
+> the
+> > > whole thing, in the last 5 or 6 minutes he talks about data
+> > > visualization software, and accessing database over the Internet.
+> > >
+> > > Rosling shows a bunch of plots that are animated, displaying 40 years
+> of
+> > > time-series data in a 30-second animation.  We've talked about having
+> > > animated views in OpenRecord too, and there's no reason we can't do
+> that
+> > > (just a small matter of programming).
+> > >
+> > > Rosling's talk is also a nice reminder about the importance of time
+> > > series data.  The current OpenRecord data model doesn't have any sort
+> of
+> > > intrinsic support for time-series data, nor does the experimental
+> > > dojo.data code that I wrote earlier this year, nor does the data model
+> > > code that IBM is contributing to dojo.  It would be cool to have time
+> as
+> > > a first-class notion in the data model, but maybe that's too
+> ambitious.
+> > >   I'm known for undertaking efforts that are too ambitious!
+> > >
+> > > One last cool thing -- Rosling's talk is released under a Creative
+> > > Commons license.  I'm psyched to see the CC licenses becoming more and
+> > > more common.
+> > >
+> > > :o) Brian
+> > >
+> > >
+> > >
+> > > ___________________________________________________________________
+> > > Copyright rights relinquished. This work is in the Public Domain.
+> > > For details see: http://creativecommons.org/licenses/publicdomain/
+> > >
+> > > openrecord-dev mailing list
+> > > openrecord-dev at lists.berlios.de
+> > > http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> > >
+> > ___________________________________________________________________
+> > Copyright rights relinquished. This work is in the Public Domain.
+> > For details see: http://creativecommons.org/licenses/publicdomain/
+> >
+> > openrecord-dev mailing list
+> > openrecord-dev at lists.berlios.de
+> > http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> >
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://bat.berlios.de/mailman/listinfo/openrecord-dev
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060725/217e6b93/attachment.html>
+
+From skinner at dojotoolkit.org  Wed Jul 26 07:35:06 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue, 25 Jul 2006 22:35:06 -0700
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots
+ and time-series data
+In-Reply-To: <69e8df2c0607251023l618aaf31s9a480e6d6394f9d5@mail.gmail.com>
+References: <44B49CF7.2030709@dojotoolkit.org>	<d7cee4a70607120027w289ff377je0f983bc5a1f13ee@mail.gmail.com>
+	<69e8df2c0607251023l618aaf31s9a480e6d6394f9d5@mail.gmail.com>
+Message-ID: <44C6FF0A.2020209@dojotoolkit.org>
+
+Saurabh Chandra wrote:
+> The charts are available over the web at 
+> http://tools.google.com/gapminder/
+
+Hi Saurabh,
+
+Thanks for the pointer, I hadn't realized there was demo posted that you 
+can actually play with.  That's a very cool visualization tool.  I 
+wonder why that demo is posted at a tools.google.com address instead of 
+www.gapminder.org?
+
+> They are using flash to generate it. I have a limited 
+> understanding of dojo right now but it seems to have 
+> flash support inside it so we could think of reusing 
+> the component from gapminder.
+
+There is one Dojo package, dojo.storage, that does make use of flash. 
+The dojo.storage package doesn't actually use any of the UI features of 
+flash, but instead uses a feature that can save data to a cache on the 
+user's local hard drive, and dojo.storage makes that feature available 
+to dojo apps through a JavaScript API.
+
+I don't know much about flash, or about how flash and JavaScript talk to 
+each other.  It would be cool if we could use the gapminder component in 
+JavaScript.  It would also be possible for someone to write a similar 
+widget in pure JavaScript, given a year or two to work on it!
+
+> p.s. My first mail to the list. Hello Everyone :-) I was 
+> designing a very similar product to open record in my previous 
+> job using proprietary technologies and hence my interest here.
+
+Welcome to the list.  Did the company that you were at end up shipping 
+that product?  I'm always interested in learning about similar tools.
+
+:o) Brian
+
+
+
+
+From skinner at dojotoolkit.org  Wed Jul 26 07:43:12 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue, 25 Jul 2006 22:43:12 -0700
+Subject: [openrecord-dev] lost mail messages?
+Message-ID: <44C700F0.2060502@dojotoolkit.org>
+
+Saurabh Chandra wrote:
+ > ------- Brian tells me that my earlier email did not reach
+ > the group. Resending again as plain text. Please ignore if
+ > it is a repeat for some. --------
+
+I'm not sure what happened to the original message.  There seems to have 
+been some mailer glitch that I'm at a loss to explain.  Saurabh's 
+original post to the openrecord-dev list did get through Mignon via her 
+subscription to the list (which is how I found out about it), but for 
+some reason the message did not make it to my in-box, and did not get 
+archived on the openrecord-dev archive site:
+  https://bat.berlios.de/pipermail/openrecord-dev/2006-July/date.html
+
+I have no idea whether the original message made it to everybody else or 
+not.  I'm not that knowledgeable about mail servers and mailing list 
+software, so I'm clueless about what went wrong or how to fix it.
+
+Maybe there was some problem because the message wasn't just plain text, 
+but was multipart MIME with an HTML part?  Anybody have any ideas? 
+Anyway, sorry about the buggy infrastructure.  We're going to be moving 
+all of the openrecord infrastructure over onto dojo servers pretty soon 
+anyway, so we'll be set up with brand new mailing lists, bug tracking, 
+SVN repository, and MediaWiki wiki.
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Wed Jul 26 07:58:42 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue, 25 Jul 2006 22:58:42 -0700
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots
+ and time-series data
+In-Reply-To: <d7cee4a70607251118u11cddeffjf9db97afa412d572@mail.gmail.com>
+References: <44B49CF7.2030709@dojotoolkit.org>	<d7cee4a70607120027w289ff377je0f983bc5a1f13ee@mail.gmail.com>	<69e8df2c0607251023l618aaf31s9a480e6d6394f9d5@mail.gmail.com>
+	<d7cee4a70607251118u11cddeffjf9db97afa412d572@mail.gmail.com>
+Message-ID: <44C70492.4020607@dojotoolkit.org>
+
+Adam Souzis wrote:
+> AFAIK gapminder's components are not open source -- how 
+> were you thinking of reusing it?
+
+The Gapminder website emphasizes that Gapminder is a non-profit and 
+describes their software as "free software" that they encourage you to 
+download and distribute.  But I can't find anything on the site about 
+open source licensing.
+
+Seems possible that the Gapminder software actually is open source and 
+they're just failing to advertise that, or maybe it's not open source 
+yet but they might be willing to open source it if somebody asked.
+
+In any case, it's probably moot for OpenRecord, unless there's a good 
+way for the OpenRecord plugin loader to load flash plugins and pass data 
+to them just like JavaScript plugins.  I don't know anything about 
+whether that's possible.
+
+~ Brian
+
+
+
+
+From adamsz at gmail.com  Wed Jul 26 08:28:16 2006
+From: adamsz at gmail.com (Adam Souzis)
+Date: Tue, 25 Jul 2006 23:28:16 -0700
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots
+	and time-series data
+In-Reply-To: <44C70492.4020607@dojotoolkit.org>
+References: <44B49CF7.2030709@dojotoolkit.org>
+	<d7cee4a70607120027w289ff377je0f983bc5a1f13ee@mail.gmail.com>
+	<69e8df2c0607251023l618aaf31s9a480e6d6394f9d5@mail.gmail.com>
+	<d7cee4a70607251118u11cddeffjf9db97afa412d572@mail.gmail.com>
+	<44C70492.4020607@dojotoolkit.org>
+Message-ID: <d7cee4a70607252328x1e45bdev35a741ae1e08b8e@mail.gmail.com>
+
+> In any case, it's probably moot for OpenRecord, unless there's a good
+> way for the OpenRecord plugin loader to load flash plugins and pass data
+> to them just like JavaScript plugins.  I don't know anything about
+> whether that's possible.
+
+This is possible to do in a few ways, unless they designed their flash apps
+in a particularly obtuse way. Javascript communication with flash objects
+has been possible for years, but its improved in Flash 9.
+
+-- adam
+
+On 7/25/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+>
+> Adam Souzis wrote:
+> > AFAIK gapminder's components are not open source -- how
+> > were you thinking of reusing it?
+>
+> The Gapminder website emphasizes that Gapminder is a non-profit and
+> describes their software as "free software" that they encourage you to
+> download and distribute.  But I can't find anything on the site about
+> open source licensing.
+>
+> Seems possible that the Gapminder software actually is open source and
+> they're just failing to advertise that, or maybe it's not open source
+> yet but they might be willing to open source it if somebody asked.
+>
+> In any case, it's probably moot for OpenRecord, unless there's a good
+> way for the OpenRecord plugin loader to load flash plugins and pass data
+> to them just like JavaScript plugins.  I don't know anything about
+> whether that's possible.
+>
+> ~ Brian
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://bat.berlios.de/mailman/listinfo/openrecord-dev
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060725/5c60a756/attachment.html>
+
+From alex at dojotoolkit.org  Wed Jul 26 09:54:02 2006
+From: alex at dojotoolkit.org (Alex Russell)
+Date: Wed, 26 Jul 2006 00:54:02 -0700
+Subject: [openrecord-dev] Hans Roslings talk -- animated scatter plots
+	and time-series data
+In-Reply-To: <44C70492.4020607@dojotoolkit.org>
+References: <44B49CF7.2030709@dojotoolkit.org>
+	<d7cee4a70607251118u11cddeffjf9db97afa412d572@mail.gmail.com>
+	<44C70492.4020607@dojotoolkit.org>
+Message-ID: <200607260054.05009.alex@dojotoolkit.org>
+
+The dojo.flash infrastructure should help with some of the problem, 
+insofar as it allows high-speed data passing between plugin and JS 
+contexts across Flash versions and allows you to write the Flash side 
+in pure ActionScript (thanks MTASC!), but it certainly would require 
+work to do things like that.
+
+It might just be worth waiting for dojo.gfx to mature a bit.
+
+Regards
+
+On Tuesday 25 July 2006 10:58 pm, Brian Douglas Skinner wrote:
+> Adam Souzis wrote:
+> > AFAIK gapminder's components are not open source -- how
+> > were you thinking of reusing it?
+>
+> The Gapminder website emphasizes that Gapminder is a non-profit and
+> describes their software as "free software" that they encourage you
+> to download and distribute.  But I can't find anything on the site
+> about open source licensing.
+>
+> Seems possible that the Gapminder software actually is open source
+> and they're just failing to advertise that, or maybe it's not open
+> source yet but they might be willing to open source it if somebody
+> asked.
+>
+> In any case, it's probably moot for OpenRecord, unless there's a good
+> way for the OpenRecord plugin loader to load flash plugins and pass
+> data to them just like JavaScript plugins.  I don't know anything
+> about whether that's possible.
+>
+> ~ Brian
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://bat.berlios.de/mailman/listinfo/openrecord-dev
+
+-- 
+Alex Russell
+alex at sitepen.com     A99F 8785 F491 D5FD 04D7 ACD9 4158 FFDF 2894 6876
+alex at dojotoolkit.org BE03 E88D EABB 2116 CC49 8259 CF78 E242 59C3 9723
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 188 bytes
+Desc: not available
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060726/c30c918f/attachment.pgp>
+

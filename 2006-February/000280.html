@@ -1,0 +1,354 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] OpenRecord Data Model
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenRecord%20Data%20Model&In-Reply-To=%3C43FE5B5C.7000805%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000277.html">
+   <LINK REL="Next"  HREF="000273.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] OpenRecord Data Model</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenRecord%20Data%20Model&In-Reply-To=%3C43FE5B5C.7000805%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] OpenRecord Data Model">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Fri Feb 24 02:04:02 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000277.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+        <LI>Next message: <A HREF="000273.html">[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#280">[ date ]</a>
+              <a href="thread.html#280">[ thread ]</a>
+              <a href="subject.html#280">[ subject ]</a>
+              <a href="author.html#280">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Ian,
+
+Thanks again for all your suggestions about stuff to look at.  The 
+material you're pointing me to is extremely useful.  Responses inline...
+
+
+&gt;<i>     Do you know of any RDF datastore that has built in support 
+</I>&gt;<i>     for the idea of versions and version histories?  
+</I>&gt;<i> 
+</I>&gt;<i> Have you looked into the 'named graph' or quad support some of 
+</I>&gt;<i> the RDF stores have added? Sesame 2 is very nice, although still 
+</I>&gt;<i> in alpha, and now supports context. It also has an HTTP api... 
+</I>
+I've been out of touch with the RDF world -- I don't think I'd ever even 
+heard of 'named graphs' or contexts or quad stores.  That's an 
+encouraging development.  The support for contexts makes RDF stores like 
+Sesame 2 and YARS a much better match for what we need with OpenRecord.
+
+When I've got more time, it'd be great to read more about these quad 
+stores and play around with them some.  Just in doing some quick 
+skimming, I've seen some examples that show how you might use contexts 
+for keeping track of the attribution/provenance of RDF triples.  But I 
+haven't seen examples of using the contexts to provide stuff like 
+transaction logs and version histories.  I'm sure we could make that 
+work, but I worry about the query performance if those features aren't 
+baked into the store/query system.  I guess at this point we'd really 
+need to just try using one of these stores for OpenRecord, and see what 
+the performance looks like.
+
+
+&gt;<i> You may also want to take a look at C-Store - which has some 
+</I>&gt;<i> similarities to Google's BigTable work. It's a column store 
+</I>&gt;<i> open source implementation.
+</I>
+I hadn't ever heard of C-store or BigTable.  BigTable sounds cool.  I'd 
+love to learn more about it, even though we can't actually build on top 
+of it since it's proprietary.
+
+The C-Store read-optimization sounds great, and I like the architecture 
+of the Writable Store (WS), Tuple Mover, and Read-optimized Store (RS). 
+   Unfortunately, C-store doesn't look like a good fit for OpenRecord, 
+just because C-store has a basically a relational data model, with 
+separate tables for different types of records, strongly typed columns, 
+single-valued cells, etc.  But reading about C-Store's WS/RS design 
+makes me feel better about one of our back-of-the-envelope designs a few 
+months ago, when we were toying with the idea of rolling our own backend 
+for OpenRecord.
+
+
+&gt;<i> What I am more critical of with triplestores is the scaling
+</I>&gt;<i> issues, and data management issues. By data management issues,
+</I>&gt;<i> I mean Daisy has a nice division in the form of 'parts' that
+</I>&gt;<i> allows you to store a typed blob and attach a bunch of key/
+</I>&gt;<i> values to it ( i.e. creating a 'document'). You can always 
+</I>&gt;<i> dereference a bunch of blobs via URIs referenced from an RDF 
+</I>&gt;<i> store, but there isn't an established API for this in any of 
+</I>&gt;<i> the rdf stores - you would have to setup your own blobstore 
+</I>&gt;<i> and extend the query api's, and end up rolling something
+</I>&gt;<i> similar to daisy, I imagine. Then there is ACL's, etc. and
+</I>&gt;<i> other niceties that are not supported by most of the RDF 
+</I>&gt;<i> stores. 
+</I>
+Yup, Daisy seems like a more mature, well rounded, full featured system. 
+  That's definitely appealing.
+
+
+&gt;<i> That having been said, I often find myself split down the
+</I>&gt;<i> middle to dump daisy for an RDF store, as I watch daisy 
+</I>&gt;<i> evolve more extensions to their own query language, etc.. 
+</I>&gt;<i> But theoretically, most anything can be layered on a 
+</I>&gt;<i> triple/quad - it's just that the implemantations still
+</I>&gt;<i> have a ways to go.
+</I>
+I can see the dilemma.  Maybe in a few years one of the RDF stores will 
+seem like a no-brainer.  For now, any choice involves compromises.
+
+
+&gt;<i> One other weakness, that is probably easily fixed, is that 
+</I>&gt;<i> XML is the only return type for the Daisy api - JSON would 
+</I>&gt;<i> be nice.
+</I>
+JSON would be what we'd want for OpenRecord too.  That really should be 
+easy to fix, shouldn't it?  Hopefully a thin layer of translation code 
+in Daisy should do the job, and the Daisy folks probably wouldn't object 
+to accepting that contribution into Daisy?
+
+
+&gt;<i> I think we agree there are no ideal solutions at the moment, 
+</I>&gt;<i> which is how I stumbled on to your list.:-)  
+</I>
+If you're still searching, you might want to look at the Chandler 
+Repository.  I don't know what all the needs/requirements are for the 
+work you're doing, but the Chandler data model has an RDF-ish flavor to 
+it.  Chandler is only at 0.6 release now, but they've hard at work 
+towards a production-quality 1.0 release.
+
+Quick intro about the Chandler Repository:
+  <A HREF="http://chandler.osafoundation.org/docs/0.6/overview.html#Repository">http://chandler.osafoundation.org/docs/0.6/overview.html#Repository</A>
+
+An introduction to the Chandler data model and Python API:
+  <A HREF="http://chandler.osafoundation.org/docs/0.6/parcel-schema-guide.html">http://chandler.osafoundation.org/docs/0.6/parcel-schema-guide.html</A>
+
+
+&gt;<i> Incidentally, I am working with life sciences data - if the 
+</I>&gt;<i> email didn't give that away.
+</I>
+I've heard that the Semantic Web is starting to get some traction in the 
+life sciences field.  Are you working at a University?
+
+
+&gt;<i> I've also been playing with Daisy for a while now, and would 
+</I>&gt;<i> be happy to answer any questions - if I am able. 
+</I>
+Thanks for the offer -- I'll take you up on it...
+
+&gt;<i>     But, in other ways Daisy doesn't seem like a fit for 
+</I>&gt;<i>     the OpenRecord data model.  For OpenRecord, I think the 
+</I>&gt;<i>     biggest problems are that in Daisy:
+</I>&gt;<i>       - fields can hold literal values, but I can't find any 
+</I>&gt;<i>     documentation about fields being able to hold pointers 
+</I>&gt;<i>     to other documents
+</I>&gt;<i> 
+</I>&gt;<i> I think this is possible now - if I understood your request 
+</I>&gt;<i> correctly. I'm not sure if it was 1.4 or 1.5 (this is the 
+</I>&gt;<i> current Trunk version, and what I am currently working with).
+</I>
+I had been looking at the Daisy 1.4 documentation about the field types, 
+here:
+ 
+<A HREF="http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s86">http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s86</A>
+
+In 1.4, it seems like &quot;links&quot; are just HTML URLs, and are handled 
+separately from fields, which I was worried would mean that you couldn't 
+have multi-valued links, or multi-valued fields with a mix of links and 
+numbers and strings.
+
+<A HREF="http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s97">http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s97</A>
+<A HREF="http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s98">http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s98</A>
+
+&gt;<i> from one of the developer's posts on the mailing list:
+</I>&gt;<i> &quot;A link field is a field which links to another document (or 
+</I>&gt;<i> documents, in case of multivalue fields). This allows for 
+</I>&gt;<i> structured linking between documents.&quot;
+</I>
+Yup, that quote sounds promising.
+
+&gt;<i>     much less automatic bi-directional connections
+</I>&gt;<i> 
+</I>&gt;<i>  By &quot;automatic bi-directional connections&quot; do you mean  
+</I>&gt;<i> &quot;inverse properties&quot;? In RDF world, this would look like  
+</I>&gt;<i> Car:hasName:CoolCar &lt;--&gt; CoolCar:isNameof:Car
+</I>
+Yes, that's pretty much what I mean by bi-directional connections.  The 
+Car item and the CoolCar item each have a property that points to the 
+other item, and if you change one either of those properties, the other 
+item(s) will automatically update.
+
+For example:
+
+   // starting out
+   assert( Car.getValuesForProperty(hasName) == [CoolCar] );
+   assert( CoolCar.getValuesForProperty(isNameof) == [Car] );
+
+   // now add a value
+   Car.addValueForProperty(hasName, BlueCar);
+
+   // and now
+   assert( Car.getValuesForProperty(hasName) == [CoolCar, BlueCar] );
+   assert( BlueCar.getValuesForProperty(isNameof) == [Car] );
+   assert( CoolCar.getValuesForProperty(isNameof) == [Car] );
+
+A bunch of data stores and data models seem to have that notion of 
+automatically maintaining inverse properties.  In OpenRecord we're 
+currently implementing that feature in a slightly unconventional way -- 
+in our data representation the two inverse properties actually share a 
+single value (a connection value) rather than each property having a 
+value that's the inverse of the other.
+
+
+&gt;<i>       - a document must belong to a document type, can only 
+</I>&gt;<i>     belong to one document type, 
+</I>&gt;<i> 
+</I>&gt;<i> Yes, these are assumptions in the Daisy model - and have led 
+</I>&gt;<i> me to consider rolling my own solution. I've been able to fit 
+</I>&gt;<i> most of my current use into these assumptions though. But 
+</I>&gt;<i> there has to be some organizing unit by which you create 
+</I>&gt;<i> versions off of, no? Perhaps you can comment on your thinking 
+</I>&gt;<i> for this..
+</I>
+In OpenRecord we've tried to avoid the idea of fixed schemas.  You can 
+create items willy-nilly, rather than creating items of a given type. 
+Users can put items in categories (so you can say that &quot;The Hobbit&quot; is a 
+&quot;Book&quot;), but the categories act more like tags than data types.  An item 
+can belong to several different categories at once.  A category doesn't 
+have any notion of what attributes its items should have (&quot;Title&quot;, 
+&quot;Author&quot;, etc.).  We end up handling that sort of schema information in 
+the data entry views, rather than in the data model.
+
+
+&gt;<i>     and can only have the fields that are defined for its
+</I>&gt;<i>     document type
+</I>&gt;<i> 
+</I>&gt;<i> Actually you can always extend the fields associated with a 
+</I>&gt;<i> document type - I do this all the time. Maybe I am 
+</I>&gt;<i> misunderstanding your question though. 
+</I>
+Rather than adding fields to a document type, what I really want to do 
+is add &quot;ad hoc&quot; fields to an individual document.  So, maybe most books 
+have just &quot;title&quot; and &quot;author&quot; fields, but one particular book can have 
+a field &quot;page numbers of dog-eared pages&quot;.  I think this is similar to 
+the Daisy idea of Custom Fields, but the Daisy 1.4 documentation says 
+that custom fields are just name-value pairs where unfortunately the 
+value can only be a text string, changes are not versioned, and the 
+field is identified by a name string, not a field ID.
+
+<A HREF="http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s102">http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s102</A>
+<A HREF="http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s77">http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s77</A>
+
+
+&gt;<i>       - language variants are at a per-document level rather 
+</I>&gt;<i>     than a per-field level, which is what OpenRecord needs
+</I>&gt;<i> 
+</I>&gt;<i> I can't comment too much on this since I haven't looked into 
+</I>&gt;<i> their i18n support - my current use is as a personal knowledgebase. 
+</I>&gt;<i> ... But since 'document' is the root entity for all instance
+</I>&gt;<i> data, I assume you have to associate lang variants at this level
+</I>&gt;<i> for instance data. ... I'm sorry I'm not more familiar with  
+</I>&gt;<i> your project, but how did you plan to handle this?
+</I>
+I may be misunderstanding Daisy, but let me explain what I had in mind 
+for OpenRecord.
+
+One of the things we'd like to be able to do with OpenRecord is a set up 
+a World Almanac site, containing lots of graphs and charts of the sort 
+of quantitative content you find in reference books like the CIA world 
+factbook.
+
+To keep track of information about Germany, we would have a Germany 
+item, with attributes like:
+
+  {item-id: 12845782,
+    name: (&quot;Germany&quot;),
+    area: (357,021 sq km),
+    pop:  (82,431,390),
+    capital: ([pointer to item representing Berlin]) }
+
+When we create language variants, we really want to do that on a field 
+by field basis.  We don't want each variant to have a separate copy of 
+the values for Land Area, Population, and Capital.
+
+We'd like to do this:
+  {item-id: 12845782,
+    name: [{lang:&quot;en&quot;, value:&quot;Germany&quot;},
+           {lang:&quot;de&quot;, value:&quot;Deutchland&quot;}],
+    area: (357,021 sq km),
+    pop:  (82,431,390),
+    capital: ([pointer to item representing Berlin]) }
+
+Rather than this:
+  {item-id: 12845782,
+   variants: [
+    { lang: &quot;en&quot;,
+      name: (&quot;Germany&quot;),
+      area: (357,021 sq km),
+      pop:  (82,431,390),
+      capital: ([pointer to item representing Berlin]) },
+    { lang: &quot;de&quot;,
+      name: (&quot;Deutchland&quot;),
+      area: (357,021 sq km),
+      pop:  (82,431,390),
+      capital: ([pointer to item representing Berlin]) } ] }
+
+
+&gt;<i>      &gt; Regarding the charting code mentioned in the last 
+</I>&gt;<i>      &gt; update, you may also want to look at this recent
+</I>&gt;<i>      &gt; code: <A HREF="http://webfx.eae.net/dhtml/chart/chart.html">http://webfx.eae.net/dhtml/chart/chart.html</A>
+</I>&gt;<i> 
+</I>&gt;<i>     Thanks for the pointer.  The WebFX charts look great.  
+</I>&gt;<i>     Unfortunately the WebFX licenses are too restrictive 
+</I>&gt;<i>     for us to use WebFX code in OpenRecord.   
+</I>&gt;<i> 
+</I>&gt;<i> Sorry, I know little about licensing. I think it is an MIT 
+</I>&gt;<i> license in the source files, although he mentions some of 
+</I>&gt;<i> his code being GNU on the website. Not sure how this conflicts 
+</I>&gt;<i> with your licensing model though.
+</I>
+Oh, cool.  You're absolutely right.  The source code file is labeled 
+with an MIT license.  I had only looked at the web site license info 
+page, which talks about the GNU GPL and commercial licenses by special 
+request only.  We can't use GNU GPL components in OpenRecord, but we can 
+include MIT license code.  Thanks for the pointer!
+
+:<i>o) Brian
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000277.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+	<LI>Next message: <A HREF="000273.html">[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#280">[ date ]</a>
+              <a href="thread.html#280">[ thread ]</a>
+              <a href="subject.html#280">[ subject ]</a>
+              <a href="author.html#280">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

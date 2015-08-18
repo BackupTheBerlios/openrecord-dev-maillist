@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20%5BRails-spinoffs%5D%20Integrating%20script.aculo.us%20into%20existing%20javascript%20codebase&In-Reply-To=%3C644C1AFF-4632-4CA7-B432-DDA4E40E1CFF%40osafoundation.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000188.html">
+   <LINK REL="Next"  HREF="000189.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20%5BRails-spinoffs%5D%20Integrating%20script.aculo.us%20into%20existing%20javascript%20codebase&In-Reply-To=%3C644C1AFF-4632-4CA7-B432-DDA4E40E1CFF%40osafoundation.org%3E"
+       TITLE="[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase">chao at osafoundation.org
+       </A><BR>
+    <I>Sat Jul  9 03:27:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000188.html">[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+        <LI>Next message: <A HREF="000189.html">[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#186">[ date ]</a>
+              <a href="thread.html#186">[ thread ]</a>
+              <a href="subject.html#186">[ subject ]</a>
+              <a href="author.html#186">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Thomas,
+
+Thanks for your informative response.
+
+I think the way prototype.js extends (no pun intended) the Object  
+class is way cool, but I'm worried about existing and future  
+compatibility, especially since prototype.js is meant to be a library  
+used by many apps, and thus need to co-exist with many other code bases.
+
+The real problem lies in the fact that Javascript doesn't allow for  
+non-enumerable user-defined properties. But by extending Object, this  
+not only causes a problem with the for/in loop for Arrays, but it  
+also causes unexpected behavior for Objects used as associated arrays  
+or HashMaps. We use this quite extensively in our Javascript code.  
+It's kind of weird that the extend function copies the extend  
+property, every-time the Object.extend() function is invoked.
+
+Can you think of ways we could continue to use Object's as HashMaps  
+while still co-existing with prototype.js?
+
+Alternatively, do you think Sam and others would mind if we modified  
+prototype.js to better co-exist with existing Javascript code?
+
+Thanks a lot!
+chao
+
+On Jul 8, 2005, at 2:13 PM, Thomas Fuchs wrote:
+
+&gt;<i> With prototype is probably a bad idea to iterate through an Array  
+</I>&gt;<i> with for/in.
+</I>&gt;<i>
+</I>&gt;<i> for(var i=0;i&lt;anArray.length;i++) {
+</I>&gt;<i>     /* do something with anArray[i]  */
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> should do fine. There might be addtional additions (whew) to Object  
+</I>&gt;<i> (and thus Array) and to other basic js object itself
+</I>&gt;<i> in the future, i guess. sam stephenson, the author of prototype.js,  
+</I>&gt;<i> is currently working on some nice stuff, i hear.
+</I>&gt;<i>
+</I>&gt;<i> One example is a .inspect() function:
+</I>&gt;<i>
+</I>&gt;<i> Object.prototype.inspect = function(){
+</I>&gt;<i>   var info = [];
+</I>&gt;<i>   for(property in this)
+</I>&gt;<i>     if(typeof this[property]!=&quot;function&quot;)
+</I>&gt;<i>       info.push(property + ' =&gt; &quot;' + this[property] + '&quot;');
+</I>&gt;<i>   return (&quot;'&quot; + this + &quot;' #&quot; + typeof this +
+</I>&gt;<i>     &quot;: {&quot; + info.join(&quot;, &quot;) + &quot;}&quot;);
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> will allow you to get info on any js object by doing something like  
+</I>&gt;<i> alert(myObject.inspect())
+</I>&gt;<i>
+</I>&gt;<i> Currently prototype adds functions to Array (push), Function  
+</I>&gt;<i> (apply,bind,bindAsEventListener) and String (stripTags, escapeHTML,  
+</I>&gt;<i> unescapeHTML) to make life easier and cut down on code size and  
+</I>&gt;<i> repetitions.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Thomas
+</I>&gt;<i>
+</I>&gt;<i> Am 08.07.2005 um 21:39 schrieb Chih-Chao Lam:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm new to this mailing list, so first off, a big THANK YOU for  
+</I>&gt;&gt;<i> the script.aculo.us and prototype.js libraries.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm trying to integrate script.aculo.us into an existing pretty  
+</I>&gt;&gt;<i> large Javascript codebase (see <A HREF="http://openrecord.org">http://openrecord.org</A>). I'm running  
+</I>&gt;&gt;<i> into a problem with prototype.js and the existing codebase's use  
+</I>&gt;&gt;<i> of for/in loops over an Array.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> prototype.js defines Object.prototype.extend as a function. I  
+</I>&gt;&gt;<i> believe this causes a problem when I do a &quot;for/in&quot; loop on an  
+</I>&gt;&gt;<i> array e.g.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> var anArray = [1,2,3]
+</I>&gt;&gt;<i>  for (var key in anArray) {/*do some stuff */}
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Above code snippet doesn't quite work, because var key gets set to  
+</I>&gt;&gt;<i> &quot;0&quot;, &quot;1&quot;, &quot;2&quot; and then &quot;extend&quot; in one of the loop traversal. I  
+</I>&gt;&gt;<i> believe that's because prototype.js defines  
+</I>&gt;&gt;<i> object.prototype.extend as a function.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is this a known problem? Are there workarounds?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is the use of for/in loop traversal over an Array considered  
+</I>&gt;&gt;<i> verboten?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, looking at prototype.js. In the Object.extend() function,  
+</I>&gt;&gt;<i> should the variable &quot;prototype&quot; be declared as a local variable  
+</I>&gt;&gt;<i> rather than a global?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks a lot!
+</I>&gt;&gt;<i> Chao Lam
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> _______________________________________________
+</I>&gt;&gt;<i> Rails-spinoffs mailing list
+</I>&gt;&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">Rails-spinoffs at lists.rubyonrails.org</A>
+</I>&gt;&gt;<i> <A HREF="http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs">http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000188.html">[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+	<LI>Next message: <A HREF="000189.html">[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#186">[ date ]</a>
+              <a href="thread.html#186">[ thread ]</a>
+              <a href="subject.html#186">[ subject ]</a>
+              <a href="author.html#186">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

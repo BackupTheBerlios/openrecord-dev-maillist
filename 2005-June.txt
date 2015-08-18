@@ -1,0 +1,4425 @@
+From chao at osafoundation.org  Wed Jun  1 00:42:00 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Wed Jun  1 00:42:00 2005
+Subject: [openrecord-dev] Multi entries support for table cells
+Message-ID: <71CD7776-FD35-489A-B039-9DCE6ABC3B40@osafoundation.org>
+
+Hi,
+
+OK, I'm thinking about supporting multiple entries in a table cell.
+
+Here's what I propose:
+1) Create a new view MultiEntriesView (looking for a better name)  
+that shadows a HTMLCellElement.This view displays all the entries of  
+a given item for a given attribute. It can also be used outside of  
+TablePlugin.
+
+2) Inside a MultiEntriesView, we have one or more views representing  
+an Entry of the item's attribute. We will use TextView for this  
+purpose. Over time, we should adapt TextView to be something like  
+EntryView, where it accepts not just a text string, but item  
+references, URLs, images, etc.
+
+3) Brian suggests that if a MultiEntriesView has focus (or one of its  
+sub-views), and you type "alt-<return>/<enter>" it creates a new  
+EntryView within the MultiEntriesView. This is how a user creates  
+multiple entries within an item attribute.
+
+4) Within a MultiEntriesView, multiple entries are separated by some  
+delimiter e.g. Mimi suggested " ? "
+
+5) We need to figure out what UI changes need to be made to support  
+multiple entries in a table cell. e.g.     - is a table cell still a  
+unit of selection as opposed to an entry in a cell?
+- how do you navigate between entries and cells on the keyboard?
+- should there be other affordances to create a new entry?
+- what does clicking on the separator between entries do?
+- when sorting table columns, do we just use the first entry for that  
+cell?
+- etc. probably a bunch of other unanswered questions
+
+6) Given alternatives for (5), I'm still thinking of a graceful way  
+of implementing keypress handling for our system in general. Ideally,  
+I'll like a system where the focused TextView or EntryView gets to  
+handle a keypress, if it's not handled, then it passes it up to the  
+superview. For TablePlugin, this would be MultiEntriesView. If it's  
+not handled at MultiEntriesView, then TablePlugin gets to handle it  
+and so on. If you have ideas on how to implement this, or want to  
+brainstorm with me, please ping me.
+
+Thanks,
+chao
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20050601/d52fc26f/attachment.html>
+
+From chao at cs.stanford.edu  Wed Jun  1 00:52:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jun  1 00:52:00 2005
+Subject: [openrecord-dev] Multi entries support for table cells
+In-Reply-To: <71CD7776-FD35-489A-B039-9DCE6ABC3B40@osafoundation.org>
+References: <71CD7776-FD35-489A-B039-9DCE6ABC3B40@osafoundation.org>
+Message-ID: <89EEBC91-0584-4027-9EDA-4ECE1E8D4167@cs.stanford.edu>
+
+Sorry, one more change to discuss:
+
+7) TextView no longer takes an item and an attribute (in its  
+constructor) for rendering and editing. Instead, it takes an Entry.  
+This is a first step to turning TextView to become EntryView.
+
+chao
+
+On May 31, 2005, at 3:39 PM, Chih-Chao Lam wrote:
+
+> Hi,
+>
+> OK, I'm thinking about supporting multiple entries in a table cell.
+>
+> Here's what I propose:
+> 1) Create a new view MultiEntriesView (looking for a better name)  
+> that shadows a HTMLCellElement.This view displays all the entries  
+> of a given item for a given attribute. It can also be used outside  
+> of TablePlugin.
+>
+> 2) Inside a MultiEntriesView, we have one or more views  
+> representing an Entry of the item's attribute. We will use TextView  
+> for this purpose. Over time, we should adapt TextView to be  
+> something like EntryView, where it accepts not just a text string,  
+> but item references, URLs, images, etc.
+>
+> 3) Brian suggests that if a MultiEntriesView has focus (or one of  
+> its sub-views), and you type "alt-<return>/<enter>" it creates a  
+> new EntryView within the MultiEntriesView. This is how a user  
+> creates multiple entries within an item attribute.
+>
+> 4) Within a MultiEntriesView, multiple entries are separated by  
+> some delimiter e.g. Mimi suggested " ? "
+>
+> 5) We need to figure out what UI changes need to be made to support  
+> multiple entries in a table cell. e.g.     - is a table cell still  
+> a unit of selection as opposed to an entry in a cell?
+> - how do you navigate between entries and cells on the keyboard?
+> - should there be other affordances to create a new entry?
+> - what does clicking on the separator between entries do?
+> - when sorting table columns, do we just use the first entry for  
+> that cell?
+> - etc. probably a bunch of other unanswered questions
+>
+> 6) Given alternatives for (5), I'm still thinking of a graceful way  
+> of implementing keypress handling for our system in general.  
+> Ideally, I'll like a system where the focused TextView or EntryView  
+> gets to handle a keypress, if it's not handled, then it passes it  
+> up to the superview. For TablePlugin, this would be  
+> MultiEntriesView. If it's not handled at MultiEntriesView, then  
+> TablePlugin gets to handle it and so on. If you have ideas on how  
+> to implement this, or want to brainstorm with me, please ping me.
+>
+> Thanks,
+> chao
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20050601/8eba4255/attachment.html>
+
+From brian.skinner at gumption.org  Wed Jun  1 01:18:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  1 01:18:01 2005
+Subject: [openrecord-dev] Multi entries support for table cells
+In-Reply-To: <71CD7776-FD35-489A-B039-9DCE6ABC3B40@osafoundation.org>
+Message-ID: <200505312317.j4VNHKm26514@bat.berlios.de>
+
+Hi Chao,
+
+That all sounds great to me.
+
+On point (4)...  
+
+If we decide to show multiple entries on a single line, then Mimi's
+suggestion of a light grey dot sounds good.  Alternatively, we could have
+each entry appear on a new line, and we could visually separate the entries
+using a light grey line element.  I have a slight preference for having the
+entries on separate lines, but I think it's hard to know which is a better
+look and feel without trying out one of them.  
+  
+I think having the entries on separate lines may be easier to implement,
+because the text-wrapping cases can be handled locally within a single
+EntryView (aka TextView), rather than having text-wrapping maybe be an issue
+that impacts the MultiEntriesView and two or more EntryViews.
+
+On point (5) ...
+
+Maybe on Monday we can talk about that list of UI questions and try to come
+up with some answers.  
+
+On Sunday Mignon and I talked about a lot of UI details, including some of
+the table view UI.  Here's a quick summary of the ideas we talked about for
+the table UI:
+
+ - single click on a table row == select entire row
+ - hit delete when row is selected == delete item
+ - copy & paste when row is selected == copy & paste item
+
+ - single click on an entry in a selected row == select an entry
+ - hit delete when an entry is selected == delete entry
+ - copy & paste when entry is selected == copy & paste entry
+
+ - double click on an entry == start editing entry
+ - when a table cell has only one entry, selecting the entry maybe feels
+just like selecting the cell?
+ - when you have one entry selected, or are editing one entry, you can
+create a new entry by hitting "alt-<return>/<enter>" -- maybe we should also
+have a small button in the cell (e.g. [*]), so you can use the button to
+create a new entry  -- the button would only appear in the cell when you
+were editing an entry
+ 
+:o) Brian
+
+
+
+________________________________
+
+From: openrecord-dev-admin at berlios.de
+[mailto:openrecord-dev-admin at berlios.de] On Behalf Of Chih-Chao Lam
+Sent: Tuesday, May 31, 2005 3:39 PM
+To: openrecord-dev at berlios.de
+Subject: [openrecord-dev] Multi entries support for table cells
+
+
+Hi, 
+
+OK, I'm thinking about supporting multiple entries in a table cell.
+
+Here's what I propose:
+1) Create a new view MultiEntriesView (looking for a better name) that
+shadows a HTMLCellElement.This view displays all the entries of a given item
+for a given attribute. It can also be used outside of TablePlugin. 
+
+2) Inside a MultiEntriesView, we have one or more views representing an
+Entry of the item's attribute. We will use TextView for this purpose. Over
+time, we should adapt TextView to be something like EntryView, where it
+accepts not just a text string, but item references, URLs, images, etc.
+
+3) Brian suggests that if a MultiEntriesView has focus (or one of its
+sub-views), and you type "alt-<return>/<enter>" it creates a new EntryView
+within the MultiEntriesView. This is how a user creates multiple entries
+within an item attribute.
+
+4) Within a MultiEntriesView, multiple entries are separated by some
+delimiter e.g. Mimi suggested " . "
+
+5) We need to figure out what UI changes need to be made to support multiple
+entries in a table cell. e.g.
+- is a table cell still a unit of selection as opposed to an entry in a
+cell?
+- how do you navigate between entries and cells on the keyboard?
+- should there be other affordances to create a new entry?
+- what does clicking on the separator between entries do?
+- when sorting table columns, do we just use the first entry for that cell?
+- etc. probably a bunch of other unanswered questions
+
+6) Given alternatives for (5), I'm still thinking of a graceful way of
+implementing keypress handling for our system in general. Ideally, I'll like
+a system where the focused TextView or EntryView gets to handle a keypress,
+if it's not handled, then it passes it up to the superview. For TablePlugin,
+this would be MultiEntriesView. If it's not handled at MultiEntriesView,
+then TablePlugin gets to handle it and so on. If you have ideas on how to
+implement this, or want to brainstorm with me, please ping me.
+
+Thanks,
+chao
+
+
+
+From brian.skinner at gumption.org  Wed Jun  1 01:22:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  1 01:22:01 2005
+Subject: [openrecord-dev] Multi entries support for table cells
+In-Reply-To: <89EEBC91-0584-4027-9EDA-4ECE1E8D4167@cs.stanford.edu>
+Message-ID: <200505312321.j4VNLbm26580@bat.berlios.de>
+
+> Sorry, one more change to discuss: 
+> 
+> 7) TextView no longer takes an item and an attribute 
+> (in its constructor) for rendering and editing. 
+> Instead, it takes an Entry. This is a first step to 
+> turning TextView to become EntryView.
+
+Right, and instead the MultiEntriesView should take an item and an attribute
+(in its constructor) for rendering and editing, yes?
+
+But, if TextView/EntryView only takes an Entry, then how do you handle the
+row at the bottom of the table for new provisional items?  Or, for that
+matter, how do you handle any cell for which there is not already an entry?
+Seems like in that case the TextView/EntryView needs to know about the item
+and attribute, no?
+
+:o) Brian
+
+
+
+
+From chao at cs.stanford.edu  Wed Jun  1 03:21:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jun  1 03:21:00 2005
+Subject: [openrecord-dev] Multi entries support for table cells
+In-Reply-To: <200505312321.j4VNLbm26580@bat.berlios.de>
+References: <200505312321.j4VNLbm26580@bat.berlios.de>
+Message-ID: <0460D20D-9120-457E-9384-ED98318C3152@cs.stanford.edu>
+
+> Right, and instead the MultiEntriesView should take an item and an  
+> attribute
+> (in its constructor) for rendering and editing, yes?
+>
+yes
+
+> But, if TextView/EntryView only takes an Entry, then how do you  
+> handle the
+> row at the bottom of the table for new provisional items?  Or, for  
+> that
+> matter, how do you handle any cell for which there is not already  
+> an entry?
+> Seems like in that case the TextView/EntryView needs to know about  
+> the item
+> and attribute, no?
+>
+You're right. In the back of my mind, I was thinking we should have a  
+ProvisionalEntry analogous to ProvisionalItem. Is that unnecessarily  
+complicated? Maybe we should continue to pass an item and an  
+attribute to TextView? in addition to Entry?
+
+chao
+
+> :o) Brian
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Wed Jun  1 03:40:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  1 03:40:01 2005
+Subject: [openrecord-dev] new query category pop-up works great
+Message-ID: <200506010139.j511dcm29154@bat.berlios.de>
+
+Hi Mignon,
+
+I just checked out the latest source code and tried running everything.  It
+all works great on my machine.  
+
+The new selection list for editing queries is surprisingly cool.  I didn't
+realize how powerful that one tool would be -- it makes it really easy to
+browse through the whole repository and see everything there is to see.
+It's a lot like the old "All Items" page, except more manageable.  
+
+Here's one of the fun introspection things I just did:
+ (1) create a new page
+ (2) on the new page, 
+    (2a) leave the plugin selection at "Table"
+    (2b) change the query criteria selection to "Query"
+ (3) note that the "Query for all books" has a "Matching Category" of "Book"
+
+ (4) go to the page "2. Books"
+ (5) on the Books page
+    (5a) change the query criteria selection from "Book" to "Bug"
+ (6) go back to "New Page"
+ (7) now the "Query for all books" has a "Matching Category" of "Bug"
+
+It's really cool to be able to look under the hood like that, and see all
+the pistons firing just the way they're supposed to!
+
+And congratulations on making commit number 100 to subversion!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jun  1 03:50:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  1 03:50:01 2005
+Subject: [openrecord-dev] Multi entries support for table cells
+In-Reply-To: <0460D20D-9120-457E-9384-ED98318C3152@cs.stanford.edu>
+Message-ID: <200506010149.j511nWm29335@bat.berlios.de>
+
+> In the back of my mind, I was thinking we should have 
+> a ProvisionalEntry analogous to ProvisionalItem. Is 
+> that unnecessarily complicated? Maybe we should continue 
+> to pass an item and an attribute to TextView? in addition 
+> to Entry?
+
+I think either way would work.  
+
+My vote would be for continuing to pass the item and attribute to TextView
+rather than having a ProvisionalEntry.  If we used provisional entries, then
+for sparse tables we would end up creating lots and lots of provisional
+entries, and we might never even send a single message to any of them, which
+feels clunky.  Or, would you only create the ProvisionalEntry in the one
+cell that the user was editing?  That wouldn't be bad.
+
+Anyway, I expect that as you're actually doing the coding it'll become more
+clear what looks like the cleanest solution.  Feel free to do whatever seems
+right!
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Wed Jun  1 04:09:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jun  1 04:09:01 2005
+Subject: [openrecord-dev] Re: interaction design
+In-Reply-To: <C25881FC-BC68-47A0-B023-EC95E166E25F@osafoundation.org>
+References: <C25881FC-BC68-47A0-B023-EC95E166E25F@osafoundation.org>
+Message-ID: <39049074-DFAF-47E2-9255-50E2928FC043@cs.stanford.edu>
+
+Hi Mimi,
+
+That's why it's so fun to work with you - you're always coming up  
+with out-of-the-box solutions. In this case, it's conceptually clean  
+and consistent to the user, but I'm less sure about how easy it is to  
+implement. But maybe Brian or Mignon have better ideas or add to the  
+idea, so I'm cc'ing this to list.
+
+Brian and Mignon, Mimi and I were discussing issues about multi-entry  
+UI that I listed in previous email.
+
+chao
+
+On May 31, 2005, at 6:31 PM, Mimi Yin wrote:
+
+> Some more thoughts:
+>
+> 1.  what does it mean if someone hits Enter/Enter when the cursor  
+> is in the middle of an entry...
+>
+> 2. distinguishing between navigating from entry to entry v.  
+> navigating horizontally from cell to cell
+>
+> And there might be a way to solve both issues at once:
+>
+> Can we DISallow the user from placing their cursor in the middle of  
+> a resolved entry? So that if they type something and hit enter, the  
+> entry forever more is only selectable as a whole item. So the user  
+> can either delete it as an entry OR retype it from the beginning.  
+> (This is the way email addresses work in Apple Mail).
+>
+> With auto-complete, retyping shouldn't be a big problem...
+>
+> Then we can distinguish between the right and left arrows to mean  
+> moving from entry to entry...and use tab to go from cell to cell  
+> (horizontally).
+>
+> Mimi
+>
+>
+>
+
+
+
+From chao at cs.stanford.edu  Wed Jun  1 04:43:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jun  1 04:43:00 2005
+Subject: [openrecord-dev] new query category pop-up works great
+In-Reply-To: <200506010139.j511dcm29154@bat.berlios.de>
+References: <200506010139.j511dcm29154@bat.berlios.de>
+Message-ID: <00B1DE3E-AA48-49AE-A8ED-A7F5E7A006E1@cs.stanford.edu>
+
+Hi Mignon,
+
+Just checked out the code, and the query category pop-up is indeed  
+very, very cool! Great job, guys!
+
+Mimi, this means it's going to be easier to create the custom views  
+you need, and hopefully no mucking around in the repository text file.
+
+chao
+
+On May 31, 2005, at 6:39 PM, Brian Douglas Skinner wrote:
+
+> Hi Mignon,
+>
+> I just checked out the latest source code and tried running  
+> everything.  It
+> all works great on my machine.
+>
+> The new selection list for editing queries is surprisingly cool.  I  
+> didn't
+> realize how powerful that one tool would be -- it makes it really  
+> easy to
+> browse through the whole repository and see everything there is to  
+> see.
+> It's a lot like the old "All Items" page, except more manageable.
+>
+> Here's one of the fun introspection things I just did:
+>  (1) create a new page
+>  (2) on the new page,
+>     (2a) leave the plugin selection at "Table"
+>     (2b) change the query criteria selection to "Query"
+>  (3) note that the "Query for all books" has a "Matching Category"  
+> of "Book"
+>
+>  (4) go to the page "2. Books"
+>  (5) on the Books page
+>     (5a) change the query criteria selection from "Book" to "Bug"
+>  (6) go back to "New Page"
+>  (7) now the "Query for all books" has a "Matching Category" of "Bug"
+>
+> It's really cool to be able to look under the hood like that, and  
+> see all
+> the pistons firing just the way they're supposed to!
+>
+> And congratulations on making commit number 100 to subversion!
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Wed Jun  1 21:47:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  1 21:47:01 2005
+Subject: [openrecord-dev] new query category pop-up works great
+In-Reply-To: <200506010139.j511dcm29154@bat.berlios.de>
+Message-ID: <200506011946.j51Jknm25573@bat.berlios.de>
+
+> The new selection list for editing queries is surprisingly 
+> cool.  I didn't realize how powerful that one tool would be 
+
+With the new pop-up list for editing queries, it's now really easy to create
+new categories and create new attributes, which were two of the tasks on our
+plate for release 0.1.  
+
+Plus I think this is going to make it really easy to assign expected data
+types to attributes.  Actually, I think all we need to do now is add a few
+lines of code to create a new axiomatic attribute called "Expected data
+type" and create a few new axiomatic data types (like "String" and
+"Number"), and then set the expected data types for a few of the axiomatic
+attributes, like Name and Category.  Once the table cells know how to assign
+reference values instead of string values, then the whole expected value
+thing will just fall into place, without any need for custom UI code to
+assign expected data types!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jun  1 22:12:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  1 22:12:01 2005
+Subject: [openrecord-dev] better lint test error messages
+Message-ID: <200506012011.j51KBYm26079@bat.berlios.de>
+
+Hey Chao & Mignon,
+
+I made some minor improvements in how the unit tests report error messages
+from the JSLint checks.
+
+I think you now can completely avoid ever going to the JSLint web page and
+doing the copy & paste thing.  Instead you can just run the unit test suite
+and see the error messages from there.  
+
+If the LintTest fails during the unit tests, then just double click on the
+"LintTest" line in the scroll-view-list at the bottom of the unit test
+TestRunner.html page.  
+
+When you double click, you'll get an alert box that gives info about the
+lint error, like this:
+  _______________________________________________
+
+  Util.js
+  (779): error at character 2: Expected ';' and instead saw '(end)'.
+  _______________________________________________
+  
+  TablePlugin.js
+  (458): error at character 10: Unreachable 'nextRow' after 'return'.
+  _______________________________________________
+
+
+If there are lint errors in more than one file, the error message will tell
+you about all the errors at once.  
+
+(Unfortunately, the error message will still only report a single lint error
+for each file, even if the file has more than one lint error.  I don't think
+there's anything to do about that without changing Douglas Crockford's
+jslint code, which is an exercise for another day.)
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jun  1 22:24:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  1 22:24:01 2005
+Subject: [openrecord-dev] RE: Mac vs. PC
+Message-ID: <200506012023.j51KNdm26365@bat.berlios.de>
+
+> BTW, the Test Suite runs 5-8 times faster on my 
+> 3 year old PC compared to my mac. 
+
+On Sunday we did some timing tests on a few different machines.  We ran the
+full suite of unit tests on each machine (.../trunk/source/TestSuite.html).
+Here are the results:
+
+14 seconds -- 2002 Dell Inspiron 2650 notebook
+11 seconds -- 2004 Dell Dimension 4600 desktop
+20 seconds -- 2005 iBook G4
+
+
+:o) Brian
+ 
+
+
+
+From chao at cs.stanford.edu  Thu Jun  2 02:15:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jun  2 02:15:01 2005
+Subject: [openrecord-dev] RE: Mac vs. PC
+In-Reply-To: <200506012023.j51KNdm26365@bat.berlios.de>
+References: <200506012023.j51KNdm26365@bat.berlios.de>
+Message-ID: <F9C7DE03-F855-4962-A8D8-10E314F66B87@cs.stanford.edu>
+
+Hmm, my 2002 Dell Latitude C640 takes 12 secs, while my Mac Powerbook  
+G4 (1 Ghz) takes 28 secs!
+I'm not running the debugger on the mac, but have several Firefox  
+extensions installed. Perhaps that's the culprit?
+
+chao
+
+
+On Jun 1, 2005, at 1:23 PM, Brian Douglas Skinner wrote:
+
+>> BTW, the Test Suite runs 5-8 times faster on my
+>> 3 year old PC compared to my mac.
+>>
+>
+> On Sunday we did some timing tests on a few different machines.  We  
+> ran the
+> full suite of unit tests on each machine (.../trunk/source/ 
+> TestSuite.html).
+> Here are the results:
+>
+> 14 seconds -- 2002 Dell Inspiron 2650 notebook
+> 11 seconds -- 2004 Dell Dimension 4600 desktop
+> 20 seconds -- 2005 iBook G4
+>
+>
+> :o) Brian
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Thu Jun  2 02:37:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jun  2 02:37:01 2005
+Subject: [openrecord-dev] new query category pop-up works great
+In-Reply-To: <200506011946.j51Jknm25573@bat.berlios.de>
+References: <200506011946.j51Jknm25573@bat.berlios.de>
+Message-ID: <7F3B414A-CFFE-4D64-BC5D-736639EE9DFA@cs.stanford.edu>
+
+Hey Brian,
+
+Sounds good. We should talk about the UI for assigning reference  
+values. Do all auto-completed entries refer to the same value? They  
+should, right?
+
+Two other semi-related issues:
+1) Mimi was requesting a fixed enum input method for certain  
+attributes for her dashboard mock-up. I know this is against your UI  
+ideas (users should be given the right to override enum types), so we  
+should discuss this more.
+
+2) Similar to "expected data types" for attributes, I think an  
+attribute can also specify whether it would like "auto completion" in  
+the UI. We may need to do this both at the model level and at the  
+view level. We should discuss alternatives for doing this.
+
+chao
+
+On Jun 1, 2005, at 12:46 PM, Brian Douglas Skinner wrote:
+
+>> The new selection list for editing queries is surprisingly
+>> cool.  I didn't realize how powerful that one tool would be
+>>
+>
+> With the new pop-up list for editing queries, it's now really easy  
+> to create
+> new categories and create new attributes, which were two of the  
+> tasks on our
+> plate for release 0.1.
+>
+> Plus I think this is going to make it really easy to assign  
+> expected data
+> types to attributes.  Actually, I think all we need to do now is  
+> add a few
+> lines of code to create a new axiomatic attribute called "Expected  
+> data
+> type" and create a few new axiomatic data types (like "String" and
+> "Number"), and then set the expected data types for a few of the  
+> axiomatic
+> attributes, like Name and Category.  Once the table cells know how  
+> to assign
+> reference values instead of string values, then the whole expected  
+> value
+> thing will just fall into place, without any need for custom UI  
+> code to
+> assign expected data types!
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Jun  2 03:18:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun  2 03:18:00 2005
+Subject: [openrecord-dev] RE: Mac vs. PC
+In-Reply-To: <F9C7DE03-F855-4962-A8D8-10E314F66B87@cs.stanford.edu>
+Message-ID: <200506020117.j521HAm01321@bat.berlios.de>
+
+| > (.../trunk/source/TestSuite.html)
+| > 
+| > 14 seconds -- 2002 Dell Inspiron 2650 notebook
+| > 11 seconds -- 2004 Dell Dimension 4600 desktop
+| > 20 seconds -- 2005 iBook G4
+| 
+| my 2002 Dell Latitude C640 takes 12 secs, while 
+| my Mac Powerbook G4 (1 Ghz) takes 28 secs!
+| I'm not running the debugger on the mac, but have several Firefox  
+| extensions installed. Perhaps that's the culprit?
+
+Hmmm... I don't know.  Do you load the test page from an http: prefix?  Does
+it go any faster if you run the tests from a file: prefix?
+
+- brian
+
+
+
+
+
+From brian.skinner at gumption.org  Thu Jun  2 03:34:02 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun  2 03:34:02 2005
+Subject: [openrecord-dev] multi-entry support
+Message-ID: <200506020133.j521XYm01764@bat.berlios.de>
+
+> Log:
+> 1) Added multi-entry support
+> 2) Added concept of selecting a row 
+> 3) Use "alt-return" to add new entry
+
+Very cool!
+
+
+
+
+From chao at cs.stanford.edu  Thu Jun  2 03:45:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jun  2 03:45:01 2005
+Subject: [openrecord-dev] RE: Mac vs. PC
+In-Reply-To: <200506020117.j521HAm01321@bat.berlios.de>
+References: <200506020117.j521HAm01321@bat.berlios.de>
+Message-ID: <50E993B3-1205-4F7A-BAFA-A8060FD6F836@cs.stanford.edu>
+
+I used HTTP for both. PC doesn't have openrecord installed.
+
+Running with file:/// wasn't that much faster 30 secs the first time,  
+27 secs running it again.
+
+chao
+
+On Jun 1, 2005, at 6:17 PM, Brian Douglas Skinner wrote:
+
+> | > (.../trunk/source/TestSuite.html)
+> | >
+> | > 14 seconds -- 2002 Dell Inspiron 2650 notebook
+> | > 11 seconds -- 2004 Dell Dimension 4600 desktop
+> | > 20 seconds -- 2005 iBook G4
+> |
+> | my 2002 Dell Latitude C640 takes 12 secs, while
+> | my Mac Powerbook G4 (1 Ghz) takes 28 secs!
+> | I'm not running the debugger on the mac, but have several Firefox
+> | extensions installed. Perhaps that's the culprit?
+>
+> Hmmm... I don't know.  Do you load the test page from an http:  
+> prefix?  Does
+> it go any faster if you run the tests from a file: prefix?
+>
+> - brian
+>
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Jun  2 03:46:03 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun  2 03:46:03 2005
+Subject: [openrecord-dev] new query category pop-up works great
+In-Reply-To: <7F3B414A-CFFE-4D64-BC5D-736639EE9DFA@cs.stanford.edu>
+Message-ID: <200506020145.j521jmm02028@bat.berlios.de>
+
+Hey Chao,
+
+> We should talk about the UI for assigning reference  
+> values. Do all auto-completed entries refer to the 
+> same value? They should, right?
+
+Yup, I think all the entries should point to the same item.  But we should
+probably talk about it on the phone or in person, just to make sure that I
+understand the question.
+
+
+> Two other semi-related issues:
+> 1) Mimi was requesting a fixed enum input method for 
+> certain attributes for her dashboard mock-up. I know 
+> this is against your UI ideas (users should be given 
+> the right to override enum types), so we should discuss 
+> this more.
+
+We could certainly add some little hidden switch in the code, so that
+OpenRecord can do what Mimi needs it to do for dashboard the mock-up even if
+that's not what we want the default OpenRecord UI to do.
+
+
+> 2) Similar to "expected data types" for attributes, 
+> I think an attribute can also specify whether it would 
+> like "auto completion" in the UI. We may need to do this 
+> both at the model level and at the view level. We should 
+> discuss alternatives for doing this.
+
+Yup, let's walk through the alternatives sometime.  Maybe on Monday?  Or on
+the phone before then?  
+
+Auto-completion seems extremely useful for attributes where the expected
+data type is "reference to another item", but maybe not so useful for
+attributes where the expected data type is "text" or "number".  Could we
+turn on and off the auto-completion just based on expected data type, or do
+you think there are some cases where we would miss having auto-completion
+for attributes that expect text values?
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Thu Jun  2 04:40:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun  2 04:40:01 2005
+Subject: [openrecord-dev] Re: interaction design
+In-Reply-To: <39049074-DFAF-47E2-9255-50E2928FC043@cs.stanford.edu>
+Message-ID: <200506020239.j522d9m02834@bat.berlios.de>
+
+Hey Chao,
+
+I don't think Mimi is on the openrecord-dev mailing list yet.  I'm not sure
+whether she saw that message you posted last night in reply to her ideas for
+the multi-entry UI... 
+
+| > Can we DISallow the user from placing their cursor in the 
+| > middle of a resolved entry? So that if they type something 
+| > and hit enter, the entry forever more is only selectable 
+| > as a whole item. So the user can either delete it as an 
+| > entry OR retype it from the beginning. (This is the way 
+| > email addresses work in Apple Mail).
+| >
+| > With auto-complete, retyping shouldn't be a big problem...
+| 
+| In this case, it's conceptually clean and consistent to the 
+| user, but I'm less sure about how easy it is to implement. 
+| But maybe Brian or Mignon have better ideas or add to the  
+| idea, so I'm cc'ing this to list.
+
+
+I think it would be pretty easy to implement that.  Once the entry is
+resolved we can just take the corresponding HTML and set it to be disabled,
+so that you can't edit it.  Or maybe we intercept the mousedown when you
+click on it.  Either way, I'm sure it's not too hard.
+
+That seems like it might be a good way to handle entries that represent
+references to other items.  But I don't think we want to do that for entries
+that are just literal values, like dates and numbers and text strings.  For
+literal values it seems like the user should be able to click on the middle
+of an existing value to go back and fix a typo.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Thu Jun  2 21:10:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun  2 21:10:00 2005
+Subject: [openrecord-dev] latest checkin -- good news and bad news
+Message-ID: <200506021909.j52J97m31897@bat.berlios.de>
+
+I just did my last big checkin for the week.
+
+The new code mostly has to do with having expected data types for
+attributes, and having the table plugin look at the expected data types and
+decide when to offer suggestion boxes and when not to.
+
+There's good news and bad news with this checkin...
+
+The good news is: 
+
+ 1. users can create new categories
+ 2. users can create new items, assigned to the new categories
+ 3. users can create new attributes
+ 4. users can set the expected data type of a new attribute
+ 5. when you edit a table cell, if the expected type 
+    is text, you don't get a suggestion box
+ 6. when you edit a table cell, if the expected type is 
+    a category, you get a suggestion box showing items 
+    in that category
+ 7. when you pick from a suggestion box and a new entry 
+    is created, the entry is now a reference to the item 
+    you picked, rather than just a text string
+ 8. the "All Books" table is now populated with Book items 
+    where the authors and publishers are references to other
+    items rather than text strings
+
+The bad news is:
+ 
+-1. when you look at the "All Books" table, the UI doesn't
+    give you any way to see that the authors and publishers
+    are really references rather than text strings
+-2. there's still no way to add a new attribute to an item
+-3. there's still no way to add a column to a table
+-4. the code is a bit of a mess now
+-5. the UI is a little clunky right now
+-6. the app is a little buggy
+
+When we meet up on Monday we can talk about what things to focus on fixing,
+and I can start working on those things next week.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Thu Jun  2 22:49:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jun  2 22:49:00 2005
+Subject: [openrecord-dev] latest checkin -- good news and bad news
+In-Reply-To: <200506021909.j52J97m31897@bat.berlios.de>
+References: <200506021909.j52J97m31897@bat.berlios.de>
+Message-ID: <CBC07695-13EF-49B8-97BC-FA956A2E6C35@cs.stanford.edu>
+
+Brian, your checkin looks great, and haven't encountered any  
+significant bugs yet. Thinks looks cleaner from my perspective.
+
+
+On Jun 2, 2005, at 12:09 PM, Brian Douglas Skinner wrote:
+
+>  7. when you pick from a suggestion box and a new entry
+>     is created, the entry is now a reference to the item
+>     you picked, rather than just a text string
+As discussed, I'll love the ability to automatically create a new  
+item, when the new entry is entered by manual typing (instead of  
+picking a auto suggestion) on a column that has an expected data type  
+of an item reference.
+
+> -2. there's still no way to add a new attribute to an item
+> -3. there's still no way to add a column to a table
+(2) & (3) are pretty closely related to each other, right? If we add  
+the ability to add a column (which corresponds to an attribute type)  
+to a table, then we have the ability to add a new attribute to an  
+item in that table?
+
+I'm interested in working on this feature but not sure if anyone else  
+is working on it too?
+
+> -4. the code is a bit of a mess now
+> -5. the UI is a little clunky right now
+I think my MultiEntries code contributed to the mess both code and UI- 
+wise. Interested to hear any ideas of cleaning things up. Mimi and I  
+decided to try out a crude UI first and then refine it as we actually  
+get to try things out.
+
+I also need to work on the comments :)
+
+chao
+
+
+From brian.skinner at gumption.org  Thu Jun  2 23:57:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun  2 23:57:01 2005
+Subject: [openrecord-dev] latest checkin -- good news and bad news
+In-Reply-To: <CBC07695-13EF-49B8-97BC-FA956A2E6C35@cs.stanford.edu>
+Message-ID: <200506022156.j52LuCm03231@bat.berlios.de>
+
+Hey Chao,
+
+| >  7. when you pick from a suggestion box and a new entry
+| >     is created, the entry is now a reference to the item
+| >     you picked, rather than just a text string
+| 
+| As discussed, I'll love the ability to automatically 
+| create a new item, when the new entry is entered by 
+| manual typing (instead of picking a auto suggestion) 
+| on a column that has an expected data type of an item 
+| reference.
+
+Yup, that sounds good to me.  That should be very easy to implement, I just
+didn't get that far.  Do you want to add that?  I think it just means adding
+a handful of lines somewhere in TextView, but I'm still not really up to
+speed with TextView.
+
+
+| > -2. there's still no way to add a new attribute to an item
+| > -3. there's still no way to add a column to a table
+| 
+| (2) & (3) are pretty closely related to each other, right? 
+| If we add the ability to add a column (which corresponds 
+| to an attribute type) to a table, then we have the ability 
+| to add a new attribute to an item in that table?
+
+Yes.  Or, if that seems like a lot of work to implement, there is also
+another approach which might be good enough to meet our short term needs.
+If it seemed easy to do, you could wire up DetailPlugin to use the new
+MultiEntriesView code, so that we could edit entries in detail view.  Then
+we would also need a little bit of extra UI that allowed you to add a new
+attribute to an item in detail view, but that might be easier than adding a
+column in table view.  Just an idea.
+
+
+| I'm interested in working on this feature but not sure 
+| if anyone else is working on it too?
+
+I think it'd be great if you wanted to tackle it.  But I don't know what
+Mignon wants to work on next.  I'm planning on mostly just resting on my
+laurels until Monday.  I'm going to do some non-progamming tasks, and
+possibly do some pair programming with Mignon on Saturday on whatever she's
+working on.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri Jun  3 19:54:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Jun  3 19:54:00 2005
+Subject: [openrecord-dev] thanks!
+Message-ID: <200506031753.j53HrPm09754@bat.berlios.de>
+
+> 1) Added base ORPlugin class 
+> 2) Refactored plugins, so that they don't depend on their 
+>    superclasses to get queries or items for display
+
+Cool, thanks!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri Jun  3 19:57:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Jun  3 19:57:00 2005
+Subject: [openrecord-dev] ORPlugin file checked in?
+Message-ID: <200506031756.j53HuIm09785@bat.berlios.de>
+
+Hey Chao,
+
+I checked out the latest code, but I'm having trouble running it.  I think
+maybe you still need to do a subversion "add" on ORPlugin.js, so that it
+gets added to the subversion repository when you do a commit.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Fri Jun  3 20:11:09 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri Jun  3 20:11:09 2005
+Subject: [openrecord-dev] ORPlugin file checked in?
+In-Reply-To: <200506031756.j53HuIm09785@bat.berlios.de>
+References: <200506031756.j53HuIm09785@bat.berlios.de>
+Message-ID: <CBA11F2D-E824-434E-B584-3F6F4FF2BA13@cs.stanford.edu>
+
+Oops, you're right. Just added it in.
+
+Sorry,
+chao
+
+On Jun 3, 2005, at 10:56 AM, Brian Douglas Skinner wrote:
+
+> Hey Chao,
+>
+> I checked out the latest code, but I'm having trouble running it.   
+> I think
+> maybe you still need to do a subversion "add" on ORPlugin.js, so  
+> that it
+> gets added to the subversion repository when you do a commit.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Fri Jun  3 20:33:13 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Jun  3 20:33:13 2005
+Subject: [openrecord-dev] ORPlugin file checked in?
+In-Reply-To: <CBA11F2D-E824-434E-B584-3F6F4FF2BA13@cs.stanford.edu>
+Message-ID: <200506031832.j53IWum10832@bat.berlios.de>
+
+> Oops, you're right. 
+> Just added it in.
+
+Thanks, that did the trick.  I just ran it again and everything looks great!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Sat Jun  4 20:46:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Jun  4 20:46:01 2005
+Subject: [openrecord-dev] whos working on what
+In-Reply-To: <CBC07695-13EF-49B8-97BC-FA956A2E6C35@cs.stanford.edu>
+Message-ID: <200506041845.j54Ijom14066@bat.berlios.de>
+
+| > -2. there's still no way to add a new attribute to an item
+| > -3. there's still no way to add a column to a table
+| 
+| (2) & (3) are pretty closely related to each other, right? 
+| If we add the ability to add a column (which corresponds 
+| to an attribute type) to a table, then we have the ability
+| to add a new attribute to an item in that table?
+| 
+| I'm interested in working on this feature but not sure if 
+| anyone else is working on it too?
+
+Hey Chao,
+
+Are you still interested in working on adding a column to a table?  I just
+talked to Mignon.  She's going to be working on the code for generating
+time-based UUIDs, so feel free to take on the task of adding columns!
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Sat Jun  4 21:06:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Jun  4 21:06:01 2005
+Subject: [openrecord-dev] whos working on what
+In-Reply-To: <200506041845.j54Ijom14066@bat.berlios.de>
+References: <200506041845.j54Ijom14066@bat.berlios.de>
+Message-ID: <53BA9B27-B01B-4913-A69B-713C516C543F@cs.stanford.edu>
+
+> Are you still interested in working on adding a column to a table?   
+> I just
+> talked to Mignon.  She's going to be working on the code for  
+> generating
+> time-based UUIDs, so feel free to take on the task of adding columns!
+>
+Sounds good, Brian. Thanks for coordinating.
+
+I'm thinking of doing an experimental version with a pop-up menu of  
+attributes to add to the table plugin. Hopefully that should raise  
+issues and shed light on how we should ultimately implement this  
+feature. I think the biggest issues are around how we should store  
+view-related data. We can discuss this more Monday.
+
+chao
+
+
+
+From brian.skinner at gumption.org  Sat Jun  4 23:42:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Jun  4 23:42:01 2005
+Subject: [openrecord-dev] agenda for Monday?
+Message-ID: <200506042141.j54LfHm17030@bat.berlios.de>
+
+Hey Mignon & Chao,
+
+Here are some ideas for our agenda for Monday...
+
+:o) Brian
+
+
+-------------------------------------------------
+(1) Wrap-up of Iteration 1 (May iteration)
+    - Quick review of old tasks -- which are done, and which aren't
+    - Calculate measured velocity for Iteration 1
+    - Refine XP process for Iteration 2?
+
+(2) Talk about possible goals for Iteration 2 (June iteration)
+    - Set up an OpenRecord.org "dogfood" site?
+    - Bring UI up to demo-quality?
+    - Fix bugs?
+    - Bring code up to code-review quality?
+    - Unit tests for GUI code?
+    - Performance tests & performance improvements?
+    - Add features?
+    - Involve more people?
+
+(3) Update the task list
+    - Identify new tasks
+    - Prioritize upcoming tasks
+    - Make estimates?
+    - Sign up for tasks?
+
+(4) Talk about design questions
+    - Proposal for UUIDs?
+    - Representation of queries?
+    - Do we want a "Query" class, or an "Attribute" class?
+    - Rationalize CSS style sheets?
+    - Client/server decomposition?
+    - Design questions raised in Chao's e-mail on 5/28 & 5/29/2005
+
+(5) Talk about UI questions and ideas
+    - immutable entries?
+    - different look for text-entries vs. reference-entries?
+    - adding columns to a table?
+    - column of editing controls?
+    - GUI feedback about what's editable?
+    - colors, sizes, padding, and borders?
+    - explicit save vs. automatic save?
+    - saving content vs. saving view layout?
+    - what do URLs point to?
+    - UI questions raised in Chao's e-mail on 5/31 & 6/1/2005
+
+
+
+-------------------------------------------------
+(2) Possible goals for Iteration 2 (June iteration)
+
+- Set up an OpenRecord.org "dogfood" site?
+   - reliable data storage
+      - PHP concurrency?
+      - file I/O concurrency?
+      - create provisional item/entry pair in correct order
+      - make sure view code uses transactions (e.g. PageView.newSection)
+      - store transaction info in repository
+      - HTTP GET file overwrite bug?
+      - new UUID scheme?
+      - query representation?
+      - bi-directional references?
+   - reliability testing?
+      - concurrency tests?
+      - scalability tests?
+   - relationship between subversion and production site?
+      - dogfood site repository checked into subversion?
+      - dogfood site JavaScript tracks subversion checkins?
+   - relationship between different sites?
+      - off-line use based on file:/// URLs?
+      - repository merging?
+      - "home" pages?
+
+- Bring UI up to demo-quality?
+   - Display Navbar pages in the right order
+   - Escape key
+   - Arrow keys in SuggestionBox
+   - Arrow keys in Table View
+   - Wire up observers & keep views in sync
+   - Colors, sizes, padding, and borders
+   - Multiple entries on one line, or no?
+   - Cancel from creating a new account
+   - Drag and drop
+   - etc.
+
+- Fix bugs?
+   - back button is broken
+   - bugs with newlines and HTML characters in text strings
+   - "Waiting for localhost..."
+   - "Node was not found" exception in TextView/LoginView?
+   - do some testing to find other existing bugs?
+
+- Bring code up to code-review quality?
+   - Move from DOM level 0 to DOM level 2
+   - Refactoring (e.g. SuggestionBox and AttributeSuggestionBox)
+   - Rationalize CSS style sheets
+   - Rationalize the View api and document public api
+   - Document the Data model public api
+   - Check for incorrect dependencies
+   - Create directories "util", "view", "plugin"
+   
+
+
+-------------------------------------------------
+(4) Design questions
+
+- Proposal for UUID scheme
+   - generated on client side, not server assigned
+   - time-based, not random
+   - pseudonode encodes user id?
+   - user pseudonode is randomly generated
+   - use UUIDs for timestamps, remove timestamp record? 
+   - use UUIDs for userstamps, remove userstamp record? 
+ 
+- Representation of queries
+   - query items (important for observability)
+   - query items have query strings?
+      - query strings can be executed without persistent items
+      - strings based on UUIDs, not names
+      - strings have to be parsed
+      - flexible & extensible
+   - query criteria represented using existing attributes
+      - query resolution needs special case to ignore query items
+   - queries built out of "atomic query items"
+      - each atomic query has two magic attributes
+          - "matching attribute" (e.g. match on category)
+          - "matching values" (e.g. match only books)
+
+
+
+
+From chao at cs.stanford.edu  Sun Jun  5 01:52:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun Jun  5 01:52:01 2005
+Subject: [openrecord-dev] SectionView code question
+Message-ID: <1FBC0984-9331-46EB-A51E-E525A87B038A@cs.stanford.edu>
+
+Hi Mignon & Brian,
+
+I was browsing through the section view code to better understand  
+queries, when I stumbled on the method:  
+SectionView.prototype.clickOnQueryCategorySelectionMenu at the end of  
+the file. In this method, I'm wondering why at the end of the  
+function, it tries to add or replace the entry of the plugin name? Is  
+this an error? Possibly an cut/copy/paste issue?
+
+Thanks,
+chao
+
+
+
+From chao at cs.stanford.edu  Sun Jun  5 02:04:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun Jun  5 02:04:00 2005
+Subject: [openrecord-dev] Poor man's undo: use <esc>
+Message-ID: <0887C71C-4155-487B-BDF8-EAD086A927BA@cs.stanford.edu>
+
+A feature I added that I forgot to mention:
+
+When editing a TextView, you can type "escape" to restore the  
+TextView to the previously unedited text string. I use this quite  
+often and is kind of a lightweight undo.
+
+chao
+
+
+
+From brian.skinner at gumption.org  Sun Jun  5 03:39:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun Jun  5 03:39:00 2005
+Subject: [openrecord-dev] Poor man's undo: use <esc>
+In-Reply-To: <0887C71C-4155-487B-BDF8-EAD086A927BA@cs.stanford.edu>
+Message-ID: <200506050138.j551cbm22657@bat.berlios.de>
+
+> 1) Added experimental UI for adding/removing an 
+> attribute column from a TablePlugin
+> 
+> 2) When saving a TextView whose expected type of 
+> attribute is a Category, formerly plain text strings 
+> are instead saved as new items, whose category is 
+> the expected category specified by the attribute 
+>
+> When editing a TextView, you can type "escape" to 
+> restore the TextView to the previously unedited text
+> string. 
+
+
+Outstanding -- you're on a roll!
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Sun Jun  5 03:46:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun Jun  5 03:46:00 2005
+Subject: [openrecord-dev] SectionView code question
+In-Reply-To: <1FBC0984-9331-46EB-A51E-E525A87B038A@cs.stanford.edu>
+Message-ID: <200506050145.j551jjm22773@bat.berlios.de>
+
+> I was browsing through the section view code to better 
+> understand queries, when I stumbled on the method:  
+> SectionView.prototype.clickOnQueryCategorySelectionMenu 
+> at the end of the file. In this method, I'm wondering 
+> why at the end of the function, it tries to add or 
+> replace the entry of the plugin name? Is this an error? 
+> Possibly an cut/copy/paste issue?
+
+I'm guessing that's a copy/paste mistake.  I think lines 373 to 380 could be
+deleted.  
+
+But I think it may be important to keep likes 370 to 372, and 381, in order
+to make sure the view gets updated to reflect the new query.  When we get a
+chance we should probably do some refactoring so that the plugin can
+register as an observer of the query item, and then the plugin itself can
+know what to do when the query item changes.  
+
+- Brian
+
+
+370    var pluginName = this._myPlugin.getPluginName();
+371    this._myPlugin.endOfLife();
+372    this._myPlugin = this.getPluginFromPluginName(pluginName,
+this._myPluginDiv);
+373    var attributeCalledPluginName =
+this.getWorld().getItemFromUuid(SectionView.UUID_FOR_ATTRIBUTE_PLUGIN_NAME);
+374    var pluginNameEntries =
+this.mySection.getEntriesForAttribute(attributeCalledPluginName);
+375    if (pluginNameEntries && pluginNameEntries[0]) {
+376      var oldEntry = pluginNameEntries[0];
+377      this.mySection.replaceEntry(oldEntry, pluginName);
+378    } else {
+379      this.mySection.addEntryForAttribute(attributeCalledPluginName,
+pluginName);
+380    }
+381    this.refresh();
+
+
+
+
+From chao at cs.stanford.edu  Mon Jun  6 06:59:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon Jun  6 06:59:01 2005
+Subject: [openrecord-dev] agenda for Monday?
+In-Reply-To: <200506042141.j54LfHm17030@bat.berlios.de>
+References: <200506042141.j54LfHm17030@bat.berlios.de>
+Message-ID: <2829A4D9-82E7-46E9-B66F-D644087B964D@cs.stanford.edu>
+
+Hi Brian,
+
+Great list. Not sure if we'll be able to cover everything.
+
+See you tomorrow,
+chao
+
+On Jun 4, 2005, at 2:41 PM, Brian Douglas Skinner wrote:
+
+> Hey Mignon & Chao,
+>
+> Here are some ideas for our agenda for Monday...
+>
+> :o) Brian
+>
+>
+> -------------------------------------------------
+> (1) Wrap-up of Iteration 1 (May iteration)
+>     - Quick review of old tasks -- which are done, and which aren't
+>     - Calculate measured velocity for Iteration 1
+>     - Refine XP process for Iteration 2?
+>
+> (2) Talk about possible goals for Iteration 2 (June iteration)
+>     - Set up an OpenRecord.org "dogfood" site?
+>     - Bring UI up to demo-quality?
+>     - Fix bugs?
+>     - Bring code up to code-review quality?
+>     - Unit tests for GUI code?
+>     - Performance tests & performance improvements?
+>     - Add features?
+>     - Involve more people?
+>
+> (3) Update the task list
+>     - Identify new tasks
+>     - Prioritize upcoming tasks
+>     - Make estimates?
+>     - Sign up for tasks?
+>
+> (4) Talk about design questions
+>     - Proposal for UUIDs?
+>     - Representation of queries?
+>     - Do we want a "Query" class, or an "Attribute" class?
+>     - Rationalize CSS style sheets?
+>     - Client/server decomposition?
+>     - Design questions raised in Chao's e-mail on 5/28 & 5/29/2005
+>
+> (5) Talk about UI questions and ideas
+>     - immutable entries?
+>     - different look for text-entries vs. reference-entries?
+>     - adding columns to a table?
+>     - column of editing controls?
+>     - GUI feedback about what's editable?
+>     - colors, sizes, padding, and borders?
+>     - explicit save vs. automatic save?
+>     - saving content vs. saving view layout?
+>     - what do URLs point to?
+>     - UI questions raised in Chao's e-mail on 5/31 & 6/1/2005
+>
+>
+>
+> -------------------------------------------------
+> (2) Possible goals for Iteration 2 (June iteration)
+>
+> - Set up an OpenRecord.org "dogfood" site?
+>    - reliable data storage
+>       - PHP concurrency?
+>       - file I/O concurrency?
+>       - create provisional item/entry pair in correct order
+>       - make sure view code uses transactions (e.g.  
+> PageView.newSection)
+>       - store transaction info in repository
+>       - HTTP GET file overwrite bug?
+>       - new UUID scheme?
+>       - query representation?
+>       - bi-directional references?
+>    - reliability testing?
+>       - concurrency tests?
+>       - scalability tests?
+>    - relationship between subversion and production site?
+>       - dogfood site repository checked into subversion?
+>       - dogfood site JavaScript tracks subversion checkins?
+>    - relationship between different sites?
+>       - off-line use based on file:/// URLs?
+>       - repository merging?
+>       - "home" pages?
+>
+> - Bring UI up to demo-quality?
+>    - Display Navbar pages in the right order
+>    - Escape key
+>    - Arrow keys in SuggestionBox
+>    - Arrow keys in Table View
+>    - Wire up observers & keep views in sync
+>    - Colors, sizes, padding, and borders
+>    - Multiple entries on one line, or no?
+>    - Cancel from creating a new account
+>    - Drag and drop
+>    - etc.
+>
+> - Fix bugs?
+>    - back button is broken
+>    - bugs with newlines and HTML characters in text strings
+>    - "Waiting for localhost..."
+>    - "Node was not found" exception in TextView/LoginView?
+>    - do some testing to find other existing bugs?
+>
+> - Bring code up to code-review quality?
+>    - Move from DOM level 0 to DOM level 2
+>    - Refactoring (e.g. SuggestionBox and AttributeSuggestionBox)
+>    - Rationalize CSS style sheets
+>    - Rationalize the View api and document public api
+>    - Document the Data model public api
+>    - Check for incorrect dependencies
+>    - Create directories "util", "view", "plugin"
+>
+>
+>
+> -------------------------------------------------
+> (4) Design questions
+>
+> - Proposal for UUID scheme
+>    - generated on client side, not server assigned
+>    - time-based, not random
+>    - pseudonode encodes user id?
+>    - user pseudonode is randomly generated
+>    - use UUIDs for timestamps, remove timestamp record?
+>    - use UUIDs for userstamps, remove userstamp record?
+>
+> - Representation of queries
+>    - query items (important for observability)
+>    - query items have query strings?
+>       - query strings can be executed without persistent items
+>       - strings based on UUIDs, not names
+>       - strings have to be parsed
+>       - flexible & extensible
+>    - query criteria represented using existing attributes
+>       - query resolution needs special case to ignore query items
+>    - queries built out of "atomic query items"
+>       - each atomic query has two magic attributes
+>           - "matching attribute" (e.g. match on category)
+>           - "matching values" (e.g. match only books)
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Mon Jun  6 18:39:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Jun  6 18:39:01 2005
+Subject: [openrecord-dev] uuids!
+Message-ID: <200506061638.j56Gc2126295@bat.berlios.de>
+
+> Got Util.generateTimeBasedUuid working and added 
+> lots of related tests.
+
+Hey Mignon, thanks for staying up so late to get the UUIDs working!
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Wed Jun  8 06:43:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jun  8 06:43:01 2005
+Subject: [openrecord-dev] Input Width weirdness
+Message-ID: <CC228601-D0AA-4061-A684-0FAF81E4A13A@cs.stanford.edu>
+
+Hi all,
+
+OK, I'm at my wits end with this bug and could use some help.
+
+First, the bug:
+In Edit Mode, if you click to edit a cell, and the column width of  
+the cell was originally not very wide, my guess is less than 20  
+characters, then the cell width suddenly expands to about 20  
+characters wide.
+
+On inspection, I set the TextView's Input HTMLElement's style.width  
+to "100%". This seems to cause this weird behavior. I'm not sure why.  
+It seems like a Firefox bug to me.
+
+I can't think of a clean solution to work-around this yet. My best  
+hack is for the TextView's startEditing() method to check if it's  
+superview implements a method, say "getTextViewWidth" and if it does  
+to call that method, so that the superview gets a chance to decide  
+what the width of the TextView should be.
+
+Am I understanding something wrongly? Can you think of a better work- 
+around?
+
+Thanks,
+chao
+
+
+From brian.skinner at gumption.org  Wed Jun  8 20:52:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  8 20:52:00 2005
+Subject: [openrecord-dev] Input Width weirdness
+In-Reply-To: <CC228601-D0AA-4061-A684-0FAF81E4A13A@cs.stanford.edu>
+Message-ID: <200506081851.j58IpX124713@bat.berlios.de>
+
+Hi Chao,
+ 
+> OK, I'm at my wits end with this bug and could use 
+> some help.
+> 
+> First, the bug:
+> In Edit Mode, if you click to edit a cell, and the 
+> column width of the cell was originally not very wide, 
+> my guess is less than 20 characters, then the cell 
+> width suddenly expands to about 20 characters wide.
+
+I see what you're describing, but unfortunately I have no idea what's
+causing it, so I may not be much help.
+
+
+> On inspection, I set the TextView's Input HTMLElement's
+> style.width to "100%". This seems to cause this weird 
+> behavior. I'm not sure why. It seems like a Firefox bug 
+> to me.
+
+If you have the patience for it, one thing you could do is try to make a
+very simple stand-alone web page that reproduces the bug -- something where
+you have just one file with some HTML and inline CSS and JavaScript.  Then
+you could open that in Firefox and IE and Safari, and see how they each
+handle it.  If Firefox seems out of line, you could file a bug report and
+include the HTML file that demonstrates the problem.
+
+
+> I can't think of a clean solution to work-around this 
+> yet. My best hack is for the TextView's startEditing() 
+> method to check if it's superview implements a method, 
+> say "getTextViewWidth" and if it does to call that 
+> method, so that the superview gets a chance to decide  
+> what the width of the TextView should be.
+
+That seems reasonable to me.
+
+
+> Am I understanding something wrongly? Can you think 
+> of a better work-around?
+
+Another alternative would be to do something like this:
+
+  var inputElement = document.createElement("input");
+  var parentElement = (the HTML element the Input field will go in)
+  var widthOfParentElement = parentElement.offsetWidth;
+  var breathingRoom = 2; // make a little room for borders or padding
+  var widthForInputElement = widthOfParentElement - breathingRoom;
+  inputElement.style.width = widthForInputElement + "px";
+  parentElement.replaceChild(inputElement, textNode)
+
+Or, you could also experiment with this:
+
+  var inputElement = document.createElement("input");
+  inputElement.size = 1; // make it just wide enough for one character
+  inputElement.style.width = "100%";
+  parentElement.replaceChild(inputElement, textNode)
+
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jun  8 21:25:39 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  8 21:25:39 2005
+Subject: [openrecord-dev] Re: [openrecord-svn] r125 - in trunk: documentation source
+Message-ID: <200506081924.j58JOw125526@bat.berlios.de>
+
+> I don't think this is a bug.  It's already 
+> computed an acceptable value for
+> arrayHundredNanosecondIntervalsSince1582, 
+> so it's just waiting in a loop because the 
+> *next* increment would be too high.
+
+Yup, you're right.  Sorry about that.  I should have studied the code more
+carefully.  I mistakenly thought that while-loop code was triggered for the
+first new UUID that needs to fall in the next millisecond rather than the
+last new UUID that falls in the current millisecond. 
+
+:o) brian
+
+
+
+From brian.skinner at gumption.org  Wed Jun  8 21:25:40 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  8 21:25:40 2005
+Subject: [openrecord-dev] RE: failure notice
+In-Reply-To: <20050608050955.82118.qmail@web51008.mail.yahoo.com>
+Message-ID: <200506081924.j58JOw125525@bat.berlios.de>
+
+Hi Mignon,
+
+Thanks for forwarding the message.  
+
+I guess BerliOS has things set up so that mail generated by the commit has a
+reply-to address of username at sheep.berlios.de rather using the e-mail
+addresses that we each provided when we created our BerliOS developer
+accounts (in my case, brian.skinner at gumption.org).  
+
+I don't know whether skinner at sheep.berlios.de is supposed to be a valid
+e-mail address or not.  I know skinner at mail.berlios.de works, so maybe sheep
+is supposed to work too -- or maybe mail isn't really supposed to be coming
+from sheep. 
+
+I don't know what we can do about that.  I'd be fine with just leaving it
+the way it is.  It means that we can't ever reply to messages generated by
+our subversion commits, but we can always just send mail to the dev list
+instead.  
+
+Or, I think we may have access to the configuration files for our subversion
+server, so we might be able to change some subversion configuration info
+such that subversion sends messages with a different reply-to address.  If
+you want to work on that we can put it on the agenda for Monday, and we can
+try logging into sheep.berlios.de and looking at the subversion
+configuration info.  Or we could have a look at the BerliOS developer
+documentation, and see if there are any clues in that.
+
+:o) Brian
+
+
+
+
+
+-----Original Message-----
+From: Mignon Belongie [mailto:mignon_belongie at yahoo.com] 
+Sent: Tuesday, June 07, 2005 10:10 PM
+To: brian.skinner at gumption.org
+Subject: Fwd: failure notice
+
+Brian,
+
+Today I got this bounce message in response to the email I sent you
+yesterday (which was a reply to a message generated by your commit).  I
+don't know why it went to skinner at sheep.berlios.de, or whether that's a
+valid address.  Do you understand this?
+
+Thanks,
+Mignon
+
+--- MAILER-DAEMON at yahoo.com wrote:
+
+> Date: 7 Jun 2005 17:41:15 -0000
+> From: MAILER-DAEMON at yahoo.com
+> To: Mignon_Belongie at yahoo.com
+> Subject: failure notice
+> 
+> Hi. This is the qmail-send program at yahoo.com.
+> I'm afraid I wasn't able to deliver your message to the following
+> addresses.
+> This is a permanent error; I've given up. Sorry it didn't work out.
+> 
+> <skinner at sheep.berlios.de>:
+> Sorry, I wasn't able to establish an SMTP connection. (#4.4.1)
+> I'm not going to try again; this message has been in the queue too
+> long.
+> 
+> --- Below this line is a copy of the message.
+> 
+> Return-Path: <Mignon_Belongie at yahoo.com>
+> Received: from unknown (HELO ?192.168.0.5?)
+> (Mignon?Belongie at 67.120.105.118 with plain)
+>   by smtp815.mail.sc5.yahoo.com with SMTP; 6 Jun 2005 17:20:58 -0000
+> Mime-Version: 1.0 (Apple Message framework v622)
+> In-Reply-To: <200506061700.j56H00aL029986 at sheep.berlios.de>
+> References: <200506061700.j56H00aL029986 at sheep.berlios.de>
+> Content-Type: text/plain; charset=US-ASCII; format=flowed
+> Message-Id: <74b45e9ab9f1bc974b5a4abe63e66791 at yahoo.com>
+> Content-Transfer-Encoding: 7bit
+> From: Mignon Belongie <Mignon_Belongie at yahoo.com>
+> Subject: Re: [openrecord-svn] r125 - in trunk: documentation source
+> Date: Mon, 6 Jun 2005 10:21:54 -0700
+> To: Brian Douglas Skinner at BerliOS <skinner at sheep.berlios.de>
+> X-Mailer: Apple Mail (2.622)
+> 
+> Brian,
+> 
+> I don't think this is a bug.  It's already computed an acceptable
+> value 
+> for arrayHundredNanosecondIntervalsSince1582, so it's just waiting in
+> a 
+> loop because the *next* increment would be too high.
+> 
+> Unfortunately, I couldn't test this because the code is too slow to 
+> generate more than one uuid per millisecond.
+> 
+> Mignon
+> 
+> > Modified: trunk/source/Util.js
+> > ===================================================================
+> > --- trunk/source/Util.js	2005-06-06 07:00:46 UTC (rev 124)
+> > +++ trunk/source/Util.js	2005-06-06 16:59:56 UTC (rev 125)
+> 
+> > @@ -664,8 +665,19 @@
+> >      Util.carry(arrayHundredNanosecondIntervalsSince1582);
+> >      Util._ourNextIntraMillisecondIncrement += 1;
+> >      if (Util._ourNextIntraMillisecondIncrement == 10000) {
+> > +      // If we've gotten to here, it means we've already generated
+> 
+> > 10,000
+> > +      // UUIDs in this single milliseconds, which is the most that
+> 
+> > the UUID
+> > +      // timestamp field allows for.  The only thing to do now is 
+> > just sit
+> > +      // and wait for a fraction of a millisecond, so that we're 
+> > working
+> > +      // with a different millisecond value in the timestamp
+> field.
+> >        while (now.valueOf() == Util._ourDateValueOfPreviousUuid) {
+> >          now = new Date();
+> > +        // PENDING:
+> > +        // There's a bug here, isn't there?  Now that have a fresh
+> new
+> > +        // "now" value, we can get a generate a valid timestamp,
+> but 
+> > we
+> > +        // don't actually do that.  Don't we now need to go back
+> up 30
+> > +        // lines, and start over with all the work to calculate
+> > +        // arrayHundredNanosecondIntervalsSince1582 ?
+> >        }
+> >      }
+> >    }
+> 
+> 
+
+
+
+From brian.skinner at gumption.org  Wed Jun  8 22:25:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun  8 22:25:01 2005
+Subject: [openrecord-dev] RE: rationalizing outline view with a table
+In-Reply-To: <AE756694-938C-4EEB-88DB-8B3209C84515@osafoundation.org>
+Message-ID: <200506082024.j58KOI127234@bat.berlios.de>
+
+Hi Mimi,
+
+I'm psyched that you're exploring that question.  I'd love it if we could
+come up with a simple, intuitive UI that let's people naturally transition
+from an outline view to a table view without running into problems.
+
+I've never used Omni-Outliner, so I don't know how it feels, but I like your
+proposals about letting an item live in more than one place in the
+hierarchy, and letting people sort on any column and having it flatten the
+hierarchy and sort on all the items, not just the top-level ones.  
+
+I think we'll have to experiment some to see what turns out to feel good and
+be useful.  Unfortunately, we may be swamped for the next few weeks just
+doing non-UI work to get the back-end solid, and getting our first working
+"dogfood" site up and running smoothly enough that we actually feel safe
+about saving our data in it.  But hopefully in July we'll get back to
+focusing more on the UI -- cleaning up the current UI, as well as adding new
+features!
+
+:o) Brian
+
+
+
+________________________________
+
+From: Mimi Yin [mailto:mimi at osafoundation.org] 
+Sent: Tuesday, June 07, 2005 6:21 PM
+To: openrecord-svn at lists.berlios.de; Brian Douglas Skinner
+Cc: Katie Capps Parlante; Chih-Chao Lam
+Subject: rationalizing outline view with a table
+	
+	
+Hi Brian, 
+
+After our meeting today, I thought a little more about how to make outline
+view and table view one in the same thing such that users can start out by
+creating data in an outline (which is an extremely intuitive way to go about
+structuring data) without regretting it afterwards.
+
+Katie, I've cc:d you because you were the one who brought this to my
+attention.
+
+Omni-outliner also conflates an outline view with a table...however as we
+discussed, it runs into a few problems:
+
+1. If you try to sort by a column (ie. status = Done), because items are
+organized in a hierarchical tree, the user can never really see all of their
+Done items clumped together because Omni-Outliner refuses to break the tree.
+So the best you can do is sort by the top node, which wouldn't get you very
+far.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Sparkling apple juice (Later)
+	Scallions (Now)
+	Marjoram (Now)
+	Swordfish (Now)
+	Lime (Now)
+	Wine (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+	Look up Jamie's allergies (Now)
+
+	Restock spices (Later)
+	Marjoram (Now)
+	Cinnamon (Later)
+	Nutmeg (Later)
+
+2. Omni-outliner also doesn't understand about a single item living in
+multiple places (ie. Marjoram lives in both Dinner party>>Albertson's AND
+Restock spices.
+
+Proposal: What if...You could sort for real thereby flattening out the
+hierarchy. However, from any item in the list, you can open up the thread or
+hierarchy that the item belongs to. 
+
+Step 1: I've sorted the hierarchical tree above by status, therby flattening
+the tree into a plain list.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Scallions (Now)
+	+ Marjoram (Now)
+	Swordfish (Now)
+	Lime (Now)
+	Look up Jamie's allergies (Now)
+	Sparkling apple juice (Later)
+	Wine (Later)
+	Restock spices (Later) 
+	Cinnamon (Later)
+	Nutmeg (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+
+
+
+Step 2: I've opened the item Marjoram so I can see its hierarchical context.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Scallions (Now)
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Sparkling apple juice (Later)
+	Scallions (Now)
+	- Marjoram (Now)
+	Swordfish (Now)
+	Lime (Now)
+	Wine (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+	Look up Jamie's allergies (Now)
+
+	Swordfish (Now)
+	Lime (Now)
+	Look up Jamie's allergies (Now)
+	Sparkling apple juice (Later)
+	Wine (Later)
+	Restock spices (Later) 
+	Cinnamon (Later)
+	Nutmeg (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+
+
+Step 3: The item Marjoram actually belongs to more than 1 tree. Here, I've
+chosen to view it in the context of the Dinner party tree.
+
+	Dinner party (Now)
+	Albertson's (Now)
+	Fontina (Now)
+	Scallions (Now)
+
+	Restock spices (Later)
+	- Marjoram (Now)
+	Cinnamon (Later)
+	Nutmeg (Later
+
+	Swordfish (Now)
+	Lime (Now)
+	Look up Jamie's allergies (Now)
+	Sparkling apple juice (Later)
+	Wine (Later)
+	Restock spices (Later) 
+	Cinnamon (Later)
+	Nutmeg (Later)
+	Order flowers (Done)
+	Wash napkins (Done)
+
+This is sort of like clusters in Chandler, the only tweak is that these
+would be hierarchical clusters.
+
+
+
+
+From mimi at osafoundation.org  Wed Jun  8 22:50:01 2005
+From: mimi at osafoundation.org (Mimi Yin)
+Date: Wed Jun  8 22:50:01 2005
+Subject: [openrecord-dev] RE: rationalizing outline view with a table
+In-Reply-To: <200506082024.j58KOI127234@bat.berlios.de>
+References: <200506082024.j58KOI127234@bat.berlios.de>
+Message-ID: <a06110402becd09164456@[10.10.10.104]>
+
+Yes, I don't expect these things to materialize 
+out of thin air. It's just been a problem that's 
+been bugging me for a long while, because as much 
+as I hate hierchies on principle, I find them 
+pretty useful myself as a way to get started on 
+organizing things. I think in general there may 
+be a more elegant way to structure how view types 
+are exposed to the user (ie. more as a result of 
+the data type the user is looking at) and less of 
+an explicit parameter the user sets in the UI. 
+The ability to seemlessly integrate outline and 
+table views is a first step towards that because 
+it gets rid of distinctions between views that 
+maybe don't need to be distinguished?
+
+As a result, view types are really of 2 
+fundamentally different classes: data 
+presentation views v. graphical views. Outline 
+and table are examples data presentation views. 
+Maps, scatter plots, graphs, bar charts, mind 
+maps are examples of graphical views.
+
+I'll have to think more about this, and a short 
+brainstorming session about all the different 
+data types and view types might be a good way to 
+bring out patterns.
+
+Mimi
+
+
+>Hi Mimi,
+>
+>I'm psyched that you're exploring that question.  I'd love it if we could
+>come up with a simple, intuitive UI that let's people naturally transition
+>from an outline view to a table view without running into problems.
+>
+>I've never used Omni-Outliner, so I don't know how it feels, but I like your
+>proposals about letting an item live in more than one place in the
+>hierarchy, and letting people sort on any column and having it flatten the
+>hierarchy and sort on all the items, not just the top-level ones.?
+>
+>I think we'll have to experiment some to see what turns out to feel good and
+>be useful.  Unfortunately, we may be swamped for the next few weeks just
+>doing non-UI work to get the back-end solid, and getting our first working
+>"dogfood" site up and running smoothly enough that we actually feel safe
+>about saving our data in it.  But hopefully in July we'll get back to
+>focusing more on the UI -- cleaning up the current UI, as well as adding new
+>features!
+>
+>:o) Brian
+>
+>
+>
+>________________________________
+>
+>From: Mimi Yin [mailto:mimi at osafoundation.org]
+>Sent: Tuesday, June 07, 2005 6:21 PM
+>To: openrecord-svn at lists.berlios.de; Brian Douglas Skinner
+>Cc: Katie Capps Parlante; Chih-Chao Lam
+>Subject: rationalizing outline view with a table
+>
+>
+>Hi Brian,
+>
+>After our meeting today, I thought a little more about how to make outline
+>view and table view one in the same thing such that users can start out by
+>creating data in an outline (which is an extremely intuitive way to go about
+>structuring data) without regretting it afterwards.
+>
+>Katie, I've cc:d you because you were the one who brought this to my
+>attention.
+>
+>Omni-outliner also conflates an outline view with a table...however as we
+>discussed, it runs into a few problems:
+>
+>1. If you try to sort by a column (ie. status = Done), because items are
+>organized in a hierarchical tree, the user can never really see all of their
+>Done items clumped together because Omni-Outliner refuses to break the tree.
+>So the best you can do is sort by the top node, which wouldn't get you very
+>far.
+>
+>	Dinner party (Now)
+>	Albertson's (Now)
+>	Fontina (Now)
+>	Sparkling apple juice (Later)
+>	Scallions (Now)
+>	Marjoram (Now)
+>	Swordfish (Now)
+>	Lime (Now)
+>	Wine (Later)
+>	Order flowers (Done)
+>	Wash napkins (Done)
+>	Look up Jamie's allergies (Now)
+>
+>	Restock spices (Later)
+>	Marjoram (Now)
+>	Cinnamon (Later)
+>	Nutmeg (Later)
+>
+>2. Omni-outliner also doesn't understand about a single item living in
+>multiple places (ie. Marjoram lives in both Dinner party>>Albertson's AND
+>Restock spices.
+>
+>Proposal: What if...You could sort for real thereby flattening out the
+>hierarchy. However, from any item in the list, you can open up the thread or
+>hierarchy that the item belongs to.
+>
+>Step 1: I've sorted the hierarchical tree above by status, therby flattening
+>the tree into a plain list.
+>
+>	Dinner party (Now)
+>	Albertson's (Now)
+>	Fontina (Now)
+>	Scallions (Now)
+>	+ Marjoram (Now)
+>	Swordfish (Now)
+>	Lime (Now)
+>	Look up Jamie's allergies (Now)
+>	Sparkling apple juice (Later)
+>	Wine (Later)
+>	Restock spices (Later)
+>	Cinnamon (Later)
+>	Nutmeg (Later)
+>	Order flowers (Done)
+>	Wash napkins (Done)
+>
+>
+>
+>Step 2: I've opened the item Marjoram so I can see its hierarchical context.
+>
+>	Dinner party (Now)
+>	Albertson's (Now)
+>	Fontina (Now)
+>	Scallions (Now)
+>
+>	Dinner party (Now)
+>	Albertson's (Now)
+>	Fontina (Now)
+>	Sparkling apple juice (Later)
+>	Scallions (Now)
+>	- Marjoram (Now)
+>	Swordfish (Now)
+>	Lime (Now)
+>	Wine (Later)
+>	Order flowers (Done)
+>	Wash napkins (Done)
+>	Look up Jamie's allergies (Now)
+>
+>	Swordfish (Now)
+>	Lime (Now)
+>	Look up Jamie's allergies (Now)
+>	Sparkling apple juice (Later)
+>	Wine (Later)
+>	Restock spices (Later)
+>	Cinnamon (Later)
+>	Nutmeg (Later)
+>	Order flowers (Done)
+>	Wash napkins (Done)
+>
+>
+>Step 3: The item Marjoram actually belongs to more than 1 tree. Here, I've
+>chosen to view it in the context of the Dinner party tree.
+>
+>	Dinner party (Now)
+>	Albertson's (Now)
+>	Fontina (Now)
+>	Scallions (Now)
+>
+>	Restock spices (Later)
+>	- Marjoram (Now)
+>	Cinnamon (Later)
+>	Nutmeg (Later
+>
+>	Swordfish (Now)
+>	Lime (Now)
+>	Look up Jamie's allergies (Now)
+>	Sparkling apple juice (Later)
+>	Wine (Later)
+>	Restock spices (Later)
+>	Cinnamon (Later)
+>	Nutmeg (Later)
+>	Order flowers (Done)
+>	Wash napkins (Done)
+>
+>This is sort of like clusters in Chandler, the only tweak is that these
+>would be hierarchical clusters.
+>
+>
+>___________________________________________________________________
+>Copyright rights relinquished. This work is in the Public Domain.
+>For details see: http://creativecommons.org/licenses/publicdomain/
+>
+>openrecord-dev mailing list
+>openrecord-dev at lists.berlios.de
+>http://lists.berlios.de/mailman/listinfo/openrecord-dev
+
+
+
+From chao at cs.stanford.edu  Fri Jun 10 03:23:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri Jun 10 03:23:00 2005
+Subject: [openrecord-dev] Input Width weirdness
+In-Reply-To: <200506081851.j58IpX124713@bat.berlios.de>
+References: <200506081851.j58IpX124713@bat.berlios.de>
+Message-ID: <7C211B1F-485E-4803-B717-66EB43549198@cs.stanford.edu>
+
+Hi Brian,
+
+>   var inputElement = document.createElement("input");
+>   inputElement.size = 1; // make it just wide enough for one character
+
+You're a genius. This worked! Goes to show I should brush up on my HTML.
+
+chao
+
+
+
+From brian.skinner at gumption.org  Sat Jun 11 00:46:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Jun 11 00:46:01 2005
+Subject: [openrecord-dev] how many UUIDs in a millisecond?
+Message-ID: <200506102245.j5AMjo123041@bat.berlios.de>
+
+> Unfortunately, I couldn't test this because the code is 
+> too slow to generate more than one uuid per millisecond.
+> 
+> Mignon
+
+Hmmm...  on my machine the UUID generation code seems to consistently
+generate exactly 13 UUIDs per millisecond.  My machine isn't really that
+much faster than yours, is it?
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Sat Jun 11 01:01:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Jun 11 01:01:01 2005
+Subject: [openrecord-dev] how many UUIDs in a millisecond?
+In-Reply-To: <200506102245.j5AMjo123041@bat.berlios.de>
+References: <200506102245.j5AMjo123041@bat.berlios.de>
+Message-ID: <8261FBEF-4042-47D4-93F3-80565EFF4A2D@cs.stanford.edu>
+
+Maybe it's a mac vs. pc thing again?
+
+chao
+
+On Jun 10, 2005, at 3:45 PM, Brian Douglas Skinner wrote:
+
+>> Unfortunately, I couldn't test this because the code is
+>> too slow to generate more than one uuid per millisecond.
+>>
+>> Mignon
+>>
+>
+> Hmmm...  on my machine the UUID generation code seems to consistently
+> generate exactly 13 UUIDs per millisecond.  My machine isn't really  
+> that
+> much faster than yours, is it?
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Mon Jun 13 04:38:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon Jun 13 04:38:00 2005
+Subject: [openrecord-dev] Outlining and workflows
+Message-ID: <D06244A7-377D-441E-B75A-97D4BA75CD60@cs.stanford.edu>
+
+Here's an interesting blog entry about the use of something Dave  
+Winer is pioneering: Instant Outlining, which I think is a shared  
+workspace with outlines as the key content, perhaps in a sub-ethaedit- 
+like way. Outlines can be further subdivided by individual users or  
+workgroups.
+
+http://geeks.opml.org/stories/storyReader$90
+
+Mimi, the entry also has very concrete workflows of how microsoft  
+employees process large volumes of email. I think it validates your  
+project-centric collection ideas. What I like about the write-up is  
+that it describes the user interactions in very concrete details.
+
+chao
+
+
+From brian.skinner at gumption.org  Mon Jun 13 05:28:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Jun 13 05:28:01 2005
+Subject: [openrecord-dev] Outlining and workflows
+In-Reply-To: <D06244A7-377D-441E-B75A-97D4BA75CD60@cs.stanford.edu>
+Message-ID: <200506130327.j5D3RV132126@bat.berlios.de>
+
+Sounds cool.  I'd love to see it in action!
+
+:o) Brian
+ 
+
+
+-----Original Message-----
+From: openrecord-dev-admin at berlios.de
+[mailto:openrecord-dev-admin at berlios.de] On Behalf Of Chih-Chao Lam
+Sent: Sunday, June 12, 2005 7:37 PM
+To: openrecord-dev at berlios.de
+Subject: [openrecord-dev] Outlining and workflows
+
+Here's an interesting blog entry about the use of something Dave  
+Winer is pioneering: Instant Outlining, which I think is a shared  
+workspace with outlines as the key content, perhaps in a sub-ethaedit- 
+like way. Outlines can be further subdivided by individual users or  
+workgroups.
+
+http://geeks.opml.org/stories/storyReader$90
+
+Mimi, the entry also has very concrete workflows of how microsoft  
+employees process large volumes of email. I think it validates your  
+project-centric collection ideas. What I like about the write-up is  
+that it describes the user interactions in very concrete details.
+
+chao
+
+
+
+From mimi at osafoundation.org  Mon Jun 13 17:45:07 2005
+From: mimi at osafoundation.org (Mimi Yin)
+Date: Mon Jun 13 17:45:07 2005
+Subject: [openrecord-dev] Outlining and workflows
+Message-ID: <0BDD10DC-B49C-4C65-8CBC-4079E081041E@osafoundation.org>
+
+Hi Chao,
+
+Thanks for sending this out. I think this will be useful in our  
+efforts to sell the Sidebar design too. See more comments in-line.  
+(Do you think this is worth posting to the OSAF lists?)
+
+Mimi
+
+
+
+I know how a specific very large successful company organizes itself  
+to get its work done.
+
+I realized this morning that Instant Outlining would allow you to  
+model the reporting relationships in a real-world comapny and you  
+could actually get most of it's business done with it.
+
+Microsoft is built around its mail servers. Every employee in a  
+development position gets a blizzard of tens to hundreds of emails  
+every day. They have to pay attention to the email flow, ignore the  
+messages that don't apply to them and act on those that are important  
+for them, respond to those that request assistance, and file those  
+that might be important in the future.
+
+------
+
+It seems like one of the biggest gripes people at Microsft have is  
+the indiscriminate use of lists. People don't think carefully about  
+who actually really needs to read the email carefully and respond to  
+it versus the people who just need to know on an fyi basis versus the  
+people who should have access to the information on a need to to know  
+basis. Any group communications solution needs to encourage SENDERS  
+to draw those fine distinctions.
+
+Right now, RECEIVERS are burdened with that task. Some people have  
+clear enough boundaries of responsibilities that they are able to do  
+that via rules. Most people do it manually. However, the hans-down  
+best person to distinguish between those that need to know and those  
+that really need to know is the SENDER. That alone would probably cut  
+down most people's email by 50-70%.
+
+------
+
+
+In many ways the whole effort would work better if it were built on  
+Instant Outlining.
+
+The overhead to talk to your own team members is really reduced. You  
+open a new outline subhead that's time stamped. You type the names of  
+the folks you'd like to pay attention at the front of the subhead,  
+like the salutation of a letter, type your thoughts and press Ctrl-S  
+to save it so your thought is transmitted instantly to your subscribers.
+
+
+------
+
+Hmmm, I'm thinking there still needs to be a notification system that  
+distinguishes between capital-N (aka I'm ready for comments and  
+responses) v. small-n (aka Look at it if you want, but please hold  
+questions until the end.) The fear of being inundated with  
+unsolicitied replies when you're not quite ready to share your  
+thoughts will stifle people such that they won't address drafts and  
+make them available to other people until they're absolutely ready.
+
+------
+
+Sending emails seems way more formal and always seems to take longer  
+because you have the overhead of cooking up a title and figuring out  
+how to address it. When you type in your outline you are  
+automatically addressing your newly typed subhead to all of your co- 
+workers who care about what you are saying
+
+With email, you have to wait for the sender to get all of his  
+thoughts into the message before he can send it. With an Instant  
+Outline your coworker can let you watch him put his thoughts together  
+by saving his outline as he composes it. Your subscribers can digest  
+the early part of your thinking and give you a faster response once  
+you are all done.
+
+------
+
+How do they know when you're all done?
+
+------
+
+
+You focus attention on what your open issues are by leaving subheads  
+in your outline open and close them when you are satisfied. The  
+outline is a permanent, searchable entity that records your thoughts  
+like an email queue would, but it starts out and remains in a  
+structure that gives it more permanence and context than an email queue.
+
+------
+
+I guess this is the equivalent of triage status? I wonder if the open  
+v. closed-ness of any one section it's shared. It also seems annoying  
+that you would have to leave the entire tree open in order to view a  
+single open issue that was really deep in the tree. Maybe I'm not  
+interpreting what he's saying correctly. But he's pointing out a need  
+to distinguish between open and resolved issues.
+
+------
+
+
+A subdomain is a directory that stores the personal outlines that a  
+group of coworkers maintain for their mutual benefit. Each outline is  
+available for subscription by the other members at their discretion.
+
+Here's how Microsoft could be modeled using Instant Outlining  
+software that can access multiple subdomains.
+
+Bill Gates and Sterve Ballmer's direct reports would mostly be the  
+folks that they subscribed to with an Instant Outliner. Those  
+outlines would be hosted in Office of the Chairman and Office of the  
+CEO subdomains.
+
+When they needed a temporary look deep in the organization, they  
+would subscribe to someone in an operating group to listen to their  
+opinion and then would unsub later on, trusting that the operating  
+groups would pass important stuff up to them when they weren't paying  
+attention to that level of detail.
+
+
+------
+
+This is how I imagined Mitch might subscribe to shared collections  
+maintained by Sheila, Philippe, Katie and Lisa and shared with their  
+respective teams, as a way to gain better insight into current  
+discussions, specs, etc. This would also be a good way for the  
+community to keep up-to-date on OSAF progress without having to slug  
+through the wiki, both mailing lists and IRC.
+
+------
+
+
+For leaders of large groups, Instant outlining has the very cool  
+feature that you can allow folks to subscribe to you so that they can  
+see what you are thinking about. The leader does not necessarily  
+subscribe to everyone who subscribes to him because that would  
+overwhelm his thinking process. But those who get to subscribe to one  
+of his Instant Outlines get quite an informational advantage and can  
+work better on their own goals because they have that.
+
+If you're organized around email, usually the only folks who get to  
+listen are the folks who are direct reports. And those guys are  
+always too busy to pass much info down.
+
+The leaders also get to monitor activity in any of the subdomains of  
+the company. They would subscribe to outlines in different groups of  
+the company at their pleasure, but since they are not intimately  
+familar with those groups business they would not want immediate  
+notification of changes made to those person's outlines. They can see  
+all the way down to the bottom of the company if they wish to. That's  
+been a near impossibility up to now with the communication tools that  
+have been available.
+
+OK. now were going to go down to the individual development groups  
+and work our way back up to Bill and Steve. Keep in mind this is not  
+describing what Microsoft curently does, but what they could do if  
+they used an Instant Outliner.
+
+In a software development setting, one developer might post to  
+outlines in 10 to 15 subdomains.
+
+A programmer on the Word team would keep an outline on his feature  
+team's subdomain and another one on the subdomain dedicated to the  
+entire Word project. When he has a comment relevant to his feature  
+team coworkers/buddies who he works with most closely, he adds  
+something to that outline. And when he has something to say that the  
+whole product team needs to hear he posts to that outline.
+
+
+------
+
+This is sounding a lot like a discussion board with the added  
+functionality of addressing comments to specific people.
+
+------
+
+He might also keep outlines for communcation with feature teams over  
+in the Excel and Exchange development groups in Office because those  
+teams need to have someone in Word who is conversant with what they  
+are doing and they value his comments. He might have special  
+expertise in particular technologies (Office subsystems, HTML editing  
+controls, dialog managers, format converters) that are used widely  
+with the company.
+
+He would have a different outline subdomain for each of his  
+responsibilities. His OPML Editor would maintain a Buddies header  
+that lists each subdomain he subscribes to and the subheads within  
+would show the personal outlines for those co-workers he's subscribed  
+to.
+
+The team leads would have their own subdomain for communication with  
+the project lead and probably also get to listen in on the  
+discussions that happen in the business unit managers personal  
+subdomain.
+
+Business unit managers would maintain outlines in a company wide  
+business unit managers subdomain and in a subdomain for all the  
+reports of the vice-president who is their boss. These unit managers  
+might silently be able to monitor outlines from several levels down  
+in the organization but don't want to be notified of every change to  
+outlines and would not expect that those folks would be able to  
+subscribe to his own personal subdomains.
+
+Those vice-presidents are Steve Ballmer's direct reports and keep  
+outlines in the Office of the CEO subdomain.
+
+------
+
+I'm trying to visualize how you would keep track of new items being  
+added all over the various outlines you're subscribed to.
+
+------
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20050613/2c03dac7/attachment.html>
+
+From mimi at osafoundation.org  Tue Jun 14 00:38:01 2005
+From: mimi at osafoundation.org (Mimi Yin)
+Date: Tue Jun 14 00:38:01 2005
+Subject: [openrecord-dev] Differentiating between editing and entry and adding a new version of an entry
+Message-ID: <7C90FF28-B98F-4D07-8932-EB235A26BB73@osafoundation.org>
+
+We talked earlier about the need to differentiate between editing an  
+entry and adding an alternate entry: ie.
+
+Tsar v. Czar is an example of where users might want to see both options
+
+Tsar  v. Tsssar is an example of where users might want to  
+permanently get rid of Tsssar
+
+Apple mail email auto-complete allows you right-click on an email  
+address to edit that email address, which I presume, changes the  
+entry forever more. This is different from typing a new email  
+address, thereby, adding a new entry to the list of possible email  
+addresses.
+
+I think by making it an extra click to get to "edit" mode, it might  
+reasonable to assume that most people won't accidentally edit away  
+legitimate alternatives...they'll only bother when it's a blatant typo.
+
+Brian, is there a notion that Tsar and Czar are just two variants of  
+the display name of a single object? Or are they entirely separate  
+entries?
+
+Mimi
+
+
+
+
+
+
+
+From chao at cs.stanford.edu  Tue Jun 14 18:47:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Jun 14 18:47:01 2005
+Subject: [openrecord-dev] Differentiating between editing and entry and adding a new version of an entry
+In-Reply-To: <7C90FF28-B98F-4D07-8932-EB235A26BB73@osafoundation.org>
+References: <7C90FF28-B98F-4D07-8932-EB235A26BB73@osafoundation.org>
+Message-ID: <DA42CDCC-4200-43FD-9F11-521A265287AE@cs.stanford.edu>
+
+On Jun 13, 2005, at 3:34 PM, Mimi Yin wrote:
+
+> We talked earlier about the need to differentiate between editing  
+> an entry and adding an alternate entry: ie.
+>
+> Tsar v. Czar is an example of where users might want to see both  
+> options
+>
+> Tsar  v. Tsssar is an example of where users might want to  
+> permanently get rid of Tsssar
+>
+> Apple mail email auto-complete allows you right-click on an email  
+> address to edit that email address, which I presume, changes the  
+> entry forever more. This is different from typing a new email  
+> address, thereby, adding a new entry to the list of possible email  
+> addresses.
+>
+Actually, I think Apple mail creates a "new email address" when you  
+edit the bubble or lozenge. But that is probably not the behavior we  
+want?
+
+chao
+
+
+From brian.skinner at gumption.org  Tue Jun 14 21:01:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Jun 14 21:01:00 2005
+Subject: [openrecord-dev] Differentiating between editing and entry and adding a new version of an entry
+In-Reply-To: <7C90FF28-B98F-4D07-8932-EB235A26BB73@osafoundation.org>
+Message-ID: <200506141900.j5EJ0r111606@bat.berlios.de>
+
+> Brian, is there a notion that Tsar and Czar are just 
+> two variants of the display name of a single object? 
+> Or are they entirely separate entries?
+
+Our data model does support the idea that the Tsar item can have two
+different display names, Tsar and Czar, which are just variants.  I'm not
+sure how we'll want to handle that in the UI.
+
+We're also going to want to support language translations, so that the
+Moscow items has names like Moscow, Moskva, Mockba, as well as the original
+Cyrillic name.
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Tue Jun 14 21:17:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Jun 14 21:17:00 2005
+Subject: [openrecord-dev] copyrights, patents, etc.
+Message-ID: <200506141916.j5EJGS112008@bat.berlios.de>
+
+Hey Gang,
+
+Ever since we set up our Subversion server and started do check-ins, we've
+been putting all the code we write under a Creative Commons Public Domain
+Dedication.  And similarly, all the messages we post to the dev list are
+marked as public domain.
+
+I think the Public Domain Dedication is a good choice for us.  I'm not a
+lawyer or an expert on intellectual property issues, but my understanding is
+that the public domain dedication gives us a huge amount of flexibility in
+how we can use the work we do.  
+
+For example, with the public domain dedication, I think at any point you can
+copy all the code and make a few changes to it, thereby creating a
+derivative work.  And then you can copyright the derivative work, all rights
+reserved, and license it under any propriety license you want, or any open
+source license you want.
+
+And I think the public domain dedication also makes it easier to contribute
+code to other open source projects.  Because all our code is public domain,
+my understanding is that any other project can take little scraps without
+having to deal with keeping track of licensing and attribution issues.  For
+example, if a programmer at OSAF is working on Scooby, they can look through
+the OpenRecord code to see how we do pop-up suggestion lists, and then they
+can copy a few methods or a few files, re-work it to meet their needs, and
+incorporate it in the Scooby code base under the OSAF copyright and license
+terms.  Similarly, if we wanted the whole OpenRecord project to get
+assimilated into the MediaWiki project, I believe that having our work in
+the public domain should make that easier. 
+
+But, the Creative Commons Public Domain Dedication only covers the copyright
+issues.  We also need to worry about patent rights for the work we create.
+And we need to worry about keeping track of the patent and copyright license
+terms for code that we get from other open source authors. 
+
+In the past week I've spent a bunch of time looking at how other open source
+projects handle all this stuff.  I've been looking at the "contributor
+agreements" and license agreements used Apache, Mozilla, Zope, etc.  There
+are lots of good ideas to draw on, but unfortunately everybody seems to do
+things a little bit differently.  And we face a further complication,
+because unlike Apache, Mozilla, and Zope, for our project there's no single
+company or foundation that can own the work and control the license.  
+
+This stuff is all a little bit complicated, and it'd be good to talk to a
+lawyer about it and get some expert advice.  I've seen companies spend
+millions of dollars just on legal fees, on intellectual property lawsuits
+that could probably have been prevented if the original authors had been
+careful to get all their ducks in a row in the first few months of the
+project.
+
+For our project, it seems like either we need to (a) create some kind of
+little non-profit foundation to serve as a legal umbrella, (b) operate as a
+project of some existing foundation, like the Tides Foundation or OSAF, or
+(c) set up some kind of contributor license agreement that works just
+between all of the individual contributors.
+
+My first inclination was to try approach (c), because it seemed simpler and
+cheaper than (a) or (b).  This past week I took a stab at trying to draft a
+contributor agreement that might work for our project.  Have a look at it
+when you get a chance, and we can talk about it next time we're all
+together!
+
+:o) Brian
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~
+                   The OpenRecord Software Project
+             Contributor License Agreement ("Agreement")
+                   http://openrecord.org/licenses/
+
+                   
+Thank you for contributing to The OpenRecord Software Project. In order to
+clearly establish the intellectual property license granted with
+Contributions, we need to have a Contributor License Agreement that has been
+signed by each Contributor, indicating agreement to the license terms below.
+This Agreement is for the protection of all of the Contributors, as well as
+the protection of the users of the Work. Please read this document carefully
+before signing and keep a copy for your records.
+
+
+This multiparty agreement is entered into among Brian Douglas Skinner,
+Chih-Chao Lam, Mignon Belongie, (ALSO?: Mimi and Marty), and the subsequent
+undersigned Contributors. In consideration of the premises and the mutual
+agreements, provisions and covenants contained herein, the parties agree as
+follows:
+
+
+
+                                    RECITALS
+                                    
+The OpenRecord Software Project is an open source software development
+project.  The primary OpenRecord product is a collaborative web tool,
+similar in concept to a wiki (the most famous example of which is
+wikipedia.org). However, unlike a wiki, which is primarily text based,
+OpenRecord is designed to enable web sites that allow people to create, add
+information to, reorganize, link together, search and otherwise use charts,
+tables, databases, and other ways of organizing information. More
+information can be found at http://openrecord.org.  
+
+The Contributors to the OpenRecord Software Project intend to use the
+resulting OpenRecord Work in a wide variety of ways. Different Contributors
+intend to use the work in different ways. The Contributors wish to ensure
+that they, and others, retain broad and sweeping freedoms to Fully Utilize
+the OpenRecord Work. One of the goals of this Agreement is to help ensure
+that the OpenRecord Work is not contaminated with Contributions of GNU GPL
+source code or Contributions of proprietary intellectual property that would
+restrict how the OpenRecord Work could be used.
+
+
+
+SECTION 1.     Definition of Terms. 
+
+The following definitions apply throughout this Agreement:
+
+1.1. "Agreement" (or "Contributor License Agreement")
+     means this agreement.
+
+1.2. "Contributor" 
+     means an individual or a legal entity exercising rights under, and
+complying with all of the terms of, this Agreement. For legal entities, the
+entity making a Contribution and all other entities that control, are
+controlled by, or are under common control with that entity are considered
+to be a single Contributor. For purposes of this definition, "control" means
+(i) the power, direct or indirect, to cause the direction or management of
+such entity, whether by contract or otherwise, or (ii) ownership of fifty
+percent (50%) or more of the outstanding shares, or (iii) beneficial
+ownership of such entity.
+
+1.3. "You" (or "Your")
+     means the Contributor that is indicating agreement to these terms by
+completing and executing this Agreement.
+     
+1.4. "Other Contributors"
+     means the Contributors who have executed this Agreement before or after
+You executed it.
+
+1.5. "Creation"
+     means any techniques, sketches, drawings, models, specifications,
+designs, documentation, inventions, know-how, processes, apparatus,
+algorithms, formulae, software code, software programs, products, tools, or
+inventions created in the course of working.
+     
+1.6. "OpenRecord Work" 
+     means any Creation developed by the Contributors in the course of
+working on the OpenRecord Project, as well as any  discussion of the
+Creation. 
+   
+1.7. "Contribution" 
+     means any Original Work or Copied Work that You intentionally Submit
+for possible inclusion in, or documentation of, any part of the OpenRecord
+Work. Types of Contributions include but are not limited to source code,
+scripts, images, diagrams, text documents, e-mail messages, and other forms
+of verbal or written communication.
+
+1.8. "Original Work"
+     means any Creation or original work of authorship by You, including any
+modifications or additions to an existing work.
+
+1.9. "Copied Work"
+     means any work which is not Your Original Work.
+
+1.10. "Submit"
+     means sending, posting, or transmitting or otherwise sharing any form
+of electronic, verbal, or written communication to the other Contributors,
+including but not limited to communication in any OpenRecord Forum.
+     
+1.11. "OpenRecord Forum" 
+     means any meetings, electronic mailing lists, source code control
+systems, and issue tracking systems that are managed by, or on behalf of,
+the Contributors for the purpose of discussing and improving the OpenRecord
+Work, or exchanging information about the OpenRecord Work. The OpenRecord
+Forums include but are not limited to the following forums available on the
+openrecord.org web site and the berlios.de web site and accessible at these
+addresses:
+       http://lists.berlios.de/mailman/listinfo/openrecord-dev
+       http://lists.berlios.de/mailman/listinfo/openrecord-svn
+       http://svn.berlios.de/viewcvs/openrecord/
+       http://svn.berlios.de/wsvn/openrecord
+       http://developer.berlios.de/svn/?group_id=3396
+       http://openrecord.org/
+  
+1.12. "Creative Commons Public Domain Dedication" 
+     means the copyright dedication and public domain certification document
+made available by the non-profit corporation Creative Commons. The text of
+the Creative Commons Public Domain Dedication can be found at the
+creativecommons.org web site:
+       http://creativecommons.org/licenses/publicdomain/
+
+1.13. "Fully Utilize"
+     means use, copy, make, have made, distribute, transmit, modify, build
+upon, prepare derivative works of, publicly display, publicly perform, offer
+to sell, sell, import, transfer, sublicense, reproduce, or otherwise exploit
+for any purpose, commercial or non-commercial, and in any way, including by
+methods that have not yet been invented or conceived.
+     
+1.14. "Employer"
+     means any entity You work for as an employee or a contractor.
+     
+     
+       
+SECTION 2.     Right to Submit Contributions.
+
+2.1. Your Right to Submit Contributions.
+
+You hereby grant the Other Contributors the right to Submit Contributions to
+the OpenRecord Work, in consideration of the agreement by the Other
+Contributors to the terms and conditions contained in this Agreement.
+
+2.2. Your Right to Submit Contributions.
+
+The Other Contributors hereby grant You the right to Submit Contributions to
+the OpenRecord Work, in consideration of the agreement by You to the terms
+and conditions contained in this Agreement.
+
+
+
+SECTION 3.     Grant of Copyright License. 
+
+3.1. Public Domain Dedication.
+
+You hereby dedicate to the public domain whatever copyright You hold in the
+Contributions you Submit. 
+
+You make this dedication for the benefit of the public at large and to the
+detriment of Your heirs and successors. You intend this dedication to be an
+overt act of relinquishment in perpetuity of all present and future rights
+under copyright law, whether vested or contingent, in the Contribution. You
+understand that such relinquishment of all rights includes the
+relinquishment of all rights to enforce (by lawsuit or otherwise) those
+copyrights in the Contribution.
+
+You recognize that, once placed in the public domain, the Contribution may
+be Fully Utilized by anyone for any purpose.
+
+3.2. Creative Commons.
+
+You hereby agree that all the Contributions that You Submit are made under
+the terms of the Creative Commons Public Domain Dedication, with the
+exception of Submissions of Copied Work as described in Section 5.
+
+3.3. Copyright License.
+
+You hereby grant to the Other Contributors and to recipients of the
+OpenRecord Work a perpetual, worldwide, non-exclusive, no-charge,
+royalty-free, irrevocable copyright license to Fully Utilize Your
+Contributions.
+   
+3.4. Public Domain Work.
+
+You hereby agree that when You Submit Contributions of Copied Work rather
+than Original Work and You represent the Copied Work as being in the public
+domain, You will certify that, to the best of the Your knowledge, the work
+of authorship identified is in the public domain of the country from which
+the work is published. You agree to take reasonable steps to verify the
+copyright status of all Contributions. You recognize that Your good faith
+efforts may not shield  You from liability if in fact the work certified is
+not in the public domain.
+
+
+
+SECTION 4.     Grant of Patent License. 
+
+4.1. Patent Licenses.
+
+Subject to the terms and conditions of this Agreement, You hereby grant to
+the Other Contributors and to the recipients of the OpenRecord Work a
+perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+(except as stated in this section) patent license to Fully Utilize the
+OpenRecord Work, where such license applies only to those patent claims
+licensable by You that are necessarily infringed by Your Contribution(s)
+alone or by combination of Your Contribution(s) with any other work. 
+
+If any entity institutes patent litigation against You or any other entity
+(including a cross-claim or counterclaim in a lawsuit) alleging that Your
+Contribution, or the OpenRecord Work to which you have contributed,
+constitutes direct or contributory patent infringement, then any patent
+licenses granted to that entity under this Agreement for that Contribution
+or Work shall terminate as of the date such litigation is filed.
+   
+4.2. Unencumbered Contributions.
+
+You hereby agree to only Submit Contributions for which You are legally
+entitled to grant the above license. If Your Employer has rights to
+intellectual property that You create that includes Your Contributions, You
+agree not to Submit the Contributions unless You have received permission to
+make Contributions on behalf of Your Employer, or Your Employer has waived
+such rights for Your Contributions, or Your Employer has executed a separate
+Contributor License Agreement.
+
+4.3. Original Work.
+
+You represent that each of Your Contributions of Original Work is Your
+original creation. You hereby agree that Your Contribution submissions will
+include complete details of any third-party license or other restriction
+(including, but not limited to, related patents and trademarks) of which You
+are personally aware and which are associated with any part of Your
+Contributions.
+ 
+4.4. Representations, Warranty, and Indemnification. 
+
+You represent and warrant that Your Contributions do not violate the rights
+of any person or entity, and that You have legal authority to enter into
+this Agreement and legal authority over the Contributions. Further, You
+indemnify the Other Contributors against violations.
+
+
+
+SECTION 5.     Submissions of Copied Work. 
+
+5.1. Separate Submission.
+
+You hereby agree that if You Submit Contributions of Copied Work rather than
+Original Work, You will Submit the Copied Work separately from any Original
+Work, identifying the complete details of its source and of any license or
+other restriction (including, but not limited to, related patents,
+trademarks, and license agreements) of which You are personally aware, and
+conspicuously marking the work as "Copied from [title of book, or source
+URL]".
+
+5.2. Restrictive Licenses. 
+
+You hereby agree not to Submit Contributions of Copied Work that might in
+any way jeopardize the ability of the Other Contributors to freely copy,
+distribute, modify, use, offer to sell, or sell the OpenRecord Work. You
+agree not to Submit Contributions of Copied Work if the Copied Work is
+licensed under a restrictive license, including but not limited to the GNU
+General Public License (GPL) and proprietary commercial licenses.
+
+
+
+SECTION 6.     Outside Relationships. 
+
+6.1. Employer Notification.
+
+If You work as an employee or a contractor, You represent that You have
+notified Your Employer, in writing or by e-mail, of the fact that You intend
+to Contribute to the OpenRecord Work.  (CUT THIS?: You represent that You
+have offered a copy of this agreement to Your Employer.)
+
+6.2. Independent Creation.
+
+   a. You hereby agree not to use any Employer resources in the course of
+working on the OpenRecord Work without the written consent of Your Employer.
+
+
+   b. You hereby agree not work on the OpenRecord Work at the premises of
+the Employer without the written consent of Your Employer.
+   
+   c. You hereby agree not work on the OpenRecord Work while working on
+tasks assigned to You by Your Employer.
+   
+   d. You hereby agree not use any Creation developed by or for Your
+Employer in any aspect of the OpenRecord Work, unless such Creation is in
+the public domain or has been Submitted as a Contribution.
+
+   e. You hereby agree that any Creation developed by You while working on
+the OpenRecord Work shall not be considered an invention belonging to Your
+Employer and is not to be assigned to Your Employer.  
+
+6.3. Previous Employers.
+
+You agree that during the term of the Agreement, You will not disclose to
+the Other Contributors, or induce the Other Contributors to use, any
+confidential or proprietary information, knowledge or data belonging to any
+of Your previous employers, or any previous party to which You were a
+consultant, or others.
+
+6.4. Prior Commitments and Agreements.
+
+You represent that You have no other commitments or agreements with any
+other person or entity, including any commitments or agreements to keep in
+confidence proprietary information or knowledge aquired by You prior to
+Submitting Contributions to the OpenRecord Work, that will hinder or
+interfere with Your ability to honor the terms of this Agreement.
+
+6.5. Future Commitments and Agreements.
+
+You agree that during the term of this Agreement You will not enter into any
+commitments or agreements with third parties that would interfere with Your
+ability to honor the terms of this Agreement.
+
+
+   
+SECTION 7.     Use of Usernames and Accounts. 
+
+7.1. Identity Protection.
+
+You will not allow anyone other than You to use Your BerliOS or OpenRecord
+username or login accounts to Contribute to an OpenRecord Forum. Should You
+become aware of any such use, You will immediately notify the other
+Contributors. Until such notice is received, You will be presumed to have
+taken all actions made through Your account. Your name and account will be
+visible worldwide via the Internet.
+
+
+   
+SECTION 8.     Transparency. 
+
+8.1. Public Archives.
+
+You represent the You understand that Contributions are routinely archived
+and published on the OpenRecord Forums, and all Contributions may be made
+publically available. All information exchanged by the Contributors will be
+considered public and may be shared with anyone.
+
+
+
+SECTION 9.     Term of the Agreement. 
+
+9.1. Effective Date.
+
+This Agreement will initially become effective as of July xx, 2005. Your
+participation in this Agreement will become effective immediately upon
+executing the Agreement or a counterpart of the Agreement.
+
+9.2. Termination.
+
+You may terminate Your participation in this Agreement at any time by
+notifying the Other Contributors that you have terminated Your
+participation, and the Other Contributors may terminate Your participation
+in this Agreement by notifying You that they have terminated Your
+participation. Once You terminate Your participation You reliquensh Your
+right to Submit Contributions. 
+
+9.3. Surviving Rights.
+
+Termination of this Agreement shall not be construed to in any way limit
+Your right to Fully Utilize the OpenRecord Work.
+
+9.4. Surviving Obligations.
+
+The obligations under this Section 3 and Section 4 shall survive the
+termination of the agreement.
+
+
+
+SECTION 10.     Miscellaneous.
+        
+10.1. Governing Law. 
+
+This Agreement will be governed by and construed in accordance with the laws
+of the State of California.  
+
+10.2. Successors and Assigns. 
+
+Except as otherwise provided herein, the provisions hereof shall inure to
+the benefit of, and be binding upon, the successors, assigns, heirs,
+executors and administrators of the parties hereto.
+
+10.3. Further Assurances. 
+
+The parties hereby agree to execute such further documents and instruments,
+and perform such other actions, as may be reasonably necessary or
+appropriate to carry out the intentions of the parties with respect to this
+Agreement.
+
+10.4. Notification.
+
+You hereby agree to promptly notify the Other Contributors of any facts or
+circumstances of which you become aware that would make any of the
+representations in this Agreement inaccurate in any respect, or that might
+be considered a breach of this Agreement.
+
+10.5. Contracts and Liabilities.
+
+You hereby agree that You have no authority to act on behalf of or to enter
+into any contract or to incur any liability on behalf of the project or the
+Other Contributors.
+
+10.6. Entire Agreement; Amendment.
+
+This Agreement contains the full and entire agreement and understanding
+among the parties with regard to the subject matter and supersedes all prior
+discussions and agreements. Neither this Agreement nor any term hereof may
+be amended, waived, discharged, or terminated other than by a written
+instrument signed by all the parties. The parties hereto consent to the
+addition as parties of additional Contributors to this agreement provided
+that such additional Contributors execute a counterpart signature page
+hereto.
+
+10.7. Counterparts; Facsimile. 
+
+This Agreement may be executed in any number of counterparts, each of which
+may be executed by less than all of the Contributors, each of which shall be
+deemed an original, each of which shall be enforceable against the parties
+actually executing such counterparts, and all of which when taken together
+shall constitute one and the same instrument.  This Agreement may be
+delivered by executed facsimile transmission, which shall be deemed an
+original.
+
+10.8. Assignment. 
+
+This Agreement may not be assigned by any party hereto or thereto without
+the
+prior written consent of the other parties hereto or party thereto, as the
+case
+may be. This Agreement will bind You and the Other Contributors, and their
+respective legal representatives, successors and permitted assigns.  
+
+10.9. Titles and Subtitles. 
+
+The titles and subtitles used in this Agreement are used for convenience
+only and are not considered in construing or interpreting this Agreement.
+
+
+
+IN WITNESS WHEREOF, the parties hereby execute this Agreement as of the date
+first above written.
+
+
+Full name: ____________________________________ 
+
+
+Date: _________________________________________
+
+
+Signature: ____________________________________
+  
+
+Mailing address: 
+  
+  _____________________________________________
+
+  _____________________________________________
+
+  _____________________________________________ 
+  
+Country:   ____________________________________
+  
+  
+Telephone: ____________________________________
+  
+
+E-Mail addresses, including addresses used to make Contributions:
+  
+  _____________________________________________
+  
+  _____________________________________________
+  
+
+Usernames for accounts used to make Contributions at BerliOS or at other
+collaboration sites:
+  
+  _____________________________________________
+  
+  _____________________________________________
+  
+
+
+
+From chao at osafoundation.org  Wed Jun 15 00:58:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Wed Jun 15 00:58:01 2005
+Subject: [openrecord-dev] Test for non-null function parameter
+Message-ID: <CBD3DD19-7C93-4778-BE80-33872E90B9E3@osafoundation.org>
+
+What's the best way to test for a non-null function parameter, given  
+our Lint Tests?
+
+e.g. function(x,y,z)
+I want to make sure that x,y,z are non-null and actually defined.
+What assert statements should I use?
+
+Thanks,
+chao
+
+
+
+From brian.skinner at gumption.org  Wed Jun 15 04:22:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun 15 04:22:00 2005
+Subject: [openrecord-dev] Test for non-null function parameter
+In-Reply-To: <CBD3DD19-7C93-4778-BE80-33872E90B9E3@osafoundation.org>
+Message-ID: <200506150221.j5F2LX122201@bat.berlios.de>
+
+Hi Chao,
+
+> What's the best way to test for a non-null function 
+> parameter, given our Lint Tests?
+> 
+> e.g. function(x,y,z)
+> I want to make sure that x,y,z are non-null and actually 
+> defined.  What assert statements should I use?
+
+The thing I do most often is to check that each parameter is of the right
+type, like this:
+  Util.assert(x instanceof Item);
+  Util.assert(Util.isString(y));
+  Util.assert(Util.isUuid(z));
+
+Those sorts of checks will make sure that the parameters are not null and
+not undefined.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Wed Jun 15 07:39:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jun 15 07:39:00 2005
+Subject: [openrecord-dev] Test for non-null function parameter
+In-Reply-To: <200506150221.j5F2LX122201@bat.berlios.de>
+References: <200506150221.j5F2LX122201@bat.berlios.de>
+Message-ID: <898D6B1E-27D5-4483-8C66-CDF17B6B7B3F@cs.stanford.edu>
+
+Problem is my specific example is for matching value in a query,  
+which could be a string, number, Date or Item - I just don't want it  
+to be null or undefined, because that's an error, but I want it to be  
+open-ended to cater for future types.
+
+chao
+
+On Jun 14, 2005, at 7:21 PM, Brian Douglas Skinner wrote:
+
+> Hi Chao,
+>
+>
+>> What's the best way to test for a non-null function
+>> parameter, given our Lint Tests?
+>>
+>> e.g. function(x,y,z)
+>> I want to make sure that x,y,z are non-null and actually
+>> defined.  What assert statements should I use?
+>>
+>
+> The thing I do most often is to check that each parameter is of the  
+> right
+> type, like this:
+>   Util.assert(x instanceof Item);
+>   Util.assert(Util.isString(y));
+>   Util.assert(Util.isUuid(z));
+>
+> Those sorts of checks will make sure that the parameters are not  
+> null and
+> not undefined.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Wed Jun 15 20:03:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun 15 20:03:01 2005
+Subject: [openrecord-dev] Test for non-null function parameter
+In-Reply-To: <898D6B1E-27D5-4483-8C66-CDF17B6B7B3F@cs.stanford.edu>
+Message-ID: <200506151802.j5FI2eI21773@bat.berlios.de>
+
+> Problem is my specific example is for matching 
+> value in a query, which could be a string, number, 
+> Date or Item - I just don't want it to be null or 
+> undefined, because that's an error, but I want it 
+> to be open-ended to cater for future types.
+
+Got it.  Okay, so if the only two values you need to guard against are null
+and undefined, then you could do something like this:
+
+  Util.assert((x !== null) && (x !== Util.UNDEFINED_VALUE));
+
+That line should work as is, but to make things less cryptic you could add a
+declaration at the top of Util:
+
+  var Util.UNDEFINED_VALUE;
+
+
+Do you also want to guard against values that are similar to null, such as:
+  - empty string values ("")
+  - the number value 0 
+  - the number value NaN
+  - the boolean value false
+  - null
+  - undefined
+
+If you need to do that, then we should probably add a new assert method to
+Util.  Maybe something like this:
+
+  Util.assertNonEmpty = function (value, message) {
+    var booleanValue = Boolean(value);
+    Util.assert(booleanValue, message);
+  }
+
+I'm not sure what the name should be: "assertNonEmpty" seems okay, but we
+could probably do better.  
+
+But, probably we don't want to do that, because then we won't be able to
+query on a boolean-type attribute for items where the value is false (e.g.
+find all tasks where done == false).
+
+:o) Brian
+
+
+
+On Jun 14, 2005, at 7:21 PM, Brian Douglas Skinner wrote:
+
+> Hi Chao,
+>
+>
+>> What's the best way to test for a non-null function
+>> parameter, given our Lint Tests?
+>>
+>> e.g. function(x,y,z)
+>> I want to make sure that x,y,z are non-null and actually
+>> defined.  What assert statements should I use?
+>>
+>
+> The thing I do most often is to check that each parameter is of the  
+> right
+> type, like this:
+>   Util.assert(x instanceof Item);
+>   Util.assert(Util.isString(y));
+>   Util.assert(Util.isUuid(z));
+>
+> Those sorts of checks will make sure that the parameters are not  
+> null and
+> not undefined.
+>
+> :o) Brian
+>
+
+
+
+From brian.skinner at gumption.org  Thu Jun 16 02:51:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun 16 02:51:01 2005
+Subject: [openrecord-dev] book hiatus -- sample data on vacation
+Message-ID: <200506160050.j5G0o3I32309@bat.berlios.de>
+
+Hey Chao & Mignon,
+
+I just wanted to warn you that I nuked most of the sample data from the
+repository.  
+
+So, the next time you check out the new code, when you open demo_page.html,
+it will just have the "Welcome" page.  It no longer has the "Books", "Bugs",
+"People", "Publishers", etc.
+
+Today I upgraded the repository to use our new time-based UUIDs, now that we
+have the new UUIDs working.  I went through all the axiomatic items and
+entries and gave them real UUIDs, and deleted all the old "timestamp" and
+"userstamp" fields, which we now no longer need.  
+
+I did all the axiomatic items and entries, but it would have been too much
+work to do all the sample data too, so instead I just nuked it.  I can put
+it all back again once we have the bi-directional references working
+(probably sometime next week).  Or, let me know if you need it for testing
+before then, and I can put it back sooner.
+
+:o) Brian
+
+
+
+From chao at osafoundation.org  Thu Jun 16 06:39:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Thu Jun 16 06:39:01 2005
+Subject: [openrecord-dev] Need to remove or delete entries
+Message-ID: <83E92A40-CFE7-442D-8ACA-260E1317D47B@osafoundation.org>
+
+Hi Brian,
+
+Here's my problem:
+
+I have a query with a matchingAttribute and matchingValue(s). If I  
+change a matchingAttribute, say from "Category" to "Status", then I  
+really want to get rid of the entries that were previously in  
+matchingValues, because they no longer make sense for Status since  
+the values are all Categories.
+
+But I can't really delete entries, right? So, what should I do?  
+Should I create a "null" data type for Entries? (seems like that may  
+break many areas in the code?).
+
+Thanks,
+chao
+
+
+From brian.skinner at gumption.org  Thu Jun 16 07:37:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun 16 07:37:00 2005
+Subject: [openrecord-dev] Need to remove or delete entries
+In-Reply-To: <83E92A40-CFE7-442D-8ACA-260E1317D47B@osafoundation.org>
+Message-ID: <200506160536.j5G5a7I06222@bat.berlios.de>
+
+> I have a query with a matchingAttribute and 
+> matchingValue(s). If I change a matchingAttribute, 
+> say from "Category" to "Status", then I really want 
+> to get rid of the entries that were previously in 
+> matchingValues, because they no longer make sense 
+> for Status since the values are all Categories.
+> 
+> But I can't really delete entries, right? So, what 
+> should I do?  Should I create a "null" data type 
+> for Entries? (seems like that may break many areas 
+> in the code?).
+
+Yikes!  Okay, that's a little tricky.  It would be good to sit down and
+think about this some, but off the top of my head...
+
+You can't *really* delete entries, but you can come close.  In theory you
+can do this:
+
+  for (var key in listOfMatchingValueEntries) {
+    var entry = listOfMatchingValueEntries[key];
+    entry.voteToDelete();
+    Util.assert(entry.hasBeenDeleted() === true);
+  }
+
+That seems like a reasonable thing to do for now, and then we can think
+about whether there's some better option.
+
+BUT...  the voteToDelete code has never been tested, and I think the changes
+I just made today probably broke the existing implementation.  Sorry about
+that.  Give me a day to put it back together again.
+
+:o) Brian
+
+
+
+From Mignon_Belongie at yahoo.com  Thu Jun 16 07:38:00 2005
+From: Mignon_Belongie at yahoo.com (Mignon Belongie)
+Date: Thu Jun 16 07:38:00 2005
+Subject: [openrecord-dev] Software Freedom Law Center
+In-Reply-To: <83E92A40-CFE7-442D-8ACA-260E1317D47B@osafoundation.org>
+References: <83E92A40-CFE7-442D-8ACA-260E1317D47B@osafoundation.org>
+Message-ID: <cad08c9c85d80c468670c0ca2bf73f8c@yahoo.com>
+
+Brian,
+
+Have you heard of the Software Freedom Law Center?
+
+http://www.softwarefreedom.org/
+
+I just read a short blurb about them in Dr. Dobb's Journal, which says, 
+in part: "Among the pro bono services offered by the SFLC are license 
+development and implementation consulting; legal consulting and lawyer 
+training; and legal defense against litigation.
+
+Mignon
+
+
+
+From chao at cs.stanford.edu  Thu Jun 16 09:27:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jun 16 09:27:01 2005
+Subject: [openrecord-dev] Need to remove or delete entries
+In-Reply-To: <200506160536.j5G5a7I06222@bat.berlios.de>
+References: <200506160536.j5G5a7I06222@bat.berlios.de>
+Message-ID: <A604259A-2C86-44CA-801B-B5D34DD47FA3@cs.stanford.edu>
+
+>
+Hi Brian,
+
+I added the code as you suggested, not quite sure if it works but  
+will test more tomorrow. Figured it's worth checking it in since we  
+didn't have this functionality before anyway.
+
+The code you suggested is in SectionView.js in method  
+clickOnAttributeMenu() from line#400.
+
+chao
+
+> You can't *really* delete entries, but you can come close.  In  
+> theory you
+> can do this:
+>
+>   for (var key in listOfMatchingValueEntries) {
+>     var entry = listOfMatchingValueEntries[key];
+>     entry.voteToDelete();
+>     Util.assert(entry.hasBeenDeleted() === true);
+>   }
+>
+> That seems like a reasonable thing to do for now, and then we can  
+> think
+> about whether there's some better option.
+>
+> BUT...  the voteToDelete code has never been tested, and I think  
+> the changes
+> I just made today probably broke the existing implementation.   
+> Sorry about
+> that.  Give me a day to put it back together again.
+>
+
+
+From chao at cs.stanford.edu  Thu Jun 16 22:16:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jun 16 22:16:01 2005
+Subject: [openrecord-dev] Query as Javascript Class
+Message-ID: <5CB52D01-836E-4EBF-AA38-F6C389B658F4@cs.stanford.edu>
+
+Hi Brian & Mignon,
+
+After going through the query changes, I feel that it would be a lot  
+easier if we made Query a Javascript class to encapsulate and isolate  
+the Query behavior. Currently there's a lot of code repetition,  
+scattered across several files. What do you all think?
+
+Also, as we towards more complex items, where items have attributes,  
+each attribute having dependencies with other attributes (e.g.  
+Query's matchingAttribute & matchingValue), we seem to be encroaching  
+territory amenable to Object-oriented patterns. Should we have a  
+general architectural philosophy on how to handle these "objects"?
+
+chao
+
+
+From brian.skinner at gumption.org  Fri Jun 17 03:58:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Jun 17 03:58:01 2005
+Subject: [openrecord-dev] Software Freedom Law Center
+In-Reply-To: <cad08c9c85d80c468670c0ca2bf73f8c@yahoo.com>
+Message-ID: <200506170157.j5H1vJI17216@bat.berlios.de>
+
+> Have you heard of the Software Freedom Law Center?
+> 
+> http://www.softwarefreedom.org/
+> 
+> I just read a short blurb about them in Dr. Dobb's 
+> Journal, which says, in part: "Among the pro bono 
+> services offered by the SFLC are license development 
+> and implementation consulting; legal consulting and 
+> lawyer training; and legal defense against litigation.
+
+Great!  I had never heard of them before.  I just had a quick look at their
+web site.  Turns out Lawrence Lessig is on their Board of Directors -- small
+world!  And their whole site is under a Creative Commons License.
+
+Shall I contact them and see if they can give us some advice?  
+
+Or shall I wait until after we meet on Monday, once we've had a chance to
+talk about what changes we want to make to the draft of the contributor
+agreement?
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri Jun 17 05:10:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Jun 17 05:10:01 2005
+Subject: [openrecord-dev] new items for recording table column positions
+Message-ID: <200506170309.j5H391I18514@bat.berlios.de>
+
+Hey Chao,
+
+I just did a check-in that added the new attributes and categories we talked
+about.
+
+It should be pretty much the way we talked about, except for the attribute
+we called "pluginData".  I named that one "Layout Data" instead, because it
+seemed less confusing to me.  But it's very easy to change the name, if
+"Layout Data" isn't good.
+
+Here's what I added...
+
+
+Two new items representing Categories:
+--------------+------------
+name          | category
+--------------+------------
+Plugin View   | Category
+Layout Data   | Category
+--------------+------------
+
+
+Four new items representing Plugin Views:
+---------------+------------+-------------
+name           | short name | category
+---------------+------------+-------------
+Table View     | Table      | Plugin View
+Outline View   | Outline    | Plugin View
+Detail View    | Detail     | Plugin View
+Bar Chart View | Bar Chart  | Plugin View
+---------------+------------+-------------
+
+
+Four new items representing Attributes:
+------------------+---------------+-----------
+name              | expected type | category
+------------------+---------------+-----------
+Plugin View       | Plugin View   | Attribute
+Layout Data       | Layout Data   | Attribute
+Applies To Plugin | Plugin View   | Attribute
+Table Columns     | Attribute     | Attribute
+------------------+---------------+-----------
+
+
+So, for example...
+
+  a Section item like [My Favorite Books] might have a [Plugin View]
+attribute, with a value of [Table View]
+
+  and the Section item [My Favorite Books] would have a [Layout Data]
+attribute where the value was an item called [some-layout-data]
+
+  and [some-layout-data] would have a [Category] attribute with the value
+[Layout Data]
+
+  and [some-layout-data] would have an [Applies To Plugin] attribute with
+the value [Table View]
+
+  and [some-layout-data] would have an [Table Columns] attribute with the
+values [Name], [Author], [Publisher]
+
+
+You can get all the new items (attributes, categories, and plugin view
+items) via their UUIDs, which are available in SectionView:
+
+  SectionView.UUID_FOR_ATTRIBUTE_PLUGIN_NAME   // deprecated
+  SectionView.UUID_FOR_ATTRIBUTE_PLUGIN_VIEW
+  SectionView.UUID_FOR_ATTRIBUTE_LAYOUT_DATA
+  SectionView.UUID_FOR_ATTRIBUTE_APPLIES_TO_PLUGIN
+  SectionView.UUID_FOR_ATTRIBUTE_TABLE_COLUMNS
+  
+  SectionView.UUID_FOR_CATEGORY_PLUGIN_VIEW
+  SectionView.UUID_FOR_CATEGORY_LAYOUT_DATA
+
+  SectionView.UUID_FOR_PLUGIN_VIEW_TABLE
+  SectionView.UUID_FOR_PLUGIN_VIEW_OUTLINE
+  SectionView.UUID_FOR_PLUGIN_VIEW_DETAIL
+  SectionView.UUID_FOR_PLUGIN_VIEW_BAR_CHART
+
+The PLUGIN_VIEW attribute is intended to replace the existing PLUGIN_NAME
+attribute, but I didn't actually start working on that.  For now all I did
+was create the new items.  Hopefully that's enough so that you'll be able to
+get started on recording the column layout info.  Let me know if you run
+into problems!
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Fri Jun 17 06:05:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Jun 17 06:05:01 2005
+Subject: [openrecord-dev] Query as Javascript Class
+In-Reply-To: <5CB52D01-836E-4EBF-AA38-F6C389B658F4@cs.stanford.edu>
+Message-ID: <200506170404.j5H44UI19523@bat.berlios.de>
+
+> After going through the query changes, I feel that it 
+> would be a lot easier if we made Query a Javascript 
+> class to encapsulate and isolate the Query behavior. 
+> Currently there's a lot of code repetition, scattered 
+> across several files. What do you all think?
+
+I think having a Query class would be the right object-oriented thing to do,
+but I'm not sure how easily we can do it.  There might be some clever trick
+by which we can get JavaScript to treat the query item as being both an
+instance of Item and an instance of Query.  Or maybe we want to have a
+separate instance of Query that goes hand-in-hand with the query item?
+Let's talk about this on Monday (when we have a higher bandwidth connection
+:-)
+
+
+> Also, as we towards more complex items, where items 
+> have attributes, each attribute having dependencies 
+> with other attributes (e.g. Query's matchingAttribute 
+> & matchingValue), we seem to be encroaching territory 
+> amenable to Object-oriented patterns. Should we have 
+> a general architectural philosophy on how to handle 
+> these "objects"?
+
+Sounds like you have an idea for how to make things better.  I'd love to
+hear what you're thinking.  Maybe we can talk about this on Monday too?
+
+:o) Brian
+
+
+
+
+
+From chao at osafoundation.org  Sat Jun 18 01:22:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Sat Jun 18 01:22:01 2005
+Subject: [openrecord-dev] Any order in the way Entries are stored for an Attribute?
+Message-ID: <310D8EBF-A08B-42DD-A159-C10BC222C5EF@osafoundation.org>
+
+Hi Brian,
+
+Is there any order in the way Entries are stored and retrieved for an  
+Attribute?
+
+To get my table columns stored in a certain order, I was relying on  
+the fact that are retrieved in a consistent order. But I think every  
+time I add an entry, the order is reversed? or I may be doing  
+retrieving something incosistently in the view code.
+
+Thanks,
+chao
+
+
+
+From chao at cs.stanford.edu  Sat Jun 18 01:42:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Jun 18 01:42:01 2005
+Subject: [openrecord-dev] Context menu code
+Message-ID: <F43B49CA-4604-49D4-83FA-44FC5BE31886@cs.stanford.edu>
+
+Hi Brian,
+
+Did you mention that you had some javascript UI code to create pop-up  
+menus? I was thinking of using a context-menu to allow item deletion  
+in a TablePlugin.
+
+Also,  regarding importing of data, what do you think of supporting  
+data importing just in the context of a TablePlugin? We can import a  
+CSV file with the fields described by the Table columns. No need to  
+support cross references - semantics would be as if user typed in all  
+the items by hand in that TablePlugin. Bonus feature is that  
+TablePlugin already has the code to support transforming strings to  
+Expect Types and to create new items where necessary.
+
+chao
+
+
+
+From chao at cs.stanford.edu  Sat Jun 18 01:43:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Jun 18 01:43:00 2005
+Subject: [openrecord-dev] Query as Javascript Class
+In-Reply-To: <200506170404.j5H44UI19523@bat.berlios.de>
+References: <200506170404.j5H44UI19523@bat.berlios.de>
+Message-ID: <9DE54475-897C-4FA5-871B-FCAFB9D4C381@cs.stanford.edu>
+
+>> Also, as we towards more complex items, where items
+>> have attributes, each attribute having dependencies
+>> with other attributes (e.g. Query's matchingAttribute
+>> & matchingValue), we seem to be encroaching territory
+>> amenable to Object-oriented patterns. Should we have
+>> a general architectural philosophy on how to handle
+>> these "objects"?
+>>
+>
+> Sounds like you have an idea for how to make things better.  I'd  
+> love to
+> hear what you're thinking.  Maybe we can talk about this on Monday  
+> too?
+
+Unfortunately, I've not come up with any good concrete ideas yet.  
+Just an intuition that things can be better organized than they are  
+now. Let's talk more Monday.
+
+chao
+
+
+
+From brian.skinner at gumption.org  Sat Jun 18 01:59:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Jun 18 01:59:00 2005
+Subject: [openrecord-dev] Context menu code
+In-Reply-To: <F43B49CA-4604-49D4-83FA-44FC5BE31886@cs.stanford.edu>
+Message-ID: <200506172358.j5HNwQI19534@bat.berlios.de>
+
+Hey Chao,
+
+> Did you mention that you had some javascript UI code 
+> to create pop-up menus? I was thinking of using a 
+> context-menu to allow item deletion in a TablePlugin.
+
+I don't have code for pop-up menus, just regular menus.
+
+Here's a demo page that has the menus.  Try clicking on the menu items in
+the upper left corner: DiceMachine and Players:
+  http://gumption.org/2004/dice/dicemachine.html
+
+Here's the source code:
+  http://gumption.org/2004/dice/dicemachine.js
+
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Sat Jun 18 02:45:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Jun 18 02:45:01 2005
+Subject: [openrecord-dev] Any order in the way Entries are stored for an Attribute?
+In-Reply-To: <310D8EBF-A08B-42DD-A159-C10BC222C5EF@osafoundation.org>
+Message-ID: <200506180044.j5I0ivI20334@bat.berlios.de>
+
+Hi Chao,
+ 
+> Is there any order in the way Entries are stored and 
+> retrieved for an Attribute?
+
+Unfortunately I broke the ordinal code when I moved us to using real UUIDs
+instead of integer ids.  We have a task on the to-do list to get the ordinal
+code fixed again.  Right now it's task #23 in release_planning.txt.  We can
+move it up to be high priority if you want.
+
+> To get my table columns stored in a certain order, I was 
+> relying on the fact that are retrieved in a consistent 
+> order. But I think every time I add an entry, the order 
+> is reversed? or I may be doing retrieving something 
+> incosistently in the view code.
+
+I just checked in a one-line change to ContentRecord.js which *may* serve as
+a small temporary improvement.  If you feel like it, you could try getting
+the latest code and see if that helps.  If not, we can look into it together
+on Monday.
+
+:o) Brian
+
+
+
+From chao at osafoundation.org  Sun Jun 19 23:08:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Sun Jun 19 23:08:01 2005
+Subject: [openrecord-dev] Dashboard view prototype for Chandler
+Message-ID: <1B491A14-6E5B-4EB0-AADB-81C372307781@osafoundation.org>
+
+Hi Mimi,
+
+I've got a first workable version of the Dashboard view at:
+<http://coolchaser.com/or/source/demo_page.html>
+
+Most things we discussed are functionable. Things are a little slow  
+on my mac, but pretty zippy on the PC (what else is new?). Have a  
+spin around it and let me know how it's working out and what you need  
+fixed next.
+
+The CSS file is located at:
+<http://coolchaser.com/or/source/base_style.css>
+
+if you want to play around with it. Let me know if you need write  
+access to the file.
+
+Brian, Mignon, this is just FYI.
+
+Have fun,
+chao
+
+
+From chao at cs.stanford.edu  Mon Jun 20 20:10:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon Jun 20 20:10:01 2005
+Subject: [openrecord-dev] Advanced DOM techniques
+Message-ID: <F4F8177E-C87A-4282-B415-4D81D5C6517D@cs.stanford.edu>
+
+Here's a great article on Javascript DOM techniques:
+http://www-128.ibm.com/developerworks/xml/library/x-matters41.html? 
+ca=dnt-621
+
+For OpenRecord, I particularly like the function elem() to create a  
+DOM element in one function call, setting all its attributes, styles  
+and text in the same call. This really eliminates the need for using  
+innerHTML, except for clearing out the element (i.e. innerHTML = '').
+
+Brian, what you do think of refactoring View.createAndAppendElement()  
+in this way?
+
+chao
+
+
+
+From chao at cs.stanford.edu  Tue Jun 21 06:41:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Jun 21 06:41:01 2005
+Subject: [openrecord-dev] Ajax Calendar
+Message-ID: <75516442-98DC-45B1-8CBA-F5FCC1521D78@cs.stanford.edu>
+
+http://www.monket.net/cal/
+
+
+From brian.skinner at gumption.org  Tue Jun 21 19:03:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Jun 21 19:03:01 2005
+Subject: [openrecord-dev] "fair use" in copyright law
+Message-ID: <200506211702.j5LH2QI12754@bat.berlios.de>
+
+Hey Chao,
+
+Just following up on our conversation yesterday about copyright law and fair
+use...
+
+I did some more reading this morning about the whole fair use thing.
+Unfortunately, fair use is a "muddy" area of law, and it can be difficult to
+figure out what constitutes fair use.  
+
+Here are a few web sites that *try* to offer guidelines to help non-lawyers
+figure out what counts as fair use:
+
+Wikipedia:
+  http://en.wikipedia.org/wiki/Fair_use
+
+Stanford:
+ 
+http://fairuse.stanford.edu/Copyright_and_Fair_Use_Overview/chapter9/9-b.htm
+l
+
+University of Texas:
+  http://www.utsystem.edu/ogc/intellectualproperty/copypol2.htm#test
+
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Tue Jun 21 19:16:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Jun 21 19:16:01 2005
+Subject: [openrecord-dev] "O'Reilly Policy on Re-Use of Code Examples from Books"
+Message-ID: <200506211715.j5LHF4I13133@bat.berlios.de>
+
+Our code base currently contains one file, Cookie.js, with code that was
+copied from a published book.  
+
+Yesterday Chao and I were talking about that -- about when it's okay to copy
+code examples from books, and how to properly label that code, and whether
+or not to keep that code in separate files.
+
+Happily enough, it turns out that O'Reilly Media actually has a written
+policy about all this, written by Tim O'Reilly himself, the:
+  "O'Reilly Policy on Re-Use of Code Examples from Books"
+
+Here's the URL:
+  http://www.oreilly.com/pub/a/oreilly/ask_tim/2001/codepolicy.html
+
+The short answer is that people are free to use and redistribute example
+code from O'Reilly books for any non-commercial purpose (and most commercial
+purposes) as long as they acknowledge the source and authorship.  The
+attribution should include author, title, publisher, and ISBN.
+
+I just checked in a couple small changes to Cookie.js so that it complies
+with the O'Reilly policy.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Tue Jun 21 23:32:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Jun 21 23:32:01 2005
+Subject: [openrecord-dev] ping?
+Message-ID: <200506212131.j5LLVXI19066@bat.berlios.de>
+
+ping?
+
+
+
+From brian.skinner at gumption.org  Wed Jun 22 00:59:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun 22 00:59:01 2005
+Subject: [openrecord-dev] ping?
+Message-ID: <200506212258.j5LMwnI22677@bat.berlios.de>
+
+ping?
+
+
+
+From chao at osafoundation.org  Wed Jun 22 04:14:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Wed Jun 22 04:14:01 2005
+Subject: [openrecord-dev] Implementing a "lozenge"
+Message-ID: <21289525-7577-4596-B08F-436BFE1EAC69@osafoundation.org>
+
+Hi Brian & Mimi,
+
+Looks like there's no easy way to add a *stretched* background image  
+to a "span" element with the current browsers. The W3.org page I was  
+reading was describing CSS3 unfortunately:
+http://www.htmlcodetutorial.com/YaBB/yabb/YaBBf7db.html? 
+board=css;action=display;num=1053771056
+
+Mimi suggested just using a colored rectangle as a start and maybe  
+that's what I'll have to do for now.
+
+chao
+
+
+From brian.skinner at gumption.org  Thu Jun 23 21:50:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun 23 21:50:01 2005
+Subject: [openrecord-dev] bug with table layout code
+Message-ID: <200506231949.j5NJnqI08032@bat.berlios.de>
+
+Hey Chao,
+
+I ran into a bug with the new table layout code.  Here are the steps to
+reproduce the problem:
+
+  1) open demo_page.html
+  2) sign in (if you weren't automatically signed in)
+  3) press "Edit"
+  4) press the "New Page" button
+  5) click on "Welcome!" in the navbar
+  6) sign out but clicking on the "Sign out" link
+  7) click on "New Page" in the navbar
+  result:
+  ============================
+  Util.handleError()
+  uncaught exception: Error: No user is logged in.  
+  You can't write to the repository when nobody is logged in.
+  ============================
+
+
+That's what the problem looks like when you're not logged in.  If you are
+logged in, then the problem has a different symptom:
+
+  1) open demo_page.html
+  2) sign in (if you weren't automatically signed in)
+  3) press "Edit"
+  4) press the "New Page" button
+  5) click on "Welcome!" in the navbar
+  6) click on "New Page" in the navbar
+  7) repeat steps 5 and 6 another 20 times
+  8) now go look at the JSON repository file
+  result:
+  At the end of the JSON repository file, there are 20 pairs 
+  of record, where each pair contains:
+    a Vote record, deleting the table column for Name
+    an Entry record, recreating the table column for Name
+
+
+I had a quick look at the TablePlugin code, but I didn't see any simple way
+to fix the problem.  Seems like we might need to restructure things a bit.
+I can have a go at fixing this if you like, but I thought you might want to
+jump in since you're more familiar with that code.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Mon Jun 27 05:36:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Jun 27 05:36:01 2005
+Subject: [openrecord-dev] testing, 1, 2, 3...
+Message-ID: <200506270335.j5R3ZII03046@bat.berlios.de>
+
+testing, 1, 2, 3
+
+Something is amiss with my e-mail setup.  For the past week I haven't been
+getting any of the mail sent to the openrecord mailing lists.  Fortunately I
+can still read the message on the archive web site.
+
+I've just tried one more attempt at trying to route things so that I start
+getting mail again.  This is just a test message to see if it works now...
+
+:(  Brian
+
+
+
+From brian.skinner at gumption.org  Tue Jun 28 05:28:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Jun 28 05:28:00 2005
+Subject: [openrecord-dev] dogfood site template
+Message-ID: <200506280327.j5S3R1I19766@bat.berlios.de>
+
+Hey Gang,
+
+I've been working hard on the axiomatic items and the JSON repository
+format, and today I reached what I think is a fairly stable first draft.  
+
+With the repository format beginning to settle down, I moved on to working
+on a prototype "template" for our dogfood site.  By "template", I mean a
+site that has categories for bugs and tasks and whatnot, and has pages and
+tables set up to show the tasks, but that isn't actually populated with
+hundreds of tasks. 
+
+There's good news and bad news...
+
+The good news is that I was able to create a first dogfood template site in
+under half an hour.  OpenRecord feels pretty powerful and easy to use.  I
+feel good about where we're headed.
+
+The bad news is that the dogfood repository file is already over 100 KB,
+even though we haven't started populating it with bugs and tasks and
+whatnot.  And the dogfood site is sluggish, even on my fast Intel machine.
+Most pages load in less than a second, but a page with a hundred entries on
+it takes nearly 3 seconds to load.  So it looks like we're going to have to
+start working on performance issues sooner rather than later.
+
+I checked the dogfood template into subversion, and I posted it on the
+openrecord web site.  Here's the URL, if you want to check it out:
+  http://openrecord.org/dogfood/dogfood.html
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jun 29 06:59:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun 29 06:59:00 2005
+Subject: [openrecord-dev] faster now!
+In-Reply-To: <200506280327.j5S3R1I19766@bat.berlios.de>
+Message-ID: <200506290458.j5T4wSI07115@bat.berlios.de>
+
+> the dogfood site is sluggish ... a page  
+> with a hundred entries on it takes nearly 
+> 3 seconds to load. 
+
+Okay, things are faster now.  
+
+I got it from 2.9 seconds down to 1.2 seconds, just by changing one single
+line of code.
+
+I removed this line: 
+ Util.assert(inAttribute instanceof Item, inAttribute + ' is not an item');
+and replaced it with this one:
+ Util.assert(inAttribute instanceof Item);
+
+The assert condition always evaluated to true, but even though the assert
+was never triggered, each call caused us to evaluate the expression:
+ inAttribute + ' is not an item'
+
+In the course of loading the page, we called that assert statement 7,500
+times, and evaluating that expression took some time, because the
+item.toString() method involves some look-ups.
+
+So, I figure there are maybe 4 lessons in this story:
+
+ 1. the venkman profiler tool is super helpful
+ 2. one slow line of line can make a big difference
+ 3. javascript is plenty fast, if we're careful with it
+ 4. someday soon we need to figure why we make 
+    7,500 calls to item.isInCategory() when we're 
+    loading a page that only shows a hundred entries!
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Wed Jun 29 18:43:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jun 29 18:43:01 2005
+Subject: [openrecord-dev] Software Freedom Law Center
+In-Reply-To: <200506170157.j5H1vJI17216@bat.berlios.de>
+Message-ID: <200506291642.j5TGgkI02803@bat.berlios.de>
+
+I heard back from the Software Freedom Law Center (SFLC).  Unfortunately,
+they're not available to help us right now.  
+
+But they offered a few suggestions in their reply.  I had said that we are
+looking for something like the Apache license, but more liberal.  They said
+the ones to look at are the MIT license and the BSD Modified license, which
+is exactly what Ted Leung had said.  Unfortunately, I'm wary of both the MIT
+and BSD Modified licenses, because neither of them has patent provisions.
+
+As for setting up a contributor agreement, SFLC said doing that as a group
+of individuals wasn't ideal.  Really what we want is a central legal entity,
+like a foundation.  Which, again, is what had Ted said.  
+
+In the future SFLC will be set up to give out general guidance about how to
+do this stuff, but for now they suggested that we might want to look for pro
+bono legal help from local law firms, law schools, or public service
+organizations.  It might also be good to talk to the folks at Creative
+Commons, to see what they say about using the Creative Commons licenses in
+conjunction with an open source license like the Apache license.
+
+:o) Brian
+
+
+
+
+-----Original Message-----
+From: openrecord-dev-admin at berlios.de
+[mailto:openrecord-dev-admin at berlios.de] On Behalf Of Brian Douglas Skinner
+Sent: Thursday, June 16, 2005 6:57 PM
+To: openrecord-dev at berlios.de
+Subject: RE: [openrecord-dev] Software Freedom Law Center
+
+> Have you heard of the Software Freedom Law Center?
+> 
+> http://www.softwarefreedom.org/
+> 
+> I just read a short blurb about them in Dr. Dobb's 
+> Journal, which says, in part: "Among the pro bono 
+> services offered by the SFLC are license development 
+> and implementation consulting; legal consulting and 
+> lawyer training; and legal defense against litigation.
+
+Great!  I had never heard of them before.  I just had a quick look at their
+web site.  Turns out Lawrence Lessig is on their Board of Directors -- small
+world!  And their whole site is under a Creative Commons License.
+
+Shall I contact them and see if they can give us some advice?  
+
+Or shall I wait until after we meet on Monday, once we've had a chance to
+talk about what changes we want to make to the draft of the contributor
+agreement?
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Thu Jun 30 00:38:58 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jun 30 00:38:58 2005
+Subject: [openrecord-dev] faster now!
+In-Reply-To: <200506290458.j5T4wSI07115@bat.berlios.de>
+References: <200506290458.j5T4wSI07115@bat.berlios.de>
+Message-ID: <1FFFFD74-08EA-4DFA-9372-2628F13BC3B2@cs.stanford.edu>
+
+Hi Brian,
+
+Good detective work, Brian!
+
+Can you describe how you discovered it was this line that was causing  
+the slowdown? i.e. how you used the venkman profiler?
+
+I had a feeling I was causing the app to be slower, but I wasn't sure  
+what it was. String construction seems to be a very common problem in  
+GC-based languages. We encountered the same problem in Java (in the  
+early days in '96). Looks like it's a problem with Ruby too:
+http://whytheluckystiff.net/articles/theFullyUpturnedBin.html
+
+chao
+
+On Jun 28, 2005, at 9:58 PM, Brian Douglas Skinner wrote:
+
+>> the dogfood site is sluggish ... a page
+>> with a hundred entries on it takes nearly
+>> 3 seconds to load.
+>>
+>
+> Okay, things are faster now.
+>
+> I got it from 2.9 seconds down to 1.2 seconds, just by changing one  
+> single
+> line of code.
+>
+> I removed this line:
+>  Util.assert(inAttribute instanceof Item, inAttribute + ' is not an  
+> item');
+> and replaced it with this one:
+>  Util.assert(inAttribute instanceof Item);
+>
+> The assert condition always evaluated to true, but even though the  
+> assert
+> was never triggered, each call caused us to evaluate the expression:
+>  inAttribute + ' is not an item'
+>
+> In the course of loading the page, we called that assert statement  
+> 7,500
+> times, and evaluating that expression took some time, because the
+> item.toString() method involves some look-ups.
+>
+> So, I figure there are maybe 4 lessons in this story:
+>
+>  1. the venkman profiler tool is super helpful
+>  2. one slow line of line can make a big difference
+>  3. javascript is plenty fast, if we're careful with it
+>  4. someday soon we need to figure why we make
+>     7,500 calls to item.isInCategory() when we're
+>     loading a page that only shows a hundred entries!
+>
+> :o) Brian
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Jun 30 01:35:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jun 30 01:35:01 2005
+Subject: [openrecord-dev] faster now!
+In-Reply-To: <1FFFFD74-08EA-4DFA-9372-2628F13BC3B2@cs.stanford.edu>
+Message-ID: <200506292334.j5TNYJI13578@bat.berlios.de>
+
+> Can you describe how you discovered it was this line 
+> that was causing the slowdown? i.e. how you used the 
+> venkman profiler?
+
+You bet.   
+
+Here are the steps I followed:
+ 1. open Firefox
+ 2. go to the dogfood.html page
+    for example, on my machine:
+      http://localhost:8080/openrecord/dogfood/dogfood.html
+ 3. open Venkman  
+    (Firefox: Tools -> JavaScript Debugger)
+ 4. clear profile data
+    (Venkman: Profile -> Clear Profile Data)
+ 5. start collecting profile data  
+    (Venkman: Profile -> Collect Profile Data)
+ 6. do the thing that seems too slow
+    for example, click on "Introspection" in the 
+    navbar of the dogfood site 
+ 7. stop collecting profile data 
+    (Venkman: Profile -> Collect Profile Data)
+ 8. save the profile data 
+    (Venkman: Profile -> Save Profile Data As...)
+    Save as type Text, and use a name with a .txt file extension
+ 9. open the profile data file in a text editor,
+    and start reading through it
+10. ignore any entries that say "Total Time: 0"
+11. look for the entries where "Total Time:" is largest, 
+    for example: RootView.js (Lines 522 - 543),
+    and make a note of what that BIG total time is
+12. now look through again, but this time ignore the entries 
+    where "Total Time:" is large, but where "Total Calls: 1"
+    for example: RootView.js (Lines 522 - 543)
+13. look for the entries where "Total Time:" is nearly
+    as large as the BIG total time from step 11, and where
+    the "Total Calls:" is also large
+    for example: Item.js (Lines 305 - 344)
+14. go look at the source code for the entries you selected
+    in step 13 -- those are the things that we're calling too
+    much and that are taking too long!
+
+
+:o) Brian
+
+
+

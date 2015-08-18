@@ -1,0 +1,212 @@
+From skinner at dojotoolkit.org  Sat Jun  3 01:14:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Sat Jun  3 01:14:01 2006
+Subject: [openrecord-dev] Re: [Dojo-interest] Is OpenRecord still under active development?
+In-Reply-To: <7b9e42bb0606021356l5c9ce8d6o9416f22c5a1ab2e7@mail.gmail.com>
+References: <7b9e42bb0606020251q2e6e04dbnab3e3dfe4664757e@mail.gmail.com>	<4480940F.4000906@dojotoolkit.org> <7b9e42bb0606021356l5c9ce8d6o9416f22c5a1ab2e7@mail.gmail.com>
+Message-ID: <4480C600.3080904@dojotoolkit.org>
+
+Ged Byrne wrote:
+> I'm afraid I don't have any time to contribute to the 
+> actual project, but I would like work on a Java backing 
+> store for the application.
+
+That would be great!
+
+
+> Does OpenRecord have it's own mailing list, or should I 
+> use this list for any quesitons?
+
+Yes, OpenRecord does have its own mailing list:
+   http://lists.berlios.de/mailman/listinfo/openrecord-dev
+
+More info here:
+   http://openrecord.org/dev.html
+
+
+> The read me in the model folder is useful, but is there 
+> anything more on how to implement a server side backing 
+> store?  Should I just use the PHP scripts as a reference 
+> implementation?
+
+Like the rest of the Dojo code, the OpenRecord code isn't well 
+documented yet.  Using the PHP scripts as a reference is a good idea -- 
+the PHP scripts actually do very little of the work, so I imagine you'll 
+be able to easily replicate them Java, and from there you can start 
+making improvements.  It would be great to do a re-write with more of an 
+eye towards security -- potential security holes are one of the things 
+that's been keeping us from posting an up to date demo.
+
+Here's an old post to the openrecord-dev list that talks about how we 
+currently do client/server communication.  You might find it useful.  It 
+also talks about some proposed backing store alternatives which we were 
+considering at the time.  Now we're leaning more towards using an RDF 
+datastore, but we haven't yet started working on that, so our options 
+are still open:
+http://lists.berlios.de/pipermail/openrecord-dev/2005-October/000248.html
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Tue Jun  6 04:07:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Jun  6 04:07:02 2006
+Subject: [openrecord-dev] IBM + Dojo partnership announcement
+Message-ID: <4484E333.9030801@dojotoolkit.org>
+
+Good news...
+
+IBM made a very positive announcement today about how they are using and 
+contributing to the Dojo Toolkit.  As Alex Russell put it, "Today, IBM 
+has acknowledged the Dojo Foundation as the place where 
+professional-level JavaScript work gets done."
+
+Here are a couple links:
+  http://www.marketwire.com/mw/release_html_b1?release_id=133309
+  http://dojotoolkit.org/pipermail/dojo-contributors/2006-June/002321.html
+
+This is great for Dojo, and for OpenRecord.  IBM has already started 
+contributing significant amounts of code to Dojo, and in the months to 
+come IBM plans to donate a body of data model work that reflects many 
+engineer-years of real world experience.
+
+Once Dojo has a standard data model, then in time we should begin to see 
+data model bindings for many of the Dojo widgets.  And hopefully we'll 
+also see a set of data providers for populating the Dojo data model with 
+data from different data sources, like SQL databases and XML datastores. 
+  Which means that eventually OpenRecord may be a fairly thin layer of 
+code that takes advantage of a bunch of heavily-used, well-tested Dojo 
+infrastructure.
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Tue Jun  6 09:46:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Jun  6 09:46:01 2006
+Subject: [openrecord-dev] Google Spreadsheets
+Message-ID: <4485327E.40707@dojotoolkit.org>
+
+More good news...
+
+Google is releasing a web-based Spreadsheet tool.
+
+Not much info available yet, but Google says that "Multiple people can 
+edit or view your spreadsheet at the same time".  More info here:
+   http://www.google.com/googlespreadsheets/tour1.html
+
+:o) Brian
+
+
+
+
+
+
+From adamsz at gmail.com  Tue Jun  6 17:36:02 2006
+From: adamsz at gmail.com (Adam Souzis)
+Date: Tue Jun  6 17:36:02 2006
+Subject: [openrecord-dev] Google Spreadsheets
+In-Reply-To: <4485327E.40707@dojotoolkit.org>
+References: <4485327E.40707@dojotoolkit.org>
+Message-ID: <d7cee4a70606060835j44c323at7421a0bd98756ebf@mail.gmail.com>
+
+Also, Dan Bricklin, inventor of the spreadsheet, has a AJAX-y
+spreadsheet wiki tool and he's released a new version a couple of
+months ago:
+
+http://www.softwaregarden.com/wkcalpha/
+
+I haven't compared the two yet but one obvious advantage over google's
+tool is that it is open source while google's is a proprietary
+service.
+
+-- adam
+
+On 6/6/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+> More good news...
+>
+> Google is releasing a web-based Spreadsheet tool.
+>
+> Not much info available yet, but Google says that "Multiple people can
+> edit or view your spreadsheet at the same time".  More info here:
+>    http://www.google.com/googlespreadsheets/tour1.html
+>
+> :o) Brian
+>
+>
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+From skinner at dojotoolkit.org  Wed Jun  7 06:51:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Wed Jun  7 06:51:02 2006
+Subject: [openrecord-dev] Google Spreadsheets
+In-Reply-To: <4485327E.40707@dojotoolkit.org>
+References: <4485327E.40707@dojotoolkit.org>
+Message-ID: <44865B1F.60706@dojotoolkit.org>
+
+> Google is releasing a web-based Spreadsheet tool.
+> 
+> Not much info available yet, but Google says that "Multiple people can 
+> edit or view your spreadsheet at the same time".  More info here:
+>   http://www.google.com/googlespreadsheets/tour1.html
+
+Avi and Andrew, the Dabble DB guys, have a blog that I like a lot. 
+Their post today talks about how the Google Spreadsheets product 
+compares to Dabble DB, and why Dabble DB might be a better tool for some 
+common use cases.  Dabble and OpenRecord seem to have very similar 
+design goals, so I think a lot of this is topical for OpenRecord too:
+   http://smallthought.com/blog/?p=32
+
+:o) Brian
+
+
+
+
+
+
+
+
+
+From skinner at dojotoolkit.org  Fri Jun 16 23:15:03 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Jun 16 23:15:03 2006
+Subject: [openrecord-dev] Sun + OpenAJAX Alliance + Dojo announcement
+Message-ID: <44931F24.8040504@dojotoolkit.org>
+
+Sun Microsystems has announced that they're joining the OpenAJAX 
+Alliance and will be collaborating with Dojo.  More here:
+
+http://www.prnewswire.com/cgi-bin/stories.pl?ACCT=104&STORY=/www/story/06-16-2006/0004382050&EDATE=
+
+:o) Brian
+
+
+
+
+
+From skinner at dojotoolkit.org  Wed Jun 21 23:07:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Wed Jun 21 23:07:01 2006
+Subject: [openrecord-dev] Google's GData API
+Message-ID: <4499B4C0.1020404@dojotoolkit.org>
+
+Google's GData API is another development that might end up being 
+applicable to OpenRecord:
+   http://code.google.com/apis/gdata/
+
+:o) Brian
+
+
+
+
+

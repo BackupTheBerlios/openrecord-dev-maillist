@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Re: Rhizome and OpenRecord
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20Rhizome%20and%20OpenRecord&In-Reply-To=%3C44382334.4060306%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000297.html">
+   <LINK REL="Next"  HREF="000299.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Re: Rhizome and OpenRecord</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20Rhizome%20and%20OpenRecord&In-Reply-To=%3C44382334.4060306%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Re: Rhizome and OpenRecord">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Sat Apr  8 22:55:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000297.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+        <LI>Next message: <A HREF="000299.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#298">[ date ]</a>
+              <a href="thread.html#298">[ thread ]</a>
+              <a href="subject.html#298">[ subject ]</a>
+              <a href="author.html#298">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Adam,
+
+&gt;&gt;<i> &gt; * Have the server generate a list of all the items that 
+</I>&gt;&gt;<i> &gt; the table plugin may need to access:
+</I>&gt;&gt;<i> &gt; Here are the RxPath queries for this, assuming the table
+</I>&gt;&gt;<i> &gt; contains all resource of given Category/RDF class:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; ** items = /*[rdf:type=$category]
+</I>&gt;&gt;<i> &gt; ** attributes = id($items/*)
+</I>&gt;&gt;<i> &gt; ** expectedTypes = id($attributes/rdfs:range/*)
+</I>&gt;&gt;<i> &gt; ** suggestedItems = /*[rdf:type = $expectedTypes]
+</I>&gt;&gt;<i> &gt; ** plus the layout item resource for this table instance
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>I don't know XPath (or RxPath), but those queries look good as 
+</I>&gt;&gt;<i>far as I can tell.
+</I>
+I don't know if the above queries already cover this, but the table 
+plugin will also need the names and/or shortnames of (a) the attributes, 
+(b) the suggestedItems, and (c) the relatedItems (the objects of 
+statements about the items in the table).
+
+- Brian
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000297.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+	<LI>Next message: <A HREF="000299.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#298">[ date ]</a>
+              <a href="thread.html#298">[ thread ]</a>
+              <a href="subject.html#298">[ subject ]</a>
+              <a href="author.html#298">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

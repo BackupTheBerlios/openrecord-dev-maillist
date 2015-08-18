@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Proposal: Item Ordering in Query Result Sets
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Proposal%3A%20Item%20Ordering%20in%20Query%20Result%20Sets&In-Reply-To=%3C200504080305.j38353m05619%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000006.html">
+   <LINK REL="Next"  HREF="000017.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Proposal: Item Ordering in Query Result Sets</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Proposal%3A%20Item%20Ordering%20in%20Query%20Result%20Sets&In-Reply-To=%3C200504080305.j38353m05619%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Proposal: Item Ordering in Query Result Sets">brian.skinner at gumption.org
+       </A><BR>
+    <I>Fri Apr  8 05:06:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000006.html">[openrecord-dev] Proposal: Item Ordering in Query Result Sets
+</A></li>
+        <LI>Next message: <A HREF="000017.html">[openrecord-dev] Proposal: Item Ordering in Query Result Sets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>|<i> &gt; If Pat drags &quot;write speech&quot; and drops it
+</I>|<i> &gt; *between* &quot;book flight&quot; and &quot;reserve car&quot;, 
+</I>|<i> &gt; we set the Ordinal value of &quot;book flight&quot; 
+</I>|<i> 
+</I>|<i> [I think you meant &quot;write speech&quot;] 
+</I>|<i> 
+</I>|<i> &gt; to be the average of the Ordinal values of 
+</I>|<i> &gt; &quot;book flight&quot; and &quot;reserve car&quot;.
+</I>
+Yup, I meant &quot;write speech&quot;. We set the Ordinal value of &quot;write speech&quot; to
+be the average of the Ordinal values of the other two.
+
+
+|<i> &gt; When Pat drags and drops and item in a list, 
+</I>|<i> &gt; we only ever change the Ordinal value of the 
+</I>|<i> &gt; item Pat dragged. We don't change any attribute
+</I>|<i> &gt; values of other items.
+</I>|<i> 
+</I>|<i> So, what if &quot;book flight&quot; and &quot;reserve car&quot; didn't 
+</I>|<i> have Ordinal values before?  How would you keep 
+</I>|<i> &quot;write speech&quot; between them?
+</I>
+Doh! Thanks for pointing that out. I think that might be a fatal flaw in the
+whole Ordinal attribute approach. If an item is on a list with 100 other
+items, none of which have Ordinal values yet, then moving one item in the
+list would have to have a side effect of changing 100 other items, which
+might dramatically change where those items appear in other lists on other
+pages. That's no good.
+
+Back to the drawing board. Maybe each query needs to be able to have an
+explicit ordering associated with it, which can be applied to the query
+result set whenever the query is run?
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000006.html">[openrecord-dev] Proposal: Item Ordering in Query Result Sets
+</A></li>
+	<LI>Next message: <A HREF="000017.html">[openrecord-dev] Proposal: Item Ordering in Query Result Sets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#7">[ date ]</a>
+              <a href="thread.html#7">[ thread ]</a>
+              <a href="subject.html#7">[ subject ]</a>
+              <a href="author.html#7">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured wiki]
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20%5BFwd%3A%20Re%3A%20OpenRecord%20screencast%20--%20semi-structured%20wiki%5D&In-Reply-To=%3C440CF52C.6090101%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000288.html">
+   <LINK REL="Next"  HREF="000290.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured wiki]</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20%5BFwd%3A%20Re%3A%20OpenRecord%20screencast%20--%20semi-structured%20wiki%5D&In-Reply-To=%3C440CF52C.6090101%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured wiki]">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Tue Mar  7 04:51:01 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000288.html">[openrecord-dev] welcome
+</A></li>
+        <LI>Next message: <A HREF="000290.html">[openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured wiki]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#289">[ date ]</a>
+              <a href="thread.html#289">[ thread ]</a>
+              <a href="subject.html#289">[ subject ]</a>
+              <a href="author.html#289">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>One of the people who's recently joined the openrecord-dev mailing list 
+is Erik M&#246;ller.  Erik has been an active member of the Wikimedia 
+communities, including Wikipedia.  He's contributed to articles, added 
+important features to the MediaWiki software, helped launch new projects 
+like Wikinews, and more.
+
+Erik is one of the people working on the Wikidata project, a wiki-like 
+database for handling different types of structured content in 
+MediaWiki.  Last week he and I exchanged a couple messages about 
+OpenRecord and Wikidata, and I thought this thread might be interesting 
+to other people on the openrecord-dev list, so with Erik's permission 
+I'm including the most recent message below...
+
+:<i>o) Brian
+</I>
+
+-------- Original Message --------
+Subject: Re: OpenRecord screencast -- semi-structured wiki
+Date: Thu, 02 Mar 2006 21:50:26 -0800
+From: Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt;
+To: Erik Moeller
+
+Hello Erik,
+
+Thanks for writing.  Let me try to answer your questions...
+
+&gt;<i> I'm glad you put your content in the public domain,
+</I>&gt;<i> and I'd encourage you to stick with that option 
+</I>
+I appreciate your encouragement.  It has taken some time and effort to 
+figure out how to run OpenRecord as a public domain project.  It's been 
+difficult to find open source role models, to get legal advice, etc.  I 
+hope it will end up having been worth the effort.  Life would certainly 
+be simpler if we could gradually shift more work into the public domain.
+
+&gt;<i> 1) The screencasts didn't say much (anything?) about
+</I>&gt;<i> versioning/changelogging. I've seen on the site that
+</I>&gt;<i> this is supposedly implemented.
+</I>
+The OpenRecord data model keeps a complete record of the version/change 
+information, but we don't yet have user interface views where you can 
+see old versions, which is why we weren't able to demo that in the 
+screencasts.
+
+&gt;<i> I'm particularly interested in how you handle versioning
+</I>&gt;<i> in the backend. 
+</I>
+We don't yet have a real backend for OpenRecord.  We're still looking at 
+different datastores or servers that we might want to use.  We've talked 
+about using Apache Jackrabbit, RDF datastores like Sesame, etc.  And 
+we've also talked about building our own custom datastore, maybe storing 
+content in a complicated set of files, or maybe building a datastore on 
+top of tools like Berkeley DB, MySQL, or Lucene.  There's no obvious 
+good choice.
+
+Right now almost all of our code is JavaScript code that runs in the 
+browser.  On the server we have less than 100 lines of PHP code, and the 
+main thing the PHP code does is just accept text-packets from the client 
+and append the text-packets to a transaction log file on the server.
+
+When you open an OpenRecord page in your browser, the JavaScript client 
+code reads the entire transaction log to figure out the current state of 
+the data model.  When you edit an item in the browser, the client code 
+bundles that change up in a little text-packet and sends it to the 
+server where the text-packet is appended to the transaction log.  That 
+architecture has worked passably well for small demos and for models 
+that have up to maybe 1,000 items (thousands of RDF triples), but soon 
+we will need a real backend.
+
+&gt;<i> This has been a major challenge for us in Wikidata, as
+</I>&gt;<i> we wish to build highly complex relational applications,
+</I>&gt;<i> and versioning everything that is associated with a 
+</I>&gt;<i> record with every change to it is not an option.
+</I>
+That sounds like a very hard problem.  I wish I had some useful advice 
+to offer, but unfortunately I don't.
+
+&gt;<i> 3) I didn't see anything in the screencast about languages. 
+</I>&gt;<i> In your specifications, i18n is not even targeted for 
+</I>&gt;<i> the 1.0 release. This is a bit disappointing, though
+</I>&gt;<i> not surprising. 
+</I>
+We don't yet have any support for multilingual content.  I'm eager to 
+add those features, but we're swamped with work.
+
+There are only two programmers working regularly on OpenRecord right 
+now, and there's a huge pile of work to be done.  I'm hopeful that 
+through the screencast we may meet other volunteers who want to work on 
+OpenRecord.
+
+I've also been approaching companies, hoping that we might find a 
+corporate partner that would contribute to the development of 
+OpenRecord.  When OpenRecord 1.0 ships I'd like for there to be both a 
+free open-source version as well as a fully supported, hosted, 
+commercial version.
+
+&gt;<i> For Wikidata, i18n is core functionality. We're basing 
+</I>&gt;<i> our work around the Wikimedia projects, where you have 
+</I>&gt;<i> 125 languages, and 30 highly active ones. If we want
+</I>&gt;<i> something like an almanac in Wikipedia, it's essential 
+</I>&gt;<i> that we do not have to duplicate and maintain the same 
+</I>&gt;<i> data in all those languages -- only data which has to be 
+</I>&gt;<i> manually translated should be manually maintained. 
+</I>
+Yes, for a world almanac, it would be good to have the content available 
+in 125 languages without having 125 separate copies of every fact and 
+figure.
+
+In OpenRecord, I'm hoping we'll have &quot;polyglot strings&quot; -- meaning that 
+we'll record translations at the level of individual entries rather than 
+at the level of whole pages.  For example, to keep track of information 
+about Germany, we would have a single Germany item, like this:
+
+  {item-id: 45862,
+    name: [{lang:&quot;en&quot;, value:&quot;Germany&quot;},
+           {lang:&quot;de&quot;, value:&quot;Deutschland&quot;},
+           {lang:&quot;tr&quot;, value:&quot;Almanya&quot;},
+           ...],
+    area: {value: 357021, unit:&quot;sq km&quot;},
+    pop:  82431390,
+    capital: ([pointer to item representing Berlin]) }
+
+In a more complete example, the attributes, like &quot;pop&quot; and &quot;area&quot;, would 
+actually be items themselves, and their names would have polyglot 
+strings too:
+
+  {item-id: 45862,
+    12465: [{lang:&quot;en&quot;, value:&quot;Germany&quot;},
+            {lang:&quot;de&quot;, value:&quot;Deutschland&quot;},
+            {lang:&quot;tr&quot;, value:&quot;Almanya&quot;},
+            ...],
+    23865: {value: 357021, unit:&quot;sq km&quot;},
+    35984:  82431390,
+    69875: ([pointer to item representing Berlin]) }
+
+  {item-id: 23865,
+    12465: [{lang:&quot;en&quot;, value:&quot;Area&quot;},
+            {lang:&quot;en&quot;, value:&quot;Gebiet&quot;},
+            ...]}
+
+  {item-id: 12465,
+    12465: [{lang:&quot;en&quot;, value:&quot;Name&quot;}, ...]}
+
+  {item-id: 35984,
+    12465: [{lang:&quot;en&quot;, value:&quot;Population&quot;}, ...]}
+
+  {item-id: 69875,
+    12465: [{lang:&quot;en&quot;, value:&quot;Capital&quot;}, ...]}
+
+
+&gt;<i> 2) I'd also be interested in the level of database
+</I>&gt;<i> complexity you can model. For example, you have something
+</I>&gt;<i> like a Book=&gt;Author relationship. This is nice, but in
+</I>&gt;<i> one of our first Wikidata applications, WiktionaryZ, we
+</I>&gt;<i> have very complex relationship like: 
+</I>&gt;<i> - Every record has a lexical item, which includes its 
+</I>&gt;<i>    expression (&quot;dog&quot;), language, and some other attributes
+</I>&gt;<i> - Some lexical items define a meaning
+</I>&gt;<i> - A defined meaning can be associated with any number of 
+</I>&gt;<i>    lexical items, which allows for synonyms and translations
+</I>&gt;<i> - A meaning can be associated with a collection
+</I>&gt;<i> - A meaning is associated with meaning texts in multiple 
+</I>&gt;<i>    languages
+</I>&gt;<i> - There can be arbitrary relations between meanings, which 
+</I>&gt;<i>    themselves are meanings, and arbitrary attributes 
+</I>&gt;<i>    associated with them.
+</I>
+I think all of that would be fairly easy to model in OpenRecord.  The 
+OpenRecord data model is very similar to RDF, so it's fairly flexible.
+
+If you wanted to model that example in terms of OpenRecord items and 
+attributes, you could make each &quot;lexical item&quot; be an item, and each 
+&quot;meaning&quot; be an item.  Each lexical item would have attributes for 
+things like &quot;expression&quot; (e.g. &quot;dog&quot;), &quot;gender&quot;, &quot;partOfSpeech&quot;, 
+&quot;meaning&quot;, etc.  Each meaning item would have attributes like &quot;pictures&quot; 
+and &quot;meaningText&quot;, where the &quot;meaningText&quot; would be a polyglot string 
+with different entries for different languages.  In OpenRecord, any 
+attribute can be multi-valued, so any lexical item could be related to 
+more than one meaning item, and any meaning item could be related to 
+more than one lexical item.
+
+&gt;<i> So you can end up with something like a term with 100
+</I>&gt;<i> translations, 4 different meanings, 50 meaning texts
+</I>&gt;<i> for each of them, 20 relations, etc. - it becomes clear
+</I>&gt;<i> that I can't just version the whole thing whenever I
+</I>&gt;<i> make a single change somewhere. It also must be possible
+</I>&gt;<i> to query the data and its relations in an efficient
+</I>&gt;<i> manner, so we're making use of MySQL indexes and other 
+</I>&gt;<i> traditional optimization strategies for relational 
+</I>&gt;<i> databases.
+</I>
+Yup, that's a hard problem.  Relational databases have good facilities 
+for indexing and fast queries across large data sets, but relational 
+databases aren't so convenient for doing versioning, polyglot content, 
+many-to-many relationships, loosely-typed fields, etc.  Some newer 
+datastores have appealing features, but it takes a lot of work to 
+evaluate each different datastore.
+
+&gt;<i> And this is just the core functionality -- this is a logical 
+</I>&gt;<i> chart that shows all the functionality that we want to have
+</I>&gt;<i> in WiktionaryZ:
+</I>&gt;<i> <A HREF="http://upload.wikimedia.org/wikipedia/commons/6/67/ERD.jpg">http://upload.wikimedia.org/wikipedia/commons/6/67/ERD.jpg</A>
+</I>
+Impressive chart.  I imagine a great deal of work went into just making 
+that logical model, completely apart from implementing it.
+
+&gt;<i> Yes, we're very ambitious ;-). On the positive side, we 
+</I>&gt;<i> have multiple sources of funding. 
+</I>
+It's good to hear you've got funding.  I'm hopeful that OpenRecord might 
+someday get some funding too.  Having one or two more full-time 
+programmers working on OpenRecord would make a huge difference.
+
+&gt;<i> So I'd like to know how complex you think an OpenRecord 
+</I>&gt;<i> application can realistically get.
+</I>
+The answer to that question is entirely dependent on what datastore we 
+end up using, and how well our abstract data structures map to what's 
+available in the datastore.
+
+Right now I think it would be pretty easy to build a complex model in 
+OpenRecord, with lots of different kinds of items.  As long as you had 
+very few instances of each kind of item, OpenRecord would be very fast, 
+since the entire model is loaded in memory.  But as soon as you have a 
+few thousand items, then OpenRecord won't be able to open the data file 
+at all.  It's okay for demos, but useless for setting up real sites.
+
+I hope to have the OpenRecord UI hooked up to a real datastore later 
+this year.  Once that's done, we can run performance benchmarks and I 
+can give you actual numbers about scalability.
+
+&gt;<i> 4) As the person who created section editing for Wikipedia 
+</I>&gt;<i> back in 2002, I like the OpenRecord in-place editing, and 
+</I>&gt;<i> would love to try to break it ;-). I think you made a good 
+</I>&gt;<i> choice in implementing things from scratch, as it really 
+</I>&gt;<i> allows you to experiment freely with these ideas. 
+</I>
+Yes, it's fun to get to experiment freely, and do things however seems 
+best.  The downside is that it will take a long time before we have a 
+production quality system that has all the features that existing wikis 
+have.
+
+&gt;<i> This in turn allows me to steal them from you. ;-)
+</I>
+Please do.  Feel free to steal code, and feature ideas, and whatever 
+else.  That's why we have it all in the public domain.  I'll be 
+delighted if OpenRecord features start showing up in tools like 
+MediaWiki.  Let me know if I can help.
+
+&gt;<i> In seriousness, perhaps we can work together on some of
+</I>&gt;<i> the UI level stuff.
+</I>
+Yup, that'd be great.
+
+&gt;<i> However, there are also good reasons that we're basing our
+</I>&gt;<i> work on MediaWiki, as it saves us a lot of time that would
+</I>&gt;<i> otherwise be spent replicating functionality that is already 
+</I>&gt;<i> there. It also makes it easier to adapt to the Wikimedia 
+</I>&gt;<i> projects and culture.
+</I>
+Right, it's much safer to incrementally build on MediaWiki than to try 
+to invent something new.  Inventing is fun, but it's risky and slow.
+
+&gt;<i> Nevertheless, I could see an OpenRecord-based almanac being
+</I>&gt;<i> used by Wikimedia to store data that would then be loaded
+</I>&gt;<i> into MediaWiki.
+</I>
+That would be great.  I'd love to see OpenRecord dovetailing with 
+MediaWiki and being used by Wikimedia projects.
+
+&gt;<i> We should think about the options when you have a 1.0 release,
+</I>&gt;<i> and we can compare the state of OR to WD to see which one is
+</I>&gt;<i> closer to being usable.
+</I>
+That sounds good.  OpenRecord is still a long way from having a 1.0 
+release, but I'd love to stay in touch as we keep progressing.
+
+&gt;<i> Thanks for bringing this project to my attention. I'm looking
+</I>&gt;<i> forward to seeing future releases. I'm glad the &quot;structured wiki&quot;
+</I>&gt;<i> idea is taking off in multiple places now -- it is bound to
+</I>&gt;<i> eventually break through to the masses.
+</I>
+Yes, there are lots of interesting projects in the works right now. 
+Even if most of them fall by the wayside, I think we can still look 
+forward to having good tools available in a few years time.  Thanks for 
+working on the Wikidata project!
+
+Cheers,
+   Brian
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000288.html">[openrecord-dev] welcome
+</A></li>
+	<LI>Next message: <A HREF="000290.html">[openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured wiki]
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#289">[ date ]</a>
+              <a href="thread.html#289">[ thread ]</a>
+              <a href="subject.html#289">[ subject ]</a>
+              <a href="author.html#289">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

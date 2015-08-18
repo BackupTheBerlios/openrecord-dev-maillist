@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Pivot Table ideas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Pivot%20Table%20ideas&In-Reply-To=%3C44BDCA61.7010404%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000333.html">
+   <LINK REL="Next"  HREF="000332.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Pivot Table ideas</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Pivot%20Table%20ideas&In-Reply-To=%3C44BDCA61.7010404%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Pivot Table ideas">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Wed Jul 19 08:00:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000333.html">[openrecord-dev] Pivot Table ideas
+</A></li>
+        <LI>Next message: <A HREF="000332.html">[openrecord-dev] Gantt Chart ideas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#334">[ date ]</a>
+              <a href="thread.html#334">[ thread ]</a>
+              <a href="subject.html#334">[ subject ]</a>
+              <a href="author.html#334">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Hiran,
+
+&gt;&gt;<i>  For the Pivot Table, I think the biggest problem will be figuring out
+</I>&gt;&gt;<i>  how to take the data structures of Items and Attributes and transform
+</I>&gt;&gt;<i>  that data into something that makes sense to display in a Pivot Table.
+</I>&gt;&gt;<i>  The first problem isn't so much a programming problem as a conceptual
+</I>&gt;&gt;<i>  problem, or perhaps a UI design problem...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  Pivot Tables work best when there are a small number of axes that can be
+</I>&gt;&gt;<i>  pivoted (maybe 2 to 6), and where each axis has a small number of
+</I>&gt;&gt;<i>  possible buckets (maybe 2 to 20).
+</I>&gt;<i> 
+</I>&gt;<i> I agree. I think a drop down should be provided for the user to select 
+</I>&gt;<i> chart attributes. It is better to have an upper bound for the number of 
+</I>&gt;<i> axes(E.g.: 6). But there could be attributes which are not suitable for 
+</I>&gt;<i> the pivot table ( E.g.: Attributes with a unique value). The plugin can 
+</I>&gt;<i> either exclude such attributes from the drop down or display a warning 
+</I>&gt;<i> that the table may be too big to display if that attribute is selected. 
+</I>&gt;<i> In order to determine suitable attributes, I thought of comparing the 
+</I>&gt;<i> item count with distinct attribute value count and decide based on a 
+</I>&gt;<i> standard ( E.g.: If the item count is 50 and the an attribute has 15 
+</I>&gt;<i> distinct values, the attribute is a suitable attribute for the chart). 
+</I>&gt;<i> There could also be an upper bound for the number of buckets (E.g.: 20).
+</I>&gt;<i> 
+</I>&gt;<i> Please tell me what you think about it.
+</I>
+That sounds like a good approach.
+
+
+&gt;&gt;<i>  In OpenRecord, Items have Attributes with values, and those values can
+</I>&gt;&gt;<i>  be strings, dates, numbers, or references to other items.  It seems to
+</I>&gt;&gt;<i>  me that there might be more than one approach for mapping the ideas of
+</I>&gt;&gt;<i>  Items/Attributes/values to the ideas of Axes/Buckets/cells...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  Here's one approach... To display a Pivot Table with 3 axes and 108
+</I>&gt;&gt;<i>  cells, you might populate the table from a set of 108 OpenRecord Items.
+</I>&gt;&gt;<i>    So, for a table like the Gas Tax table, you might have 108 Items all
+</I>&gt;&gt;<i>  in the Category &quot;Donation&quot;, where each Donation Item has a 3 attributes
+</I>&gt;&gt;<i>  called &quot;Year&quot;, &quot;Form&quot;, and &quot;Charity&quot;, plus an additional attribute
+</I>&gt;&gt;<i>  called &quot;Amount&quot;.  An individual Donation Item might look like this:
+</I>&gt;&gt;<i>     Category: Donation
+</I>&gt;&gt;<i>     Year:     2001
+</I>&gt;&gt;<i>     Form:     Cash
+</I>&gt;&gt;<i>     Charity:  Greenbelt Alliance
+</I>&gt;&gt;<i>     Amount:   $61.46
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  That first approach will only work well if the number of Donation Items
+</I>&gt;&gt;<i>  is the same as the number of cells in the Pivot Table.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  A better approach might be to allow for there to be many more Donation
+</I>&gt;&gt;<i>  Items, and then have the Pivot Table automatically calculate the totals.
+</I>&gt;&gt;<i>    So in this second approach, there could be 5 different Donation Items
+</I>&gt;&gt;<i>  that are all donations of Cash in 2001 to the Greenbelt Alliance, and
+</I>&gt;&gt;<i>  the Pivot Table will add all 5 of the Amount values and show that total
+</I>&gt;&gt;<i>  in the corresponding cell of the Pivot Table.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  That second approach will work smoothly if all of the Items in the
+</I>&gt;&gt;<i>  category Donation all have values for the 4 Attributes Year, Form,
+</I>&gt;&gt;<i>  Charity, and Amount.  I'm not sure what the Pivot Table code should do
+</I>&gt;&gt;<i>  if some of the Items are missing some Attributes, or if some of the
+</I>&gt;&gt;<i>  Items have Amount values that are not Numbers, or if one of the Items
+</I>&gt;&gt;<i>  has a multi-valued Amount Attribute.  This second approach also only
+</I>&gt;&gt;<i>  works well if the values that the user wants to see in the cell are
+</I>&gt;&gt;<i>  things that can be totaled up, like numbers.  In some other scenarios,
+</I>&gt;&gt;<i>  the user might not want to see the sum of a set of Attribute values, but
+</I>&gt;&gt;<i>  might instead want to see an average of the values, or see a count of
+</I>&gt;&gt;<i>  the number of Items that fall into that cell.
+</I>&gt;<i> 
+</I>&gt;<i> I thought of going for the second approach, which is complete and user 
+</I>&gt;<i> friendly. 
+</I>
+Okay, sounds good.
+
+
+&gt;<i> For missing information, some logic can be used to compare the 
+</I>&gt;<i> attributes values and if all nonempty attribute values are matched, the 
+</I>&gt;<i> missing information can be predicted. 
+</I>
+I don't think I understand that idea.  It sounds like a feature that you 
+would add once other things are already working, so maybe we don't need 
+to discuss it yet, but when the time comes maybe you can tell me more 
+about the idea or give an example.
+
+
+&gt;<i> Handling multiple items with same data needs to be figured out. The 
+</I>&gt;<i> plugin can provide a drop down list specifying the treatment of the 
+</I>&gt;<i> multiple items. For example, the drop down can have options for numeric 
+</I>&gt;<i> addition, average calculation, and string addition. But this approach 
+</I>&gt;<i> would not be effective if the user wants average for one axis and 
+</I>&gt;<i> addition for another. I'll let you know if I find a more effective 
+</I>&gt;<i> method to do this.
+</I>
+I like your idea of using a drop down to let the user pick different 
+ways of combining values (numeric addition, average, string 
+concatenation).  You could have just one drop down for the whole pivot 
+table, so that the user could not pick &quot;average&quot; for one axis and 
+&quot;addition&quot; for another.
+
+:<i>o) Brian
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000333.html">[openrecord-dev] Pivot Table ideas
+</A></li>
+	<LI>Next message: <A HREF="000332.html">[openrecord-dev] Gantt Chart ideas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#334">[ date ]</a>
+              <a href="thread.html#334">[ thread ]</a>
+              <a href="subject.html#334">[ subject ]</a>
+              <a href="author.html#334">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

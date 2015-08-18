@@ -1,0 +1,612 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] copyrights, patents, etc.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20copyrights%2C%20patents%2C%20etc.&In-Reply-To=%3C200506141916.j5EJGS112008%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000134.html">
+   <LINK REL="Next"  HREF="000136.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] copyrights, patents, etc.</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20copyrights%2C%20patents%2C%20etc.&In-Reply-To=%3C200506141916.j5EJGS112008%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] copyrights, patents, etc.">brian.skinner at gumption.org
+       </A><BR>
+    <I>Tue Jun 14 21:17:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000134.html">[openrecord-dev] Differentiating between editing and entry and adding a new version of an entry
+</A></li>
+        <LI>Next message: <A HREF="000136.html">[openrecord-dev] Test for non-null function parameter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#135">[ date ]</a>
+              <a href="thread.html#135">[ thread ]</a>
+              <a href="subject.html#135">[ subject ]</a>
+              <a href="author.html#135">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Gang,
+
+Ever since we set up our Subversion server and started do check-ins, we've
+been putting all the code we write under a Creative Commons Public Domain
+Dedication.  And similarly, all the messages we post to the dev list are
+marked as public domain.
+
+I think the Public Domain Dedication is a good choice for us.  I'm not a
+lawyer or an expert on intellectual property issues, but my understanding is
+that the public domain dedication gives us a huge amount of flexibility in
+how we can use the work we do.  
+
+For example, with the public domain dedication, I think at any point you can
+copy all the code and make a few changes to it, thereby creating a
+derivative work.  And then you can copyright the derivative work, all rights
+reserved, and license it under any propriety license you want, or any open
+source license you want.
+
+And I think the public domain dedication also makes it easier to contribute
+code to other open source projects.  Because all our code is public domain,
+my understanding is that any other project can take little scraps without
+having to deal with keeping track of licensing and attribution issues.  For
+example, if a programmer at OSAF is working on Scooby, they can look through
+the OpenRecord code to see how we do pop-up suggestion lists, and then they
+can copy a few methods or a few files, re-work it to meet their needs, and
+incorporate it in the Scooby code base under the OSAF copyright and license
+terms.  Similarly, if we wanted the whole OpenRecord project to get
+assimilated into the MediaWiki project, I believe that having our work in
+the public domain should make that easier. 
+
+But, the Creative Commons Public Domain Dedication only covers the copyright
+issues.  We also need to worry about patent rights for the work we create.
+And we need to worry about keeping track of the patent and copyright license
+terms for code that we get from other open source authors. 
+
+In the past week I've spent a bunch of time looking at how other open source
+projects handle all this stuff.  I've been looking at the &quot;contributor
+agreements&quot; and license agreements used Apache, Mozilla, Zope, etc.  There
+are lots of good ideas to draw on, but unfortunately everybody seems to do
+things a little bit differently.  And we face a further complication,
+because unlike Apache, Mozilla, and Zope, for our project there's no single
+company or foundation that can own the work and control the license.  
+
+This stuff is all a little bit complicated, and it'd be good to talk to a
+lawyer about it and get some expert advice.  I've seen companies spend
+millions of dollars just on legal fees, on intellectual property lawsuits
+that could probably have been prevented if the original authors had been
+careful to get all their ducks in a row in the first few months of the
+project.
+
+For our project, it seems like either we need to (a) create some kind of
+little non-profit foundation to serve as a legal umbrella, (b) operate as a
+project of some existing foundation, like the Tides Foundation or OSAF, or
+(c) set up some kind of contributor license agreement that works just
+between all of the individual contributors.
+
+My first inclination was to try approach (c), because it seemed simpler and
+cheaper than (a) or (b).  This past week I took a stab at trying to draft a
+contributor agreement that might work for our project.  Have a look at it
+when you get a chance, and we can talk about it next time we're all
+together!
+
+:<i>o) Brian
+</I>
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~
+                   The OpenRecord Software Project
+             Contributor License Agreement (&quot;Agreement&quot;)
+                   <A HREF="http://openrecord.org/licenses/">http://openrecord.org/licenses/</A>
+
+                   
+Thank you for contributing to The OpenRecord Software Project. In order to
+clearly establish the intellectual property license granted with
+Contributions, we need to have a Contributor License Agreement that has been
+signed by each Contributor, indicating agreement to the license terms below.
+This Agreement is for the protection of all of the Contributors, as well as
+the protection of the users of the Work. Please read this document carefully
+before signing and keep a copy for your records.
+
+
+This multiparty agreement is entered into among Brian Douglas Skinner,
+Chih-Chao Lam, Mignon Belongie, (ALSO?: Mimi and Marty), and the subsequent
+undersigned Contributors. In consideration of the premises and the mutual
+agreements, provisions and covenants contained herein, the parties agree as
+follows:
+
+
+
+                                    RECITALS
+                                    
+The OpenRecord Software Project is an open source software development
+project.  The primary OpenRecord product is a collaborative web tool,
+similar in concept to a wiki (the most famous example of which is
+wikipedia.org). However, unlike a wiki, which is primarily text based,
+OpenRecord is designed to enable web sites that allow people to create, add
+information to, reorganize, link together, search and otherwise use charts,
+tables, databases, and other ways of organizing information. More
+information can be found at <A HREF="http://openrecord.org.">http://openrecord.org.</A>  
+
+The Contributors to the OpenRecord Software Project intend to use the
+resulting OpenRecord Work in a wide variety of ways. Different Contributors
+intend to use the work in different ways. The Contributors wish to ensure
+that they, and others, retain broad and sweeping freedoms to Fully Utilize
+the OpenRecord Work. One of the goals of this Agreement is to help ensure
+that the OpenRecord Work is not contaminated with Contributions of GNU GPL
+source code or Contributions of proprietary intellectual property that would
+restrict how the OpenRecord Work could be used.
+
+
+
+SECTION 1.     Definition of Terms. 
+
+The following definitions apply throughout this Agreement:
+
+1.1. &quot;Agreement&quot; (or &quot;Contributor License Agreement&quot;)
+     means this agreement.
+
+1.2. &quot;Contributor&quot; 
+     means an individual or a legal entity exercising rights under, and
+complying with all of the terms of, this Agreement. For legal entities, the
+entity making a Contribution and all other entities that control, are
+controlled by, or are under common control with that entity are considered
+to be a single Contributor. For purposes of this definition, &quot;control&quot; means
+(i) the power, direct or indirect, to cause the direction or management of
+such entity, whether by contract or otherwise, or (ii) ownership of fifty
+percent (50%) or more of the outstanding shares, or (iii) beneficial
+ownership of such entity.
+
+1.3. &quot;You&quot; (or &quot;Your&quot;)
+     means the Contributor that is indicating agreement to these terms by
+completing and executing this Agreement.
+     
+1.4. &quot;Other Contributors&quot;
+     means the Contributors who have executed this Agreement before or after
+You executed it.
+
+1.5. &quot;Creation&quot;
+     means any techniques, sketches, drawings, models, specifications,
+designs, documentation, inventions, know-how, processes, apparatus,
+algorithms, formulae, software code, software programs, products, tools, or
+inventions created in the course of working.
+     
+1.6. &quot;OpenRecord Work&quot; 
+     means any Creation developed by the Contributors in the course of
+working on the OpenRecord Project, as well as any  discussion of the
+Creation. 
+   
+1.7. &quot;Contribution&quot; 
+     means any Original Work or Copied Work that You intentionally Submit
+for possible inclusion in, or documentation of, any part of the OpenRecord
+Work. Types of Contributions include but are not limited to source code,
+scripts, images, diagrams, text documents, e-mail messages, and other forms
+of verbal or written communication.
+
+1.8. &quot;Original Work&quot;
+     means any Creation or original work of authorship by You, including any
+modifications or additions to an existing work.
+
+1.9. &quot;Copied Work&quot;
+     means any work which is not Your Original Work.
+
+1.10. &quot;Submit&quot;
+     means sending, posting, or transmitting or otherwise sharing any form
+of electronic, verbal, or written communication to the other Contributors,
+including but not limited to communication in any OpenRecord Forum.
+     
+1.11. &quot;OpenRecord Forum&quot; 
+     means any meetings, electronic mailing lists, source code control
+systems, and issue tracking systems that are managed by, or on behalf of,
+the Contributors for the purpose of discussing and improving the OpenRecord
+Work, or exchanging information about the OpenRecord Work. The OpenRecord
+Forums include but are not limited to the following forums available on the
+openrecord.org web site and the berlios.de web site and accessible at these
+addresses:
+       <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+       <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-svn">http://lists.berlios.de/mailman/listinfo/openrecord-svn</A>
+       <A HREF="http://svn.berlios.de/viewcvs/openrecord/">http://svn.berlios.de/viewcvs/openrecord/</A>
+       <A HREF="http://svn.berlios.de/wsvn/openrecord">http://svn.berlios.de/wsvn/openrecord</A>
+       <A HREF="http://developer.berlios.de/svn/?group_id=3396">http://developer.berlios.de/svn/?group_id=3396</A>
+       <A HREF="http://openrecord.org/">http://openrecord.org/</A>
+  
+1.12. &quot;Creative Commons Public Domain Dedication&quot; 
+     means the copyright dedication and public domain certification document
+made available by the non-profit corporation Creative Commons. The text of
+the Creative Commons Public Domain Dedication can be found at the
+creativecommons.org web site:
+       <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+
+1.13. &quot;Fully Utilize&quot;
+     means use, copy, make, have made, distribute, transmit, modify, build
+upon, prepare derivative works of, publicly display, publicly perform, offer
+to sell, sell, import, transfer, sublicense, reproduce, or otherwise exploit
+for any purpose, commercial or non-commercial, and in any way, including by
+methods that have not yet been invented or conceived.
+     
+1.14. &quot;Employer&quot;
+     means any entity You work for as an employee or a contractor.
+     
+     
+       
+SECTION 2.     Right to Submit Contributions.
+
+2.1. Your Right to Submit Contributions.
+
+You hereby grant the Other Contributors the right to Submit Contributions to
+the OpenRecord Work, in consideration of the agreement by the Other
+Contributors to the terms and conditions contained in this Agreement.
+
+2.2. Your Right to Submit Contributions.
+
+The Other Contributors hereby grant You the right to Submit Contributions to
+the OpenRecord Work, in consideration of the agreement by You to the terms
+and conditions contained in this Agreement.
+
+
+
+SECTION 3.     Grant of Copyright License. 
+
+3.1. Public Domain Dedication.
+
+You hereby dedicate to the public domain whatever copyright You hold in the
+Contributions you Submit. 
+
+You make this dedication for the benefit of the public at large and to the
+detriment of Your heirs and successors. You intend this dedication to be an
+overt act of relinquishment in perpetuity of all present and future rights
+under copyright law, whether vested or contingent, in the Contribution. You
+understand that such relinquishment of all rights includes the
+relinquishment of all rights to enforce (by lawsuit or otherwise) those
+copyrights in the Contribution.
+
+You recognize that, once placed in the public domain, the Contribution may
+be Fully Utilized by anyone for any purpose.
+
+3.2. Creative Commons.
+
+You hereby agree that all the Contributions that You Submit are made under
+the terms of the Creative Commons Public Domain Dedication, with the
+exception of Submissions of Copied Work as described in Section 5.
+
+3.3. Copyright License.
+
+You hereby grant to the Other Contributors and to recipients of the
+OpenRecord Work a perpetual, worldwide, non-exclusive, no-charge,
+royalty-free, irrevocable copyright license to Fully Utilize Your
+Contributions.
+   
+3.4. Public Domain Work.
+
+You hereby agree that when You Submit Contributions of Copied Work rather
+than Original Work and You represent the Copied Work as being in the public
+domain, You will certify that, to the best of the Your knowledge, the work
+of authorship identified is in the public domain of the country from which
+the work is published. You agree to take reasonable steps to verify the
+copyright status of all Contributions. You recognize that Your good faith
+efforts may not shield  You from liability if in fact the work certified is
+not in the public domain.
+
+
+
+SECTION 4.     Grant of Patent License. 
+
+4.1. Patent Licenses.
+
+Subject to the terms and conditions of this Agreement, You hereby grant to
+the Other Contributors and to the recipients of the OpenRecord Work a
+perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+(except as stated in this section) patent license to Fully Utilize the
+OpenRecord Work, where such license applies only to those patent claims
+licensable by You that are necessarily infringed by Your Contribution(s)
+alone or by combination of Your Contribution(s) with any other work. 
+
+If any entity institutes patent litigation against You or any other entity
+(including a cross-claim or counterclaim in a lawsuit) alleging that Your
+Contribution, or the OpenRecord Work to which you have contributed,
+constitutes direct or contributory patent infringement, then any patent
+licenses granted to that entity under this Agreement for that Contribution
+or Work shall terminate as of the date such litigation is filed.
+   
+4.2. Unencumbered Contributions.
+
+You hereby agree to only Submit Contributions for which You are legally
+entitled to grant the above license. If Your Employer has rights to
+intellectual property that You create that includes Your Contributions, You
+agree not to Submit the Contributions unless You have received permission to
+make Contributions on behalf of Your Employer, or Your Employer has waived
+such rights for Your Contributions, or Your Employer has executed a separate
+Contributor License Agreement.
+
+4.3. Original Work.
+
+You represent that each of Your Contributions of Original Work is Your
+original creation. You hereby agree that Your Contribution submissions will
+include complete details of any third-party license or other restriction
+(including, but not limited to, related patents and trademarks) of which You
+are personally aware and which are associated with any part of Your
+Contributions.
+ 
+4.4. Representations, Warranty, and Indemnification. 
+
+You represent and warrant that Your Contributions do not violate the rights
+of any person or entity, and that You have legal authority to enter into
+this Agreement and legal authority over the Contributions. Further, You
+indemnify the Other Contributors against violations.
+
+
+
+SECTION 5.     Submissions of Copied Work. 
+
+5.1. Separate Submission.
+
+You hereby agree that if You Submit Contributions of Copied Work rather than
+Original Work, You will Submit the Copied Work separately from any Original
+Work, identifying the complete details of its source and of any license or
+other restriction (including, but not limited to, related patents,
+trademarks, and license agreements) of which You are personally aware, and
+conspicuously marking the work as &quot;Copied from [title of book, or source
+URL]&quot;.
+
+5.2. Restrictive Licenses. 
+
+You hereby agree not to Submit Contributions of Copied Work that might in
+any way jeopardize the ability of the Other Contributors to freely copy,
+distribute, modify, use, offer to sell, or sell the OpenRecord Work. You
+agree not to Submit Contributions of Copied Work if the Copied Work is
+licensed under a restrictive license, including but not limited to the GNU
+General Public License (GPL) and proprietary commercial licenses.
+
+
+
+SECTION 6.     Outside Relationships. 
+
+6.1. Employer Notification.
+
+If You work as an employee or a contractor, You represent that You have
+notified Your Employer, in writing or by e-mail, of the fact that You intend
+to Contribute to the OpenRecord Work.  (CUT THIS?: You represent that You
+have offered a copy of this agreement to Your Employer.)
+
+6.2. Independent Creation.
+
+   a. You hereby agree not to use any Employer resources in the course of
+working on the OpenRecord Work without the written consent of Your Employer.
+
+
+   b. You hereby agree not work on the OpenRecord Work at the premises of
+the Employer without the written consent of Your Employer.
+   
+   c. You hereby agree not work on the OpenRecord Work while working on
+tasks assigned to You by Your Employer.
+   
+   d. You hereby agree not use any Creation developed by or for Your
+Employer in any aspect of the OpenRecord Work, unless such Creation is in
+the public domain or has been Submitted as a Contribution.
+
+   e. You hereby agree that any Creation developed by You while working on
+the OpenRecord Work shall not be considered an invention belonging to Your
+Employer and is not to be assigned to Your Employer.  
+
+6.3. Previous Employers.
+
+You agree that during the term of the Agreement, You will not disclose to
+the Other Contributors, or induce the Other Contributors to use, any
+confidential or proprietary information, knowledge or data belonging to any
+of Your previous employers, or any previous party to which You were a
+consultant, or others.
+
+6.4. Prior Commitments and Agreements.
+
+You represent that You have no other commitments or agreements with any
+other person or entity, including any commitments or agreements to keep in
+confidence proprietary information or knowledge aquired by You prior to
+Submitting Contributions to the OpenRecord Work, that will hinder or
+interfere with Your ability to honor the terms of this Agreement.
+
+6.5. Future Commitments and Agreements.
+
+You agree that during the term of this Agreement You will not enter into any
+commitments or agreements with third parties that would interfere with Your
+ability to honor the terms of this Agreement.
+
+
+   
+SECTION 7.     Use of Usernames and Accounts. 
+
+7.1. Identity Protection.
+
+You will not allow anyone other than You to use Your BerliOS or OpenRecord
+username or login accounts to Contribute to an OpenRecord Forum. Should You
+become aware of any such use, You will immediately notify the other
+Contributors. Until such notice is received, You will be presumed to have
+taken all actions made through Your account. Your name and account will be
+visible worldwide via the Internet.
+
+
+   
+SECTION 8.     Transparency. 
+
+8.1. Public Archives.
+
+You represent the You understand that Contributions are routinely archived
+and published on the OpenRecord Forums, and all Contributions may be made
+publically available. All information exchanged by the Contributors will be
+considered public and may be shared with anyone.
+
+
+
+SECTION 9.     Term of the Agreement. 
+
+9.1. Effective Date.
+
+This Agreement will initially become effective as of July xx, 2005. Your
+participation in this Agreement will become effective immediately upon
+executing the Agreement or a counterpart of the Agreement.
+
+9.2. Termination.
+
+You may terminate Your participation in this Agreement at any time by
+notifying the Other Contributors that you have terminated Your
+participation, and the Other Contributors may terminate Your participation
+in this Agreement by notifying You that they have terminated Your
+participation. Once You terminate Your participation You reliquensh Your
+right to Submit Contributions. 
+
+9.3. Surviving Rights.
+
+Termination of this Agreement shall not be construed to in any way limit
+Your right to Fully Utilize the OpenRecord Work.
+
+9.4. Surviving Obligations.
+
+The obligations under this Section 3 and Section 4 shall survive the
+termination of the agreement.
+
+
+
+SECTION 10.     Miscellaneous.
+        
+10.1. Governing Law. 
+
+This Agreement will be governed by and construed in accordance with the laws
+of the State of California.  
+
+10.2. Successors and Assigns. 
+
+Except as otherwise provided herein, the provisions hereof shall inure to
+the benefit of, and be binding upon, the successors, assigns, heirs,
+executors and administrators of the parties hereto.
+
+10.3. Further Assurances. 
+
+The parties hereby agree to execute such further documents and instruments,
+and perform such other actions, as may be reasonably necessary or
+appropriate to carry out the intentions of the parties with respect to this
+Agreement.
+
+10.4. Notification.
+
+You hereby agree to promptly notify the Other Contributors of any facts or
+circumstances of which you become aware that would make any of the
+representations in this Agreement inaccurate in any respect, or that might
+be considered a breach of this Agreement.
+
+10.5. Contracts and Liabilities.
+
+You hereby agree that You have no authority to act on behalf of or to enter
+into any contract or to incur any liability on behalf of the project or the
+Other Contributors.
+
+10.6. Entire Agreement; Amendment.
+
+This Agreement contains the full and entire agreement and understanding
+among the parties with regard to the subject matter and supersedes all prior
+discussions and agreements. Neither this Agreement nor any term hereof may
+be amended, waived, discharged, or terminated other than by a written
+instrument signed by all the parties. The parties hereto consent to the
+addition as parties of additional Contributors to this agreement provided
+that such additional Contributors execute a counterpart signature page
+hereto.
+
+10.7. Counterparts; Facsimile. 
+
+This Agreement may be executed in any number of counterparts, each of which
+may be executed by less than all of the Contributors, each of which shall be
+deemed an original, each of which shall be enforceable against the parties
+actually executing such counterparts, and all of which when taken together
+shall constitute one and the same instrument.  This Agreement may be
+delivered by executed facsimile transmission, which shall be deemed an
+original.
+
+10.8. Assignment. 
+
+This Agreement may not be assigned by any party hereto or thereto without
+the
+prior written consent of the other parties hereto or party thereto, as the
+case
+may be. This Agreement will bind You and the Other Contributors, and their
+respective legal representatives, successors and permitted assigns.  
+
+10.9. Titles and Subtitles. 
+
+The titles and subtitles used in this Agreement are used for convenience
+only and are not considered in construing or interpreting this Agreement.
+
+
+
+IN WITNESS WHEREOF, the parties hereby execute this Agreement as of the date
+first above written.
+
+
+Full name: ____________________________________ 
+
+
+Date: _________________________________________
+
+
+Signature: ____________________________________
+  
+
+Mailing address: 
+  
+  _____________________________________________
+
+  _____________________________________________
+
+  _____________________________________________ 
+  
+Country:   ____________________________________
+  
+  
+Telephone: ____________________________________
+  
+
+E-Mail addresses, including addresses used to make Contributions:
+  
+  _____________________________________________
+  
+  _____________________________________________
+  
+
+Usernames for accounts used to make Contributions at BerliOS or at other
+collaboration sites:
+  
+  _____________________________________________
+  
+  _____________________________________________
+  
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000134.html">[openrecord-dev] Differentiating between editing and entry and adding a new version of an entry
+</A></li>
+	<LI>Next message: <A HREF="000136.html">[openrecord-dev] Test for non-null function parameter
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#135">[ date ]</a>
+              <a href="thread.html#135">[ thread ]</a>
+              <a href="subject.html#135">[ subject ]</a>
+              <a href="author.html#135">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

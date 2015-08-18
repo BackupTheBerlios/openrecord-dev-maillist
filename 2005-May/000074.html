@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Model Testsuite problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Model%20Testsuite%20problems&In-Reply-To=%3CC4A02229-8011-40A0-AD02-B26C2C8F4553%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000073.html">
+   <LINK REL="Next"  HREF="000075.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Model Testsuite problems</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Model%20Testsuite%20problems&In-Reply-To=%3CC4A02229-8011-40A0-AD02-B26C2C8F4553%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] Model Testsuite problems">chao at cs.stanford.edu
+       </A><BR>
+    <I>Sat May 28 20:31:08 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000073.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+        <LI>Next message: <A HREF="000075.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#74">[ date ]</a>
+              <a href="thread.html#74">[ thread ]</a>
+              <a href="subject.html#74">[ subject ]</a>
+              <a href="author.html#74">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+
+&gt;<i> I'm kind of grasping at straws here, but one thing you could do is  
+</I>&gt;<i> to try
+</I>&gt;<i> loading  TestSuite.html from a <A HREF="file:///">file:///</A> prefix rather than an
+</I>&gt;<i> <A HREF="http://localhost:">http://localhost:</A> prefix.  That tends tease out potential problems  
+</I>&gt;<i> that
+</I>&gt;<i> result from Apache caching some files.
+</I>&gt;<i>
+</I>OK, all the test suites now work on my mac ?!
+
+I tried using <A HREF="file:///">file:///</A> as you suggested and that worked, and then I  
+went back to <A HREF="http://localhost">http://localhost</A> and that worked too.
+
+Either I was in an alternate reality yesterday or there's some weird  
+Apache caching going on or that I'm clueless in some other way :(
+
+chao
+
+On May 28, 2005, at 12:40 AM, Brian Douglas Skinner wrote:
+
+&gt;<i> Hey Chao,
+</I>&gt;<i>
+</I>&gt;<i> This seems like a really weird bug.  I'm a little bit baffled about  
+</I>&gt;<i> what
+</I>&gt;<i> might be causing it.  And, unfortunately, I don't own a Mac, so I  
+</I>&gt;<i> don't have
+</I>&gt;<i> any good way to reproduce it.  But, I did have a couple thoughts...
+</I>&gt;<i>
+</I>&gt;<i> I'm kind of grasping at straws here, but one thing you could do is  
+</I>&gt;<i> to try
+</I>&gt;<i> loading  TestSuite.html from a <A HREF="file:///">file:///</A> prefix rather than an
+</I>&gt;<i> <A HREF="http://localhost:">http://localhost:</A> prefix.  That tends tease out potential problems  
+</I>&gt;<i> that
+</I>&gt;<i> result from Apache caching some files.
+</I>&gt;<i>
+</I>&gt;<i> My only other thought is that there's maybe some connection between  
+</I>&gt;<i> this bug
+</I>&gt;<i> and all the new UUID code that I just checked in.  The UUIDs seem  
+</I>&gt;<i> to work
+</I>&gt;<i> fine in Firefox on Windows, but maybe the Mac Firefox  
+</I>&gt;<i> implementation has
+</I>&gt;<i> some slightly different implementation of the Core JavaScript  
+</I>&gt;<i> functions --
+</I>&gt;<i> Number, Math.random(), etc.
+</I>&gt;<i>
+</I>&gt;<i> I'll be available by phone on Saturday, and then on Sunday Mignon  
+</I>&gt;<i> and I can
+</I>&gt;<i> look at the code and maybe debug it on a Mac and PC side by side.
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev-admin at berlios.de</A>
+</I>&gt;<i> [mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev-admin at berlios.de</A>] On Behalf Of Chih-Chao Lam
+</I>&gt;<i> Sent: Friday, May 27, 2005 9:11 PM
+</I>&gt;<i> To: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at berlios.de</A>
+</I>&gt;<i> Subject: [openrecord-dev] Model Testsuite problems
+</I>&gt;<i>
+</I>&gt;<i> Hi Brian,
+</I>&gt;<i>
+</I>&gt;<i> I tested the modeltest TestSuite over on my Windows PC, with the
+</I>&gt;<i> pages serving off my mac's apache server, and everything ran fine.
+</I>&gt;<i> So, I suspect it's a mac vs. pc firefox issue.
+</I>&gt;<i>
+</I>&gt;<i> I'm going to checkin my code because I think the bug is likely to be
+</I>&gt;<i> already present on the mac.
+</I>&gt;<i>
+</I>&gt;<i> As far as I can tell, the bug on the mac is that there are two
+</I>&gt;<i> entries created for the &quot;Name&quot; attribute on an item. The two entries
+</I>&gt;<i> point to the same identical item.
+</I>&gt;<i>
+</I>&gt;<i> Anyway, maybe you can help figure it out with Mignon Sunday? I'm also
+</I>&gt;<i> available tomorrow (sat).
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> chao
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000073.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+	<LI>Next message: <A HREF="000075.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#74">[ date ]</a>
+              <a href="thread.html#74">[ thread ]</a>
+              <a href="subject.html#74">[ subject ]</a>
+              <a href="author.html#74">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

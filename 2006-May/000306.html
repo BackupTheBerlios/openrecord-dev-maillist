@@ -1,0 +1,434 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] UI design questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20UI%20design%20questions&In-Reply-To=%3C4464E5AB.1080708%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000305.html">
+   <LINK REL="Next"  HREF="000307.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] UI design questions</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20UI%20design%20questions&In-Reply-To=%3C4464E5AB.1080708%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] UI design questions">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Fri May 12 21:43:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000305.html">[openrecord-dev] welcome
+</A></li>
+        <LI>Next message: <A HREF="000307.html">[openrecord-dev] UI design questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#306">[ date ]</a>
+              <a href="thread.html#306">[ thread ]</a>
+              <a href="subject.html#306">[ subject ]</a>
+              <a href="author.html#306">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Last Saturday a few of us who are local to San Francisco got together to 
+talk about the User Interface for OpenRecord.
+
+We worked on coming up with answers for some of our pending UI design 
+questions.  After the meeting we decided to continue the conversation 
+here on the mailing list, and on a wiki page once we get that set up.
+
+Here's the big list of 62 open UI questions that we've been talking about...
+
+:<i>o) Brian
+</I>
+
+
+==============================================================
+OpenRecord UI Design Questions
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+General questions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+101. Autosave vs. undo
+
+Right now we have no &quot;Save&quot; button, and all changes are instantly saved. 
+  But that means adding an &quot;Undo&quot; feature is prohibitively difficult. 
+But maybe we could have some sort of  revert/rollback feature that feels 
+lightweight enough to be like an Undo feature. Alternatively, we could 
+have an &quot;Undo&quot; feature, and replace the current autosave behavior with 
+an explicit &quot;Save&quot; button.  Which way is better, or is there some other 
+hybrid solution?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+102. Remove vs. delete
+
+Have we made the UI too complicated if we ask the user to understand the 
+distinction between (a) removing an item from a particular view, vs. (b) 
+deleting the item from the repository?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+103. Delete vs. retire
+
+When you delete an item, it's never really gone.  You can always see it 
+again by going to its URL, or by looking at an old version of a page 
+that used to show it.  Should we use the term &quot;retire&quot; instead of &quot;delete&quot;?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+104. Edit mode vs. view mode
+
+If you try to start editing a page, but you're not able to edit because 
+you haven't logged in yet, how do we help you figure out that you need 
+to log in?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+105. Show Tools
+
+Can we get rid of the &quot;Show Tools&quot; button, and instead be in &quot;Show 
+Tools&quot; mode all the time.  How do we do that without cluttering the page 
+with stuff like the &quot;New Page&quot; and &quot;New Section&quot; buttons?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+106. What can I edit?
+
+How do we provide GUI feedback to show what text is editable?
+   - border appears on hover?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+107. Date/time annotations for Entries
+
+World almanacs have lots of tables that show how values change over 
+time, like this table showing the number of cases of different diseases 
+in the United States:
+
+           |  1970   |  1980  |  1990  |  2000  |
+   --------+---------+--------+--------+--------+
+   Mumps   | 104,953 |  8,576 |  5,292 |    323 |
+   Measles |  56,552 |  3,904 |  1,125 |    152 |
+   TB      |  37,137 | 27,749 | 25,701 | 12,942 |
+   --------+---------+--------+--------+--------+
+
+How do we represent this information in our data model of Items and 
+Attributes?
+
+Is Mumps an Item, with Attributes like [Name], [Description], 
+[Treatments], and [Number of Cases]?  Can the [Number of Cases] 
+Attribute have multiple Entries (104953, 8576, 5292, 323), with each 
+Entry having an associated &quot;date/time context&quot; (8,576 as of 1980)?
+
+That way the [President] Attribute of the Item [United States] would 
+have 43 Entries, one of which was ([Gerald Ford] from 1974-1977).  And 
+the [Gerald Ford] Item would have a [Name] Attribute with two Entries: 
+(&quot;Gerald Ford&quot; from 1915 onward) and (&quot;Leslie Lynch King, Jr.&quot; from 
+1913-1915).
+
+Our current Table-View has an Item in each row, and an Attribute in each 
+column.  Do we create some new Time-Table-View that shows only one 
+Attribute, and has an Item in each row, and a timespan in each column? 
+That might work for Time-Table-View, but how do Table-View and 
+Detail-View handle the display and editing of timespan info?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+108. Annotations for Entries
+
+Can each Entry have other associated annotations?
+  - Units for numbers, like {45 mph}
+  - Language specifiers for strings, like {&quot;Germany&quot; lang=en} or 
+{&quot;Deutchland&quot; lang=de}
+  - Citations or annotations, like {284 cite=&quot;CIA World Factbook, page 84&quot;}
+  - Timespans, like {&quot;Leslie Lynch King, Jr.&quot; from=1913-1915}
+
+How much work is it to have all the UI views deal with all this?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sections
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+201. How do you create a new section on a page?
+   - current solution: &quot;New Section&quot; button
+
+202. How do you change the order of the sections on a page?
+   - grab the section and drag it up or down
+
+203. How do you delete/retire a section?
+   - select the section by...
+
+204. How do you select a section?
+
+205. When you first create a new section, what does it show?
+   - query editor
+   - table view
+
+206. Can you move a section from one page to another?
+
+207. Can you drag an item from one section on a page to anther section 
+on the same page -- for example, from the &quot;Places I Should Visit&quot; 
+section to the &quot;Places I've Visited&quot; section?  Can you do that even if 
+the two sections show different types of views (table vs. bar chart vs. 
+outline)?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Categories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+301. If you create a new section, and create an item in the section, 
+what category is the item in?
+
+302. How do you create a new category?
+   - current solution: create a new Section, and in the query editor for 
+the section, type in a new category name
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+401. How do you create a new page?
+   - current solution: &quot;New Page&quot; button
+
+402. How do you delete/retire a page?
+   - right click on the nav bar menu item for the page, and select 
+&quot;Retire Page&quot;
+   - navigate to the page, click the &quot;Show Tools&quot; button, and then the 
+&quot;Retire Page&quot; button
+
+403. How do you see a list of the deleted/retired pages?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Nav Bar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+501. Can you hide the navbar?  If so, how?
+
+502. What does the navbar look like once the site has 200 pages?
+
+503. Should the &quot;New Page&quot; button somehow be *in* the navbar?  If so, 
+what happens when you try to drag a menu item below it?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Queries and Plugin Views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+601. How do you see the query for a section?
+
+602. How do you edit the query for a section?
+
+603. Can you see/edit a query without going into &quot;Show Tools&quot; mode?
+
+604. Can you &quot;filter&quot; an existing view, without changing the query (e.g. 
+filter the Book items to see just the ones that include the word &quot;Hobbit&quot;)?
+
+605. Is every change to the query and/or filter automatically saved, or 
+can you safely browse and explore without impacting other users?  If 
+changes aren't automatically saved, how do you save them?
+
+606. How do you switch a section from Table View to Bar Chart View?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Table view and Detail view
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+701. Input validation -- In table view or detail view, if the expected 
+type of an attribute is Number (or Date), and you enter &quot;Clinton&quot;, do we 
+offer any UI feedback about the type mis-match?
+   - current solution: no feedback, or very subtle font color differences
+   - red underline, like mis-spelled words in a word processor
+   - little red dot next to the entry
+
+702. When a cell in a table includes two entries, how do they appear?
+   - current solution: both on one line, separated by a gray dot
+   - on two lines within the same cell
+
+703. How do you add a second entry to a cell in a table?
+   - select an existing entry and then press Alt-Enter on the keyboard
+   - click on the &quot;+&quot; icon within the cell
+   - right click in the cell for a context menu, and select &quot;Add entry&quot;
+
+704. Which types of entries can you drag from one cell to another?
+   - just item-reference lozenges
+   - any type of entry: text, number, date, image, item-reference lozenge
+
+705. Which types of entries can you select?
+   - just item-reference lozenges
+   - any type of entry: text, number, date, image, item-reference lozenge
+
+706. Can you select the text within an entry and change it?
+   - yes, for any type of entry
+   - not in item-reference lozenges
+
+707. What menu items are on the table column header context menu?
+   - sort (ascending, descending)
+   - group
+   - remove column
+   - rename attribute
+   - move column (left, right)
+   - change data type
+   - change inverse attribute
+
+708. How do you retire/delete an item from table view?
+   - select the row and press the Delete button on the keyboard?
+   - right click on the &quot;row handle&quot; to get a context menu, and choose 
+&quot;Retire&quot;
+
+709. How do you retire/delete an item from detail view?
+   - a &quot;Retire&quot; button
+
+710. How do you remove a row from a table?
+   - right click on the &quot;row handle&quot; to get a context menu, and choose 
+&quot;Remove&quot;
+
+711. How do you add a row to a table?
+   - current solution: extra row at bottom of table
+
+712. How do you select a row in a table?
+   - click on the &quot;row handle&quot;
+
+713. What do the &quot;row handles&quot; in a table look like?
+   - leftmost column of the table -- narrow column -- little icons
+   - grabby surface like what you see on the navbar
+   - all items use the same icon
+   - items in different categories (Book, Author) can have different icons
+   - individual items can have different icons (Mansfield Park, The Hobbit)
+
+714. What happens when you click on a table column header?
+   - sort by that column
+   - pop up a context menu with options like: sort, group, remove, 
+rename, etc.
+
+715. How do you add a existing attribute to a table view or a detail view?
+   - click &quot;Show Tools&quot;, and then select the attribute in the combo box
+
+716. How do you create a new attribute and add it to a table view or a 
+detail view?
+   - click &quot;Show Tools&quot;, and then type in the combo box
+
+717. How do you set the expected type for an attribute?
+   - current solution: in table view, the expected type shows in the 
+column header when you're in &quot;Show Tools&quot; mode
+
+718. Can you drag a row up or down to re-order the rows in a table? What 
+if the table was already sorted based on some column?
+
+719. Can you drag a row from one table to another (from one section to 
+another)?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Context menus
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+801. What UI elements have context menus?
+   - none, because context menus are evil, and users don't find them
+   - almost every UI element, because context menus are great
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version History and Provenance Attribution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+901. How do you see who created an item, and when?
+
+902. How do you see who added an entry, and when?
+
+903. In detail view, how do you look at older versions of an item?
+   - a separate tab named &quot;History&quot;, just like Wikipedia
+
+904. How do you look at an older version of a page?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Hover
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1001. What do you see when you hover over different UI elements?
+    + a menu item in navbar
+    + a &quot;row handle&quot;
+    + a table row
+      - the row background color changes to yellow or gray
+    + an empty table cell
+      - the cell background color changes to yellow or gray
+      - we show bold lines for the border of the cell, like in Excel
+    + an item-reference lozenge in a table cell
+      - current solution: slight color change
+    + a text entry in a table cell
+    + a column header in a table
+    + user name in in the login view
+      - current solution: color change
+    + a page title on a page
+    + a summary paragraph on a page
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Import
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1101. What should the &quot;Import Data&quot; workflow be?
+
+1102. What should the &quot;Import Data&quot; UI look like?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+User Accounts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1201. How are new accounts created?  Do people create new accounts for 
+themselves?  Do old users create new accounts for new users?  Can only 
+the site admin create new accounts?  Can the site admin configure the 
+site and pick any one of these new-account creation regimes?
+
+1202. When a user creates a new account for themselves, do they need to 
+provide a valid e-mail address, and do we mail them an access token?
+
+1203. How do you log in and log out?
+   - current solution: &quot;sign in&quot;/&quot;sign out&quot; controls in upper right corner
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Concurrent editing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1301. What do we do if Bill and Hillary concurrently change the title of 
+the same page?  When Al visits the page, does he see both page titles?
+
+1302. What do we do if Bill and Hillary concurrently change the query 
+for a section, or change the section from showing a Bar Chart to showing 
+some other view?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+&quot;Out of the box&quot; experience
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1401. When you create a brand new site, what does it look like?  How do 
+we make it obvious what you need to do to create some initial pages, 
+categories, attributes, and content items?
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000305.html">[openrecord-dev] welcome
+</A></li>
+	<LI>Next message: <A HREF="000307.html">[openrecord-dev] UI design questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#306">[ date ]</a>
+              <a href="thread.html#306">[ thread ]</a>
+              <a href="subject.html#306">[ subject ]</a>
+              <a href="author.html#306">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

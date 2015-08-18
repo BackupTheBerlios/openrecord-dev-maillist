@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] SproutLiner
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20SproutLiner&In-Reply-To=%3Ceee2dbaa7b63eb18089ab414ccafc499%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000030.html">
+   <LINK REL="Next"  HREF="000025.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] SproutLiner</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20SproutLiner&In-Reply-To=%3Ceee2dbaa7b63eb18089ab414ccafc499%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] SproutLiner">chao at cs.stanford.edu
+       </A><BR>
+    <I>Thu Apr 21 02:27:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000030.html">[openrecord-dev] SproutLiner
+</A></li>
+        <LI>Next message: <A HREF="000025.html">[openrecord-dev] unit tests!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#32">[ date ]</a>
+              <a href="thread.html#32">[ thread ]</a>
+              <a href="subject.html#32">[ subject ]</a>
+              <a href="author.html#32">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+Your idea seems like the way to approach the issue. To dig a little bit 
+more:
+
+- is &quot;category&quot; a special attribute?
+- can a sub-category have sub-categories? or is it just one level deep?
+- will *all* parent outline nodes denote a category? or is this view 
+dependent?
+
+chao
+
+On Apr 19, 2005, at 11:01 AM, Brian Douglas Skinner wrote:
+
+&gt;<i> Just brainstorming a little, here's one idea...
+</I>&gt;<i> What if we say
+</I>&gt;<i>  + categories can have sub-categories
+</I>&gt;<i>  + any item can serve as a category for other items
+</I>
+&gt;<i> So, one view might show all the items that are selected by a query, 
+</I>&gt;<i> where
+</I>&gt;<i> the query looks for items that are in the category &quot;Task&quot;.  And then 
+</I>&gt;<i> the
+</I>&gt;<i> view &quot;groups&quot; those items in outline view based on sub-category 
+</I>&gt;<i> assignment.
+</I>&gt;<i> So the view looks like this:
+</I>&gt;<i>
+</I>&gt;<i>  + Wash car
+</I>&gt;<i>  + Plan party
+</I>&gt;<i>     + Send invitations
+</I>&gt;<i>     + Make reservation
+</I>&gt;<i>     + Order cake
+</I>&gt;<i>  + Tune piano
+</I>&gt;<i>  + Do taxes
+</I>&gt;<i>
+</I>&gt;<i> And another view might show all items in a table, with a column for the
+</I>&gt;<i> &quot;Category&quot; attribute.  So it would look like this:
+</I>&gt;<i>
+</I>&gt;<i> | Item Name        | Categories       |
+</I>&gt;<i> |==================|==================|
+</I>&gt;<i> | The Hobbit       | Book, Fiction    |
+</I>&gt;<i> | Wash car         | Task             |
+</I>&gt;<i> | Plan party       | Task             |
+</I>&gt;<i> | Send invitations | Task, Plan party |
+</I>&gt;<i> | Make reservation | Task, Plan party |
+</I>&gt;<i> | Order cake       | Task, Plan party |
+</I>&gt;<i> | Tune piano       | Task             |
+</I>&gt;<i> | Do taxes         | Task             |
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Needs more thought.  We may end up having to try out a few different 
+</I>&gt;<i> ideas
+</I>&gt;<i> and see what works.
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000030.html">[openrecord-dev] SproutLiner
+</A></li>
+	<LI>Next message: <A HREF="000025.html">[openrecord-dev] unit tests!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#32">[ date ]</a>
+              <a href="thread.html#32">[ thread ]</a>
+              <a href="subject.html#32">[ subject ]</a>
+              <a href="author.html#32">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

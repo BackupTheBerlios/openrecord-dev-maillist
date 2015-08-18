@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] existing user/login API
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20existing%20user/login%20API&In-Reply-To=%3C200505040225.j442PPm22353%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000044.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] existing user/login API</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20existing%20user/login%20API&In-Reply-To=%3C200505040225.j442PPm22353%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] existing user/login API">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed May  4 04:26:01 CEST 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000044.html">[openrecord-dev] Object-Oriented Event Listening through Partial Application in JavaScript
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#43">[ date ]</a>
+              <a href="thread.html#43">[ thread ]</a>
+              <a href="subject.html#43">[ subject ]</a>
+              <a href="author.html#43">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+Here's the API that the new data model offers for creating users/accounts
+and logging in (see below).  
+
+You can also look at the data model unit tests, to see some examples of code
+that creates new users and logs them in and out:
+<A HREF="http://svn.berlios.de/viewcvs/openrecord/trunk/source/model/ModelTest.js?vie">http://svn.berlios.de/viewcvs/openrecord/trunk/source/model/ModelTest.js?vie</A>
+w=markup
+
+The new data model already has a working implementation of this API,
+although we can always refactor the API and implementation if this turns out
+to be the wrong design.
+
+Good luck!
+
+:<i>o) Brian
+</I>
+
+
+----------------------------------------------------------------------
+/**
+ * Creates a new item, where the new item represents a user of this 
+ * datastore.
+ *
+ * @scope    public instance method
+ * @param    inName    A string, which will be assigned to the name 
+ *                     attribute of the new item. 
+ * @param    inAuthentication    A string which will be used as the 
+ *                               login password for the user. 
+ * @param    inObserver    Optional. An object or method to be 
+ *                         registered as an observer of the returned item. 
+ * @return   A newly created item representing a user.
+ */
+World.prototype.newUser = function (inName, inAuthentication, inObserver) 
+
+
+
+/**
+ * Returns an list of all the items that represent users of this datastore.
+ *
+ * @scope    public instance method
+ * @return   A list of items.
+ */
+World.prototype.getUsers = function () 
+
+
+
+/**
+ * Returns an item representing the user who is currently logged in.
+ *
+ * @scope    public instance method
+ * @return   An item representing the user who is currently logged in.
+ */
+World.prototype.getCurrentUser = function () 
+
+
+
+/**
+ * Attempts to login a user.
+ *
+ * @scope    public instance method
+ * @param    inUser    The user to be logged in. 
+ * @param    inAuthentication    Authentication info for the user. 
+ * @return   True if we were able to log in the user. False if the login
+failed.
+ */
+World.prototype.login = function (inUser, inAuthentication) 
+
+
+
+/**
+ * Logs out the current user.
+ *
+ * @scope    public instance method
+ * @return   True if the current user was logged out. False if there was no
+current user logged in.
+ */
+World.prototype.logout = function () 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000044.html">[openrecord-dev] Object-Oriented Event Listening through Partial Application in JavaScript
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#43">[ date ]</a>
+              <a href="thread.html#43">[ thread ]</a>
+              <a href="subject.html#43">[ subject ]</a>
+              <a href="author.html#43">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

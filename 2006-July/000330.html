@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Hans%20Roslings%20talk%20--%20animated%20scatter%20plots%20and%20time-series%20data&In-Reply-To=%3Cd7cee4a70607120027w289ff377je0f983bc5a1f13ee%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000329.html">
+   <LINK REL="Next"  HREF="000335.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data</H1>
+    <B>Adam Souzis</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Hans%20Roslings%20talk%20--%20animated%20scatter%20plots%20and%20time-series%20data&In-Reply-To=%3Cd7cee4a70607120027w289ff377je0f983bc5a1f13ee%40mail.gmail.com%3E"
+       TITLE="[openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data">adamsz at gmail.com
+       </A><BR>
+    <I>Wed Jul 12 09:28:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000329.html">[openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data
+</A></li>
+        <LI>Next message: <A HREF="000335.html">[openrecord-dev] Hans Roslings talk -- animated scatter plots	and time-series data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#330">[ date ]</a>
+              <a href="thread.html#330">[ thread ]</a>
+              <a href="subject.html#330">[ subject ]</a>
+              <a href="author.html#330">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>check out this really cool open source javascript timeline widget:
+
+<A HREF="http://simile.mit.edu/timeline/">http://simile.mit.edu/timeline/</A>
+
+It uses a simple XML format as input so it seems like it could be
+integrated in openrecord relatively easily (and its part of the Simile
+RDF project at MIT, so hopefully they're thinking about how to
+represent time series in RDF)
+
+While I'm at it, I recently stumbled across some open source pivot
+table and OLAP apps. If OpenRecord ever takes on Wikipedia size data
+sets (e.g. a WikiAlmanac) it will probably have to go down the OLAP
+route, so it's nice to know there are some serious open source options
+out there.
+
+<A HREF="http://jpivot.sourceforge.net/index.html">http://jpivot.sourceforge.net/index.html</A>
+
+its made by
+<A HREF="http://www.jasperreports.com/">http://www.jasperreports.com/</A>
+which is trying to to be an open source OLAP/Business Intelligence vendor.
+
+(see also <A HREF="http://en.wikipedia.org/wiki/Open_Source_BI">http://en.wikipedia.org/wiki/Open_Source_BI</A> )
+
+And here's another open source web app that uses jpivot to navigate data cubes:
+<A HREF="http://rubik.sourceforge.net/">http://rubik.sourceforge.net/</A>
+
+-- adam
+
+On 7/11/06, Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt; wrote:
+&gt;<i> Here's a great talk by Hans Roslings, from the 2006 TED conference, if
+</I>&gt;<i> you've got Flash installed, and a broadband connection:
+</I>&gt;<i>    <A HREF="http://www.ted.com/tedtalks/tedtalksplayer.cfm?key=hans_rosling">http://www.ted.com/tedtalks/tedtalksplayer.cfm?key=hans_rosling</A>
+</I>&gt;<i>
+</I>&gt;<i> Hans Rosling is a public health expert, and the talk is nominally about
+</I>&gt;<i> global development, but the talk also serves a great example of what can
+</I>&gt;<i> be done with the visual display of quantitative information.  In
+</I>&gt;<i> particular, Rosling makes a lot of use of bubble plots, which is
+</I>&gt;<i> especially topical for OpenRecord, since Hiran is working this week on a
+</I>&gt;<i> scatter-plot/bubble-plot plugin for OpenRecord.
+</I>&gt;<i>
+</I>&gt;<i> The whole talk is about 20 minutes long.  Watching just the first 5
+</I>&gt;<i> minutes, that's enough to see some of the cool plots.  If you watch the
+</I>&gt;<i> whole thing, in the last 5 or 6 minutes he talks about data
+</I>&gt;<i> visualization software, and accessing database over the Internet.
+</I>&gt;<i>
+</I>&gt;<i> Rosling shows a bunch of plots that are animated, displaying 40 years of
+</I>&gt;<i> time-series data in a 30-second animation.  We've talked about having
+</I>&gt;<i> animated views in OpenRecord too, and there's no reason we can't do that
+</I>&gt;<i> (just a small matter of programming).
+</I>&gt;<i>
+</I>&gt;<i> Rosling's talk is also a nice reminder about the importance of time
+</I>&gt;<i> series data.  The current OpenRecord data model doesn't have any sort of
+</I>&gt;<i> intrinsic support for time-series data, nor does the experimental
+</I>&gt;<i> dojo.data code that I wrote earlier this year, nor does the data model
+</I>&gt;<i> code that IBM is contributing to dojo.  It would be cool to have time as
+</I>&gt;<i> a first-class notion in the data model, but maybe that's too ambitious.
+</I>&gt;<i>   I'm known for undertaking efforts that are too ambitious!
+</I>&gt;<i>
+</I>&gt;<i> One last cool thing -- Rosling's talk is released under a Creative
+</I>&gt;<i> Commons license.  I'm psyched to see the CC licenses becoming more and
+</I>&gt;<i> more common.
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000329.html">[openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data
+</A></li>
+	<LI>Next message: <A HREF="000335.html">[openrecord-dev] Hans Roslings talk -- animated scatter plots	and time-series data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#330">[ date ]</a>
+              <a href="thread.html#330">[ thread ]</a>
+              <a href="subject.html#330">[ subject ]</a>
+              <a href="author.html#330">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Pivot Table ideas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Pivot%20Table%20ideas&In-Reply-To=%3C44B712FE.2%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000337.html">
+   <LINK REL="Next"  HREF="000333.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Pivot Table ideas</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Pivot%20Table%20ideas&In-Reply-To=%3C44B712FE.2%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Pivot Table ideas">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Fri Jul 14 05:43:58 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000337.html">[openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data
+</A></li>
+        <LI>Next message: <A HREF="000333.html">[openrecord-dev] Pivot Table ideas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#331">[ date ]</a>
+              <a href="thread.html#331">[ thread ]</a>
+              <a href="subject.html#331">[ subject ]</a>
+              <a href="author.html#331">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Hiran,
+
+I'm cc'ing this message to the openrecord-dev mailing list because I 
+think it might be interesting to other people (like Adam and Mignon) and 
+I'm hoping to get their suggestions about different approaches.
+
+If you decide to work on the Pivot Table next, I have some old 
+JavaScript Pivot Table code that might be useful to you.  Here's the 
+demo page, with two example tables:
+  <A HREF="http://openrecord.org/pivot_table/test_page.html">http://openrecord.org/pivot_table/test_page.html</A>
+
+And here are the source code files:
+  <A HREF="http://openrecord.org/pivot_table/pivot_table.js">http://openrecord.org/pivot_table/pivot_table.js</A>
+  <A HREF="http://openrecord.org/pivot_table/data_vortex.js">http://openrecord.org/pivot_table/data_vortex.js</A>
+  <A HREF="http://openrecord.org/pivot_table/">http://openrecord.org/pivot_table/</A>
+
+I wrote that code back in 2004 when I was first learning JavaScript, 
+before I knew about Dojo, and before we started the OpenRecord project. 
+  The code is old is clumsy, but it does work, so it might be useful to 
+you.
+
+For the Pivot Table, I think the biggest problem will be figuring out 
+how to take the data structures of Items and Attributes and transform 
+that data into something that makes sense to display in a Pivot Table. 
+The first problem isn't so much a programming problem as a conceptual 
+problem, or perhaps a UI design problem...
+
+Pivot Tables work best when there are a small number of axes that can be 
+pivoted (maybe 2 to 6), and where each axis has a small number of 
+possible buckets (maybe 2 to 20).  On my demo page there are two example 
+tables: &quot;Gas Tax Accounting&quot; and &quot;Population&quot;:
+   * The Population table has 4 axes: Gender (male/female/both), 
+Rural/Urban, Country (India/China/All), and Year (1948/1949).  Each axis 
+has only 2 or 3 possible buckets -- for example, Country has &quot;Rural&quot;, 
+&quot;Urban&quot;, and &quot;Both&quot;.
+   * The Gas Tax table has only 3 axes: Year, Charity, and 
+Form-of-donation.  The Year axes has 3 buckets (2001, 2002, 2003), the 
+Form axes has 4 buckets (Cash, Stock, Goods, Services), and the Charity 
+axis has 9 buckets.  So the Gas Tax table has a total of 108 data cells 
+(3 * 4 * 9).
+
+In OpenRecord, Items have Attributes with values, and those values can 
+be strings, dates, numbers, or references to other items.  It seems to 
+me that there might be more than one approach for mapping the ideas of 
+Items/Attributes/values to the ideas of Axes/Buckets/cells...
+
+Here's one approach... To display a Pivot Table with 3 axes and 108 
+cells, you might populate the table from a set of 108 OpenRecord Items. 
+  So, for a table like the Gas Tax table, you might have 108 Items all 
+in the Category &quot;Donation&quot;, where each Donation Item has a 3 attributes 
+called &quot;Year&quot;, &quot;Form&quot;, and &quot;Charity&quot;, plus an additional attribute 
+called &quot;Amount&quot;.  An individual Donation Item might look like this:
+   Category: Donation
+   Year:     2001
+   Form:     Cash
+   Charity:  Greenbelt Alliance
+   Amount:   $61.46
+
+That first approach will only work well if the number of Donation Items 
+is the same as the number of cells in the Pivot Table.
+
+A better approach might be to allow for there to be many more Donation 
+Items, and then have the Pivot Table automatically calculate the totals. 
+  So in this second approach, there could be 5 different Donation Items 
+that are all donations of Cash in 2001 to the Greenbelt Alliance, and 
+the Pivot Table will add all 5 of the Amount values and show that total 
+in the corresponding cell of the Pivot Table.
+
+That second approach will work smoothly if all of the Items in the 
+category Donation all have values for the 4 Attributes Year, Form, 
+Charity, and Amount.  I'm not sure what the Pivot Table code should do 
+if some of the Items are missing some Attributes, or if some of the 
+Items have Amount values that are not Numbers, or if one of the Items 
+has a multi-valued Amount Attribute.  This second approach also only 
+works well if the values that the user wants to see in the cell are 
+things that can be totaled up, like numbers.  In some other scenarios, 
+the user might not want to see the sum of a set of Attribute values, but 
+might instead want to see an average of the values, or see a count of 
+the number of Items that fall into that cell.
+
+Maybe you can think up good solutions to some of those problems.  I'll 
+keep thinking about it too, and I'll let you know if I have new ideas. 
+Also, maybe other people on the openrecord-dev mailing list will be able 
+to propose solutions.
+
+:<i>o) Brian
+</I>
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000337.html">[openrecord-dev] Hans Roslings talk -- animated scatter plots and time-series data
+</A></li>
+	<LI>Next message: <A HREF="000333.html">[openrecord-dev] Pivot Table ideas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#331">[ date ]</a>
+              <a href="thread.html#331">[ thread ]</a>
+              <a href="subject.html#331">[ subject ]</a>
+              <a href="author.html#331">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

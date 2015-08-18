@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Any order in the way Entries are stored for an Attribute?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Any%20order%20in%20the%20way%20Entries%20are%20stored%20for%20an%20Attribute%3F&In-Reply-To=%3C200506180044.j5I0ivI20334%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000149.html">
+   <LINK REL="Next"  HREF="000150.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Any order in the way Entries are stored for an Attribute?</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Any%20order%20in%20the%20way%20Entries%20are%20stored%20for%20an%20Attribute%3F&In-Reply-To=%3C200506180044.j5I0ivI20334%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Any order in the way Entries are stored for an Attribute?">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sat Jun 18 02:45:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000149.html">[openrecord-dev] Any order in the way Entries are stored for an Attribute?
+</A></li>
+        <LI>Next message: <A HREF="000150.html">[openrecord-dev] Context menu code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Chao,
+ 
+&gt;<i> Is there any order in the way Entries are stored and 
+</I>&gt;<i> retrieved for an Attribute?
+</I>
+Unfortunately I broke the ordinal code when I moved us to using real UUIDs
+instead of integer ids.  We have a task on the to-do list to get the ordinal
+code fixed again.  Right now it's task #23 in release_planning.txt.  We can
+move it up to be high priority if you want.
+
+&gt;<i> To get my table columns stored in a certain order, I was 
+</I>&gt;<i> relying on the fact that are retrieved in a consistent 
+</I>&gt;<i> order. But I think every time I add an entry, the order 
+</I>&gt;<i> is reversed? or I may be doing retrieving something 
+</I>&gt;<i> incosistently in the view code.
+</I>
+I just checked in a one-line change to ContentRecord.js which *may* serve as
+a small temporary improvement.  If you feel like it, you could try getting
+the latest code and see if that helps.  If not, we can look into it together
+on Monday.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000149.html">[openrecord-dev] Any order in the way Entries are stored for an Attribute?
+</A></li>
+	<LI>Next message: <A HREF="000150.html">[openrecord-dev] Context menu code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

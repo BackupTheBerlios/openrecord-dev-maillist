@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] faster now!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20faster%20now%21&In-Reply-To=%3C200506292334.j5TNYJI13578%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000167.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] faster now!</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20faster%20now%21&In-Reply-To=%3C200506292334.j5TNYJI13578%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] faster now!">brian.skinner at gumption.org
+       </A><BR>
+    <I>Thu Jun 30 01:35:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000167.html">[openrecord-dev] faster now!
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#168">[ date ]</a>
+              <a href="thread.html#168">[ thread ]</a>
+              <a href="subject.html#168">[ subject ]</a>
+              <a href="author.html#168">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Can you describe how you discovered it was this line 
+</I>&gt;<i> that was causing the slowdown? i.e. how you used the 
+</I>&gt;<i> venkman profiler?
+</I>
+You bet.   
+
+Here are the steps I followed:
+ 1. open Firefox
+ 2. go to the dogfood.html page
+    for example, on my machine:
+      <A HREF="http://localhost:8080/openrecord/dogfood/dogfood.html">http://localhost:8080/openrecord/dogfood/dogfood.html</A>
+ 3. open Venkman  
+    (Firefox: Tools -&gt; JavaScript Debugger)
+ 4. clear profile data
+    (Venkman: Profile -&gt; Clear Profile Data)
+ 5. start collecting profile data  
+    (Venkman: Profile -&gt; Collect Profile Data)
+ 6. do the thing that seems too slow
+    for example, click on &quot;Introspection&quot; in the 
+    navbar of the dogfood site 
+ 7. stop collecting profile data 
+    (Venkman: Profile -&gt; Collect Profile Data)
+ 8. save the profile data 
+    (Venkman: Profile -&gt; Save Profile Data As...)
+    Save as type Text, and use a name with a .txt file extension
+ 9. open the profile data file in a text editor,
+    and start reading through it
+10. ignore any entries that say &quot;Total Time: 0&quot;
+11. look for the entries where &quot;Total Time:&quot; is largest, 
+    for example: RootView.js (Lines 522 - 543),
+    and make a note of what that BIG total time is
+12. now look through again, but this time ignore the entries 
+    where &quot;Total Time:&quot; is large, but where &quot;Total Calls: 1&quot;
+    for example: RootView.js (Lines 522 - 543)
+13. look for the entries where &quot;Total Time:&quot; is nearly
+    as large as the BIG total time from step 11, and where
+    the &quot;Total Calls:&quot; is also large
+    for example: Item.js (Lines 305 - 344)
+14. go look at the source code for the entries you selected
+    in step 13 -- those are the things that we're calling too
+    much and that are taking too long!
+
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000167.html">[openrecord-dev] faster now!
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#168">[ date ]</a>
+              <a href="thread.html#168">[ thread ]</a>
+              <a href="subject.html#168">[ subject ]</a>
+              <a href="author.html#168">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

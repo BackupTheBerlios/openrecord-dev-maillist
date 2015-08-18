@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Multi entries support for table cells
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Multi%20entries%20support%20for%20table%20cells&In-Reply-To=%3C89EEBC91-0584-4027-9EDA-4ECE1E8D4167%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000085.html">
+   <LINK REL="Next"  HREF="000088.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Multi entries support for table cells</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Multi%20entries%20support%20for%20table%20cells&In-Reply-To=%3C89EEBC91-0584-4027-9EDA-4ECE1E8D4167%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] Multi entries support for table cells">chao at cs.stanford.edu
+       </A><BR>
+    <I>Wed Jun  1 00:52:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000085.html">[openrecord-dev] Multi entries support for table cells
+</A></li>
+        <LI>Next message: <A HREF="000088.html">[openrecord-dev] Multi entries support for table cells
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sorry, one more change to discuss:
+
+7) TextView no longer takes an item and an attribute (in its  
+constructor) for rendering and editing. Instead, it takes an Entry.  
+This is a first step to turning TextView to become EntryView.
+
+chao
+
+On May 31, 2005, at 3:39 PM, Chih-Chao Lam wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> OK, I'm thinking about supporting multiple entries in a table cell.
+</I>&gt;<i>
+</I>&gt;<i> Here's what I propose:
+</I>&gt;<i> 1) Create a new view MultiEntriesView (looking for a better name)  
+</I>&gt;<i> that shadows a HTMLCellElement.This view displays all the entries  
+</I>&gt;<i> of a given item for a given attribute. It can also be used outside  
+</I>&gt;<i> of TablePlugin.
+</I>&gt;<i>
+</I>&gt;<i> 2) Inside a MultiEntriesView, we have one or more views  
+</I>&gt;<i> representing an Entry of the item's attribute. We will use TextView  
+</I>&gt;<i> for this purpose. Over time, we should adapt TextView to be  
+</I>&gt;<i> something like EntryView, where it accepts not just a text string,  
+</I>&gt;<i> but item references, URLs, images, etc.
+</I>&gt;<i>
+</I>&gt;<i> 3) Brian suggests that if a MultiEntriesView has focus (or one of  
+</I>&gt;<i> its sub-views), and you type &quot;alt-&lt;return&gt;/&lt;enter&gt;&quot; it creates a  
+</I>&gt;<i> new EntryView within the MultiEntriesView. This is how a user  
+</I>&gt;<i> creates multiple entries within an item attribute.
+</I>&gt;<i>
+</I>&gt;<i> 4) Within a MultiEntriesView, multiple entries are separated by  
+</I>&gt;<i> some delimiter e.g. Mimi suggested &quot; &#8226; &quot;
+</I>&gt;<i>
+</I>&gt;<i> 5) We need to figure out what UI changes need to be made to support  
+</I>&gt;<i> multiple entries in a table cell. e.g.     - is a table cell still  
+</I>&gt;<i> a unit of selection as opposed to an entry in a cell?
+</I>&gt;<i> - how do you navigate between entries and cells on the keyboard?
+</I>&gt;<i> - should there be other affordances to create a new entry?
+</I>&gt;<i> - what does clicking on the separator between entries do?
+</I>&gt;<i> - when sorting table columns, do we just use the first entry for  
+</I>&gt;<i> that cell?
+</I>&gt;<i> - etc. probably a bunch of other unanswered questions
+</I>&gt;<i>
+</I>&gt;<i> 6) Given alternatives for (5), I'm still thinking of a graceful way  
+</I>&gt;<i> of implementing keypress handling for our system in general.  
+</I>&gt;<i> Ideally, I'll like a system where the focused TextView or EntryView  
+</I>&gt;<i> gets to handle a keypress, if it's not handled, then it passes it  
+</I>&gt;<i> up to the superview. For TablePlugin, this would be  
+</I>&gt;<i> MultiEntriesView. If it's not handled at MultiEntriesView, then  
+</I>&gt;<i> TablePlugin gets to handle it and so on. If you have ideas on how  
+</I>&gt;<i> to implement this, or want to brainstorm with me, please ping me.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> chao
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="https://lists.berlios.de/pipermail/openrecord-dev/attachments/20050601/8eba4255/attachment.html">https://lists.berlios.de/pipermail/openrecord-dev/attachments/20050601/8eba4255/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000085.html">[openrecord-dev] Multi entries support for table cells
+</A></li>
+	<LI>Next message: <A HREF="000088.html">[openrecord-dev] Multi entries support for table cells
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

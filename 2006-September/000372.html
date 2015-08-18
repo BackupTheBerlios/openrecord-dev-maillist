@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] RESTful data interface?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20RESTful%20data%20interface%3F&In-Reply-To=%3C450F5C33.9050209%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000371.html">
+   <LINK REL="Next"  HREF="000367.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] RESTful data interface?</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20RESTful%20data%20interface%3F&In-Reply-To=%3C450F5C33.9050209%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] RESTful data interface?">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Tue Sep 19 04:55:47 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000371.html">[openrecord-dev] RESTful data interface?
+</A></li>
+        <LI>Next message: <A HREF="000367.html">[openrecord-dev] OpenRecord demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#372">[ date ]</a>
+              <a href="thread.html#372">[ thread ]</a>
+              <a href="subject.html#372">[ subject ]</a>
+              <a href="author.html#372">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;<i> We don't yet have a real server, so we're not quite at that 
+</I>&gt;&gt;<i> stage yet.
+</I>&gt;<i> 
+</I>&gt;<i> Thanks for the response.  I'm curious how it supports concurrent
+</I>&gt;<i> editing and data persistence without a server. 
+</I>
+You bet, let me try to describe how it works now...
+
+Right now we're storing all the data on the server in what amounts to 
+one long transaction log file.  When you create a new item on the 
+client, the JavaScript code creates a little JSON-format text packet 
+that describes the transaction.  The client sends that text packet to 
+the server, and the server appends the packet to the log file.  Same 
+thing whenever a user changes any attribute of any item.
+
+Each new attribute value gets a unique id.  If I edit the Kermit item to 
+set the color attribute to &quot;green&quot;, then there will be a new unique id 
+associated with that entry, something like this:
+  {id:XYZ,
+   user:Brian, timestamp:&quot;2006-09-18 16:44:28&quot;,
+   item:Kermit, attribute:color, value:&quot;green&quot;}
+
+If you come along and change Kermit's color to &quot;aqua&quot;, that creates a 
+new entry, which is marked as a replacement for my old &quot;green&quot; entry:
+  {id:QRP, replaces:XYZ,
+   user:Jon, timestamp:&quot;2006-09-19 13:11:33&quot;,
+   item:Kermit, attribute:color, value:&quot;aqua&quot;}
+
+Let's say there's also another user, Amy.  Amy might also be editing 
+Kermit at the same time you are.  Amy would still think Kermit is green, 
+because she hasn't yet seen your change.  She might independently change 
+Kermit's color from &quot;green&quot; to &quot;blue&quot;.  Her entry looks like this:
+  {id:ABC, replaces:XYZ,
+   user:Amy, timestamp:&quot;2006-09-19 13:11:33&quot;,
+   item:Kermit, attribute:color, value:&quot;blue&quot;}
+
+At this point the transaction log contains all three entries: XYZ, QRP, 
+and ABC.  Entry XYZ is no longer considered as binding, since the other 
+entries mark XYZ as having been replaced.  But QRP and ABC are both 
+still binding, since they were made concurrently and neither one 
+replaces the other.  So at this point Kermit is both &quot;aqua&quot; and &quot;blue&quot;. 
+  When a new user opens their browser and looks at that page, the 
+OpenRecord JavaScript code figures out Kermit's current color by reading 
+the entire transaction log and seeing what entries are applicable.
+
+The transaction log approach is not scalable, but it has worked nicely 
+for prototyping.  There's a 4-minute section in our screencast that 
+shows how this all looks from a user's perspective:
+  <A HREF="http://openrecord.org/screencast/2006-02-21/OpenRecord.html?movie=5">http://openrecord.org/screencast/2006-02-21/OpenRecord.html?movie=5</A>
+
+
+&gt;<i> What are you thinking the server will be written in?
+</I>
+To get a server up and running quickly, with all the flexible data 
+features that we want, I think the best bet is to build on top of Adam 
+Souzis's RDF server tools, Racoon and Rx4RDF.  I think those tools are 
+written in Python, although I think sites that use those tools can be 
+written using RxSLT, XSLT, and RxUpdate.
+
+There's more info at Adam's web site, although the server seems to be 
+down right now:
+   <A HREF="http://www.liminalzone.org/">http://www.liminalzone.org/</A>
+
+~ Brian
+
+
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000371.html">[openrecord-dev] RESTful data interface?
+</A></li>
+	<LI>Next message: <A HREF="000367.html">[openrecord-dev] OpenRecord demo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#372">[ date ]</a>
+              <a href="thread.html#372">[ thread ]</a>
+              <a href="subject.html#372">[ subject ]</a>
+              <a href="author.html#372">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

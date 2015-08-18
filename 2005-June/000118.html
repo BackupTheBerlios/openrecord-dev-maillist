@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] agenda for Monday?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20agenda%20for%20Monday%3F&In-Reply-To=%3C2829A4D9-82E7-46E9-B66F-D644087B964D%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000113.html">
+   <LINK REL="Next"  HREF="000114.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] agenda for Monday?</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20agenda%20for%20Monday%3F&In-Reply-To=%3C2829A4D9-82E7-46E9-B66F-D644087B964D%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] agenda for Monday?">chao at cs.stanford.edu
+       </A><BR>
+    <I>Mon Jun  6 06:59:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000113.html">[openrecord-dev] agenda for Monday?
+</A></li>
+        <LI>Next message: <A HREF="000114.html">[openrecord-dev] SectionView code question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+Great list. Not sure if we'll be able to cover everything.
+
+See you tomorrow,
+chao
+
+On Jun 4, 2005, at 2:41 PM, Brian Douglas Skinner wrote:
+
+&gt;<i> Hey Mignon &amp; Chao,
+</I>&gt;<i>
+</I>&gt;<i> Here are some ideas for our agenda for Monday...
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------
+</I>&gt;<i> (1) Wrap-up of Iteration 1 (May iteration)
+</I>&gt;<i>     - Quick review of old tasks -- which are done, and which aren't
+</I>&gt;<i>     - Calculate measured velocity for Iteration 1
+</I>&gt;<i>     - Refine XP process for Iteration 2?
+</I>&gt;<i>
+</I>&gt;<i> (2) Talk about possible goals for Iteration 2 (June iteration)
+</I>&gt;<i>     - Set up an OpenRecord.org &quot;dogfood&quot; site?
+</I>&gt;<i>     - Bring UI up to demo-quality?
+</I>&gt;<i>     - Fix bugs?
+</I>&gt;<i>     - Bring code up to code-review quality?
+</I>&gt;<i>     - Unit tests for GUI code?
+</I>&gt;<i>     - Performance tests &amp; performance improvements?
+</I>&gt;<i>     - Add features?
+</I>&gt;<i>     - Involve more people?
+</I>&gt;<i>
+</I>&gt;<i> (3) Update the task list
+</I>&gt;<i>     - Identify new tasks
+</I>&gt;<i>     - Prioritize upcoming tasks
+</I>&gt;<i>     - Make estimates?
+</I>&gt;<i>     - Sign up for tasks?
+</I>&gt;<i>
+</I>&gt;<i> (4) Talk about design questions
+</I>&gt;<i>     - Proposal for UUIDs?
+</I>&gt;<i>     - Representation of queries?
+</I>&gt;<i>     - Do we want a &quot;Query&quot; class, or an &quot;Attribute&quot; class?
+</I>&gt;<i>     - Rationalize CSS style sheets?
+</I>&gt;<i>     - Client/server decomposition?
+</I>&gt;<i>     - Design questions raised in Chao's e-mail on 5/28 &amp; 5/29/2005
+</I>&gt;<i>
+</I>&gt;<i> (5) Talk about UI questions and ideas
+</I>&gt;<i>     - immutable entries?
+</I>&gt;<i>     - different look for text-entries vs. reference-entries?
+</I>&gt;<i>     - adding columns to a table?
+</I>&gt;<i>     - column of editing controls?
+</I>&gt;<i>     - GUI feedback about what's editable?
+</I>&gt;<i>     - colors, sizes, padding, and borders?
+</I>&gt;<i>     - explicit save vs. automatic save?
+</I>&gt;<i>     - saving content vs. saving view layout?
+</I>&gt;<i>     - what do URLs point to?
+</I>&gt;<i>     - UI questions raised in Chao's e-mail on 5/31 &amp; 6/1/2005
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------
+</I>&gt;<i> (2) Possible goals for Iteration 2 (June iteration)
+</I>&gt;<i>
+</I>&gt;<i> - Set up an OpenRecord.org &quot;dogfood&quot; site?
+</I>&gt;<i>    - reliable data storage
+</I>&gt;<i>       - PHP concurrency?
+</I>&gt;<i>       - file I/O concurrency?
+</I>&gt;<i>       - create provisional item/entry pair in correct order
+</I>&gt;<i>       - make sure view code uses transactions (e.g.  
+</I>&gt;<i> PageView.newSection)
+</I>&gt;<i>       - store transaction info in repository
+</I>&gt;<i>       - HTTP GET file overwrite bug?
+</I>&gt;<i>       - new UUID scheme?
+</I>&gt;<i>       - query representation?
+</I>&gt;<i>       - bi-directional references?
+</I>&gt;<i>    - reliability testing?
+</I>&gt;<i>       - concurrency tests?
+</I>&gt;<i>       - scalability tests?
+</I>&gt;<i>    - relationship between subversion and production site?
+</I>&gt;<i>       - dogfood site repository checked into subversion?
+</I>&gt;<i>       - dogfood site JavaScript tracks subversion checkins?
+</I>&gt;<i>    - relationship between different sites?
+</I>&gt;<i>       - off-line use based on <A HREF="file:///">file:///</A> URLs?
+</I>&gt;<i>       - repository merging?
+</I>&gt;<i>       - &quot;home&quot; pages?
+</I>&gt;<i>
+</I>&gt;<i> - Bring UI up to demo-quality?
+</I>&gt;<i>    - Display Navbar pages in the right order
+</I>&gt;<i>    - Escape key
+</I>&gt;<i>    - Arrow keys in SuggestionBox
+</I>&gt;<i>    - Arrow keys in Table View
+</I>&gt;<i>    - Wire up observers &amp; keep views in sync
+</I>&gt;<i>    - Colors, sizes, padding, and borders
+</I>&gt;<i>    - Multiple entries on one line, or no?
+</I>&gt;<i>    - Cancel from creating a new account
+</I>&gt;<i>    - Drag and drop
+</I>&gt;<i>    - etc.
+</I>&gt;<i>
+</I>&gt;<i> - Fix bugs?
+</I>&gt;<i>    - back button is broken
+</I>&gt;<i>    - bugs with newlines and HTML characters in text strings
+</I>&gt;<i>    - &quot;Waiting for localhost...&quot;
+</I>&gt;<i>    - &quot;Node was not found&quot; exception in TextView/LoginView?
+</I>&gt;<i>    - do some testing to find other existing bugs?
+</I>&gt;<i>
+</I>&gt;<i> - Bring code up to code-review quality?
+</I>&gt;<i>    - Move from DOM level 0 to DOM level 2
+</I>&gt;<i>    - Refactoring (e.g. SuggestionBox and AttributeSuggestionBox)
+</I>&gt;<i>    - Rationalize CSS style sheets
+</I>&gt;<i>    - Rationalize the View api and document public api
+</I>&gt;<i>    - Document the Data model public api
+</I>&gt;<i>    - Check for incorrect dependencies
+</I>&gt;<i>    - Create directories &quot;util&quot;, &quot;view&quot;, &quot;plugin&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -------------------------------------------------
+</I>&gt;<i> (4) Design questions
+</I>&gt;<i>
+</I>&gt;<i> - Proposal for UUID scheme
+</I>&gt;<i>    - generated on client side, not server assigned
+</I>&gt;<i>    - time-based, not random
+</I>&gt;<i>    - pseudonode encodes user id?
+</I>&gt;<i>    - user pseudonode is randomly generated
+</I>&gt;<i>    - use UUIDs for timestamps, remove timestamp record?
+</I>&gt;<i>    - use UUIDs for userstamps, remove userstamp record?
+</I>&gt;<i>
+</I>&gt;<i> - Representation of queries
+</I>&gt;<i>    - query items (important for observability)
+</I>&gt;<i>    - query items have query strings?
+</I>&gt;<i>       - query strings can be executed without persistent items
+</I>&gt;<i>       - strings based on UUIDs, not names
+</I>&gt;<i>       - strings have to be parsed
+</I>&gt;<i>       - flexible &amp; extensible
+</I>&gt;<i>    - query criteria represented using existing attributes
+</I>&gt;<i>       - query resolution needs special case to ignore query items
+</I>&gt;<i>    - queries built out of &quot;atomic query items&quot;
+</I>&gt;<i>       - each atomic query has two magic attributes
+</I>&gt;<i>           - &quot;matching attribute&quot; (e.g. match on category)
+</I>&gt;<i>           - &quot;matching values&quot; (e.g. match only books)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000113.html">[openrecord-dev] agenda for Monday?
+</A></li>
+	<LI>Next message: <A HREF="000114.html">[openrecord-dev] SectionView code question
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

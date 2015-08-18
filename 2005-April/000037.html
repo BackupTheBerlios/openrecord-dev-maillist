@@ -1,0 +1,451 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Data model ideas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Data%20model%20ideas&In-Reply-To=%3C9035d345002ec078ff9f567ad4433a99%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000015.html">
+   <LINK REL="Next"  HREF="000016.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Data model ideas</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Data%20model%20ideas&In-Reply-To=%3C9035d345002ec078ff9f567ad4433a99%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] Data model ideas">chao at cs.stanford.edu
+       </A><BR>
+    <I>Sun Apr 24 21:36:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000015.html">[openrecord-dev] Data model ideas
+</A></li>
+        <LI>Next message: <A HREF="000016.html">[openrecord-dev] task-tracking tools
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#37">[ date ]</a>
+              <a href="thread.html#37">[ thread ]</a>
+              <a href="subject.html#37">[ subject ]</a>
+              <a href="author.html#37">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+I really enjoyed reading this. You express the ideas beautifully. As 
+you allude to, I'm also in favor of 1) outsider-orientation 2) 
+bazaar-style emergent &quot;collaboration&quot;.
+
+In a bazaar-style repository, wouldn't there be some data that would 
+still be cathedral style? e.g. the URL in a book, the tax id of a 
+charity or the title of a book? (maybe this is because I don't 
+understanding the voting methodology well enough)
+
+Two other issues occurred to me that seem related to this discussion:
+a) Distributed vs. centralized repository
+Where is the data stored? Can items only refer to other items in the 
+*same* repository? Both wikipedia and del.icio.us are centralized 
+repositories. Both use links as means to connect up with data from the 
+rest of the world, as kind of a second-class means. In contrast, the 
+web is the ultimate distributed repository.
+
+b) Where is the data used or deployed?
+While the wikipedia and del.icio.us websites are by far the main ways 
+in which users interact with the data stored in the two systems. What 
+is interesting about del.icio.us is that it has an open api to directly 
+access the data in both a *read* and *write* fashion for each user's 
+own data (since it's bazaar-style). A whole slew of del.icio.us related 
+apps and websites have sprouted leveraging on the api, contributing I 
+believe a great deal to the success of del.icio.us. Similarly, Flickr 
+is another good example of profiting from this direction. (b) is 
+obviously a grey-continuum rather than binary (how much do you want to 
+open up the api?). For example, wikipedia could offer RSS feeds to each 
+page.
+
+c) Kind of an amalgam of (a) &amp; (b), do we want the ability to 
+incorporate data from other sources which have open APIs such as 
+del.icio.us and flickr, in a first-class (e.g. item-centric, not just 
+one-time import) kind of way?
+
+As Brian mentioned, I think we should use the XP model and use cases to 
+decide whether and when to incorporate the above features. My personal 
+bias would be to think about (b) web APIs sooner versus distributed 
+repositories or external data (a) &amp; (c).
+
+On your &quot;data structures&quot; section and below, I think you'll have to 
+explain it to me in greater detail and maybe face-to-face. My head is 
+spinning a little. Some immediate questions:
+
+- what is the difference between an item and an attribute? are 
+attributes a special kind of item? in what way?
+	- is it that items cannot refer to other items except via an attribute?
+- is voting the only or the best way to create a bazaar-style system? I 
+would like to explore this area deeper before deciding on &quot;voting&quot; as 
+the means to aggregate the emergent &quot;wisdom of the crowds&quot; view. Is 
+voting done implicitly or explicitly by the user? I think this is where 
+we need to discuss ui and user scenarios together with data model.
+
+Apologies for not responding earlier, I've only caught up with the 
+mailing list now. But your email seems very appropriate for tomorrow's 
+discussion. I think we need to approach tomorrow's discussion from both 
+a top-down approach (e.g. like the questions I posed) and a bottoms-up 
+approach (what is technically do-able easily as a first step) which the 
+data model should shed light on.
+
+chao
+
+On Apr 12, 2005, at 4:57 PM, Brian Douglas Skinner wrote:
+
+&gt;<i> Data model ideas
+</I>&gt;<i>
+</I>&gt;<i> Caveat:
+</I>&gt;<i>   Chao and I have been talking lately about Extreme Programming (XP), 
+</I>&gt;<i> and
+</I>&gt;<i> how to apply XP guidelines to the OpenRecord project. These ideas look 
+</I>&gt;<i> more
+</I>&gt;<i> like &quot;old school&quot; design than XP, so we might want to take them with a 
+</I>&gt;<i> grain
+</I>&gt;<i> of salt. But I figured I'd post this document anyway, since I'd 
+</I>&gt;<i> written up
+</I>&gt;<i> most of it already. Even if we don't act on it now, we'll have it 
+</I>&gt;<i> future
+</I>&gt;<i> reference.
+</I>&gt;<i>
+</I>&gt;<i> Background:
+</I>&gt;<i>   A lot of the OpenRecord design was inspired by existing web-based
+</I>&gt;<i> collaboration projects, like Wikipedia and del.icio.us. I've never 
+</I>&gt;<i> actually
+</I>&gt;<i> used del.icio.us, and I'm only a little more familiar with Wikipedia, 
+</I>&gt;<i> but I
+</I>&gt;<i> still want to draw on them as collaboration examples.
+</I>&gt;<i>
+</I>&gt;<i>   Wikipedia and del.icio.us are both &quot;outsider-oriented&quot; collaboration
+</I>&gt;<i> projects, rather than &quot;workgroup-scale&quot; collaboration projects. By
+</I>&gt;<i> &quot;outsider-oriented&quot;, I mean that there's a single repository that's
+</I>&gt;<i> potentially viewed and edited by thousands or millions of people, and 
+</I>&gt;<i> those
+</I>&gt;<i> people generally don't know each other. By &quot;workgroup-scale&quot;, I mean 
+</I>&gt;<i> that
+</I>&gt;<i> each workgroup has its own little repository, with any given workgroup 
+</I>&gt;<i> only
+</I>&gt;<i> having a few dozen people. An example of a workgroup-scale 
+</I>&gt;<i> collaboration
+</I>&gt;<i> tool might be the bug-tracking tool used by corporate software 
+</I>&gt;<i> development
+</I>&gt;<i> team.
+</I>&gt;<i>
+</I>&gt;<i>   In workgroup-scale collaboration, you can safely assume that 
+</I>&gt;<i> everyone is
+</I>&gt;<i> pretty much on the same page, and you don't need a lot of formal 
+</I>&gt;<i> process and
+</I>&gt;<i> structure. Or, even if people aren't on the same page, you can assume 
+</I>&gt;<i> that
+</I>&gt;<i> they're able to get together in a room and figure out what they want 
+</I>&gt;<i> to do,
+</I>&gt;<i> so they don't need the collaboration tool itself to have features for
+</I>&gt;<i> dealing with differences of opinion. In practice, everyone can have 
+</I>&gt;<i> full
+</I>&gt;<i> read/edit permission to everything.
+</I>&gt;<i>
+</I>&gt;<i>   With outsider-oriented collaboration, you begin to have more 
+</I>&gt;<i> substantial
+</I>&gt;<i> problems with differences of opinion. For example, some Wikipedia 
+</I>&gt;<i> pages are
+</I>&gt;<i> prone to &quot;edit wars&quot;, where different users keep pushing a page in 
+</I>&gt;<i> different
+</I>&gt;<i> directions. I think the Wikipedia project has evolved some mechanisms 
+</I>&gt;<i> to
+</I>&gt;<i> deal with edit wars. I think those mechanisms involve having different
+</I>&gt;<i> classes of users (editors vs. authors), and maybe some structure for 
+</I>&gt;<i> how
+</I>&gt;<i> things happen (propose, discuss, vote, action).
+</I>&gt;<i>
+</I>&gt;<i>   In contrast, I believe that del.icio.us does not have any mechanisms 
+</I>&gt;<i> for
+</I>&gt;<i> dealing with differences of opinion. There are no editors, no 
+</I>&gt;<i> procedures, no
+</I>&gt;<i> discussion, and no edit wars. And I think that's because Wikipedia is a
+</I>&gt;<i> Cathedral, where del.icio.us is a Bazaar. They're both 
+</I>&gt;<i> outsider-oriented
+</I>&gt;<i> collaboration projects, but with del.icio.us the collaboration is a
+</I>&gt;<i> lightweight, emergent thing.
+</I>&gt;<i>
+</I>&gt;<i>   With del.icio.us, each person adds their own content, and each 
+</I>&gt;<i> person can
+</I>&gt;<i> only edit the content that they created. The collaboration value simply
+</I>&gt;<i> comes from showing aggregate views of the content that lots of people 
+</I>&gt;<i> have
+</I>&gt;<i> contributed. Collaboration is easy, because each user can make edits
+</I>&gt;<i> entirely independently from everybody else.
+</I>&gt;<i>
+</I>&gt;<i>   Wikipedia has some Bazaar-like qualities too. Each Wikipedia page is
+</I>&gt;<i> almost completely independent of all the other pages. In some sense, 
+</I>&gt;<i> you can
+</I>&gt;<i> think of Wikipedia as a collection of 500,000 independent collaboration
+</I>&gt;<i> projects, one for each page. So if I'm editing one page, and you're 
+</I>&gt;<i> editing
+</I>&gt;<i> another, then we're both collaborating to create Wikipedia, but the
+</I>&gt;<i> collaboration is really just Bazaar-style aggregation, just like
+</I>&gt;<i> del.icio.us.
+</I>&gt;<i>
+</I>&gt;<i>   However, any single Wikipedia page is like a little Cathedral. All 
+</I>&gt;<i> of the
+</I>&gt;<i> contributors to a page work together to create a coherent unified 
+</I>&gt;<i> whole. One
+</I>&gt;<i> person adds some content, and a second person edits that content. The
+</I>&gt;<i> changes that people make build on previous changes. Each contribution 
+</I>&gt;<i> is
+</I>&gt;<i> highly dependent on the previous contributions, not independent like 
+</I>&gt;<i> in the
+</I>&gt;<i> del.icio.us case.
+</I>&gt;<i>
+</I>&gt;<i> Goal #1, outsider-oriented:
+</I>&gt;<i>   My goal with OpenRecord is to create an outsider-oriented 
+</I>&gt;<i> collaboration
+</I>&gt;<i> tool, not a workgroup-scale collaboration tool. A workgroup-scale tool 
+</I>&gt;<i> would
+</I>&gt;<i> be easier to build, so it's tempting to start with that goal, but I 
+</I>&gt;<i> think
+</I>&gt;<i> that would lead us astray. I believe both CoolChaser and OpenAgenda are
+</I>&gt;<i> inherently outsider-oriented projects.
+</I>&gt;<i>
+</I>&gt;<i> Goal #2, Bazaar-style:
+</I>&gt;<i>   If possible, I'd like to create more of a Bazaar-style tool instead 
+</I>&gt;<i> of a
+</I>&gt;<i> Cathedral-style tool. As much as possible, I'd like users to be able to
+</I>&gt;<i> create and edit content more-or-less independently of each other, and 
+</I>&gt;<i> then
+</I>&gt;<i> have the tool aggregate that content. That may not be a feasible goal, 
+</I>&gt;<i> but
+</I>&gt;<i> I'd at least like to try. So, that said, here's my proposal for the 
+</I>&gt;<i> next
+</I>&gt;<i> iteration of the core data structures and the data model API.
+</I>&gt;<i>
+</I>&gt;<i> Data structures:
+</I>&gt;<i>   * The server keeps a database of items
+</I>&gt;<i>   * Items have values associated with them
+</I>&gt;<i>     + an item has values &quot;The Hobbit&quot;, &quot;J.R.R. Tolkien&quot;, &quot;1938&quot;
+</I>&gt;<i>   * Values can be assigned to attributes
+</I>&gt;<i>     + &quot;The Hobbit&quot; is assigned to the &quot;Title&quot; attribute
+</I>&gt;<i>     + &quot;J.R.R. Tolkien&quot; is assigned to the &quot;Author&quot; attribute
+</I>&gt;<i>     + &quot;1938&quot; is assigned to the &quot;Publication Date&quot; attribute
+</I>&gt;<i>   * An item can have values that are *not* assigned to an attribute
+</I>&gt;<i>     + an item can have value &quot;Fiction&quot;
+</I>&gt;<i>   * An attribute is itself just another item
+</I>&gt;<i>   * An item can have many values assigned to an attribute
+</I>&gt;<i>     + &quot;Star Wars&quot; can have a &quot;People&quot; attribute with values &quot;Luke
+</I>&gt;<i> Skywalker&quot;, &quot;Princess Leia&quot;, &quot;Han Solo&quot;, &quot;Darth Vader&quot;
+</I>&gt;<i>   * A value can be a literal, like a string or a number
+</I>&gt;<i>   * A value can be a reference to another item
+</I>&gt;<i>   * A value is not itself an item
+</I>&gt;<i>   * Values are immutable
+</I>&gt;<i>   * We start out with an initial set of common attributes:
+</I>&gt;<i>     + name, summary, category, start date, end date, short name
+</I>&gt;<i>   * We have a variety of types of literals
+</I>&gt;<i>     + string
+</I>&gt;<i>     + number
+</I>&gt;<i>     + date
+</I>&gt;<i>     + URL
+</I>&gt;<i>   * String literals can have an associated &quot;language&quot;, which
+</I>&gt;<i>     is a reference to an item representing a language, like
+</I>&gt;<i>     &quot;English&quot; or &quot;German&quot;
+</I>&gt;<i>   * Number literals can have an associated &quot;unit&quot;, which is a
+</I>&gt;<i>     reference to an item representing a measurement unit, like
+</I>&gt;<i>     &quot;miles&quot; or &quot;dollars&quot;.
+</I>&gt;<i>   * Each item has a unique id -- unique across all servers
+</I>&gt;<i>   * Each value has a unique id -- unique within a single item
+</I>&gt;<i>   * Each item has a creation stamp, with a timestamp marking when
+</I>&gt;<i>     it was created and a userstamp with a reference to an item
+</I>&gt;<i>     representing the user who created it.
+</I>&gt;<i>   * Each value has a creation stamp with a timestamp and a userstamp.
+</I>&gt;<i>
+</I>&gt;<i> Operations -- single user:
+</I>&gt;<i>   * create a new item
+</I>&gt;<i>   * vote to delete an item
+</I>&gt;<i>   * subsequent to deletion, vote to retain an item, thereby 
+</I>&gt;<i> un-deleting it
+</I>&gt;<i>   * create a new value in an item, optionally assigned to an attribute
+</I>&gt;<i>   * add a new value to an attribute of an item
+</I>&gt;<i>     + add &quot;C3PO&quot; as one of the &quot;People&quot; in &quot;Star Wars&quot;
+</I>&gt;<i>   * vote to delete a value
+</I>&gt;<i>     + mark &quot;Spock&quot; as deleted, so that it no longer appears in &quot;Star 
+</I>&gt;<i> Wars&quot;
+</I>&gt;<i>   * vote to replace a value with a corrected value
+</I>&gt;<i>     + replace &quot;Luck Skywalker&quot; with &quot;Luke Skywalker&quot;
+</I>&gt;<i>     + this creates a new value &quot;Luke Skywalker&quot;, votes to delete
+</I>&gt;<i>       the old value &quot;Luck Skywalker&quot;, and marks the old value with
+</I>&gt;<i>       a pointer to the new replacement value
+</I>&gt;<i>   * change the ordering of the values in an attribute of an item
+</I>&gt;<i>   * change the ordering of the items in a query result set
+</I>&gt;<i>
+</I>&gt;<i> Operations -- second user, editing the work of the first user:
+</I>&gt;<i>   * vote to retain -- mark a value as affirmed
+</I>&gt;<i>     + affirm that &quot;C3PO&quot; is one of the &quot;People&quot; in &quot;Star Wars&quot;
+</I>&gt;<i>   * add a new value to an attribute of an item
+</I>&gt;<i>     + add &quot;R2D2&quot; as one of the &quot;People&quot; in &quot;Star Wars&quot;
+</I>&gt;<i>   * vote to delete a value
+</I>&gt;<i>     + mark &quot;Spock&quot; as deleted, or affirm someone else's deletion
+</I>&gt;<i>   * replace a value with a corrected value
+</I>&gt;<i>     + creates a new value and votes to delete the old value
+</I>&gt;<i>   * vote to delete an item
+</I>&gt;<i>     + mark &quot;Star Wars&quot; as deleted, or affirm someone else's deletion
+</I>&gt;<i>   * vote to retain an item
+</I>&gt;<i>   * change the ordering of the values in an attribute of an item
+</I>&gt;<i>   * change the ordering of the items in a query result set
+</I>&gt;<i>
+</I>&gt;<i> Data structures redux:
+</I>&gt;<i>   * Item
+</I>&gt;<i>      + uuid
+</I>&gt;<i>      + set of values
+</I>&gt;<i>      + creation stamp (timestamp and userstamp)
+</I>&gt;<i>      + creation ordinal (a default initial value)
+</I>&gt;<i>        - (T minus creation time) in milliseconds,
+</I>&gt;<i>          where T is (January 1, 2000)
+</I>&gt;<i>        - optimization: can be derived from the creation stamp,
+</I>&gt;<i>          no need to store it
+</I>&gt;<i>      + optional list of votes to delete and votes to retain
+</I>&gt;<i>        - each vote has a stamp (timestamp and userstamp)
+</I>&gt;<i>        - each vote has a delete/retain flag
+</I>&gt;<i>        - optimization: only stored if users have made retain/delete 
+</I>&gt;<i> calls
+</I>&gt;<i>      + optional list of additional ordinals
+</I>&gt;<i>        - each ordinal has stamp (timestamp and userstamp)
+</I>&gt;<i>        - each ordinal has an ordinal floating point number
+</I>&gt;<i>        - optimization: only stored if users have re-ordered lists
+</I>&gt;<i>   * Value
+</I>&gt;<i>      + id
+</I>&gt;<i>      + owning item
+</I>&gt;<i>      + attribute assignment -- the attribute his value is assigned to
+</I>&gt;<i>      + creation stamp (timestamp and userstamp)
+</I>&gt;<i>      + creation ordinal (a default initial value)
+</I>&gt;<i>        - (T minus creation time) in milliseconds,
+</I>&gt;<i>          where T is (January 1, 2000)
+</I>&gt;<i>        - optimization: can be derived from the creation stamp,
+</I>&gt;<i>          no need to store it
+</I>&gt;<i>      + optional list of votes to delete and votes to retain
+</I>&gt;<i>        - each vote has a stamp (timestamp and userstamp)
+</I>&gt;<i>        - each vote has a delete/retain flag
+</I>&gt;<i>        - replacement pointer -- a deletion vote can have a pointer
+</I>&gt;<i>          to a new value that replaces the deleted value
+</I>&gt;<i>        - optimization: only stored if users have made retain/delete 
+</I>&gt;<i> calls
+</I>&gt;<i>      + optional list of additional ordinals
+</I>&gt;<i>        - each ordinal has stamp (timestamp and userstamp)
+</I>&gt;<i>        - each ordinal has an ordinal floating point number
+</I>&gt;<i>        - optimization: only stored if users have re-ordered lists
+</I>&gt;<i>      + maybe an optional source (a reference to another item)
+</I>&gt;<i>   * Literal Value
+</I>&gt;<i>      + data type (string, number, date, etc.)
+</I>&gt;<i>      + data (&quot;C3PO&quot;, &quot;482&quot;, &quot;March 1, 1973&quot;, etc.)
+</I>&gt;<i>      + string literals can have a language (&quot;English&quot;, &quot;German&quot;)
+</I>&gt;<i>      + number literals can have a unit (&quot;miles&quot;, &quot;dollars&quot;)
+</I>&gt;<i>      + date literals can have a timezone
+</I>&gt;<i>   * Reference Value
+</I>&gt;<i>      + related item
+</I>&gt;<i>      + related attribute assignment
+</I>&gt;<i>
+</I>&gt;<i> JavaScript API:
+</I>&gt;<i>
+</I>&gt;<i>   // Login as Lisa and create some items and values
+</I>&gt;<i>   datastore.login(userLisa, authenticationForLisa);
+</I>&gt;<i>   var starWars = datastore.newItem(&quot;Star Wars&quot;);
+</I>&gt;<i>   var peopleAttribute = datastore.newAttribute(&quot;People&quot;);
+</I>&gt;<i>   var luck = starWars.addAttributeValue(peopleAttribute, &quot;Luck 
+</I>&gt;<i> Skywalker&quot;);
+</I>&gt;<i>   var c3po = starWars.addAttributeValue(peopleAttribute, &quot;C3PO&quot;);
+</I>&gt;<i>   var luke = starWars.replaceValueWithAttributeValue(luck, 
+</I>&gt;<i> peopleAttribute,
+</I>&gt;<i> &quot;Luke Skywalker&quot;);
+</I>&gt;<i>   var fiction = datastore.newItem(&quot;Fiction&quot;);
+</I>&gt;<i>   starWars.addValue(fiction);
+</I>&gt;<i>   var starWarsPeopleValues =
+</I>&gt;<i> starWars.getValuesForAttribute(peopleAttribute);
+</I>&gt;<i>   var allStarWarsValues = starWars.getValues();
+</I>&gt;<i>   var creator = luke.getCreationStamp().getUser();
+</I>&gt;<i>   Util.assert(creator == userLisa);
+</I>&gt;<i>   var creationDate = luke.getCreationStamp().getDate();
+</I>&gt;<i>   starWars.deleteValue(c3po);
+</I>&gt;<i>   datastore.logout();
+</I>&gt;<i>
+</I>&gt;<i>   // Login as Bart, and change some existing items and values
+</I>&gt;<i>   datastore.login(userBart, authenticationForBart);
+</I>&gt;<i>   var categoryMovie = 
+</I>&gt;<i> datastore.getItemFromUuid(Movies.MOVIE_CATEGORY_UUID);
+</I>&gt;<i>   var movieQuery = datastore.newQuery(Query.CATEGORY_QUERY, 
+</I>&gt;<i> categoryMovie);
+</I>&gt;<i>   var movies = movieQuery.getResultSet();
+</I>&gt;<i>   var starWars = null;
+</I>&gt;<i>   for (var uuid in movies) {
+</I>&gt;<i>     var movie = movies[uuid];
+</I>&gt;<i>     if (movie.getName() == &quot;Star Wars&quot;) {
+</I>&gt;<i>       starWars = movie;
+</I>&gt;<i>     }
+</I>&gt;<i>   }
+</I>&gt;<i>   if (starWars) {
+</I>&gt;<i>     var attributes = starWars.getAttributes();
+</I>&gt;<i>     var peopleAttribute = null;
+</I>&gt;<i>     for (var uuid in attributes) {
+</I>&gt;<i>       var attribute = attributes[uuid];
+</I>&gt;<i>       if (attribute.getName() == &quot;People&quot;) {
+</I>&gt;<i>         peopleAttribute = attribute;
+</I>&gt;<i>       }
+</I>&gt;<i>     }
+</I>&gt;<i>     if (peopleAttribute) {
+</I>&gt;<i>       var allValues = starWars.getValues();
+</I>&gt;<i>       var starWarsPeople = 
+</I>&gt;<i> starWars.getValuesForAttribute(peopleAttribute);
+</I>&gt;<i>       for (var uuid in starWarsPeople) {
+</I>&gt;<i>         var person = starWarsPeople[uuid];
+</I>&gt;<i>         var msg = &quot;Was &quot; + person.getDisplayString() + &quot; in Star 
+</I>&gt;<i> Wars?&quot;;
+</I>&gt;<i>
+</I>&gt;<i>         // show panel and get user input
+</I>&gt;<i>         var yesNo = window.confirm(msg);
+</I>&gt;<i>         if (yesNo) {
+</I>&gt;<i>           starWars.retainValue(character);
+</I>&gt;<i>         } else {
+</I>&gt;<i>           starWars.deleteValue(character);
+</I>&gt;<i>         }
+</I>&gt;<i>       }
+</I>&gt;<i>     }
+</I>&gt;<i>   }
+</I>&gt;<i>   datastore.logout();
+</I>&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000015.html">[openrecord-dev] Data model ideas
+</A></li>
+	<LI>Next message: <A HREF="000016.html">[openrecord-dev] task-tracking tools
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#37">[ date ]</a>
+              <a href="thread.html#37">[ thread ]</a>
+              <a href="subject.html#37">[ subject ]</a>
+              <a href="author.html#37">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

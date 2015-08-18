@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] OpenLaszlo &quot;Database Connector&quot; protocol
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenLaszlo%20%22Database%20Connector%22%20protocol&In-Reply-To=%3C44725C7C.7030404%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000317.html">
+   <LINK REL="Next"  HREF="000312.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] OpenLaszlo &quot;Database Connector&quot; protocol</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenLaszlo%20%22Database%20Connector%22%20protocol&In-Reply-To=%3C44725C7C.7030404%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] OpenLaszlo &quot;Database Connector&quot; protocol">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Tue May 23 02:50:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000317.html">[openrecord-dev] UI design questions
+</A></li>
+        <LI>Next message: <A HREF="000312.html">[openrecord-dev] Summer of Code news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#309">[ date ]</a>
+              <a href="thread.html#309">[ thread ]</a>
+              <a href="subject.html#309">[ subject ]</a>
+              <a href="author.html#309">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Adam,
+
+Thought you might be interested in this &quot;Database Connector&quot; protocol 
+that the OpenLaszlo people have been working on:
+   <A HREF="http://article.gmane.org/gmane.comp.web.dojo.devel/1711">http://article.gmane.org/gmane.comp.web.dojo.devel/1711</A>
+   <A HREF="http://wiki.openlaszlo.org/Database_Connector">http://wiki.openlaszlo.org/Database_Connector</A>
+
+At Dojo Developer Day they brought it up as an idea for use with the 
+Dojo data layer.  The &quot;Database Connector&quot; protocol seems to be oriented 
+toward structured content -- I'm not sure it would be practical to 
+extend it to embrace things like RDF.  I haven't looked much at the REST 
+APIs that RDF servers offer -- I'll be curious to see how much 
+similarity there is.
+
+:<i>o) Brian
+</I>
+
+
+-------- Original Message --------
+Subject: [dojo-contributors] Pointer to RESTian data syncronization spec
+Date: Sat, 13 May 2006 16:16:51 -0700
+From: Max Carlson &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">max at laszlosystems.com</A>&gt;
+Reply-To: dojo dev. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">dojo-contributors at dojotoolkit.org</A>&gt;
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">dojo-contributors at dojotoolkit.org</A>
+
+Be nice to it - it's messy and needs a little cleanup.  It's also a
+little rough.  I'm not too sure about some of the features, esp.
+callbacks and default methods.  It's a start:
+
+<A HREF="http://wiki.openlaszlo.org/Database_Connector">http://wiki.openlaszlo.org/Database_Connector</A>
+
+The first reference implementation can be found here:
+<A HREF="http://laszlo-plugin.rubyforge.org/">http://laszlo-plugin.rubyforge.org/</A>
+
+All the code, including LZX is generated using Rails' generators.
+This version binds a rails model (aka database table) to an editable
+datagrid.  As the grid is scrolled, records are paged in.  Creates,
+updates and deletes are sent back to the server individually.
+
+This isn't tied to the datagrid component at all.  Instead the system
+watches for changes to the underlying XML data model, meaning anything
+bound into the data can use the system.
+
+The protocol itself could work with any back end.  I'd love feedback,
+particularly around diffgrams.  Feel free to edit the wiki, and thanks!
+
+-- 
+Regards,
+Max Carlson
+OpenLaszlo.org
+_______________________________________________
+dojo-contributors mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">dojo-contributors at dojotoolkit.org</A>
+<A HREF="http://dojotoolkit.org/mailman/listinfo/dojo-contributors">http://dojotoolkit.org/mailman/listinfo/dojo-contributors</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000317.html">[openrecord-dev] UI design questions
+</A></li>
+	<LI>Next message: <A HREF="000312.html">[openrecord-dev] Summer of Code news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#309">[ date ]</a>
+              <a href="thread.html#309">[ thread ]</a>
+              <a href="subject.html#309">[ subject ]</a>
+              <a href="author.html#309">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

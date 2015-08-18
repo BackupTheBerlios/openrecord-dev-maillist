@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Multi entries support for table cells
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Multi%20entries%20support%20for%20table%20cells&In-Reply-To=%3C200505312317.j4VNHKm26514%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000091.html">
+   <LINK REL="Next"  HREF="000090.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Multi entries support for table cells</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Multi%20entries%20support%20for%20table%20cells&In-Reply-To=%3C200505312317.j4VNHKm26514%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Multi entries support for table cells">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed Jun  1 01:18:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000091.html">[openrecord-dev] Multi entries support for table cells
+</A></li>
+        <LI>Next message: <A HREF="000090.html">[openrecord-dev] new query category pop-up works great
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#87">[ date ]</a>
+              <a href="thread.html#87">[ thread ]</a>
+              <a href="subject.html#87">[ subject ]</a>
+              <a href="author.html#87">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Chao,
+
+That all sounds great to me.
+
+On point (4)...  
+
+If we decide to show multiple entries on a single line, then Mimi's
+suggestion of a light grey dot sounds good.  Alternatively, we could have
+each entry appear on a new line, and we could visually separate the entries
+using a light grey line element.  I have a slight preference for having the
+entries on separate lines, but I think it's hard to know which is a better
+look and feel without trying out one of them.  
+  
+I think having the entries on separate lines may be easier to implement,
+because the text-wrapping cases can be handled locally within a single
+EntryView (aka TextView), rather than having text-wrapping maybe be an issue
+that impacts the MultiEntriesView and two or more EntryViews.
+
+On point (5) ...
+
+Maybe on Monday we can talk about that list of UI questions and try to come
+up with some answers.  
+
+On Sunday Mignon and I talked about a lot of UI details, including some of
+the table view UI.  Here's a quick summary of the ideas we talked about for
+the table UI:
+
+ - single click on a table row == select entire row
+ - hit delete when row is selected == delete item
+ - copy &amp; paste when row is selected == copy &amp; paste item
+
+ - single click on an entry in a selected row == select an entry
+ - hit delete when an entry is selected == delete entry
+ - copy &amp; paste when entry is selected == copy &amp; paste entry
+
+ - double click on an entry == start editing entry
+ - when a table cell has only one entry, selecting the entry maybe feels
+just like selecting the cell?
+ - when you have one entry selected, or are editing one entry, you can
+create a new entry by hitting &quot;alt-&lt;return&gt;/&lt;enter&gt;&quot; -- maybe we should also
+have a small button in the cell (e.g. [*]), so you can use the button to
+create a new entry  -- the button would only appear in the cell when you
+were editing an entry
+ 
+:<i>o) Brian
+</I>
+
+
+________________________________
+
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev-admin at berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev-admin at berlios.de</A>] On Behalf Of Chih-Chao Lam
+Sent: Tuesday, May 31, 2005 3:39 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at berlios.de</A>
+Subject: [openrecord-dev] Multi entries support for table cells
+
+
+Hi, 
+
+OK, I'm thinking about supporting multiple entries in a table cell.
+
+Here's what I propose:
+1) Create a new view MultiEntriesView (looking for a better name) that
+shadows a HTMLCellElement.This view displays all the entries of a given item
+for a given attribute. It can also be used outside of TablePlugin. 
+
+2) Inside a MultiEntriesView, we have one or more views representing an
+Entry of the item's attribute. We will use TextView for this purpose. Over
+time, we should adapt TextView to be something like EntryView, where it
+accepts not just a text string, but item references, URLs, images, etc.
+
+3) Brian suggests that if a MultiEntriesView has focus (or one of its
+sub-views), and you type &quot;alt-&lt;return&gt;/&lt;enter&gt;&quot; it creates a new EntryView
+within the MultiEntriesView. This is how a user creates multiple entries
+within an item attribute.
+
+4) Within a MultiEntriesView, multiple entries are separated by some
+delimiter e.g. Mimi suggested &quot; . &quot;
+
+5) We need to figure out what UI changes need to be made to support multiple
+entries in a table cell. e.g.
+- is a table cell still a unit of selection as opposed to an entry in a
+cell?
+- how do you navigate between entries and cells on the keyboard?
+- should there be other affordances to create a new entry?
+- what does clicking on the separator between entries do?
+- when sorting table columns, do we just use the first entry for that cell?
+- etc. probably a bunch of other unanswered questions
+
+6) Given alternatives for (5), I'm still thinking of a graceful way of
+implementing keypress handling for our system in general. Ideally, I'll like
+a system where the focused TextView or EntryView gets to handle a keypress,
+if it's not handled, then it passes it up to the superview. For TablePlugin,
+this would be MultiEntriesView. If it's not handled at MultiEntriesView,
+then TablePlugin gets to handle it and so on. If you have ideas on how to
+implement this, or want to brainstorm with me, please ping me.
+
+Thanks,
+chao
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000091.html">[openrecord-dev] Multi entries support for table cells
+</A></li>
+	<LI>Next message: <A HREF="000090.html">[openrecord-dev] new query category pop-up works great
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#87">[ date ]</a>
+              <a href="thread.html#87">[ thread ]</a>
+              <a href="subject.html#87">[ subject ]</a>
+              <a href="author.html#87">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

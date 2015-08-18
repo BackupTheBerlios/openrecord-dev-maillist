@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Model Testsuite problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Model%20Testsuite%20problems&In-Reply-To=%3C200505280740.j4S7e7m10093%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000072.html">
+   <LINK REL="Next"  HREF="000074.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Model Testsuite problems</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Model%20Testsuite%20problems&In-Reply-To=%3C200505280740.j4S7e7m10093%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Model Testsuite problems">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sat May 28 09:41:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000072.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+        <LI>Next message: <A HREF="000074.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#73">[ date ]</a>
+              <a href="thread.html#73">[ thread ]</a>
+              <a href="subject.html#73">[ subject ]</a>
+              <a href="author.html#73">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+This seems like a really weird bug.  I'm a little bit baffled about what
+might be causing it.  And, unfortunately, I don't own a Mac, so I don't have
+any good way to reproduce it.  But, I did have a couple thoughts...  
+
+I'm kind of grasping at straws here, but one thing you could do is to try
+loading  TestSuite.html from a <A HREF="file:///">file:///</A> prefix rather than an
+<A HREF="http://localhost:">http://localhost:</A> prefix.  That tends tease out potential problems that
+result from Apache caching some files. 
+
+My only other thought is that there's maybe some connection between this bug
+and all the new UUID code that I just checked in.  The UUIDs seem to work
+fine in Firefox on Windows, but maybe the Mac Firefox implementation has
+some slightly different implementation of the Core JavaScript functions --
+Number, Math.random(), etc. 
+
+I'll be available by phone on Saturday, and then on Sunday Mignon and I can
+look at the code and maybe debug it on a Mac and PC side by side.
+
+:<i>o) Brian  
+</I>
+
+ 
+
+-----Original Message-----
+From: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev-admin at berlios.de</A>
+[mailto:<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev-admin at berlios.de</A>] On Behalf Of Chih-Chao Lam
+Sent: Friday, May 27, 2005 9:11 PM
+To: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at berlios.de</A>
+Subject: [openrecord-dev] Model Testsuite problems
+
+Hi Brian,
+
+I tested the modeltest TestSuite over on my Windows PC, with the  
+pages serving off my mac's apache server, and everything ran fine.  
+So, I suspect it's a mac vs. pc firefox issue.
+
+I'm going to checkin my code because I think the bug is likely to be  
+already present on the mac.
+
+As far as I can tell, the bug on the mac is that there are two  
+entries created for the &quot;Name&quot; attribute on an item. The two entries  
+point to the same identical item.
+
+Anyway, maybe you can help figure it out with Mignon Sunday? I'm also  
+available tomorrow (sat).
+
+Thanks,
+chao
+___________________________________________________________________
+Copyright rights relinquished. This work is in the Public Domain.
+For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+
+openrecord-dev mailing list
+<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+<A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000072.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+	<LI>Next message: <A HREF="000074.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#73">[ date ]</a>
+              <a href="thread.html#73">[ thread ]</a>
+              <a href="subject.html#73">[ subject ]</a>
+              <a href="author.html#73">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

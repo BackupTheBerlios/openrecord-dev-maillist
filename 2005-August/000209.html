@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] scriptaculous slowness
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20scriptaculous%20slowness&In-Reply-To=%3C200508050341.j753fcI31895%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000208.html">
+   <LINK REL="Next"  HREF="000210.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] scriptaculous slowness</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20scriptaculous%20slowness&In-Reply-To=%3C200508050341.j753fcI31895%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] scriptaculous slowness">brian.skinner at gumption.org
+       </A><BR>
+    <I>Fri Aug  5 05:42:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000208.html">[openrecord-dev] anchors and URLs
+</A></li>
+        <LI>Next message: <A HREF="000210.html">[openrecord-dev] scriptaculous slowness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+I'm working on creating on some larger example documents.  I've been using
+the CSV import tool to create documents with anywhere from 100 to 1,000
+items.  
+
+As the documents get larger, performance starts to be a real problem.
+Thankfully, part of that is easy to fix.  Right now the data model code is
+needlessly sorting lists over and over, which eats up more and more time as
+the lists get longer.  I'll fix that.
+
+Unfortunately, one of the big performance problems seems to be in the
+scriptaculous code.  Drawing the TablePlugin is one our slowest operations,
+and most of the time is spent just to register the lozenges to be draggable.
+
+
+I have a table with about 1,000 items and 800 lozenges.  Our code takes
+about 30 seconds to refresh the table, and about 20 seconds of that time is
+spent in this one line of code:
+  this._draggable = new Draggable(this._textSpan, {revert:true});
+
+As a quick fix, for now I've changed the EntryView code so that the lozenges
+are only draggable after the &quot;Show Tools&quot; button has been pressed.  That
+makes most page loads 3-times faster, while still leaving the ability to
+demo the drag-and-drop feature.
+
+In the long run, I'm not sure what to do.  Maybe we can figure out some way
+to do lazy registration of the lozenges?  Or maybe we should switch to a
+different drag-and-drop library?  Or write our own code and make it far less
+general?
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000208.html">[openrecord-dev] anchors and URLs
+</A></li>
+	<LI>Next message: <A HREF="000210.html">[openrecord-dev] scriptaculous slowness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#209">[ date ]</a>
+              <a href="thread.html#209">[ thread ]</a>
+              <a href="subject.html#209">[ subject ]</a>
+              <a href="author.html#209">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

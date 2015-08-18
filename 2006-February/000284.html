@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Re: [dojo-contributors] screencast for review
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20%5Bdojo-contributors%5D%20screencast%20for%20review&In-Reply-To=%3C44026A01.9090507%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000283.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Re: [dojo-contributors] screencast for review</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20%5Bdojo-contributors%5D%20screencast%20for%20review&In-Reply-To=%3C44026A01.9090507%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Re: [dojo-contributors] screencast for review">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Mon Feb 27 03:55:02 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000283.html">[openrecord-dev] Re: [dojo-contributors] screencast for review
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#284">[ date ]</a>
+              <a href="thread.html#284">[ thread ]</a>
+              <a href="subject.html#284">[ subject ]</a>
+              <a href="author.html#284">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey David, thanks for the detailed feedback.  I've added those 
+suggestions to our to-do list for the next rev of the screencast.
+
+Some responses inline...
+
+&gt;<i> 1) most importantly: I watched it all, even though it's 
+</I>&gt;<i> longer than I expected.  I'm pretty impressed, not just 
+</I>&gt;<i> with the screencast, but with openrecord.  So good job!
+</I>
+Thanks, that's encouraging to hear!
+
+&gt;<i> 3) audio is clear
+</I>
+I just got a new Logitech USB microphone for making the screencast. 
+Alex, let me know if you'd like it for making the Dojo screencasts. 
+It's noticeably better than the old microphone I first tried.
+
+&gt;<i> 5) Affordance of editability in the book club app isn't
+</I>&gt;<i> obvious (suggest different background on hover).  Same 
+</I>&gt;<i> for drag and dropability.
+</I>
+That's funny -- we actually used to have a visual cue on hover, back in 
+an earlier version.  We must have broken that accidentally at some 
+point, and I hadn't noticed.  I've added a entry about that in our bug 
+tracking file.
+
+&gt;<i> 7) too bad you're using a <A HREF="file://">file://</A> url -- distracts from 
+</I>&gt;<i> the webapp concept
+</I>
+Yup, we'll definitely use http: urls in the next screencast.  Right as I 
+was making the screencasts I ran into some glitch with our code that 
+only happened on the machine that I had the screencast software on, and 
+only in http: mode.  Very frustrating.  The screencast was already weeks 
+late, so I figured it was better to press on in file: mode rather than 
+spend time debugging.
+
+But, I do think it's cool that OpenRecord actually works in file: mode 
+as well as http: mode, at least until we replace our file-based 
+datastore with some more scalable solution.
+
+&gt;<i> 8) I want to know how to build the book club, not just edit it.
+</I>
+The UI for setting up new sites is still clunky, so I felt I had to 
+leave that out.  We've just started working on UI improvements for that, 
+and we should be able to show that off in the next screencast.
+
+&gt;<i> 10) do you have &quot;choice&quot; types?
+</I>
+We don't have any sort of an &quot;enum&quot; type -- for example, you can't set 
+up the &quot;party&quot; attribute to have a fixed set of values: [Democratic, 
+Republican, Green, Libertarian].  That's actually an intentional feature 
+omission, rather than just something we haven't gotten around to...
+
+I'm hoping that we can avoid needing an &quot;enum&quot; feature, and instead 
+encourage people to do something similar but modeled by using 
+relationships to other items.  So, instead of the &quot;party&quot; attribute 
+being declared as an enum, it would be declared as a reference to an 
+item in the category &quot;Political Party&quot;, which would include items for 
+Democratic, Republican, Green, Libertarian, etc.  That way it's easy to 
+add more info about any of the parties.  The downside is that we then 
+don't restrict the user to *only* picking from one of the existing 
+parties -- the user is free to create new items representing other parties.
+
+&gt;<i> 11) the blue rounded corner styling on the links to items 
+</I>&gt;<i> are getting on my nerves
+</I>
+I'd welcome ideas about alternatives, if you maybe had something in 
+mind.  That's been a hard UI element to design...
+
+We could make the item links look like a traditional links (simple blue 
+underline), but that's maybe confusing, given that the item links aren't 
+traditional links, and don't have quite the same UI affordances.  For 
+example, with a normal link, a single click follows the link.  But, in 
+OpenRecord, on those item connections, we probably need the single click 
+action to select the connection, so that you can then do stuff like 
+cut/copy/paste/drag/etc.  Right now, the UI is set up so that you have 
+to double click to follow the link, although I was hoping to avoid 
+double-click operations entirely.
+
+&gt;<i> 12) create CSS for the plugin generator. =)
+</I>&gt;<i> 15) I think openrecord could use some css-love.
+</I>
+Yup, OpenRecord needs some style.  I've been mostly ignoring that 
+problem.  I'm banking on the dojo widgets getting some unified style, so 
+that then we can just have OpenRecord use dojo widgets, and use some 
+similar style for any custom UI in OpenRecord.
+
+&gt;<i> 13) I'm curious about the reporting capabilities of the engine...
+</I>
+I'm not sure I know what you mean by reporting.  Do you mean, what sort 
+of queries you can use to populate a view with items to display?  Or do 
+you mean some sort of reporting view that's more geared toward printed 
+reports?  Any particular use cases we should be thinking about?
+
+
+&gt;<i> The screencast seems aimed halfway towards developers and 
+</I>&gt;<i> halfway towards users.  I think it would be good to aim more 
+</I>&gt;<i> towards users, and trim some of the jargon (esp. at the end   
+</I>&gt;<i> of the concurrency section).
+</I>
+The screencast is meant to be geared toward developers rather than 
+users.  I figure some of the first things a developer needs to know 
+about OpenRecord are what features the app has and what the app looks 
+like to a user, so that's why the first half of the screencast has a lot 
+of usage examples.
+
+We haven't yet decided what we want to use for a back-end datastore, and 
+until we get something solid in place, I'm actively discouraging users 
+from actually trusting OpenRecord with data they care about.  So, for 
+now, we're not working on attracting users -- so, no need for a 
+user-oriented screencast.
+
+We are definitely interested in inviting developers to work on 
+OpenRecord, and in getting feedback and suggestions from developers (for 
+example, about what datastore components we should be thinking about, 
+and about what other open source projects we should be collaborating with).
+
+&gt;<i> For developers, I'd show more code.  A lot more code =).
+</I>
+Point taken.  I've added that to the to-do list for the next rev of the 
+screencast.
+
+&gt;<i> I'm definitely more interested in openrecord than I was ten 
+</I>&gt;<i> minutes ago.  Cool.
+</I>
+Thanks!
+
+:<i>o) Brian
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000283.html">[openrecord-dev] Re: [dojo-contributors] screencast for review
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#284">[ date ]</a>
+              <a href="thread.html#284">[ thread ]</a>
+              <a href="subject.html#284">[ subject ]</a>
+              <a href="author.html#284">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

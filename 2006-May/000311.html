@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] open record re-architecture strawman
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20open%20record%20re-architecture%20strawman&In-Reply-To=%3C44727E58.6080708%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000310.html">
+   <LINK REL="Next"  HREF="000304.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] open record re-architecture strawman</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20open%20record%20re-architecture%20strawman&In-Reply-To=%3C44727E58.6080708%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] open record re-architecture strawman">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Tue May 23 05:14:00 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000310.html">[openrecord-dev] open record re-architecture strawman
+</A></li>
+        <LI>Next message: <A HREF="000304.html">[openrecord-dev] Dojo Developer Day -- Sat May 13, 2006 -- Mountain View CA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#311">[ date ]</a>
+              <a href="thread.html#311">[ thread ]</a>
+              <a href="subject.html#311">[ subject ]</a>
+              <a href="author.html#311">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Adam Souzis wrote:
+&gt;<i> Instead just focus on extending the Dojo table control to be 
+</I>&gt;<i> fully editable: adding columns and rows, in-editing of cells, 
+</I>&gt;<i> basic data validation, undo/redo, change notifications, etc.
+</I>
+We can start from the Dojo SortableTable widget if we want, and create 
+something like an EditableTable.  Tom Trenka is the original author and 
+current maintainer of the SortableTable widget.  I think Tom wants to 
+keep the SortableTable widget fairly simple and lightweight, so we'd 
+need to create a new widget if we wanted to add lots of features.
+
+IBM has an editable Table widget which they've talked about contributing 
+to Dojo.  Plus it already works with their data model layer.  But, I 
+doubt it has features for adding columns and rows, multi-valued cells, 
+etc.  And I don't know how soon that code will land in the Dojo trunk.
+
+A third alternative is to take our current Table view and turn it into a 
+Dojo widget.  I've never actually made a Dojo widget before, so I don't 
+know what all is involved in that, but I figure it can't be too hard, 
+given that we can refer to the SortableTable code as an example.
+
+:<i>o) Brian
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000310.html">[openrecord-dev] open record re-architecture strawman
+</A></li>
+	<LI>Next message: <A HREF="000304.html">[openrecord-dev] Dojo Developer Day -- Sat May 13, 2006 -- Mountain View CA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#311">[ date ]</a>
+              <a href="thread.html#311">[ thread ]</a>
+              <a href="subject.html#311">[ subject ]</a>
+              <a href="author.html#311">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

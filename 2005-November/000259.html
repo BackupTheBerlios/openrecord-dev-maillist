@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Ning, Dabble, Google Base, etc.
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Ning%2C%20Dabble%2C%20Google%20Base%2C%20etc.&In-Reply-To=%3C4381008C.6020303%40gumption.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000258.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Ning, Dabble, Google Base, etc.</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Ning%2C%20Dabble%2C%20Google%20Base%2C%20etc.&In-Reply-To=%3C4381008C.6020303%40gumption.org%3E"
+       TITLE="[openrecord-dev] Ning, Dabble, Google Base, etc.">openrecord at gumption.org
+       </A><BR>
+    <I>Mon Nov 21 00:03:01 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000258.html">[openrecord-dev] WikiCalc
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#259">[ date ]</a>
+              <a href="thread.html#259">[ thread ]</a>
+              <a href="subject.html#259">[ subject ]</a>
+              <a href="author.html#259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I added links from the OpenRecord website to some projects that have 
+similar features:
+  <A HREF="http://openrecord.org/bookmarks.html#similar">http://openrecord.org/bookmarks.html#similar</A>
+
+The new links include pointers to:
+   Google Base
+   The Ning Content Store
+   Dabble DB
+   Dan Bricklan's wikiCalc
+   Sproutliner
+   Sparrow Web
+   MediaWiki projects: Wikidata and the Semantic MediaWiki project
+   Daisy CMS
+   Intuit QuickBase
+   Semantic wiki projects: Platypus, Rhizome, Gnowsis, etc.
+
+Here are some notes about a few of the projects...
+
+--------------------------------------------------
+Google Base
+
+Google Base has a data model that's vaguely similar to the OpenRecord 
+data model. For example, in Google Base any item can have any number of 
+ad-hoc attributes, any attribute can be multi-valued, any date value can 
+have an end-date as well as a start-date, and numbers can have units 
+(like &quot;meters&quot; or &quot;meters/second&quot;).
+
+However, I think the similarities end there. Google Base seems to be 
+oriented toward &quot;monolithic&quot; items, rather than big structures of small 
+items -- for example Google Base does not seem to be designed to support 
+any type of references between items, or multi-item transactions.
+
+--------------------------------------------------
+The Ning Content Store
+
+On the Ning web site there's a nice one-page description of their &quot;Ning 
+Content Store&quot;:
+   <A HREF="http://developerdocumentation.ning.com/post.php?Post:slug=ContentStore">http://developerdocumentation.ning.com/post.php?Post:slug=ContentStore</A>
+
+Ning uses a custom Content Store that has a data model which is similar 
+in many ways to the OpenRecord data model.
+
+A Ning &quot;Content Object&quot; is like an OpenRecord &quot;Item&quot;. The most 
+significant similarity is that both Ning and OpenRecord lack any notion 
+of pre-defined schema -- any items (content objects) can have any 
+attributes. Ning and OpenRecord are also similar in that they both 
+support bi-directional references.
+
+However, there are a number of differences. In Ning, each Object can be 
+of only one type, and the type of an Object cannot change once the 
+Object is created -- OpenRecord has no similar notion. In Ning, an 
+attribute is identified by its name (a string) -- in OpenRecord 
+attributes are identified by UUID, an attribute can have different names 
+in different languages, and each attribute is itself an item, so it can 
+have not only a 'name', but also a 'summary' description, and other 
+descriptive attributes. Like OpenRecord, Ning allows any attribute to be 
+multi-valued, but in Ning all the values of a multi-valued attribute 
+must be of the same type. Ning has a notion of public vs. private 
+content, whereas OpenRecord treats all content as public. OpenRecord 
+includes some support for transactions, whereas Ning generally doesn't.
+
+--------------------------------------------------
+Dabble DB
+
+The Dabble web site currently only has a few screenshots, and doesn't 
+have much written documentation. So, it's hard to know quite what Dabble 
+is, but judging by what is posted it certainly looks like Dabble and 
+OpenRecord are both trying to solve the same problems. Their weblog has 
+some appealing posts talking about usability and the relationship 
+between spreadsheets and databases:
+   <A HREF="http://smallthought.com/blog/">http://smallthought.com/blog/</A>
+
+
+:<i>o) Brian
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000258.html">[openrecord-dev] WikiCalc
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#259">[ date ]</a>
+              <a href="thread.html#259">[ thread ]</a>
+              <a href="subject.html#259">[ subject ]</a>
+              <a href="author.html#259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

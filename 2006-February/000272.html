@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] OpenRecord Data Model
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenRecord%20Data%20Model&In-Reply-To=%3C43EEDC19.3040701%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000271.html">
+   <LINK REL="Next"  HREF="000274.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] OpenRecord Data Model</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20OpenRecord%20Data%20Model&In-Reply-To=%3C43EEDC19.3040701%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] OpenRecord Data Model">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Sun Feb 12 07:57:01 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000271.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+        <LI>Next message: <A HREF="000274.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#272">[ date ]</a>
+              <a href="thread.html#272">[ thread ]</a>
+              <a href="subject.html#272">[ subject ]</a>
+              <a href="author.html#272">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Bio,
+
+&gt;<i> The table you released comparing different data models was very 
+</I>&gt;<i> nice, thank you. Will you be rolling your own backend, or using  
+</I>&gt;<i> one of the models mentioned? 
+</I>
+I'd like to avoid writing our own backend.  Writing one would take more 
+time than we have, and the result would probably be lame compared to 
+existing backends.  I'd much rather use an existing backend. 
+Unfortunately, I'm having trouble finding an existing backend that seems 
+like a good match for the OpenRecord data model.  I'm still actively 
+looking, so let me know if you have suggestions.
+
+
+&gt;<i> For example, an rdf store (also listed) could subsume any of 
+</I>&gt;<i> the models you mentioned  
+</I>
+RDF is appealing.  It's been a couple years since I last looked at RDF 
+datastores, but at the time I had trouble finding something that fit. 
+In particular, I had trouble finding a datastore with built-in support 
+for tracking change histories and version info.  For example, on the 
+Wikipedia site, each page has a &quot;history&quot; tab, where you can see all the 
+previous versions of the page, as well as the diffs.
+
+Do you know of any RDF datastore that has built in support for the idea 
+of versions and version histories?  Without built in versioning support, 
+I think we would maybe end up having to represent every single statement 
+as a reified statement, and if we did that I'm worried that queries 
+would be a pain and performance would suck.
+
+
+&gt;<i> daisy also mentioned, seems like a nice model with a ReST api.
+</I>
+The Daisy CMS seems cool.  I don't know much about it, but there are a 
+bunch of sweet features that seem like they would be useful for 
+OpenRecord: the ReST API, multi-valued fields, versioning, language 
+variants, retired documents, transclusion, embedded queries, fields 
+shared across different document types, unique IDs instead of 
+hierarchical directory paths.
+
+But, in other ways Daisy doesn't seem like a fit for the OpenRecord data 
+model.  For OpenRecord, I think the biggest problems are that in Daisy:
+  - fields can hold literal values, but I can't find any documentation 
+about fields being able to hold pointers to other documents, much less 
+automatic bi-directional connections
+  - a document must belong to a document type, can only belong to one 
+document type, and can only have the fields that are defined for its 
+document type
+  - language variants are at a per-document level rather than a 
+per-field level, which is what OpenRecord needs
+
+
+&gt;<i> Regarding the charting code mentioned in the last update, you 
+</I>&gt;<i> may also want to look at this recent code: 
+</I>&gt;<i> <A HREF="http://webfx.eae.net/dhtml/chart/chart.html">http://webfx.eae.net/dhtml/chart/chart.html</A> 
+</I>
+Thanks for the pointer.  The WebFX charts look great.  Unfortunately the 
+WebFX licenses are too restrictive for us to use WebFX code in 
+OpenRecord.  But hopefully the Dojo chart widget will gradually start to 
+have more and more features.
+
+
+&gt;<i> Thanks! The project sounds very interesting.
+</I>
+Thanks for all the suggestions.  Let me know if you have any other ideas 
+about the data store -- with enough searching I'm hopefully that we'll 
+eventually find a fit!
+
+Cheers,
+   Brian
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000271.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+	<LI>Next message: <A HREF="000274.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#272">[ date ]</a>
+              <a href="thread.html#272">[ thread ]</a>
+              <a href="subject.html#272">[ subject ]</a>
+              <a href="author.html#272">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

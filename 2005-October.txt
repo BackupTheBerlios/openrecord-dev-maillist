@@ -1,0 +1,914 @@
+From chao at cs.stanford.edu  Wed Oct  5 23:46:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Oct  5 23:46:01 2005
+Subject: [openrecord-dev] Selenium: Browser testing
+Message-ID: <BC47E822-36EB-4E40-9C40-79B4E3DCDF9C@cs.stanford.edu>
+
+This looks like a very interesting testing tool for web apps:
+http://selenium.thoughtworks.com/index.html
+
+It says: "Selenium tests run directly in a browsers, just as real  
+users do."
+
+Has anyone had experience with this?
+I've not tried it out yet, but will be doing so soon and will share  
+the results.
+
+[was recommended by Shoop's Agile Rails book]
+
+chao
+
+
+From chao at cs.stanford.edu  Tue Oct 11 06:57:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Oct 11 06:57:00 2005
+Subject: [openrecord-dev] Tagcamp
+Message-ID: <BE7D507F-E1BA-44E3-B584-2E292E577DD5@cs.stanford.edu>
+
+This looks like the sequel to BarCamp?
+
+Friday, October 28, 2005 - Saturday, October 29, 2005 (7:00 PM -  
+10:00 PM)
+
+Anyone interested in attending?
+
+chao
+
+
+From brian.skinner at gumption.org  Tue Oct 11 20:39:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Oct 11 20:39:01 2005
+Subject: [openrecord-dev] Tagcamp
+In-Reply-To: <BE7D507F-E1BA-44E3-B584-2E292E577DD5@cs.stanford.edu>
+Message-ID: <200510111838.j9BIcX901519@bat.berlios.de>
+
+> This looks like the sequel to BarCamp?
+> 
+> Friday, October 28, 2005 - Saturday, 
+> October 29, 2005 (7:00 PM - 10:00 PM)
+> 
+> Anyone interested in attending?
+
+
+Thanks for the pointer.  I don't think I'll go.  For the moment I'm trying
+to focus more on coding and other desk-work, and less on networking and
+exploring what else is out there.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri Oct 14 04:59:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Oct 14 04:59:01 2005
+Subject: [openrecord-dev] debugging in Venkman
+Message-ID: <200510140258.j9E2wV915580@bat.berlios.de>
+
+Hey Mignon,
+
+I just checked in a bunch of changes, and you should now be able to see the
+OpenRecord source code in the Firefox Venkman debugger.  Also, all our error
+messages should be back to normal, with file names and line numbers like
+"NavbarView.js: 100", instead of "dojo.js: 181"
+
+Turns out the Dojo "debugAtAllCosts" feature simply wasn't finished in the
+Dojo 0.1 release that we were using.  I updated to the latest version of
+Dojo and now debugAtAllCosts is working perfectly.  
+
+As part of the Dojo upgrade, I also did a lot of work on
+OpenRecordLoader.js.  So if you've been making changes there you'll surely
+have merge conflicts.  In order to get the whole loading sequence to go in
+the right order, I had to split OpenRecordLoader into three parts, so we now
+have:
+  OpenRecordLoader.js
+  OpenRecordLoaderStepTwo.js
+  OpenRecordLoaderStepThree.js
+
+The part of the OpenRecordLoader code that you've been working on is now in
+OpenRecordLoaderStepThree.js, in the "onload" function, which should look
+familiar.  Hopefully you'll be able to copy your changes over to the new
+OpenRecordLoaderStepThree.js without too much trouble.  Feel free to give me
+a call if it turns out to be a problem.  Sorry for the inconvenience, but
+hopefully it's worth it so we can get meaningful error messages again!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Sun Oct 16 00:03:02 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun Oct 16 00:03:02 2005
+Subject: [openrecord-dev] Dojo mailing list pointers
+Message-ID: <200510152202.j9FM2kw01177@bat.berlios.de>
+
+Hey Chao & Mignon,
+
+Just FYI, I've subscribed to the "dojo-interest" mailing list, and I've
+posted a couple questions there.  
+
+The dojo-interest list is pretty high volume, with hundreds of message per
+month.  You wouldn't want to subscribe unless you're actively using Dojo,
+but I'm finding it a wonderful resource, given all the Dojo stuff I've been
+doing lately.
+
+If you're interested, here's the last question I asked, and David
+Schontzler's reply:
+http://dojotoolkit.org/pipermail/dojo-interest/2005-October/001180.html
+http://dojotoolkit.org/pipermail/dojo-interest/2005-October/001181.html
+
+There's also a separate list that the core Dojo contributors use to discuss
+things with each other.  The archives are posted publicly, so if you're
+interested, you can follow their discussion, beginning October 6, about the
+idea of having the OpenRecord project develop under the auspices of the Dojo
+Foundation:
+ http://news.gmane.org/gmane.comp.web.dojo.devel
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Thu Oct 20 19:50:03 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Oct 20 19:50:03 2005
+Subject: [openrecord-dev] getting a directory listing
+Message-ID: <200510201749.j9KHnBw08624@bat.berlios.de>
+
+Hey Mignon,
+
+On Monday we were talking about the problem of how to find the path to the
+plugin directory in JavaScript code that might have been loaded either by a
+unit test page or by an actual end-user page like tuscany.html.
+
+You maybe have already solved that problem, but if you're still looking for
+ideas, I had a couple thoughts...
+
+Idea 1:
+  Right now, all of our unit tests live in the "tests" directory.  But, we
+could make an exception for unit tests that test the "storage" package.  We
+could have those unit tests live in top level directory, along with the
+end-user pages.  And then in the storage code we could just hard-code the
+path from the top level directory to the plugin directory: something like
+"plugins/".  The path would be the same when you ran the unit tests as it is
+when you load an end-user page.
+
+Idea 2:
+  This is a little bit complicated, but we could figure out the path to the
+plugins directory based on information we already have from two sources:
+"window.location.pathname" (wlp) and "dojo.hostenv.getBaseScriptUri()"
+(bsu).  In the case of a unit test run from the "tests/storage" directory,
+the results of window.location.pathname and getBaseScriptUri() will be:
+  wlp == "/C:/foo/bar/zig/OpenRecord/tests/storage/StorageTest.html"
+  bsu == "../../third_party/dojo/dojo-rev1759/"
+In the case of an actual end-user page like tuscany.html, the results of
+window.location.pathname and getBaseScriptUri() will be:
+  wlp == "/C:/foo/bar/zig/OpenRecord/open_agenda.html"
+  bsu == "third_party/dojo/dojo-rev1759/"
+
+  So, it would take a little work, but you could strip off the "___.html"
+file from the window.location.pathname value, and from the getBaseScriptUri
+value you could strip off "third_party" and everything after it.  And then
+you can append the modified window.location.pathname value and the modified
+getBaseScriptUri value.  In the case of a unit test run from the
+"tests/storage" directory you would get a URI like this:
+  "/C:/foo/bar/zig/OpenRecord/tests/storage/../../"
+In the case of an actual end-user page like tuscany.html, you would get a
+URI like this:
+  "/C:/foo/bar/zig/OpenRecord/"
+
+I'm not sure that either of these are good ideas, but I thought I'd toss
+them into the mix, on the chance that one of them seems useful to you.
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Thu Oct 27 09:58:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Oct 27 09:58:00 2005
+Subject: [openrecord-dev] links about the Google Base site
+Message-ID: <200510270757.j9R7viw17017@bat.berlios.de>
+
+Some links about the upcoming Google Base service:
+
+ http://www.techcrunch.com/2005/10/25/google-base-to-launch/
+ 
+ http://blog.outer-court.com/archive/2005-10-26-n16.html
+ 
+ http://slashdot.org/article.pl?sid=05/10/25/2042238&from=rss
+
+We'll have to figure out if this impacts the OpenRecord plans one way or
+another.  Like, maybe we could use Google Base as a back end data store?  Or
+at some point we might think about redesigning our data model to facilitate
+interoperation with Google Base?  Maybe we ignore this for now and carry on
+with our own plans?
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri Oct 28 00:16:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Oct 28 00:16:01 2005
+Subject: [openrecord-dev] openrecord news
+Message-ID: <200510272215.j9RMFYw17949@bat.berlios.de>
+
+Hi Rowan,
+
+I'm glad to hear you made it safely back to Ireland.  Let me fill you in on
+the OpenRecord news from the past couple months.  I'll cc this to the
+openrecord-dev mailing list, as other people might be interested too.
+
+-------------
+Recent Coding
+-------------
+  Back during the summer we focused mainly on UI features, and on creating
+demo documents for the demos we gave in August.  In September and October we
+took a break from the UI code, and we've been focused on the underlying
+infrastructure.  So, if you run the app, it should look exactly the same as
+it did two months ago, but now there's a more solid foundation underneath.  
+
+  We've made a bunch of incremental improvements in the past couple months:
+added unit tests, improved the data model API, started work on an automatic
+plugin loader, cleaned up the UUID code, etc.  None of that is too dramatic.
+The one dramatic change is that we've adopted the Dojo Toolkit
+(dojotoolkit.org).
+
+  We did a big sweep to convert all our code to use the Dojo package system
+and Dojo style namespaces.  Now we're incrementally adopting other Dojo
+tools.  We've switched all the event registration code to use
+dojo.event.connect, and we've started to replace our home-grown utility
+functions with "standard" Dojo functions.  When we get around to it, we can
+switch over to using Dojo for drag-and-drop, and for MD5 encryption, and for
+cookie access, and then we can get rid of our dependencies on several third
+party JavaScript packages (script.aculo.us, prototype.js, md5.js) and
+hopefully end up with Dojo as our only dependency.
+
+---------------
+Upcoming Coding
+---------------
+  Now that the foundation code is in better shape, it's time to shift back
+to adding new functionality.  We've got a to-do list file with about 70
+detailed tasks on it, but here are the main things we need to do next,
+roughly in priority order: 
+ 
+(1) Create a real backend 
+With our current transaction-log approach, page loads get sluggish for
+repositories with over a few hundred items or a few thousand entries.   We
+don't yet need an industrial strength backend, but it would be good to have
+some intermediate solution that could handle thousands of items and hundreds
+of thousands of entries.  
+
+Mignon and Jason and Marty and I have been talking about design ideas for an
+intermediate backend store.  I'll write something up about that ASAP.  Jason
+has volunteered to work on the PHP for the proposed design, if we decide on
+that approach.  Jason is away is China for the next two weeks, but he'll be
+available after that.
+ 
+(2) Start writing plugin views
+Finish up the new data model API and plugin system, and write up some
+documentation and example plugins.  Invite lots of friends to start writing
+experimental plugin views: Bar Chart, Scatter Plot, Gantt Chart, FAQ View,
+Thumbnail View, Version History View, etc.
+
+(3) Stabilize the file format
+Clean up a few little things about how we represent Dates and Ordinals and
+whatnot in our file format, and get to a point where we'll promise backward
+compatibility: "Items that you save using OpenRecord 0.2 will not be lost
+when we upgrade to OpenRecord 0.3."
+
+(4) Make a UI for new users
+Think carefully about the basic UI.  Design and implement a UI that works
+well for new users.  Figure out how to make everything intuitive for
+somebody who is setting up their very first repository and creating their
+first few items.  Back in August, Mimi volunteered to help us with this UI
+design work.  We weren't ready then, but hopefully she'll still be available
+when we are.
+
+(5) Work on interoperation
+Look into what it would take to be able to embed OpenRecord views inside
+MediaWiki pages.  Work on import/export tools for interoperation with things
+like googlebase.com.
+
+(6) Stabilize the URL format
+Get to a point where we promise backward compatibility for URLs: "Bookmarks
+that you make to OpenRecord 0.2 pages will continue to work when we upgrade
+to OpenRecord 0.3."
+
+(7) Do ongoing Dojoification
+Continue to replace our home-grown utility functions with Dojo utilities,
+and replace other third-party dependencies with Dojo modules.  Look into
+replacing our notion of Views with Dojo's notion of Widgets.
+
+(8) Port to IE
+Make OpenRecord run in IE, not just Firefox.  Figure out how to do automated
+unit tests for the UI code.
+
+---------------
+Legal structure
+---------------
+  We have ten people on the openrecord-dev mailing list, and we've had a
+dozen or so people who've attended design meetings or reviewed parts of the
+design and offered feedback.  We have a number of people who've expressed
+interest in writing code, but so far we've only had three people coding.  
+
+  We've been slow to get more programmers involved, partly because we
+weren't really ready until now -- we've had a fairly small code base, with
+APIs that were in flux, and I was worried about getting too many of us
+bumping into each other.  Now that we've got a more settled structure, I'm
+eager to get more people involved.  
+ 
+  In order to accept contributions from lots of people, we need some legal
+structure for handling contributor license agreements, both from individuals
+and potentially also from their employers.  For several months now we've
+been looking into different options.  We could have started our own new
+Software Foundation, but that would have taken lots of time and money.  Or
+we could have used some sort of peer-to-peer license agreement, but that
+would have been risky and brittle.  It seemed clear that the best thing to
+do was to become a project of an existing open source foundation.
+
+  I talked with people at a few different open source foundations, and the
+Dojo Foundation looked like the best fit for us.  I've been following up
+with them about running the OpenRecord project under the auspices of the
+Dojo Foundation, so that we'll be sheltered under their legal umbrella.
+They still need to vote on it, but I think they'll vote yes, so probably in
+another week we'll be a Dojo project.  They said we can go ahead and send in
+our Dojo contributor license agreements (CLAs) now.  The Dojo CLA is a clone
+of the Apache one, so it's a standard, widely used CLA.  Have a look at it,
+and if you're okay with it, you can print it and sign it
+<http://dojotoolkit.org/icla.txt>.  Please mail it to me instead of to the
+Dojo address; I'll collect all of our CLAs and them send them in one bundle
+to Dojo.  Here's my address:
+  Brian Skinner
+  2043 Ninth Avenue
+  San Francisco, CA 94116-1302
+  USA
+
+  I'm excited about being affiliated with Dojo.  They're doing great work
+and I think they have a lot of momentum and are likely to really take off.
+It looks like we'll be able to ship OpenRecord under a dual license, so that
+we can continue to make the OpenRecord code available under the terms of the
+Creative Commons Public Domain Dedication that we've been using, as well
+having it under the terms of the Academic Free License used by the rest of
+the Dojo code.  Hopefully we'll also be able to contribute some of the
+OpenRecord utility classes into the main Dojo release.
+
+-------------
+Collaboration
+-------------
+  In the past couple months, I've approached both Socialtext and Jotspot
+about the idea of collaborating with one of them.  I think both those
+companies are interested in features for working with structured content on
+a wiki.  I'd love to make OpenRecord interoperate with one of their tools,
+so that our users could exchange content smoothly.  
+
+  Or, better still, I'd love to do some sort of joint development project,
+so that we worked together on a single code base.  The OpenRecord project
+could ship the code as a free open source app that users install and
+administer themselves.  Socialtext or Jotspot could add additional
+proprietary enterprise features, and ship a fully supported commercial
+version as a hosted service.  I don't know whether that's a realistic
+scenario, but neither company has yet said "no", so something might come of
+it.  I'll keep you posted if anything develops.
+
+  Another option is to collaborate with the MediaWiki developers.  They're
+interested in adding structured-content features to MediaWiki, and they've
+started working on a "Wikidata" project for that
+<http://meta.wikimedia.org/wiki/Wikidata>.  Plus there are other projects we
+might want to look at more closely, like the SemperWiki project
+<http://m3pe.org/semperwiki/> and googlebase (when it ships).  
+
+------------------
+OpenRecord Retreat
+------------------
+  In mid-November we're having a week-long programming retreat where we're
+going to work on the OpenRecord code.  We've renting a big cabin a couple
+hours north of San Francisco, and we're going to hunker down and code for a
+week.  Mignon and Chao and I will be there, as well as few other people who
+will be working on other projects but may have some time to contribute to
+OpenRecord.  
+
+
+Okay, that's all the news I can think of.  I'll get to work on a write up
+about backend ideas, and then hopefully this weekend do a check in of the
+code with the new data model API!
+
+Cheers,
+  Brian
+
+
+
+
+From brian.skinner at gumption.org  Sat Oct 29 04:02:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Oct 29 04:02:00 2005
+Subject: [openrecord-dev] ideas about the backend store
+Message-ID: <200510290201.j9T21Uw07222@bat.berlios.de>
+
+> Mignon and Jason and Marty and I have been talking about 
+> design ideas for an intermediate backend store.  
+
+Hey Rowan,
+
+Here's a summary of what we've been talking about for the backend.  I'm
+cc'ing it to the openrecord-dev mailing list, as other people may be
+interested too.  Sorry I didn't get this to you yesterday.  I hope I'm not
+slowing you down too much.
+
+Just for context, let me start with some terminology...
+
+
+-----------
+Terminology
+-----------
+
+ * Item -- a recipe, a book, a camera, or whatever
+
+ * Attribute
+     examples: [author], [weight], [ingredients], etc.
+    (Each attribute is actually represented as an item, rather than
+     as a string token.  An attribute can have different names in 
+     different languages: "author"/"verfasser"/etc.  An attribute
+     can also have an expected type: text/number/date/URL/etc.  And
+     an attribute can also have some other info associated with it.)
+
+ * Value 
+     examples: "J.R.R. Tolkien", 2005-10-28, 485 grams, "a pinch of salt"
+    (A value can be a literal value, like a string or a date, or a 
+     reference value that points to an item.)
+
+ * Entry
+     example: "J.R.R. Tolkien" is the value of the attribute [author] 
+               on the item [The Hobbit], and this entry was made 
+               by the user [Brian] at time 2005-10-28 11:15:28
+    (An item can have entries for different attributes.  Each entry
+     is an object that associates a value with an attribute for an 
+     item.  Each entry can also have some other associated info.)
+
+ * Repository
+     A data store that contains all of the items and entries for 
+     an OpenRecord web site.
+
+ * OpenRecord web site
+     example: http://openrecord.org/demo/old_2005_08_17/sandbox.html
+
+ * Page -- a "page" within an OpenRecord web site
+     examples:
+ 
+http://openrecord.org/demo/old_2005_08_17/sandbox.html#page0fb69ad0-fe04-11d
+9-8800-000c414ce854
+ 
+http://openrecord.org/demo/old_2005_08_17/sandbox.html#paged5e68550-fd6c-11d
+9-9654-000c414ce854
+
+ * Record -- any new piece of info that is recorded in a repository
+     (Each entry is a record, and there's a record to show the creation
+      of a new item, and another record if an item is deleted, etc.)
+
+ * Query
+     example: "all the items that are in the category [Camera Lens]"
+    (Each page can have any number of sections, and each section shows 
+     a collection of items (in the form of a list or a table or whatever).  
+     Each section has an associated query.  For example, a page about 
+     cameras may have a section with a list of all known Lenses, and
+     the list is populated by running the query for all items in the 
+     category [Camera Lens].)
+
+
+------------------------
+Transaction-log approach 
+------------------------
+
+  Okay, now let me offer a quick overview of the transaction-log approach
+that we've been using.  Here's the way it works today...
+
+  When the user visits an OpenRecord web site, the browser loads all the
+JavaScript code for OpenRecord, and the OpenRecord code immediately loads
+the *entire* contents of the repository associated with the OpenRecord web
+site.  
+
+  The repository is stored as a single file.  The repository is really just
+a simple transaction log, stored as JSON-format objects representing entries
+and other records.  When a user makes a change on a page, OpenRecord sends a
+little packet of JSON to the server.  The server is a very simple PHP script
+that just mindlessly appends the JSON to the end of the transaction-log
+repository file.  We're using JSON now, but we could just as easily use XML,
+if that seemed better for any reason.
+
+  So, for example, if the user is looking at a table of items, and she
+clicks in an empty cell and types "Iggy Pop", then the client sends the
+server a JSON packet like this: 
+
+  { "Entry": {
+           "uuid": "6a141400-f3f8-11d9-845f-e24829d2f59b",
+           "type": "00001020-ce7f-11d9-8cd5-0011113ae5d6",
+      "attribute": "00001003-ce7f-11d9-8cd5-0011113ae5d6",
+           "item": "99e90d10-e990-11d9-b90a-e24829d2f59b",
+          "value": "Iggy Pop."  }  }
+
+  That "Iggy Pop" entry is a simple literal value entry.  In other cases
+we'll have entries that represent bi-directional connections between items,
+like this:
+
+  { "Entry": {
+           "uuid": "9a07dfb0-e990-11d9-b90a-e24829d2f59b",
+           "type": "00001050-ce7f-11d9-8cd5-0011113ae5d6",
+           "item": ["9a071c60-e990-11d9-b90a-e24829d2f59b", 
+                    "00040202-ce7f-11d9-8cd5-0011113ae5d6"],
+      "attribute": ["00001005-ce7f-11d9-8cd5-0011113ae5d6", 
+                    "0000100c-ce7f-11d9-8cd5-0011113ae5d6"]  } }
+
+  Both of the entries above are simple atomic records.  In those cases, each
+entry is an implicit transaction.  In other cases, the user may do something
+more complicated, so that the OpenRecord client code sends several records
+together, wrapped up as a transaction.  
+
+  Here's an example of a transaction -- in this example the user just did
+some action that simultaneously (a) created a new item, (b) assigned the
+item the name "J.R.R. Tolkien", and (c) created a bi-directional connection
+between the new Tolkien item and the existing item representing the category
+[People]: 
+
+  { "Transaction": [
+    { "Item": { "uuid": "c4755360-f3d4-11d9-972b-e24829d2f59b" } },
+    { "Entry": {
+             "uuid": "c475a180-f3d4-11d9-972b-e24829d2f59b",
+             "type": "00001020-ce7f-11d9-8cd5-0011113ae5d6",
+        "attribute": "00001001-ce7f-11d9-8cd5-0011113ae5d6",
+             "item": "c4755360-f3d4-11d9-972b-e24829d2f59b",
+            "value": "J.R.R. Tolkien"  } },
+    { "Entry": {
+             "uuid": "c47616b0-f3d4-11d9-972b-e24829d2f59b",
+             "type": "00001050-ce7f-11d9-8cd5-0011113ae5d6",
+             "item": ["c4755360-f3d4-11d9-972b-e24829d2f59b", 
+                      "00001201-ce7f-11d9-8cd5-0011113ae5d6"],
+        "attribute": ["00001005-ce7f-11d9-8cd5-0011113ae5d6", 
+                      "0000100c-ce7f-11d9-8cd5-0011113ae5d6"]  } } ] }
+
+  For small repositories, the transaction-log approach has worked well so
+far.  It requires almost no server code, and the client code is fairly
+simple too.  With our current transaction-log approach, page loads get
+sluggish for repositories that have more than a few hundred items with a few
+thousand entries.  We don't yet need an industrial strength backend, but it
+would be good to have some intermediate solution that could handle thousands
+of items and hundreds of thousands of entries. 
+
+
+-------------------------
+File: mode and http: mode
+-------------------------
+
+  There's also been an unexpected benefit that we got from having a design
+without any real server; we can easily run in file: mode as well as http:
+mode.  If the user loads an OpenRecord page from a URL that starts with an
+http:// prefix, then we load the repository file from over the network, and
+we POST changes back over the network (to the PHP code on the server, which
+appends the changes to the transaction-log file).
+
+  Alternatively, the user can keep a private repository on her local hard
+drive, and load an OpenRecord page from a URL that starts with a file:///
+prefix.  In that case, we load the repository file from the local disk, and
+our JavaScript client code writes changes directly to the local file system,
+rather than sending a POST to a server.  
+
+  This file: use case might be useful in a few different scenarios.  One
+scenario is a private repository, where a user keeps a personal repository
+on the hard disk of his home PC (or keeps a personal repository on a USB
+keychain flash drive).  Another scenario is offline use.  For example, a
+business person is flying to a meeting in Tokyo, and before the trip she
+makes a copy of the department's OpenRecord repository, so that during the
+flight she can work on it without needing a network connection.  After the
+flight she can merge his changes back into the department repository (and we
+can do the merge simply by appending the new entries, or doing a simple
+union operation to get all the unique records from both repositories).  A
+third scenario is a file sharing network.  An example would be a chemistry
+department that has a group repository on a shared file server, so that
+faculty can access it from machines that are on the local area network.
+
+  We care far more about the http: case than we do about the file: case, but
+it would be cool if we could keep the file: working when we upgrade from the
+transaction-log approach to a better server design.
+
+
+------------------------
+Plan B
+------------------------
+
+  Here are some ideas that I've been talking about with Mignon and Jason and
+Marty.  I'll call this set of ideas Plan-B, for lack of a better name.
+These are just ideas.  Nobody is emotionally invested in this approach, and
+nobody has done any experimenting to see if this is practical.  If this
+seems interesting, then maybe there's something here we can use...
+
+  In Plan B, instead of having a single, monolithic transaction-log file, we
+would break apart all the records into a lot of smaller files.  Or,
+actually, we might want to use a MySQL database for storage instead of
+files.  I'll swing back to that idea later, but for now I'll just talk in
+terms of files.
+
+
+Item-files, page-files, and log-files
+
+  In Plan B, we would have one file for each item in the repository, and one
+file for each page in the OpenRecord web site for the repository.  And we
+would also have a number of files that together act as a sort of
+transaction-log for incoming changes that haven't yet been fully digested.
+So, if the repository contains 862 items that are displayed on 34 pages,
+then we have 862 item-files and 34 page-files and some number of log-files
+for undigested changes.
+
+
+JSON or XML packets
+
+  Let's say the user is looking at a page with a table of items, and he
+clicks in an empty cell and types "Iggy Pop".  The client code would create
+a JSON packet representing the new entry:
+
+  { "Entry": {
+           "uuid": "6a141400-f3f8-11d9-845f-e24829d2f59b",
+           "type": "00001020-ce7f-11d9-8cd5-0011113ae5d6",
+      "attribute": "00001003-ce7f-11d9-8cd5-0011113ae5d6",
+           "item": "99e90d10-e990-11d9-b90a-e24829d2f59b",
+          "value": "Iggy Pop."  }  }
+
+
+Appending packets to files
+
+  The information in that packet should then be written to 3 files.  For
+starters, the packet needs to be appended to the item-file that contains all
+known information about item number "99e90d10-e990-11d9-b90a-e24829d2f59b".
+And the exact same packet also needs to be appended to the page-file that
+contains all the information needed to render the page, so that when the
+next user loads this page, the page will include the "Iggy Pop" cell.  And
+we'll also need to append the packet to some log-file, for future use.  All
+three of those operations are fast and simple.  The client knows exactly
+which files the new entry needs to be appended to.  
+
+
+Client vs. server appending
+
+  In file: mode, the client could simply append the information directly to
+the files in the local file system.  In http: mode, the client could send
+three POST requests to the server, one for each append operation.  Or, if
+the server was a little smarter, the client could send a single POST
+request, and the server could append the packet to all three files.  It
+would be far better to send just one POST request, both for performance and
+because we want to change to be atomic, and we want to keep all the
+repository files in sync for an atomic change.  (Also, by having the server
+act as gatekeeper, we make it harder for some hacker to invent a malicious
+client that writes bogus info into the repository.)
+
+
+More complicated packets
+
+  Okay, so in that "Iggy Pop" example above, the JSON packet just had a
+single Entry with a literal value.  In another case we might have an entry
+that represents a bi-directional connection between two items, in which case
+we we'll need to append the packet to both of two item-files that are
+connected by the entry, as well as the page-file and the log-file.  But,
+it's still easy for either the client or the server to figure out what files
+the packet needs to get appended to:
+
+  { "Entry": {
+           "uuid": "9a07dfb0-e990-11d9-b90a-e24829d2f59b",
+           "type": "00001050-ce7f-11d9-8cd5-0011113ae5d6",
+           "item": ["9a071c60-e990-11d9-b90a-e24829d2f59b", 
+                    "00040202-ce7f-11d9-8cd5-0011113ae5d6"],
+      "attribute": ["00001005-ce7f-11d9-8cd5-0011113ae5d6", 
+                    "0000100c-ce7f-11d9-8cd5-0011113ae5d6"]  } }
+
+  In the case of a longer transaction, there's a little more work to do.
+Here's a transaction with one item record and two entry records:
+
+  { "Transaction": [
+    { "Item": { "uuid": "c4755360-f3d4-11d9-972b-e24829d2f59b" } },
+    { "Entry": {
+             "uuid": "c475a180-f3d4-11d9-972b-e24829d2f59b",
+             "type": "00001020-ce7f-11d9-8cd5-0011113ae5d6",
+        "attribute": "00001001-ce7f-11d9-8cd5-0011113ae5d6",
+             "item": "c4755360-f3d4-11d9-972b-e24829d2f59b",
+            "value": "J.R.R. Tolkien"  } },
+    { "Entry": {
+             "uuid": "c47616b0-f3d4-11d9-972b-e24829d2f59b",
+             "type": "00001050-ce7f-11d9-8cd5-0011113ae5d6",
+             "item": ["c4755360-f3d4-11d9-972b-e24829d2f59b", 
+                      "00001201-ce7f-11d9-8cd5-0011113ae5d6"],
+        "attribute": ["00001005-ce7f-11d9-8cd5-0011113ae5d6", 
+                      "0000100c-ce7f-11d9-8cd5-0011113ae5d6"]  } } ] }
+
+  For this transaction, we would need to create a brand new item-file for
+the new item c4755360-f3d4-11d9-972b-e24829d2f59b, and write the entire
+transaction packet to the item file.  And we also need to write the entire
+packet to the page-file and the log-file.  And then we need to take split
+off just the last entry (the bi-directional connection) and append it to the
+existing item-file for the item 00001201-ce7f-11d9-8cd5-0011113ae5d6.  For a
+longer transaction with more entries, we might need to split off lots of
+different entries and write them to different files.  None of it is rocket
+science, but the server would need to do some work.
+
+
+Out-of-date page-files
+
+  Okay, so now all the item-files are up to date, and that one page-file is
+up to date.  But, there may be other pages that also display views that
+should now include "Iggy Pop", depending on what queries are used to
+populate the views.  We could have the server re-run *all* the queries for
+*all* the pages and update the page-files, but it's expensive to do that
+every time any change is made.  It seems simpler and easier to just let all
+the other page-files fall slightly out of date.  
+
+
+Transaction sequence numbers
+
+  The next time some user loads one of these other slightly out-of-date
+page-files, we'll need to also load all the changes that have happened since
+the page-file fell out of date.  So these page-files and log-files need to
+have some sort of timestamps or sequence numbers associated with them.  I
+think simple server-assigned sequence numbers would work fine.  The first
+transaction is number 1, the second is number 2, and so on.  
+
+
+Updating old page-files
+
+  As an example, say a user opens a page that nobody has looked at for some
+time.  The client asks the server for the corresponding page-file, and the
+server returns it.  The client see that the page-file has been out-of-date
+since transaction 436, and the last transaction was number 872, so the
+client asks the server for all the log-file transactions from 436 onward.
+The server returns that info, and the client now has everything it needs to
+render the page.  The client may have to ignore a bunch of unrelated
+transactions, but that's okay.  In the process of rendering the page, the
+client is filtering the transactions and figuring out which ones impact this
+page, and which ones don't.  At this point it can do everyone a favor by
+updating the page-file.  It sends a whole new page-file to the server, with
+a stamp marking this page-file as up-to-date as of transaction 872.
+Alternatively, if we don't want to trust the client, we could have a
+low-priority server process that periodically does the updates.
+
+
+Creating new page-files
+
+  So that takes care of gradually keeping all the existing item-files and
+page-files up to date.  We also have the problem of needing to create brand
+new page-files.  Users can create new pages whenever they want, with new
+sections that have new queries.  Actually, for that matter, users can also
+add new sections to old pages, or change the queries of old sections.  So,
+we need to be able to evaluate queries.  In the worst case, we know we can
+evaluate any new query by looking at all the information about all the
+items.  The server could traverse all the item-files and calculate the query
+result set, or the client could ask the server for all the item-files (not
+necessarily all at once) and calculate the query result set.  
+
+  Reading all the item-files would be too expensive in some repositories
+(for example, a comprehensive world almanac site), but might be okay in
+smaller repositories (a little bug tracking repository) if users aren't
+creating new pages and new queries too often.  Probably 95% of the time,
+users are just looking at existing pages, not making any changes.  Maybe 5%
+of the time users are making changes, but almost all of those changes are
+small (for example, just entering a new bug, or recording the fact that some
+president just died).  I think it will be rare for users to create new
+pages, or adding sections to pages, or changing the queries of existing
+sections.
+
+
+Restricting queries
+
+  Alternatively, we could decide to put some limits on what type of queries
+we allow.  One simple restriction would be to only allow queries within the
+context of a category: for example, "all the items in the category [city]
+where the attribute [population] has a value over 200,000".  Then we just
+need to load the item-file for the item that represents the category city,
+and in that file we'll find bi-directional connection items that point to
+all of the city items.  Then we can ask the server for all of those city
+files, and hopefully there won't be more than we can handle.  
+
+
+MySQL, or Lucene, or something else
+
+  Or, if all of this seems overly complicated and not that scalable anyway,
+then we might want to look at having a server that uses some kind of
+database tool or indexing tool instead of simple files -- something like
+MySQL, Lucene, Berkeley DB, or maybe an RDF data store and query language.
+Or maybe something like the googlebase storage service, or the ning.com data
+store.  Then our http:// story begins to look quite different from our
+file:/// story, but maybe that's okay.  Maybe we just decide not to support
+the file: use cases any more, or maybe we do support them still, but with an
+entirely different approach from what we use on the server.
+
+
+Files and file paths
+
+  If we do use files in the file system, we'll need to think a little about
+where we put them.  Every item has a unique UUID, as does every page, so we
+could use the UUIDs as file names, and look up the file based on UUID.  So
+we might have file paths that look like this:
+  .../repository/items/99e90d10-e990-11d9-b90a-e24829d2f59b.json
+
+  Unfortunately, many file systems don't cope well if you put thousands of
+files all in one directory, so we may want to divvy up all the item files
+into sub-directories.  The UUIDs include some encoded timestamp and
+userstamp information, so it's easy to imagine simple algorithms to divvy up
+the item files into sub-directories.
+
+
+MySQL tables
+
+  Or, if we use MySQL, we could keep a few different types of info in
+different database tables.  We could have one database table for all the
+Entries, with one record in the table for each Entry.  The table could
+include columns for:
+  EntryUUID:     UUID of this entry
+  ItemUUID:      UUID of the item this is an entry on
+  AttributeUUID: UUID of the attribute this is an entry for
+  Value:         value of the entry
+  etc.
+
+  To find out everything about an item, you could do an SQL query on the
+Entry table, asking for all Entry records WHERE ItemUUID is equal to the
+UUID of the item.  
+
+  If we wanted, we could also have a database table for all the Items, with
+only two columns, where one column is the key (the UUID of the item), and
+the other column is a huge blob of XML (or JSON) with all the entries about
+that item.
+  ItemUUID:   UUID of this item
+  ItemJSON:   big text blob, with same contents as an item-file
+
+
+-------------------------
+
+Okay, that's my big brain-dump about the server ideas we've been talking
+about lately.  Let me know what you think.  If these seem like good ideas,
+we can use them as a starting point.  Or if these don't seem so promising,
+then maybe we want to think about some entirely different approach.
+
+Let me know if there's anything I can do to be helpful as you're getting up
+to speed with the existing OpenRecord code base.  I can start hanging out on
+IRC more often if that would be useful, or we could set up a wiki and I can
+start populating it with documentation, or maybe you have other ideas for
+different things we could do.  Hopefully we'll have a few other people start
+to code in the months to come, so I'm eager to figure out how to set things
+up so that it's not too daunting for people as they get started!
+
+Cheers,
+  Brian
+
+
+
+From capps at osafoundation.org  Sat Oct 29 05:16:01 2005
+From: capps at osafoundation.org (Katie Capps Parlante)
+Date: Sat Oct 29 05:16:01 2005
+Subject: [openrecord-dev] book recommendation: producing open source software
+Message-ID: <4362E951.7030600@osafoundation.org>
+
+Hi all,
+
+We've been reading "Producing Open Source Software" by Karl Fogel over 
+at OSAF. Fogel is a longtime contributor to various open source projects 
+(most recently subversion) and he's written a fantastic book.
+
+As you folks are thinking about how to grow the project and attract more 
+contributors, I suspect you'll find the book as helpful and interesting 
+as we did.
+
+As you might expect for a book about open source, the book has an open 
+copyright and is available online as well as in bookstores: 
+http://producingoss.com/
+
+Cheers,
+Katie
+
+
+From brian.skinner at gumption.org  Sat Oct 29 06:42:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Oct 29 06:42:01 2005
+Subject: [openrecord-dev] book recommendation: producing open source software
+In-Reply-To: <4362E951.7030600@osafoundation.org>
+Message-ID: <200510290441.j9T4ftw11998@bat.berlios.de>
+
+> We've been reading "Producing Open Source Software" 
+> by Karl Fogel over at OSAF.  http://producingoss.com/ 
+
+Thanks for the pointer Katie.
+
+I just printed out a few sections of it yesterday, after Ted Leung mentioned
+it on his weblog.  I'm looking forward to diving into it this weekend.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Sat Oct 29 09:22:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Oct 29 09:22:01 2005
+Subject: [openrecord-dev] Web hosting
+Message-ID: <44AFD5AE-3D2C-41C5-ADB3-C18B30D6497E@cs.stanford.edu>
+
+Hi Brian,
+
+You may want to check this out for free webhosting to non-profits:
+http://www.ambitiouslemon.com/about.php
+
+chao
+
+

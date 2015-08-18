@@ -1,0 +1,273 @@
+From openrecord at gumption.org  Sun Jan  1 22:01:11 2006
+From: openrecord at gumption.org (Brian Douglas Skinner)
+Date: Sun Jan  1 22:01:11 2006
+Subject: [openrecord-dev] Happy New Year!
+Message-ID: <43B84301.1040404@gumption.org>
+
+Happy New Year!
+Welcome to 2006.
+
+If all goes well, this will be the year we ship a first version of 
+OpenRecord, and start setting up real web sites with it!
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Wed Jan 11 05:37:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Wed Jan 11 05:37:01 2006
+Subject: [openrecord-dev] OpenRecord links for YU Zhenjian
+Message-ID: <43C48B62.3050901@dojotoolkit.org>
+
+Hi Jason,
+
+Thanks for coming over today.  You asked me to put together a list of
+links, with background material about OpenRecord, the OpenRecord data
+model, etc.  Here's what I came up with -- some of this I had sent you
+before, but I've added a bunch of new links as well.
+
+Feel free to forward all of this to YU Zhenjian.  I'm cc'ing this to
+the openrecord-dev mailing list, for the sake of transparency, and so
+that it will be archived where we can easily find it.
+
+Cheers,
+  Brian
+
+
+---------------------------------------------------------
+1. Dojo Contributor License Agreements (CLAs)
+
+Before we can accept any code from anyone, we need to have a signed
+copy of a Dojo Contributor License Agreement.  Here's the Dojo web
+page about licensing:
+   http://dojotoolkit.org/docs/licensing.html
+
+Here's the Individual Contributor License Agreement, for YU Zhenjian
+to sign:
+   http://dojotoolkit.org/icla.txt
+
+Here's the Dojo Corporate Contributor License Agreement, for ThumbDrive
+to sign:
+   http://dojotoolkit.org/ccla.txt
+
+The CLAs say to send the signed forms to the Dojo Foundation in Palo
+Alto, but it would actually be better to send them directly to me, and
+I'll make copies and then send them on to the Dojo Foundation.  Here's
+my address:
+
+   Brian Skinner
+   2043 Ninth Avenue
+   San Francisco, CA 94116-1302
+   USA
+
+
+---------------------------------------------------------
+2. Tools
+
+OpenRecord only runs in Firefox, not Internet Explorer, and OpenRecord
+has only been tested under Windows XP and on the Mac, not on Linux
+computers.  So, YU Zhenjian will need a copy of Firefox, and he will
+need a Windows computer or a Mac, unless he wants the be the first to
+try OpenRecord on Linux.  Here's the Firefox download page:
+   http://www.mozilla.com/
+
+The OpenRecord project and the Dojo project both use Subversion for all
+the source code version control, so he will need to get set up with a
+Subversion client, if he doesn't have one already.  Here's the link for
+that:
+   http://subversion.tigris.org/
+
+
+---------------------------------------------------------
+3. Source code
+
+Once he has a subversion client, the first thing to do is get a copy of
+the source code, browse through it all, try running the unit tests, try
+running OpenRecord, etc.  Here's the web page with info about anonymous
+SVN access to the OpenRecord code:
+   http://developer.berlios.de/svn/?group_id=3396
+
+The OpenRecord source tree should automatically include a copy the Dojo
+source tree, which is worth looking at too.
+
+
+---------------------------------------------------------
+4. Background reading
+
+As well as the source code itself, there's also a bunch of other
+material available.
+
+Here's the main OpenRecord web site, with overview info, bookmarks,
+etc:
+   http://openrecord.org/
+
+Here's a PDF file with slides from a presentation last August.  This
+gives some background about the OpenRecord design:
+   http://openrecord.org/demo/old_2005_08_17/meeting_notes/2005-08-18_notes.pdf
+
+Here's a mailing list message that explains some of the terminology for
+the OpenRecord data model, and describes how OpenRecord data is stored:
+   http://lists.berlios.de/pipermail/openrecord-dev/2005-October/000248.html
+
+Here are some examples of using the OpenRecord data model API:
+   http://svn.berlios.de/viewcvs/*checkout*/openrecord/trunk/documentation/data_model_api.txt
+
+Here's the Dojo web site, including the Dojo Manual and other good stuff:
+   http://dojotoolkit.org/
+   http://dojotoolkit.org/docs/
+
+Here's a free book about working on an Open Source Software project:
+   http://producingoss.com/
+
+Here's some information about products like OpenRecord:
+   http://lists.berlios.de/pipermail/openrecord-dev/2005-December/000261.html
+   http://openrecord.org/bookmarks.html
+
+
+---------------------------------------------------------
+5. OpenRecord demo documents
+
+Examples of OpenRecord documents:
+   http://gumption.org/openrecord/demo/old_2005_08_17/open_agenda.html
+   http://gumption.org/openrecord/demo/old_2005_08_17/tobacco.html
+
+A sandbox, where you can play around and try things out:
+   http://gumption.org/openrecord/demo/old_2005_08_17/sandbox.html
+
+
+---------------------------------------------------------
+6. Pivot table material
+
+Here's my old 2004 experiment, where I started to make a web-based
+DHTML pivot table:
+   http://openrecord.org/pivot_table/test_page.html
+
+Here's the source code for the pivot table:
+   http://openrecord.org/pivot_table/
+
+Here's more background reading about pivot tables:
+   http://en.wikipedia.org/wiki/Pivot_table
+
+
+---------------------------------------------------------
+7. Bar chart material
+
+The Dojo Chart Widget (dojo.widget.Chart) displays graphs and charts
+using the built-in SVG rendering engine in Firefox 1.5.  In OpenRecord,
+we can use dojo.widget.Chart to draw graphs and charts of the values
+in the attributes of OpenRecord items.
+
+If you have Firefox 1.5 (not 1.0.7), you'll be able to see this example
+of output drawn by the dojo.widget.Chart widget:
+   http://download.dojotoolkit.org/release-0.2.1/dojo-0.2.1-widget/tests/widget/test_Chart.html
+
+OpenRecord already has a simple Bar Chart plugin, but it does not yet
+use dojo.widget.Chart, and it uses simple HTML boxes instead of SVG
+rendering.  Here's an example of an OpenRecord page with a simple Bar
+Chart:
+   http://openrecord.org/demo/old_2005_08_17/open_agenda.html#page5ebf9280-0c6e-11da-beea-000c414ce854
+
+Here's a much more impressive example of using HTML and CSS and JavaScript
+to create Bar Charts.  Unfortunately, we can't conveniently use this code in
+OpenRecord, unless the author decides to donate it to the Dojo Foundation.
+However, even if we can't use the code, it is still a useful example of
+what can be done:
+   http://www.howtocreate.co.uk/tutorials/jsexamples/multigraphExample.html
+
+
+
+
+
+From skinner at dojotoolkit.org  Wed Jan 11 21:09:00 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Wed Jan 11 21:09:00 2006
+Subject: [openrecord-dev] dojo.data meeting - data model comparison table
+Message-ID: <43C565DB.1010002@dojotoolkit.org>
+
+Looks like about 10 of us are planning to be at the Dojo meeting on 
+Thursday evening, to talk about the data-grid and data-provider design.
+
+I've been reading up on different data stores: RDBMSs, JotSpot, Ning, 
+Dabble, Jackrabbit, etc.  I was curious what features the different data 
+stores offer, particularly in terms of how the data itself is 
+represented (the data model).
+
+I've started putting together a comparison table, showing a dozen 
+different data stores, and comparing some of the terminology they use 
+and the features they offer:
+   http://openrecord.org/dojo/2006-01-09/data_model_comparison.html
+
+So far only about half of the table is filled in, but if this seems like 
+a useful resource, we could work on filling in more of it.
+
+Cheers,
+   Brian
+
+
+From chao at cs.stanford.edu  Thu Jan 12 23:46:00 2006
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jan 12 23:46:00 2006
+Subject: [openrecord-dev] dojo.data meeting - data model comparison table
+In-Reply-To: <43C565DB.1010002@dojotoolkit.org>
+References: <43C565DB.1010002@dojotoolkit.org>
+Message-ID: <27516639-BC54-4965-8F98-C69A1EDB3C2B@cs.stanford.edu>
+
+Interesting table and very useful. Can't you host this on openrecord :)
+
+chao
+
+On Jan 11, 2006, at 12:08 PM, Brian Douglas Skinner wrote:
+
+> Looks like about 10 of us are planning to be at the Dojo meeting on  
+> Thursday evening, to talk about the data-grid and data-provider  
+> design.
+>
+> I've been reading up on different data stores: RDBMSs, JotSpot,  
+> Ning, Dabble, Jackrabbit, etc.  I was curious what features the  
+> different data stores offer, particularly in terms of how the data  
+> itself is represented (the data model).
+>
+> I've started putting together a comparison table, showing a dozen  
+> different data stores, and comparing some of the terminology they  
+> use and the features they offer:
+>   http://openrecord.org/dojo/2006-01-09/data_model_comparison.html
+>
+> So far only about half of the table is filled in, but if this seems  
+> like a useful resource, we could work on filling in more of it.
+>
+> Cheers,
+>   Brian
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+
+
+
+From skinner at dojotoolkit.org  Fri Jan 13 19:40:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Jan 13 19:40:01 2006
+Subject: [openrecord-dev] dojo.data meeting - data model comparison table
+In-Reply-To: <27516639-BC54-4965-8F98-C69A1EDB3C2B@cs.stanford.edu>
+References: <43C565DB.1010002@dojotoolkit.org> <27516639-BC54-4965-8F98-C69A1EDB3C2B@cs.stanford.edu>
+Message-ID: <43C7F308.8080801@dojotoolkit.org>
+
+>> I've started putting together a comparison table, showing a dozen  
+>> different data stores ... :
+>>   http://openrecord.org/dojo/2006-01-09/data_model_comparison.html
+>
+> Interesting table and very useful.
+> Can't you host this on openrecord :)
+
+Yup, I'd love to host that table in OpenRecord.  We'll be ready for that 
+soon.  We're quite there yet.  We haven't yet stabilized the file 
+format, so I don't want start getting too much real content in 
+OpenRecord, because then we'll just have to write format conversion 
+scripts later!
+
+:o) Brian
+
+

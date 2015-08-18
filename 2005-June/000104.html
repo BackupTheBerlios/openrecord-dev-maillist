@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] latest checkin -- good news and bad news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20latest%20checkin%20--%20good%20news%20and%20bad%20news&In-Reply-To=%3C200506021909.j52J97m31897%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000100.html">
+   <LINK REL="Next"  HREF="000105.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] latest checkin -- good news and bad news</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20latest%20checkin%20--%20good%20news%20and%20bad%20news&In-Reply-To=%3C200506021909.j52J97m31897%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] latest checkin -- good news and bad news">brian.skinner at gumption.org
+       </A><BR>
+    <I>Thu Jun  2 21:10:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000100.html">[openrecord-dev] multi-entry support
+</A></li>
+        <LI>Next message: <A HREF="000105.html">[openrecord-dev] latest checkin -- good news and bad news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#104">[ date ]</a>
+              <a href="thread.html#104">[ thread ]</a>
+              <a href="subject.html#104">[ subject ]</a>
+              <a href="author.html#104">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I just did my last big checkin for the week.
+
+The new code mostly has to do with having expected data types for
+attributes, and having the table plugin look at the expected data types and
+decide when to offer suggestion boxes and when not to.
+
+There's good news and bad news with this checkin...
+
+The good news is: 
+
+ 1. users can create new categories
+ 2. users can create new items, assigned to the new categories
+ 3. users can create new attributes
+ 4. users can set the expected data type of a new attribute
+ 5. when you edit a table cell, if the expected type 
+    is text, you don't get a suggestion box
+ 6. when you edit a table cell, if the expected type is 
+    a category, you get a suggestion box showing items 
+    in that category
+ 7. when you pick from a suggestion box and a new entry 
+    is created, the entry is now a reference to the item 
+    you picked, rather than just a text string
+ 8. the &quot;All Books&quot; table is now populated with Book items 
+    where the authors and publishers are references to other
+    items rather than text strings
+
+The bad news is:
+ 
+-1. when you look at the &quot;All Books&quot; table, the UI doesn't
+    give you any way to see that the authors and publishers
+    are really references rather than text strings
+-2. there's still no way to add a new attribute to an item
+-3. there's still no way to add a column to a table
+-4. the code is a bit of a mess now
+-5. the UI is a little clunky right now
+-6. the app is a little buggy
+
+When we meet up on Monday we can talk about what things to focus on fixing,
+and I can start working on those things next week.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000100.html">[openrecord-dev] multi-entry support
+</A></li>
+	<LI>Next message: <A HREF="000105.html">[openrecord-dev] latest checkin -- good news and bad news
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#104">[ date ]</a>
+              <a href="thread.html#104">[ thread ]</a>
+              <a href="subject.html#104">[ subject ]</a>
+              <a href="author.html#104">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

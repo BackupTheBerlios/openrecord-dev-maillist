@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20newcomer%27s%20question%3A%20please%20help%20with%20drawing%0A%20dojo%20svg%20chart%20in%20openrecord%20code&In-Reply-To=%3C43F23CDE.8090009%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000273.html">
+   <LINK REL="Next"  HREF="000279.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20newcomer%27s%20question%3A%20please%20help%20with%20drawing%0A%20dojo%20svg%20chart%20in%20openrecord%20code&In-Reply-To=%3C43F23CDE.8090009%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Tue Feb 14 21:27:01 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000273.html">[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+</A></li>
+        <LI>Next message: <A HREF="000279.html">[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#276">[ date ]</a>
+              <a href="thread.html#276">[ thread ]</a>
+              <a href="subject.html#276">[ subject ]</a>
+              <a href="author.html#276">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> I can't find a way to directly draw dojo svg chart in openrecord 
+</I>&gt;<i> code. Now I can output the table that dojo svg chart needs as in 
+</I>&gt;<i> dojo's demo
+</I>&gt;<i> <A HREF="http://download.dojotoolkit.org/release-0.2.1/dojo-0.2.1-widget/tests/widget/test_Chart.html.">http://download.dojotoolkit.org/release-0.2.1/dojo-0.2.1-widget/tests/widget/test_Chart.html.</A>
+</I>&gt;<i> Please advise how I can create a dojo svg chart element directly 
+</I>&gt;<i> in my plugin code and pass the table of data to it.
+</I>
+Hi Zhenjian,
+
+If I understand your question, then I think the code you need now will 
+be similar to this:
+
+   orp.plugins.SvgBarChart.prototype.refresh = function() {
+     var listOfContentItems = this.fetchItems();
+     var pluginDiv = this.getHtmlElement();
+
+     // build the table that the svg chart needs
+     var tableContents = ... // this is the part you have written
+     pluginDiv.innerHTML = '&lt;div dojoType=&quot;chart&quot;&gt;&lt;table&gt;' +
+                           tableContents + '&lt;/table&gt;&lt;/div&gt;';
+
+     var parser = new dojo.xml.Parse();
+     var fragment = parser.parseElement(pluginDiv, null, true);
+     dojo.widget.getParser().createComponents(fragment);
+   };
+
+Or, instead of using &quot;innerHTML&quot;, you could build the table by 
+programmatically creating DOM nodes for the HTML elements, like this:
+
+   orp.plugins.SvgBarChart.prototype.refresh = function() {
+     var listOfContentItems = this.fetchItems();
+     var pluginDiv = this.getHtmlElement();
+     orp.view.View.removeChildrenOfElement(pluginDiv);
+
+     // build the table that the svg chart needs
+     var chartDiv = orp.view.View.appendNewElement(pluginDiv, &quot;div&quot;,
+                    null, {dojoType: &quot;chart&quot;});
+     var tableDiv = orp.view.View.appendNewElement(chartDiv, &quot;table&quot;);
+     // ... and then more code to fill in the table
+
+     var parser = new dojo.xml.Parse();
+     var fragment = parser.parseElement(pluginDiv, null, true);
+     dojo.widget.getParser().createComponents(fragment);
+   };
+
+
+If you want to see a working example of this approach, have a look at 
+the file BindingHack.js:
+  <A HREF="http://openrecord.org/dojo/2006-01-26/tests/data/BindingHack.js">http://openrecord.org/dojo/2006-01-26/tests/data/BindingHack.js</A>
+
+BindingHack.js is part of the code for this test page:
+  <A HREF="http://openrecord.org/dojo/2006-01-26/tests/data/test_data_binding.html">http://openrecord.org/dojo/2006-01-26/tests/data/test_data_binding.html</A>
+
+I hope this code is useful.  Let me know if you have more questions, or 
+if you need help getting the code working.  I will be away from my 
+e-mail on Wednesday and Thursday, but I can answer more questions when I 
+get back on Friday.  Thanks for working on the Bar Chart View plugin!
+
+Good luck,
+   Brian
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000273.html">[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+</A></li>
+	<LI>Next message: <A HREF="000279.html">[openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#276">[ date ]</a>
+              <a href="thread.html#276">[ thread ]</a>
+              <a href="subject.html#276">[ subject ]</a>
+              <a href="author.html#276">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

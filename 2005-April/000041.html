@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Microformats
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Microformats&In-Reply-To=%3C200504300231.j3U2Vkm32250%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000040.html">
+   <LINK REL="Next"  HREF="000042.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Microformats</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Microformats&In-Reply-To=%3C200504300231.j3U2Vkm32250%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Microformats">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sat Apr 30 04:32:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000040.html">[openrecord-dev] Microformats
+</A></li>
+        <LI>Next message: <A HREF="000042.html">[openrecord-dev] user stories + tasks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+Thanks for the links!  The &quot;lower case&quot; semantic web is intriguing,
+especially since the &quot;upper case&quot; Semantic Web has so little momentum.  
+
+&gt;<i> Today, Mitch Kapor introduced me to an intriguing concept 
+</I>&gt;<i> called &quot;Microformats&quot; ...
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://developers.technorati.com/wiki/MicroFormats">http://developers.technorati.com/wiki/MicroFormats</A>
+</I>&gt;<i> <A HREF="http://complexspiral.com/events/archive/2005/sxsw/">http://complexspiral.com/events/archive/2005/sxsw/</A> 
+</I>
+I think Jon Udell is also an advocate of this kind of &quot;Microformat&quot; mark-up.
+I've been using the rel=&quot;license&quot; mark-up on the pages I've been making.  
+
+We should keep an eye out to see what other Microformat standards emerge,
+and then have our pages play nicely with the de facto standards.  But, other
+than having our pages use those standards, I'm not sure what to do with the
+whole Microformat thing.  I mean, it's tempting to think that we could
+somehow simply just use the Microformats as our intrinsic data
+representation format, but I think that just doesn't work.  Let's talk more
+about it when we're in the same room.
+
+
+&gt;<i> Following our Monday discussion, one area left undiscussed 
+</I>&gt;<i> that has been nagging me is whether our approach in OpenRecord 
+</I>&gt;<i> is the right one. Specifically, are we chunking our unit of 
+</I>&gt;<i> collaboration in the right packet size. I think items and 
+</I>&gt;<i> attributes are absolutely the right way to go, but should the 
+</I>&gt;<i> unit of collaboration be one repository? one data-driven 
+</I>&gt;<i> website? (Brian, maybe I'm not getting the full vision of 
+</I>&gt;<i> OpenRecord?)
+</I>
+Let's talk more about this issue on Monday.  I've maybe been being vague
+about this, because I'm still mulling it over in my head.  The easiest thing
+to do would be to have each website have its own repository, so that each
+website/repository is a world unto itself.  That's the simplest thing to do,
+so that's probably where we should start.  
+
+Later on it would be cool to do all sorts of intertwingling of items across
+different web sites -- across both OpenRecord based sites and other sites
+that publish items in formats we can read, or other sites that can read
+formats that we can publish.
+
+
+&gt;<i> Specific concerns:
+</I>&gt;<i> - how do we leverage and interoperate with the rest of the world?
+</I>&gt;<i>    - how do we intertwingle with outside data?
+</I>
+This needs more thought.  We could do a number of fairly simple things, like
+automatically generating pages with RDF format versions of our items, so
+that those pages can be reached by search engines, or by RDF-crawlers.  Or
+we could think about using RSS as our standard means for communicating
+update notifications from the server to the client.  Or we could have our
+server automatically import data from other servers.  But, in the spirit of
+extreme programming, we should maybe start off by identifying the user
+stories we want to cover, and then prioritizing those to see where that
+leads us.
+
+
+&gt;<i> - are we sufficiently leveraging and building on existing tools, 
+</I>&gt;<i> standards and infrastructure, especially web-related ones?
+</I>
+Yup, I'm also worried that we're building too much from scratch.  But, I
+don't see how to avoid it.  I keep looking at existing tools and frameworks,
+but they mostly don't look like clear wins for us.  
+
+This week I spent a couple hours reading about JCR, and JSR-170, and Apache
+Jackrabbit.  That seems like a big important piece of emerging standards and
+infrastructure, and I'd love to use that instead of building our own
+server/repository.  But I don't think that using Jackrabbit would actually
+help us.  Jackrabbit looks like a great fit for Chandler, but for OpenRecord
+it doesn't seem to match that well.  It looks like it's really good at a
+bunch of things we don't need, but doesn't seem to have features to address
+the problems that we expect to face.  Similarly, I spent some time this week
+reading about RDF, and Jena, and existing RDF servers and query languages
+and frameworks.  There's some cool stuff, but it doesn't seem to solve our
+problems.  Wanh. 
+
+
+&gt;<i> - as Brian Totty suggested, should we be thinking of embedding 
+</I>&gt;<i> OpenRecord in existing websites instead of building new ones 
+</I>&gt;<i> from the ground up?
+</I>
+If we could embed OpenRecord in existing websites, I think that would lead
+to much faster and more widespread adoption of OpenRecord.  That would be
+great, if we could do it.
+
+However, that would only be practical if we could do it with a single
+&quot;plug-and-play&quot; snippet that we make available to people authoring pages at
+those sites.  That may be technically impossible, but I don't know for sure.
+If we can't do that, then in order to &quot;serve&quot; OpenRecord content into
+existing websites, all of the web servers for all of those sites would have
+to have code that knows about OpenRecord, which seems like a huge barrier to
+adoption.
+
+At some point when we have time, it would be great to do a little
+&quot;spike-solution&quot; experiment, to see if it's possible to embed an OpenRecord
+view on a page that's hosted by a server that's not an OpenRecord server,
+and then have the OpenRecord view fetch data from an OpenRecord server.
+
+
+I'm looking forward to meeting up on Monday.  We can talk more about all of
+this stuff!
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000040.html">[openrecord-dev] Microformats
+</A></li>
+	<LI>Next message: <A HREF="000042.html">[openrecord-dev] user stories + tasks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

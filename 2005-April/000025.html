@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] unit tests!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20unit%20tests%21&In-Reply-To=%3C200504160208.j3G28xm01112%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000032.html">
+   <LINK REL="Next"  HREF="000026.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] unit tests!</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20unit%20tests%21&In-Reply-To=%3C200504160208.j3G28xm01112%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] unit tests!">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sat Apr 16 04:10:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000032.html">[openrecord-dev] SproutLiner
+</A></li>
+        <LI>Next message: <A HREF="000026.html">[openrecord-dev] unit tests!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#25">[ date ]</a>
+              <a href="thread.html#25">[ thread ]</a>
+              <a href="subject.html#25">[ subject ]</a>
+              <a href="author.html#25">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm pleased to report that we now have some unit tests for our code!  
+
+I checked in the first unit tests yesterday, and a few more today.  We can
+add more tests as we go.
+
+When I was setting up the tests, I ran into problems with file paths, and
+unfortunately I ended up hard-coding some file paths, so right now our unit
+testing set-up is a little more brittle than I'd like.  But I figure brittle
+tests are better than no tests, so in the spirit of incremental iteration I
+went ahead and checked everything in.
+
+The unit tests are set up to run in the JsUnit framework written by Edward
+Hieatt.  To run the test you need to have a copy of the JsUnit framework,
+which you can get from Edward's web site:
+  <A HREF="http://www.edwardh.com/jsunit/">http://www.edwardh.com/jsunit/</A>
+
+The unit tests run within a testRunner.html page in the JsUnit framework.  I
+don't want to actually add that testRunner.html page and the rest of the
+JsUnit framework to our source tree, so on my machine I put the JsUnit
+framework in a directory next to the directory where I have our source code.
+Which leads to the file path problem...
+
+As the tests are running, our unit test files get loaded in the context of
+the testRunner.html page, and from that directory our code needs to &quot;find
+its way home&quot; to our source code directory in order to grab other files.
+And conversely, in order to automatically launch the testRunner from the
+unit test pages, the unit test files need to be able to find the
+testRunner.html in first place.
+
+Which means that if you want to try running the unit tests, you'll need to
+have your directories named exactly the same way mine are.  Sorry about
+that!  I couldn't figure out a way around the problem, but hopefully one of
+you will be able to solve it.
+
+Anyway, for now, if you want to run unit tests you need your directories set
+up like this:
+  openrecord/current/trunk/source/
+  openrecord/third_party/jsunit/
+
+The &quot;openrecord&quot; parent directory can be named whatever you like, and it can
+be anywhere in your file system.  But, below that, our OpenRecord source
+code has to be in &quot;current/trunk/source/&quot;, and the jsunit framework has to
+be in &quot;third_party/jsunit/&quot;.
+
+If you have an Apache server on your local machine, you can put all the
+files in a directory that Apache serves files from, and then you can run all
+the unit tests through your web browser.  
+
+To start the tests, point your web browser to:
+ &quot;<A HREF="http://localhost/openrecord/third_party/jsunit/testRunner.html">http://localhost/openrecord/third_party/jsunit/testRunner.html</A>&quot;
+
+and then in the form on the TestRunner page, enter:
+ &quot;<A HREF="http://localhost/openrecord/current/trunk/source/TestSuite.html">http://localhost/openrecord/current/trunk/source/TestSuite.html</A>&quot;
+
+Hit the &quot;Run&quot; button, and the TestRunner should report &quot;Runs: 6&quot;, with a big
+green bar.
+
+Or, if you don't have an Apache server on your local machine, then you can
+run load the testRunner.html page as a file:
+ &quot;<A HREF="file:///C:/openrecord/third_party/jsunit/testRunner.html">file:///C:/openrecord/third_party/jsunit/testRunner.html</A>&quot;
+
+and then in the form on the TestRunner page, enter:
+ &quot;C:\openrecord\current\trunk\source\TestSuite.html&quot;
+
+Let me know how it goes, if you decide to try running the tests!  Feel free
+to call me if you have questions or run into problems.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000032.html">[openrecord-dev] SproutLiner
+</A></li>
+	<LI>Next message: <A HREF="000026.html">[openrecord-dev] unit tests!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#25">[ date ]</a>
+              <a href="thread.html#25">[ thread ]</a>
+              <a href="subject.html#25">[ subject ]</a>
+              <a href="author.html#25">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

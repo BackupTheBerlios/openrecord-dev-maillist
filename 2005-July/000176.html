@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] re: Advanced DOM techniques
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20re%3A%20Advanced%20DOM%20techniques&In-Reply-To=%3C74DFBD0B-6529-404C-A24F-054762C438A6%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000175.html">
+   <LINK REL="Next"  HREF="000180.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] re: Advanced DOM techniques</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20re%3A%20Advanced%20DOM%20techniques&In-Reply-To=%3C74DFBD0B-6529-404C-A24F-054762C438A6%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] re: Advanced DOM techniques">chao at cs.stanford.edu
+       </A><BR>
+    <I>Wed Jul  6 06:40:04 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000175.html">[openrecord-dev] re: Advanced DOM techniques
+</A></li>
+        <LI>Next message: <A HREF="000180.html">[openrecord-dev] re: Advanced DOM techniques
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#176">[ date ]</a>
+              <a href="thread.html#176">[ thread ]</a>
+              <a href="subject.html#176">[ subject ]</a>
+              <a href="author.html#176">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+&gt;<i> The View.createAndAppendElement() method encapsulates one thing  
+</I>&gt;<i> that elem()
+</I>&gt;<i> doesn't, which is the call to parent.appendChild().  If we refactor
+</I>&gt;<i> View.createAndAppendElement(), I'd like to keep the appendChild()  
+</I>&gt;<i> line, so
+</I>&gt;<i> that the caller doesn't have to do it themselves every time.
+</I>&gt;<i>
+</I>Could we have both the createElement() function and  
+createAndAppendElement() function (that utilizes the former)?
+
+There are times where I'll like to create and initialize an element  
+before appending it to its parentNode(), where the initialization may  
+entail code outside of the functionality of these 2 functions. I  
+think our new function should reduce the likelihood of this, but  
+there will probably still be times where I need to, for example, set  
+up sound event handling functions first before displaying the  
+function, or say, attach classNames to the element.
+
+
+&gt;<i> Our View.createAndAppendElement() actually already does a portion  
+</I>&gt;<i> of what
+</I>&gt;<i> elem() does.  The createAndAppendElement() method takes a couple  
+</I>&gt;<i> optional
+</I>&gt;<i> arguments, so you can pass it the className and id, and it will set  
+</I>&gt;<i> those
+</I>&gt;<i> attributes of the new element.  I think className is the single  
+</I>&gt;<i> most likely
+</I>&gt;<i> thing you would want to set, so it maybe makes sense to have that as a
+</I>&gt;<i> first-class parameter rather than something you have to use JSON to  
+</I>&gt;<i> set.
+</I>&gt;<i>
+</I>Yup, sounds reasonable.
+&gt;<i>
+</I>
+&gt;<i> The other thing that elem() offers is a way to set CSS style info.   
+</I>&gt;<i> I'm much
+</I>&gt;<i> less keen on that.  From time to time we may want to attach style  
+</I>&gt;<i> info to a
+</I>&gt;<i> single element, but in general I think we should assign a CSS  
+</I>&gt;<i> className for
+</I>&gt;<i> the element and then have the element get all its style from the class
+</I>&gt;<i> definition in the stylesheet.  So I'd actually like to  
+</I>&gt;<i> intentionally make it
+</I>&gt;<i> inconvenient to attach style info programmatically.
+</I>&gt;<i>
+</I>Yup, that sounds fair too.
+
+&gt;<i> While we're at it, what do you think of changing the name from
+</I>&gt;<i> &quot;createAndAppendElement()&quot; to something like &quot;appendNewElement()&quot;?   
+</I>&gt;<i> That'd
+</I>&gt;<i> be a little shorter, while still striving to self-explanatory, in  
+</I>&gt;<i> the spirit
+</I>&gt;<i> of Knuth's &quot;literate programming&quot;.
+</I>&gt;<i>
+</I>That sounds good too, if we can have both functions as described above.
+&gt;<i> What do you think?
+</I>&gt;<i>
+</I>Excellent, thanks for revisiting this issue.
+
+chao
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000175.html">[openrecord-dev] re: Advanced DOM techniques
+</A></li>
+	<LI>Next message: <A HREF="000180.html">[openrecord-dev] re: Advanced DOM techniques
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#176">[ date ]</a>
+              <a href="thread.html#176">[ thread ]</a>
+              <a href="subject.html#176">[ subject ]</a>
+              <a href="author.html#176">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

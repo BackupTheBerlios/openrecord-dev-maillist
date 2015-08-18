@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Re: interaction design
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20interaction%20design&In-Reply-To=%3C200506020239.j522d9m02834%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000092.html">
+   <LINK REL="Next"  HREF="000095.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Re: interaction design</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20interaction%20design&In-Reply-To=%3C200506020239.j522d9m02834%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Re: interaction design">brian.skinner at gumption.org
+       </A><BR>
+    <I>Thu Jun  2 04:40:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000092.html">[openrecord-dev] Re: interaction design
+</A></li>
+        <LI>Next message: <A HREF="000095.html">[openrecord-dev] better lint test error messages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#103">[ date ]</a>
+              <a href="thread.html#103">[ thread ]</a>
+              <a href="subject.html#103">[ subject ]</a>
+              <a href="author.html#103">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+I don't think Mimi is on the openrecord-dev mailing list yet.  I'm not sure
+whether she saw that message you posted last night in reply to her ideas for
+the multi-entry UI... 
+
+|<i> &gt; Can we DISallow the user from placing their cursor in the 
+</I>|<i> &gt; middle of a resolved entry? So that if they type something 
+</I>|<i> &gt; and hit enter, the entry forever more is only selectable 
+</I>|<i> &gt; as a whole item. So the user can either delete it as an 
+</I>|<i> &gt; entry OR retype it from the beginning. (This is the way 
+</I>|<i> &gt; email addresses work in Apple Mail).
+</I>|<i> &gt;
+</I>|<i> &gt; With auto-complete, retyping shouldn't be a big problem...
+</I>|<i> 
+</I>|<i> In this case, it's conceptually clean and consistent to the 
+</I>|<i> user, but I'm less sure about how easy it is to implement. 
+</I>|<i> But maybe Brian or Mignon have better ideas or add to the  
+</I>|<i> idea, so I'm cc'ing this to list.
+</I>
+
+I think it would be pretty easy to implement that.  Once the entry is
+resolved we can just take the corresponding HTML and set it to be disabled,
+so that you can't edit it.  Or maybe we intercept the mousedown when you
+click on it.  Either way, I'm sure it's not too hard.
+
+That seems like it might be a good way to handle entries that represent
+references to other items.  But I don't think we want to do that for entries
+that are just literal values, like dates and numbers and text strings.  For
+literal values it seems like the user should be able to click on the middle
+of an existing value to go back and fix a typo.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000092.html">[openrecord-dev] Re: interaction design
+</A></li>
+	<LI>Next message: <A HREF="000095.html">[openrecord-dev] better lint test error messages
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#103">[ date ]</a>
+              <a href="thread.html#103">[ thread ]</a>
+              <a href="subject.html#103">[ subject ]</a>
+              <a href="author.html#103">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

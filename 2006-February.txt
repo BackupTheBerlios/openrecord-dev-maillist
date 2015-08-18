@@ -1,0 +1,1499 @@
+From skinner at dojotoolkit.org  Fri Feb  3 03:53:00 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Feb  3 03:53:00 2006
+Subject: [openrecord-dev] OpenRecord news -- January 2006
+Message-ID: <43E2C58D.1010104@dojotoolkit.org>
+
+Here's a quick summary of recent news about the OpenRecord project.
+
+In the past month...
+
++ Mignon reimplemented our drag-and-drop code, using the dojo.dnd 
+package instead of script.aculo.us.  That removed our last dependencies 
+on the script.aculo.us and prototype libraries, and we've now removed 
+those libraries from OpenRecord, which simplifies life by leaving Dojo 
+as our only run-time library dependency.
+
++ We made our first code contributions from OpenRecord to the Dojo 
+Toolkit.  Brian ported the OpenRecord UUID code to dojo.uuid, and thanks 
+to feedback from Tom at Dojo, we were able to significantly improve the 
+code in the process.  OpenRecord code also made it into the 
+dojo.lang.assert and dojo.lang.type packages.
+
++ Zhenjian joined the OpenRecord project, and has started to look at 
+making an improved BarChart plugin, building on Tom's SVG work in Dojo. 
+  Zhenjian is in China, and will be our first contributor outside the 
+United States, unless Rowan in Ireland reappears soon and beats him to it!
+
++ We created the first OpenRecord plugin to experimentally use a dojo 
+widget, another small step in the gradual Dojo-ification of the 
+OpenRecord code.
+
++ We introduced Dustin at Dojo to Matt at OSAF, both of whom are working 
+on JavaScript calendaring code.  Hopefully there may be some opportunity 
+for collaboration between the two projects.
+
++ Brian attended a Dojo "data-provider" meeting with 10 of the Dojo 
+contributors, to start planning a general purpose Dojo data binding 
+architecture.  Brian also started writing an experimental straw-man 
+implementation of some of the data provider code.  If all goes well, 
+Dojo will someday provide a wide variety of widgets which can be bound 
+to a wide variety of data sources, and OpenRecord itself can be a fairly 
+thin layer on top of that infrastructure.  As part of this work, we've 
+also started a data model comparison table:
+  http://openrecord.org/dojo/2006-01-09/data_model_comparison.html
+
++ Brian has been exchanging mail with a Google contact, hoping for some 
+possible collaboration (however unlikely) in which Google might host a 
+fully supported version of OpenRecord, complementing the freely 
+available open source version.
+
++ We were also lucky enough to be introduced to an attorney at the 
+Software Freedom Law Center, who will hopefully be able to give us some 
+advice about our licensing choices.
+
++ We now have 14 people subscribed to the openrecord-dev mailing list:
+   http://lists.berlios.de/mailman/roster/openrecord-dev
+
+Cheers,
+   Brian
+
+
+From skinner at dojotoolkit.org  Fri Feb  3 06:08:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Feb  3 06:08:01 2006
+Subject: [openrecord-dev] experimental data-provider code
+Message-ID: <43E2E512.6030807@dojotoolkit.org>
+
+-------- Original Message --------
+Subject: [ng-dhtml] experimental data-provider code
+Date: Thu, 02 Feb 2006 19:32:02 -0800
+From: Brian Douglas Skinner <skinner at dojotoolkit.org>
+Reply-To: dojo dev. <dojo-contributors at dojotoolkit.org>
+To: dojo dev <dojo-contributors at dojotoolkit.org>
+CC: openrecord-dev-request at berlios.de
+
+For people who are interested in the Dojo data-provider plans...
+
+Last week I started fooling around with some experimental data-provider 
+code, setting out to write a initial implementation of a data-model. 
+It's far from finished, and far from presentable, but I figured I should 
+mention it here on the dojo-dev list anyway, so that other people can 
+look at it if they want to, on the theory that it's better to get 
+feedback sooner rather than later, and do course correction early.
+
+What I've got so far is some initial data-model code, with a couple 
+simple data-providers that you can use to populate the data model with 
+live content from del.icio.us, or content from .csv and .json files. 
+There's also a *very* crude sort of hack that takes items from the 
+data-provider and force feeds them to the SortableTable widget and the 
+SVG Chart widget.  (I need to replace the crude hack with something that 
+properly populates the widget's via their APIs, but I haven't gotten to 
+that yet.)
+
+If you want to take a look, here are some URLs.  The pages load slowly 
+because I haven't done a build...
+
+Here's an example that grabs live data from del.icio.us and "binds" it 
+to a SortableTable:
+  http://openrecord.org/dojo/2006-01-26/tests/data/test_delicious.html
+
+Here's an example that reads JSON data from a file, creates a ResultSet 
+of data Items, and binds the one ResultSet to both an SVG Chart and a 
+SortableTable.  The bindings register the display widgets as observers 
+of the data set, so when anything changes the data the widgets 
+automatically get redisplayed.  You can edit one of the items by 
+pressing the big button, and then see the widgets get updated:
+  http://openrecord.org/dojo/2006-01-26/tests/data/test_data_binding.html
+
+And here's a third test page, which tests stuff like multi-valued 
+attributes, CSV file parsing, and ad-hoc attributes (an attribute which 
+is used on just one or two of the items in a result set, but no others):
+  http://openrecord.org/dojo/2006-01-26/tests/data/test_data.html
+
+Here are the unit tests:
+  http://openrecord.org/dojo/2006-01-26/tests/data/
+
+The code itself could use a lot of spring-cleaning, but this is what it 
+looks like so far:
+  http://openrecord.org/dojo/2006-01-26/src/data/
+
+There's also this to-do list, which has a list of existing features as 
+well as ideas for what to do next:
+  http://openrecord.org/dojo/2006-01-26/src/data/to_do.txt
+
+Let me know what you think.  I'm happy to keep working on all this, and 
+it'd be great to get some feedback about whether I'm heading in a good 
+direction.  Right now I'm thinking the next big step is to write an 
+example of a data provider that talks to an SQL data store, if that 
+seems like a good idea.
+
+I can check in this experimental code somewhere, if other people are 
+interested in collaborating on it, or if anyone wants to use parts of it 
+for alternative dojo.data experiments or proposals.  If you would like 
+me to check it in, I could use some advice about where to put it. 
+Someday the real implementation will live in dojo.data, but I don't know 
+that there's a place for code which is more just "thinking out loud". 
+For now I'll just keep working on my own machine.
+
+Cheers,
+   Brian
+
+
+
+
+From jeffrey at skyhouseconsulting.com  Fri Feb  3 17:35:02 2006
+From: jeffrey at skyhouseconsulting.com (Jeffrey Harris)
+Date: Fri Feb  3 17:35:02 2006
+Subject: [openrecord-dev] OpenRecord news -- January 2006
+In-Reply-To: <43E2C58D.1010104@dojotoolkit.org>
+References: <43E2C58D.1010104@dojotoolkit.org>
+Message-ID: <43E38613.5090108@skyhouseconsulting.com>
+
+Hi Brian,
+
+Sounds like things are happening with OpenRecord, that's great!
+
+Have you considered getting a Google Summer of Code intern?  Google
+pays, if you can provide an interesting 2-3 month project for a college
+student and you're a credible Open Source project...
+
+Sincerely,
+Jeffrey
+
+
+From skinner at dojotoolkit.org  Thu Feb  9 21:00:00 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Thu Feb  9 21:00:00 2006
+Subject: [openrecord-dev] OpenRecord news -- January 2006
+In-Reply-To: <43E38613.5090108@skyhouseconsulting.com>
+References: <43E2C58D.1010104@dojotoolkit.org> <43E38613.5090108@skyhouseconsulting.com>
+Message-ID: <43EB9F15.8050805@dojotoolkit.org>
+
+> Sounds like things are happening with OpenRecord, that's great!
+> 
+> Have you considered getting a Google Summer of Code intern?  
+> Google pays, if you can provide an interesting 2-3 month project 
+> for a college student and you're a credible Open Source project...
+
+I didn't know about the Google Summer of Code program.  Thanks for the 
+suggestion.  I'll look into it.
+
+:o) Brian
+
+
+From biosemantics at gmail.com  Sat Feb 11 00:14:00 2006
+From: biosemantics at gmail.com (bio)
+Date: Sat Feb 11 00:14:00 2006
+Subject: [openrecord-dev] OpenRecord Data Model
+Message-ID: <38f56b160602101513x39d6bdd0m9aaec3902e7cc337@mail.gmail.com>
+
+Hi,
+
+The table you released comparing different data models was very nice, thank
+you. Will you be rolling your own backend, or using one of the models
+mentioned? For example, an rdf store (also listed) could subsume any of the
+models you mentioned - and daisy also mentioned, seems like a nice model
+with a ReST api.
+Just curious.
+
+Regarding the charting code mentioned in the last update, you may also want
+to look at this recent code: http://webfx.eae.net/dhtml/chart/chart.html
+
+Thanks! The project sounds very interesting.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060211/d66896a1/attachment.html>
+
+From skinner at dojotoolkit.org  Sun Feb 12 07:57:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Sun Feb 12 07:57:01 2006
+Subject: [openrecord-dev] OpenRecord Data Model
+In-Reply-To: <38f56b160602101513x39d6bdd0m9aaec3902e7cc337@mail.gmail.com>
+References: <38f56b160602101513x39d6bdd0m9aaec3902e7cc337@mail.gmail.com>
+Message-ID: <43EEDC19.3040701@dojotoolkit.org>
+
+Hi Bio,
+
+> The table you released comparing different data models was very 
+> nice, thank you. Will you be rolling your own backend, or using  
+> one of the models mentioned? 
+
+I'd like to avoid writing our own backend.  Writing one would take more 
+time than we have, and the result would probably be lame compared to 
+existing backends.  I'd much rather use an existing backend. 
+Unfortunately, I'm having trouble finding an existing backend that seems 
+like a good match for the OpenRecord data model.  I'm still actively 
+looking, so let me know if you have suggestions.
+
+
+> For example, an rdf store (also listed) could subsume any of 
+> the models you mentioned  
+
+RDF is appealing.  It's been a couple years since I last looked at RDF 
+datastores, but at the time I had trouble finding something that fit. 
+In particular, I had trouble finding a datastore with built-in support 
+for tracking change histories and version info.  For example, on the 
+Wikipedia site, each page has a "history" tab, where you can see all the 
+previous versions of the page, as well as the diffs.
+
+Do you know of any RDF datastore that has built in support for the idea 
+of versions and version histories?  Without built in versioning support, 
+I think we would maybe end up having to represent every single statement 
+as a reified statement, and if we did that I'm worried that queries 
+would be a pain and performance would suck.
+
+
+> daisy also mentioned, seems like a nice model with a ReST api.
+
+The Daisy CMS seems cool.  I don't know much about it, but there are a 
+bunch of sweet features that seem like they would be useful for 
+OpenRecord: the ReST API, multi-valued fields, versioning, language 
+variants, retired documents, transclusion, embedded queries, fields 
+shared across different document types, unique IDs instead of 
+hierarchical directory paths.
+
+But, in other ways Daisy doesn't seem like a fit for the OpenRecord data 
+model.  For OpenRecord, I think the biggest problems are that in Daisy:
+  - fields can hold literal values, but I can't find any documentation 
+about fields being able to hold pointers to other documents, much less 
+automatic bi-directional connections
+  - a document must belong to a document type, can only belong to one 
+document type, and can only have the fields that are defined for its 
+document type
+  - language variants are at a per-document level rather than a 
+per-field level, which is what OpenRecord needs
+
+
+> Regarding the charting code mentioned in the last update, you 
+> may also want to look at this recent code: 
+> http://webfx.eae.net/dhtml/chart/chart.html 
+
+Thanks for the pointer.  The WebFX charts look great.  Unfortunately the 
+WebFX licenses are too restrictive for us to use WebFX code in 
+OpenRecord.  But hopefully the Dojo chart widget will gradually start to 
+have more and more features.
+
+
+> Thanks! The project sounds very interesting.
+
+Thanks for all the suggestions.  Let me know if you have any other ideas 
+about the data store -- with enough searching I'm hopefully that we'll 
+eventually find a fit!
+
+Cheers,
+   Brian
+
+
+
+From zhenjian at gmail.com  Tue Feb 14 10:20:03 2006
+From: zhenjian at gmail.com (Zhenjian YU)
+Date: Tue Feb 14 10:20:03 2006
+Subject: [openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+Message-ID: <4ba70b40602140118p671096f1jd8b9d6401bdb0534@mail.gmail.com>
+
+Hi,
+
+As I'm considering writing the Bar Chart View plugin for openrecord, I
+can't find a way to directly draw dojo svg chart in openrecord code.
+Now I can output the table that dojo svg chart needs as in dojo's demo
+http://download.dojotoolkit.org/release-0.2.1/dojo-0.2.1-widget/tests/widget/test_Chart.html.
+Please advise how I can create a dojo svg chart element directly in my
+plugin code and pass the table of data to it.
+
+Best Regards,
+Zhenjian
+
+
+From biosemantics at gmail.com  Tue Feb 14 15:09:00 2006
+From: biosemantics at gmail.com (bio)
+Date: Tue Feb 14 15:09:00 2006
+Subject: [openrecord-dev] OpenRecord Data Model
+In-Reply-To: <43EEDC19.3040701@dojotoolkit.org>
+References: <38f56b160602101513x39d6bdd0m9aaec3902e7cc337@mail.gmail.com>
+	 <43EEDC19.3040701@dojotoolkit.org>
+Message-ID: <38f56b160602140608g7398bad5j76106c8dbded34eb@mail.gmail.com>
+
+Hi Brian,
+
+
+On 2/11/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+
+> For example, an rdf store (also listed) could subsume any of
+> > the models you mentioned
+>
+> RDF is appealing.  It's been a couple years since I last looked at RDF
+> datastores, but at the time I had trouble finding something that fit.
+> In particular, I had trouble finding a datastore with built-in support
+> for tracking change histories and version info.  For example, on the
+> Wikipedia site, each page has a "history" tab, where you can see all the
+> previous versions of the page, as well as the diffs.
+>
+> Do you know of any RDF datastore that has built in support for the idea
+> of versions and version histories?  Without built in versioning support,
+> I think we would maybe end up having to represent every single statement
+> as a reified statement, and if we did that I'm worried that queries
+> would be a pain and performance would suck.
+
+
+Have you looked into the 'named graph' or quad support some of the RDF
+stores have added? Sesame 2 is very nice, although still in alpha, and now
+supports context. It also has an HTTP api, and supports the new W3C rdf
+query language, SPARQL, for extracting subgraphs. I agree reification can
+get messy quickly, depending on how you use it - although indexing
+strategies can get around some headaches.
+
+You may also want to take a look at C-Store - which has some similarities to
+Google's BigTable work. It's a column store open source implementation.
+
+What I am more critical of with triplestores is the scaling issues, and data
+management issues. By data management issues, I mean Daisy has a nice
+division in the form of 'parts' that allows you to store a typed blob and
+attach a bunch of key/values to it (i.e. creating a 'document'). You can
+always dereference a bunch of blobs via URIs referenced from an RDF store,
+but there isn't an established API for this in any of the rdf stores - you
+would have to setup your own blobstore and extend the query api's, and end
+up rolling something similar to daisy, I imagine. Then there is ACL's, etc.
+and other niceties that are not supported by most of the RDF stores. Daisy
+abstracts many of these issues nicely in their HTTP APIs. That having been
+said, I often find myself split down the middle to dump daisy for an RDF
+store, as I watch daisy evolve more extensions to their own query language,
+etc.. But theoretically, most anything can be layered on a triple/quad -
+it's just that the implemantations still have a ways to go.
+
+One other weakness, that is probably easily fixed, is that XML is the only
+return type for the Daisy api - JSON would be nice.
+
+I think we agree there are no ideal solutions at the moment, which is how I
+stumbled on to your list.:-) Incidentally, I am working with life sciences
+data - if the email didn't give that away.
+
+I've also been playing with Daisy for a while now, and would be happy to
+answer any questions - if I am able. Otherwise, the developers are always
+very helpful on the mailing list, and pretty open to discussion of
+extensions.
+
+> daisy also mentioned, seems like a nice model with a ReST api.
+>
+> The Daisy CMS seems cool.  I don't know much about it, but there are a
+> bunch of sweet features that seem like they would be useful for
+> OpenRecord: the ReST API, multi-valued fields, versioning, language
+> variants, retired documents, transclusion, embedded queries, fields
+> shared across different document types, unique IDs instead of
+> hierarchical directory paths.
+>
+> But, in other ways Daisy doesn't seem like a fit for the OpenRecord data
+> model.  For OpenRecord, I think the biggest problems are that in Daisy:
+>   - fields can hold literal values, but I can't find any documentation
+> about fields being able to hold pointers to other documents
+
+
+I think this is possible now -  if I understood your request correctly. I'm
+not sure if it was 1.4 or 1.5 (this is the current Trunk version, and what I
+am currently working with).
+
+from one of the developer's posts on the mailing list:
+"A link field is a field which links to another document (or documents, in
+case of multivalue fields). This allows for structured linking between
+documents."
+
+much less
+> automatic bi-directional connections
+
+
+ By "automatic bi-directional connections" do you mean "inverse properties"?
+In RDF world, this would look like Car:hasName:CoolCar <-->
+CoolCar:isNameof:Car
+
+Also interesting about Daisy, you can define a query to populate a
+SelectionList now - something I had been waiting for - this is from the new
+linktype support mentioned above. And defining ACL's using queries is also
+nice.
+
+  - a document must belong to a document type, can only belong to one
+> document type,
+
+
+Yes, these are assumptions in the Daisy model - and have led me to consider
+rolling my own solution. I've been able to fit most of my current use into
+these assumptions though. But there has to be some organizing unit by which
+you create versions off of, no? Perhaps you can comment on your thinking for
+this..
+
+and can only have the fields that are defined for its
+> document type
+
+
+Actually you can always extend the fields associated with a document type -
+I do this all the time. Maybe I am misunderstanding your question though.
+Their UI, if you used the daisy cocoon wiki on top of the repository was not
+very friendly for this though. I have only been working with the repository
+lately though, so this may have changed over the last 6 months.
+
+  - language variants are at a per-document level rather than a
+> per-field level, which is what OpenRecord needs
+
+
+I can't comment too much on this since I haven't looked into their i18n
+support - my current use is as a personal knowledgebase. Funny, since I used
+to do a lot of i18n work during my NLP days. But since 'document' is the
+root entity for all instance data, I assume you have to associate lang
+variants at this level for instance data. However, the same 'field type' (
+e.g. hasName) can be referenced in multiple documents, and you can have a
+collection of locales associated with the labels of a 'fields type' (e.g.
+hasName:en~someFoo:cn). But if you create a Chinese document variant, those
+fields are assumed to have Chinese content.
+
+I struggled with the notion of everything being a 'document' for instance
+data in Daisy, but if I create a 'version' of an RDF graph I'll still need a
+semantically similar concept in the form of a quad, named graph, or rely on
+a lot of reification. I'm sorry I'm not more familiar with your project, but
+how did you plan to handle this?
+
+> Regarding the charting code mentioned in the last update, you
+> > may also want to look at this recent code:
+> > http://webfx.eae.net/dhtml/chart/chart.html
+>
+> Thanks for the pointer.  The WebFX charts look great.  Unfortunately the
+> WebFX licenses are too restrictive for us to use WebFX code in
+> OpenRecord.  But hopefully the Dojo chart widget will gradually start to
+> have more and more features.
+
+
+Sorry, I know little about licensing. I think it is an MIT license in the
+source files, although he mentions some of his code being GNU on the
+website. Not sure how this conflicts with your licensing model though.
+
+> Thanks! The project sounds very interesting.
+>
+> Thanks for all the suggestions.  Let me know if you have any other ideas
+> about the data store -- with enough searching I'm hopefully that we'll
+> eventually find a fit!
+
+
+I think you've covered most of the data models I've looked at, but here's
+another random project that you may be interested in. Not much to it, but
+interesting - I just happened to see it this evening.
+http://www.jpaulmorrison.com/cgi-bin/wiki.pl?ImmutableStore
+http://www.javaforge.com/proj/summary.do?proj_id=519
+
+Hope this didn't ramble too much, I stayed up a little too late working this
+evening... well I guess it's morning now. :-)
+
+cheers,
+Ian
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <https://lists.berlios.de/pipermail/openrecord-dev/attachments/20060214/55d03c39/attachment.html>
+
+From rnairn at gmail.com  Tue Feb 14 16:56:07 2006
+From: rnairn at gmail.com (Rowan Nairn)
+Date: Tue Feb 14 16:56:07 2006
+Subject: [openrecord-dev] Semantic Wiki Interest Group
+Message-ID: <989aa6910602140755u400000d1hd122f17cf3510005@mail.gmail.com>
+
+Hi all,
+
+Sorry I haven't been active on openrecord yet.  Just saw this linked
+to from Danny Ayers blog and thought you would be interested.
+
+SemWiki2006 1st workshop on Semantic Wikis:
+http://www.semwiki.org/
+
+List of Semantic Wikis by the Semantic Wiki Interest Group
+http://wiki.ontoworld.org/index.php/Semantic_Wiki_State_Of_The_Art
+
+Regards,
+Rowan
+
+
+From skinner at dojotoolkit.org  Tue Feb 14 21:27:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Feb 14 21:27:01 2006
+Subject: [openrecord-dev] newcomer's question: please help with drawing
+ dojo svg chart in openrecord code
+In-Reply-To: <4ba70b40602140118p671096f1jd8b9d6401bdb0534@mail.gmail.com>
+References: <4ba70b40602140118p671096f1jd8b9d6401bdb0534@mail.gmail.com>
+Message-ID: <43F23CDE.8090009@dojotoolkit.org>
+
+> I can't find a way to directly draw dojo svg chart in openrecord 
+> code. Now I can output the table that dojo svg chart needs as in 
+> dojo's demo
+> http://download.dojotoolkit.org/release-0.2.1/dojo-0.2.1-widget/tests/widget/test_Chart.html.
+> Please advise how I can create a dojo svg chart element directly 
+> in my plugin code and pass the table of data to it.
+
+Hi Zhenjian,
+
+If I understand your question, then I think the code you need now will 
+be similar to this:
+
+   orp.plugins.SvgBarChart.prototype.refresh = function() {
+     var listOfContentItems = this.fetchItems();
+     var pluginDiv = this.getHtmlElement();
+
+     // build the table that the svg chart needs
+     var tableContents = ... // this is the part you have written
+     pluginDiv.innerHTML = '<div dojoType="chart"><table>' +
+                           tableContents + '</table></div>';
+
+     var parser = new dojo.xml.Parse();
+     var fragment = parser.parseElement(pluginDiv, null, true);
+     dojo.widget.getParser().createComponents(fragment);
+   };
+
+Or, instead of using "innerHTML", you could build the table by 
+programmatically creating DOM nodes for the HTML elements, like this:
+
+   orp.plugins.SvgBarChart.prototype.refresh = function() {
+     var listOfContentItems = this.fetchItems();
+     var pluginDiv = this.getHtmlElement();
+     orp.view.View.removeChildrenOfElement(pluginDiv);
+
+     // build the table that the svg chart needs
+     var chartDiv = orp.view.View.appendNewElement(pluginDiv, "div",
+                    null, {dojoType: "chart"});
+     var tableDiv = orp.view.View.appendNewElement(chartDiv, "table");
+     // ... and then more code to fill in the table
+
+     var parser = new dojo.xml.Parse();
+     var fragment = parser.parseElement(pluginDiv, null, true);
+     dojo.widget.getParser().createComponents(fragment);
+   };
+
+
+If you want to see a working example of this approach, have a look at 
+the file BindingHack.js:
+  http://openrecord.org/dojo/2006-01-26/tests/data/BindingHack.js
+
+BindingHack.js is part of the code for this test page:
+  http://openrecord.org/dojo/2006-01-26/tests/data/test_data_binding.html
+
+I hope this code is useful.  Let me know if you have more questions, or 
+if you need help getting the code working.  I will be away from my 
+e-mail on Wednesday and Thursday, but I can answer more questions when I 
+get back on Friday.  Thanks for working on the Bar Chart View plugin!
+
+Good luck,
+   Brian
+
+
+
+From skinner at dojotoolkit.org  Tue Feb 14 21:32:04 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Feb 14 21:32:04 2006
+Subject: [openrecord-dev] OpenRecord Data Model
+In-Reply-To: <38f56b160602140608g7398bad5j76106c8dbded34eb@mail.gmail.com>
+References: <38f56b160602101513x39d6bdd0m9aaec3902e7cc337@mail.gmail.com>	 <43EEDC19.3040701@dojotoolkit.org> <38f56b160602140608g7398bad5j76106c8dbded34eb@mail.gmail.com>
+Message-ID: <43F23E1D.2090105@dojotoolkit.org>
+
+Hey Ian,
+
+Thanks for all the great info.  I'm eager to go read about everything 
+you just pointed me to.  I'm swamped today, and I'll be away on 
+Wednesday and Thursday, but hopefully on Friday I'll have a chance to 
+dive into this!
+
+Cheers,
+   Brian
+
+
+bio wrote:
+> Hi Brian,
+> 
+> 
+> On 2/11/06, *Brian Douglas Skinner* < skinner at dojotoolkit.org 
+> <mailto:skinner at dojotoolkit.org>> wrote:
+> 
+>      > For example, an rdf store (also listed) could subsume any of
+>      > the models you mentioned
+> 
+>     RDF is appealing.  It's been a couple years since I last looked at RDF
+>     datastores, but at the time I had trouble finding something that fit.
+>     In particular, I had trouble finding a datastore with built-in support
+>     for tracking change histories and version info.  For example, on the
+>     Wikipedia site, each page has a "history" tab, where you can see all the
+>     previous versions of the page, as well as the diffs.
+> 
+>     Do you know of any RDF datastore that has built in support for the idea
+>     of versions and version histories?  Without built in versioning support,
+>     I think we would maybe end up having to represent every single
+>     statement
+>     as a reified statement, and if we did that I'm worried that queries
+>     would be a pain and performance would suck.
+> 
+> 
+> Have you looked into the 'named graph' or quad support some of the RDF 
+> stores have added? Sesame 2 is very nice, although still in alpha, and 
+> now supports context. It also has an HTTP api, and supports the new W3C 
+> rdf query language, SPARQL, for extracting subgraphs. I agree 
+> reification can get messy quickly, depending on how you use it - 
+> although indexing strategies can get around some headaches.
+> 
+> You may also want to take a look at C-Store - which has some 
+> similarities to Google's BigTable work. It's a column store open source 
+> implementation.
+> 
+> What I am more critical of with triplestores is the scaling issues, and 
+> data management issues. By data management issues, I mean Daisy has a 
+> nice division in the form of 'parts' that allows you to store a typed 
+> blob and attach a bunch of key/values to it ( i.e. creating a 
+> 'document'). You can always dereference a bunch of blobs via URIs 
+> referenced from an RDF store, but there isn't an established API for 
+> this in any of the rdf stores - you would have to setup your own 
+> blobstore and extend the query api's, and end up rolling something 
+> similar to daisy, I imagine. Then there is ACL's, etc. and other 
+> niceties that are not supported by most of the RDF stores. Daisy 
+> abstracts many of these issues nicely in their HTTP APIs. That having 
+> been said, I often find myself split down the middle to dump daisy for 
+> an RDF store, as I watch daisy evolve more extensions to their own query 
+> language, etc.. But theoretically, most anything can be layered on a 
+> triple/quad - it's just that the implemantations still have a ways to go.
+> 
+> One other weakness, that is probably easily fixed, is that XML is the 
+> only return type for the Daisy api - JSON would be nice.
+> 
+> I think we agree there are no ideal solutions at the moment, which is 
+> how I stumbled on to your list.:-) Incidentally, I am working with life 
+> sciences data - if the email didn't give that away.
+> 
+> I've also been playing with Daisy for a while now, and would be happy to 
+> answer any questions - if I am able. Otherwise, the developers are 
+> always very helpful on the mailing list, and pretty open to discussion 
+> of extensions.
+> 
+>      > daisy also mentioned, seems like a nice model with a ReST api.
+> 
+>     The Daisy CMS seems cool.  I don't know much about it, but there are a
+>     bunch of sweet features that seem like they would be useful for
+>     OpenRecord: the ReST API, multi-valued fields, versioning, language
+>     variants, retired documents, transclusion, embedded queries, fields
+>     shared across different document types, unique IDs instead of
+>     hierarchical directory paths.
+> 
+>     But, in other ways Daisy doesn't seem like a fit for the OpenRecord
+>     data
+>     model.  For OpenRecord, I think the biggest problems are that in Daisy:
+>       - fields can hold literal values, but I can't find any documentation
+>     about fields being able to hold pointers to other documents
+> 
+> 
+> I think this is possible now -  if I understood your request correctly. 
+> I'm not sure if it was 1.4 or 1.5 (this is the current Trunk version, 
+> and what I am currently working with).
+> 
+> from one of the developer's posts on the mailing list:
+> "A link field is a field which links to another document (or documents, 
+> in case of multivalue fields). This allows for structured linking 
+> between documents."
+> 
+>     much less
+>     automatic bi-directional connections
+> 
+> 
+>  By "automatic bi-directional connections" do you mean "inverse 
+> properties"? In RDF world, this would look like Car:hasName:CoolCar <--> 
+> CoolCar:isNameof:Car
+> 
+> Also interesting about Daisy, you can define a query to populate a 
+> SelectionList now - something I had been waiting for - this is from the 
+> new linktype support mentioned above. And defining ACL's using queries 
+> is also nice.
+> 
+>       - a document must belong to a document type, can only belong to one
+>     document type, 
+> 
+> 
+> Yes, these are assumptions in the Daisy model - and have led me to 
+> consider rolling my own solution. I've been able to fit most of my 
+> current use into these assumptions though. But there has to be some 
+> organizing unit by which you create versions off of, no? Perhaps you can 
+> comment on your thinking for this..
+> 
+>     and can only have the fields that are defined for its
+>     document type
+> 
+> 
+> Actually you can always extend the fields associated with a document 
+> type - I do this all the time. Maybe I am misunderstanding your question 
+> though. Their UI, if you used the daisy cocoon wiki on top of the 
+> repository was not very friendly for this though. I have only been 
+> working with the repository lately though, so this may have changed over 
+> the last 6 months.
+> 
+>       - language variants are at a per-document level rather than a
+>     per-field level, which is what OpenRecord needs
+> 
+> 
+> I can't comment too much on this since I haven't looked into their i18n 
+> support - my current use is as a personal knowledgebase. Funny, since I 
+> used to do a lot of i18n work during my NLP days. But since 'document' 
+> is the root entity for all instance data, I assume you have to associate 
+> lang variants at this level for instance data. However, the same 'field 
+> type' ( e.g. hasName) can be referenced in multiple documents, and you 
+> can have a collection of locales associated with the labels of a 'fields 
+> type' (e.g. hasName:en~someFoo:cn). But if you create a Chinese document 
+> variant, those fields are assumed to have Chinese content.
+> 
+> I struggled with the notion of everything being a 'document' for 
+> instance data in Daisy, but if I create a 'version' of an RDF graph I'll 
+> still need a semantically similar concept in the form of a quad, named 
+> graph, or rely on a lot of reification. I'm sorry I'm not more familiar 
+> with your project, but how did you plan to handle this?
+> 
+>      > Regarding the charting code mentioned in the last update, you
+>      > may also want to look at this recent code:
+>      > http://webfx.eae.net/dhtml/chart/chart.html
+>     <http://webfx.eae.net/dhtml/chart/chart.html>
+> 
+>     Thanks for the pointer.  The WebFX charts look great.  Unfortunately the
+>     WebFX licenses are too restrictive for us to use WebFX code in
+>     OpenRecord.  But hopefully the Dojo chart widget will gradually
+>     start to
+>     have more and more features.
+> 
+> 
+> Sorry, I know little about licensing. I think it is an MIT license in 
+> the source files, although he mentions some of his code being GNU on the 
+> website. Not sure how this conflicts with your licensing model though.
+> 
+>      > Thanks! The project sounds very interesting.
+> 
+>     Thanks for all the suggestions.  Let me know if you have any other
+>     ideas
+>     about the data store -- with enough searching I'm hopefully that we'll
+>     eventually find a fit!
+> 
+> 
+> I think you've covered most of the data models I've looked at, but 
+> here's another random project that you may be interested in. Not much to 
+> it, but interesting - I just happened to see it this evening.
+> http://www.jpaulmorrison.com/cgi-bin/wiki.pl?ImmutableStore
+> http://www.javaforge.com/proj/summary.do?proj_id=519 
+> <http://www.javaforge.com/proj/summary.do?proj_id=519>
+> 
+> Hope this didn't ramble too much, I stayed up a little too late working 
+> this evening... well I guess it's morning now. :-)
+>  
+> cheers,
+> Ian
+> 
+> 
+
+
+
+From skinner at dojotoolkit.org  Tue Feb 14 21:48:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Feb 14 21:48:02 2006
+Subject: [openrecord-dev] Semantic Wiki Interest Group
+In-Reply-To: <989aa6910602140755u400000d1hd122f17cf3510005@mail.gmail.com>
+References: <989aa6910602140755u400000d1hd122f17cf3510005@mail.gmail.com>
+Message-ID: <43F241EC.5070205@dojotoolkit.org>
+
+Rowan Nairn wrote:
+> Sorry I haven't been active on openrecord yet.  Just saw this linked
+> to from Danny Ayers blog and thought you would be interested.
+> 
+> SemWiki2006 1st workshop on Semantic Wikis:
+> http://www.semwiki.org/
+> 
+> List of Semantic Wikis by the Semantic Wiki Interest Group
+> http://wiki.ontoworld.org/index.php/Semantic_Wiki_State_Of_The_Art
+
+Hey Rowan,
+
+Thanks for the Semantic Wiki links.  I'd love to go to SemWiki2006 -- 
+although it's probably a little too expensive for me to get there. 
+Maybe I should submit a short/position paper anyway, as a way of getting 
+in touch with other people who are interested in this stuff.  I should 
+at least join the swikig mailing list, and add an entry about OpenRecord 
+to the ontoworld.org wiki, and read about all the other projects they've 
+got listed there.
+
+It's great to hear from you.  Have you been doing more work on the 
+structured content web app that you showed at BarCamp last August?
+
+Cheers,
+   Brian
+
+
+From zhenjian at gmail.com  Wed Feb 15 04:12:01 2006
+From: zhenjian at gmail.com (Zhenjian YU)
+Date: Wed Feb 15 04:12:01 2006
+Subject: [openrecord-dev] newcomer's question: please help with drawing dojo svg chart in openrecord code
+In-Reply-To: <43F23CDE.8090009@dojotoolkit.org>
+References: <4ba70b40602140118p671096f1jd8b9d6401bdb0534@mail.gmail.com>
+	 <43F23CDE.8090009@dojotoolkit.org>
+Message-ID: <4ba70b40602141911x29171b63if4f33a78395c8b70@mail.gmail.com>
+
+Hi, Brian,
+
+Thanks for your prompt reply.
+
+Your answer is just what I need.
+
+Best Regards,
+Zhenjian
+
+On 2/15/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+> > I can't find a way to directly draw dojo svg chart in openrecord
+> > code. Now I can output the table that dojo svg chart needs as in
+> > dojo's demo
+> > http://download.dojotoolkit.org/release-0.2.1/dojo-0.2.1-widget/tests/widget/test_Chart.html.
+> > Please advise how I can create a dojo svg chart element directly
+> > in my plugin code and pass the table of data to it.
+>
+> Hi Zhenjian,
+>
+> If I understand your question, then I think the code you need now will
+> be similar to this:
+>
+>    orp.plugins.SvgBarChart.prototype.refresh = function() {
+>      var listOfContentItems = this.fetchItems();
+>      var pluginDiv = this.getHtmlElement();
+>
+>      // build the table that the svg chart needs
+>      var tableContents = ... // this is the part you have written
+>      pluginDiv.innerHTML = '<div dojoType="chart"><table>' +
+>                            tableContents + '</table></div>';
+>
+>      var parser = new dojo.xml.Parse();
+>      var fragment = parser.parseElement(pluginDiv, null, true);
+>      dojo.widget.getParser().createComponents(fragment);
+>    };
+>
+> Or, instead of using "innerHTML", you could build the table by
+> programmatically creating DOM nodes for the HTML elements, like this:
+>
+>    orp.plugins.SvgBarChart.prototype.refresh = function() {
+>      var listOfContentItems = this.fetchItems();
+>      var pluginDiv = this.getHtmlElement();
+>      orp.view.View.removeChildrenOfElement(pluginDiv);
+>
+>      // build the table that the svg chart needs
+>      var chartDiv = orp.view.View.appendNewElement(pluginDiv, "div",
+>                     null, {dojoType: "chart"});
+>      var tableDiv = orp.view.View.appendNewElement(chartDiv, "table");
+>      // ... and then more code to fill in the table
+>
+>      var parser = new dojo.xml.Parse();
+>      var fragment = parser.parseElement(pluginDiv, null, true);
+>      dojo.widget.getParser().createComponents(fragment);
+>    };
+>
+>
+> If you want to see a working example of this approach, have a look at
+> the file BindingHack.js:
+>   http://openrecord.org/dojo/2006-01-26/tests/data/BindingHack.js
+>
+> BindingHack.js is part of the code for this test page:
+>   http://openrecord.org/dojo/2006-01-26/tests/data/test_data_binding.html
+>
+> I hope this code is useful.  Let me know if you have more questions, or
+> if you need help getting the code working.  I will be away from my
+> e-mail on Wednesday and Thursday, but I can answer more questions when I
+> get back on Friday.  Thanks for working on the Bar Chart View plugin!
+>
+> Good luck,
+>    Brian
+>
+>
+
+
+From skinner at dojotoolkit.org  Fri Feb 24 02:04:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Feb 24 02:04:02 2006
+Subject: [openrecord-dev] OpenRecord Data Model
+In-Reply-To: <38f56b160602140608g7398bad5j76106c8dbded34eb@mail.gmail.com>
+References: <38f56b160602101513x39d6bdd0m9aaec3902e7cc337@mail.gmail.com>	 <43EEDC19.3040701@dojotoolkit.org> <38f56b160602140608g7398bad5j76106c8dbded34eb@mail.gmail.com>
+Message-ID: <43FE5B5C.7000805@dojotoolkit.org>
+
+Hi Ian,
+
+Thanks again for all your suggestions about stuff to look at.  The 
+material you're pointing me to is extremely useful.  Responses inline...
+
+
+>     Do you know of any RDF datastore that has built in support 
+>     for the idea of versions and version histories?  
+> 
+> Have you looked into the 'named graph' or quad support some of 
+> the RDF stores have added? Sesame 2 is very nice, although still 
+> in alpha, and now supports context. It also has an HTTP api... 
+
+I've been out of touch with the RDF world -- I don't think I'd ever even 
+heard of 'named graphs' or contexts or quad stores.  That's an 
+encouraging development.  The support for contexts makes RDF stores like 
+Sesame 2 and YARS a much better match for what we need with OpenRecord.
+
+When I've got more time, it'd be great to read more about these quad 
+stores and play around with them some.  Just in doing some quick 
+skimming, I've seen some examples that show how you might use contexts 
+for keeping track of the attribution/provenance of RDF triples.  But I 
+haven't seen examples of using the contexts to provide stuff like 
+transaction logs and version histories.  I'm sure we could make that 
+work, but I worry about the query performance if those features aren't 
+baked into the store/query system.  I guess at this point we'd really 
+need to just try using one of these stores for OpenRecord, and see what 
+the performance looks like.
+
+
+> You may also want to take a look at C-Store - which has some 
+> similarities to Google's BigTable work. It's a column store 
+> open source implementation.
+
+I hadn't ever heard of C-store or BigTable.  BigTable sounds cool.  I'd 
+love to learn more about it, even though we can't actually build on top 
+of it since it's proprietary.
+
+The C-Store read-optimization sounds great, and I like the architecture 
+of the Writable Store (WS), Tuple Mover, and Read-optimized Store (RS). 
+   Unfortunately, C-store doesn't look like a good fit for OpenRecord, 
+just because C-store has a basically a relational data model, with 
+separate tables for different types of records, strongly typed columns, 
+single-valued cells, etc.  But reading about C-Store's WS/RS design 
+makes me feel better about one of our back-of-the-envelope designs a few 
+months ago, when we were toying with the idea of rolling our own backend 
+for OpenRecord.
+
+
+> What I am more critical of with triplestores is the scaling
+> issues, and data management issues. By data management issues,
+> I mean Daisy has a nice division in the form of 'parts' that
+> allows you to store a typed blob and attach a bunch of key/
+> values to it ( i.e. creating a 'document'). You can always 
+> dereference a bunch of blobs via URIs referenced from an RDF 
+> store, but there isn't an established API for this in any of 
+> the rdf stores - you would have to setup your own blobstore 
+> and extend the query api's, and end up rolling something
+> similar to daisy, I imagine. Then there is ACL's, etc. and
+> other niceties that are not supported by most of the RDF 
+> stores. 
+
+Yup, Daisy seems like a more mature, well rounded, full featured system. 
+  That's definitely appealing.
+
+
+> That having been said, I often find myself split down the
+> middle to dump daisy for an RDF store, as I watch daisy 
+> evolve more extensions to their own query language, etc.. 
+> But theoretically, most anything can be layered on a 
+> triple/quad - it's just that the implemantations still
+> have a ways to go.
+
+I can see the dilemma.  Maybe in a few years one of the RDF stores will 
+seem like a no-brainer.  For now, any choice involves compromises.
+
+
+> One other weakness, that is probably easily fixed, is that 
+> XML is the only return type for the Daisy api - JSON would 
+> be nice.
+
+JSON would be what we'd want for OpenRecord too.  That really should be 
+easy to fix, shouldn't it?  Hopefully a thin layer of translation code 
+in Daisy should do the job, and the Daisy folks probably wouldn't object 
+to accepting that contribution into Daisy?
+
+
+> I think we agree there are no ideal solutions at the moment, 
+> which is how I stumbled on to your list.:-)  
+
+If you're still searching, you might want to look at the Chandler 
+Repository.  I don't know what all the needs/requirements are for the 
+work you're doing, but the Chandler data model has an RDF-ish flavor to 
+it.  Chandler is only at 0.6 release now, but they've hard at work 
+towards a production-quality 1.0 release.
+
+Quick intro about the Chandler Repository:
+  http://chandler.osafoundation.org/docs/0.6/overview.html#Repository
+
+An introduction to the Chandler data model and Python API:
+  http://chandler.osafoundation.org/docs/0.6/parcel-schema-guide.html
+
+
+> Incidentally, I am working with life sciences data - if the 
+> email didn't give that away.
+
+I've heard that the Semantic Web is starting to get some traction in the 
+life sciences field.  Are you working at a University?
+
+
+> I've also been playing with Daisy for a while now, and would 
+> be happy to answer any questions - if I am able. 
+
+Thanks for the offer -- I'll take you up on it...
+
+>     But, in other ways Daisy doesn't seem like a fit for 
+>     the OpenRecord data model.  For OpenRecord, I think the 
+>     biggest problems are that in Daisy:
+>       - fields can hold literal values, but I can't find any 
+>     documentation about fields being able to hold pointers 
+>     to other documents
+> 
+> I think this is possible now - if I understood your request 
+> correctly. I'm not sure if it was 1.4 or 1.5 (this is the 
+> current Trunk version, and what I am currently working with).
+
+I had been looking at the Daisy 1.4 documentation about the field types, 
+here:
+ 
+http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s86
+
+In 1.4, it seems like "links" are just HTML URLs, and are handled 
+separately from fields, which I was worried would mean that you couldn't 
+have multi-valued links, or multi-valued fields with a mix of links and 
+numbers and strings.
+
+http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s97
+http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s98
+
+> from one of the developer's posts on the mailing list:
+> "A link field is a field which links to another document (or 
+> documents, in case of multivalue fields). This allows for 
+> structured linking between documents."
+
+Yup, that quote sounds promising.
+
+>     much less automatic bi-directional connections
+> 
+>  By "automatic bi-directional connections" do you mean  
+> "inverse properties"? In RDF world, this would look like  
+> Car:hasName:CoolCar <--> CoolCar:isNameof:Car
+
+Yes, that's pretty much what I mean by bi-directional connections.  The 
+Car item and the CoolCar item each have a property that points to the 
+other item, and if you change one either of those properties, the other 
+item(s) will automatically update.
+
+For example:
+
+   // starting out
+   assert( Car.getValuesForProperty(hasName) == [CoolCar] );
+   assert( CoolCar.getValuesForProperty(isNameof) == [Car] );
+
+   // now add a value
+   Car.addValueForProperty(hasName, BlueCar);
+
+   // and now
+   assert( Car.getValuesForProperty(hasName) == [CoolCar, BlueCar] );
+   assert( BlueCar.getValuesForProperty(isNameof) == [Car] );
+   assert( CoolCar.getValuesForProperty(isNameof) == [Car] );
+
+A bunch of data stores and data models seem to have that notion of 
+automatically maintaining inverse properties.  In OpenRecord we're 
+currently implementing that feature in a slightly unconventional way -- 
+in our data representation the two inverse properties actually share a 
+single value (a connection value) rather than each property having a 
+value that's the inverse of the other.
+
+
+>       - a document must belong to a document type, can only 
+>     belong to one document type, 
+> 
+> Yes, these are assumptions in the Daisy model - and have led 
+> me to consider rolling my own solution. I've been able to fit 
+> most of my current use into these assumptions though. But 
+> there has to be some organizing unit by which you create 
+> versions off of, no? Perhaps you can comment on your thinking 
+> for this..
+
+In OpenRecord we've tried to avoid the idea of fixed schemas.  You can 
+create items willy-nilly, rather than creating items of a given type. 
+Users can put items in categories (so you can say that "The Hobbit" is a 
+"Book"), but the categories act more like tags than data types.  An item 
+can belong to several different categories at once.  A category doesn't 
+have any notion of what attributes its items should have ("Title", 
+"Author", etc.).  We end up handling that sort of schema information in 
+the data entry views, rather than in the data model.
+
+
+>     and can only have the fields that are defined for its
+>     document type
+> 
+> Actually you can always extend the fields associated with a 
+> document type - I do this all the time. Maybe I am 
+> misunderstanding your question though. 
+
+Rather than adding fields to a document type, what I really want to do 
+is add "ad hoc" fields to an individual document.  So, maybe most books 
+have just "title" and "author" fields, but one particular book can have 
+a field "page numbers of dog-eared pages".  I think this is similar to 
+the Daisy idea of Custom Fields, but the Daisy 1.4 documentation says 
+that custom fields are just name-value pairs where unfortunately the 
+value can only be a text string, changes are not versioned, and the 
+field is identified by a name string, not a field ID.
+
+http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s102
+http://cocoondev.org/books/daisydocs1_4/publications/html-chunked/output/s75.html#s77
+
+
+>       - language variants are at a per-document level rather 
+>     than a per-field level, which is what OpenRecord needs
+> 
+> I can't comment too much on this since I haven't looked into 
+> their i18n support - my current use is as a personal knowledgebase. 
+> ... But since 'document' is the root entity for all instance
+> data, I assume you have to associate lang variants at this level
+> for instance data. ... I'm sorry I'm not more familiar with  
+> your project, but how did you plan to handle this?
+
+I may be misunderstanding Daisy, but let me explain what I had in mind 
+for OpenRecord.
+
+One of the things we'd like to be able to do with OpenRecord is a set up 
+a World Almanac site, containing lots of graphs and charts of the sort 
+of quantitative content you find in reference books like the CIA world 
+factbook.
+
+To keep track of information about Germany, we would have a Germany 
+item, with attributes like:
+
+  {item-id: 12845782,
+    name: ("Germany"),
+    area: (357,021 sq km),
+    pop:  (82,431,390),
+    capital: ([pointer to item representing Berlin]) }
+
+When we create language variants, we really want to do that on a field 
+by field basis.  We don't want each variant to have a separate copy of 
+the values for Land Area, Population, and Capital.
+
+We'd like to do this:
+  {item-id: 12845782,
+    name: [{lang:"en", value:"Germany"},
+           {lang:"de", value:"Deutchland"}],
+    area: (357,021 sq km),
+    pop:  (82,431,390),
+    capital: ([pointer to item representing Berlin]) }
+
+Rather than this:
+  {item-id: 12845782,
+   variants: [
+    { lang: "en",
+      name: ("Germany"),
+      area: (357,021 sq km),
+      pop:  (82,431,390),
+      capital: ([pointer to item representing Berlin]) },
+    { lang: "de",
+      name: ("Deutchland"),
+      area: (357,021 sq km),
+      pop:  (82,431,390),
+      capital: ([pointer to item representing Berlin]) } ] }
+
+
+>      > Regarding the charting code mentioned in the last 
+>      > update, you may also want to look at this recent
+>      > code: http://webfx.eae.net/dhtml/chart/chart.html
+> 
+>     Thanks for the pointer.  The WebFX charts look great.  
+>     Unfortunately the WebFX licenses are too restrictive 
+>     for us to use WebFX code in OpenRecord.   
+> 
+> Sorry, I know little about licensing. I think it is an MIT 
+> license in the source files, although he mentions some of 
+> his code being GNU on the website. Not sure how this conflicts 
+> with your licensing model though.
+
+Oh, cool.  You're absolutely right.  The source code file is labeled 
+with an MIT license.  I had only looked at the web site license info 
+page, which talks about the GNU GPL and commercial licenses by special 
+request only.  We can't use GNU GPL components in OpenRecord, but we can 
+include MIT license code.  Thanks for the pointer!
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Fri Feb 24 03:53:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Feb 24 03:53:02 2006
+Subject: [openrecord-dev] OpenRecord screencast
+Message-ID: <43FE7511.1060905@dojotoolkit.org>
+
+We've been working on a screencast about OpenRecord, and I've posted a 
+copy of it on our web site.
+
+It's not as polished or professional as it could be, but hopefully it 
+still gives a pretty good overview of what OpenRecord is about.
+
+The whole screencast is 22 minutes long, divided into 8 little segments. 
+  If you've got time to watch it, I'd love to get your feedback about 
+it.  I'd be interested in hearing what you think about the length, audio 
+quality, content choices, etc.  Unless there are serious problems, we 
+probably won't put more work into this screencast, but I'd like to 
+collect feedback about it anyway, so that we'll know how to make the 
+next one better.
+
+Here's the link:
+   http://openrecord.org/screencast.html
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Sun Feb 26 19:48:01 2006
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun Feb 26 19:48:01 2006
+Subject: [openrecord-dev] OpenRecord screencast
+In-Reply-To: <43FE7511.1060905@dojotoolkit.org>
+References: <43FE7511.1060905@dojotoolkit.org>
+Message-ID: <B6E67AA6-7E04-4BDE-B1BF-19B66BB3B0BA@cs.stanford.edu>
+
+Hi Brian,
+
+The screencast looks great! I love your Lessig-style presentation  
+(did you do that in Camtasia too?)!
+
+Patricia has a great voice for doing screencasts. Only feedback I  
+would have is to do a 2-3 minute summary of the 22 minute screencast  
+for people who are intimidated to make the 22 minute time investment.
+
+chao
+
+On Feb 23, 2006, at 6:53 PM, Brian Douglas Skinner wrote:
+
+> We've been working on a screencast about OpenRecord, and I've  
+> posted a copy of it on our web site.
+>
+> It's not as polished or professional as it could be, but hopefully  
+> it still gives a pretty good overview of what OpenRecord is about.
+>
+> The whole screencast is 22 minutes long, divided into 8 little  
+> segments.  If you've got time to watch it, I'd love to get your  
+> feedback about it.  I'd be interested in hearing what you think  
+> about the length, audio quality, content choices, etc.  Unless  
+> there are serious problems, we probably won't put more work into  
+> this screencast, but I'd like to collect feedback about it anyway,  
+> so that we'll know how to make the next one better.
+>
+> Here's the link:
+>   http://openrecord.org/screencast.html
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+
+
+
+From skinner at dojotoolkit.org  Mon Feb 27 02:26:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon Feb 27 02:26:01 2006
+Subject: [openrecord-dev] Re: [dojo-contributors] screencast for review
+In-Reply-To: <4401362D.5020703@dojotoolkit.org>
+References: <44012628.1020205@dojotoolkit.org> <4401362D.5020703@dojotoolkit.org>
+Message-ID: <440254F0.9050502@dojotoolkit.org>
+
+Bill Keese wrote:
+> Wow, I'm impressed.  Page editing is pretty cool.  
+
+Thanks!
+
+> Can you still copy/paste from the openrecord site, without 
+> starting an edit of the page?
+
+Yes...
+
+If you haven't logged in, then the entire site is in view mode rather 
+than edit mode.  In view mode, you can select any text on the page and 
+copy it, just the same as you would from any normal static web site.
+
+If the site is in edit mode, you can click on text to start editing it, 
+or you can drag-select text to copy the text without starting an edit. 
+If you do accidentally start an edit, you can always get out of it by 
+just clicking somewhere else, or by hitting the Esc key (although the 
+Esc key feature seems to be broken in the latest build).
+
+
+> Also, nice grid control.  Draggable columns...
+
+That's dojo.dnd at work.  Mignon just swapped out our old scriptaculous 
+drag-and-drop code and replaced it with dojo.dnd.  The dojo.dnd code is 
+slightly funky for dragging columns, because it assumes drags are moving 
+north/south, not east/west, but hopefully that'll be easy to fix.
+
+I'm looking forward to someday getting rid of that entire grid control 
+and replacing it with the dojo grid widget.  Likewise, I'm eager to 
+start using other dojo widgets in OpenRecord plugins.  Zhenjian, our 
+newest OpenRecord contributor, just wrote a bar chart plugin that 
+displays OpenRecord items using Tom's SVG Chart widget.  Very cool.
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Mon Feb 27 03:55:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon Feb 27 03:55:02 2006
+Subject: [openrecord-dev] Re: [dojo-contributors] screencast for review
+In-Reply-To: <dd28fc2f0602252105w750115aiaf296e7aca43dd2c@mail.gmail.com>
+References: <44012628.1020205@dojotoolkit.org> <dd28fc2f0602252105w750115aiaf296e7aca43dd2c@mail.gmail.com>
+Message-ID: <44026A01.9090507@dojotoolkit.org>
+
+Hey David, thanks for the detailed feedback.  I've added those 
+suggestions to our to-do list for the next rev of the screencast.
+
+Some responses inline...
+
+> 1) most importantly: I watched it all, even though it's 
+> longer than I expected.  I'm pretty impressed, not just 
+> with the screencast, but with openrecord.  So good job!
+
+Thanks, that's encouraging to hear!
+
+> 3) audio is clear
+
+I just got a new Logitech USB microphone for making the screencast. 
+Alex, let me know if you'd like it for making the Dojo screencasts. 
+It's noticeably better than the old microphone I first tried.
+
+> 5) Affordance of editability in the book club app isn't
+> obvious (suggest different background on hover).  Same 
+> for drag and dropability.
+
+That's funny -- we actually used to have a visual cue on hover, back in 
+an earlier version.  We must have broken that accidentally at some 
+point, and I hadn't noticed.  I've added a entry about that in our bug 
+tracking file.
+
+> 7) too bad you're using a file:// url -- distracts from 
+> the webapp concept
+
+Yup, we'll definitely use http: urls in the next screencast.  Right as I 
+was making the screencasts I ran into some glitch with our code that 
+only happened on the machine that I had the screencast software on, and 
+only in http: mode.  Very frustrating.  The screencast was already weeks 
+late, so I figured it was better to press on in file: mode rather than 
+spend time debugging.
+
+But, I do think it's cool that OpenRecord actually works in file: mode 
+as well as http: mode, at least until we replace our file-based 
+datastore with some more scalable solution.
+
+> 8) I want to know how to build the book club, not just edit it.
+
+The UI for setting up new sites is still clunky, so I felt I had to 
+leave that out.  We've just started working on UI improvements for that, 
+and we should be able to show that off in the next screencast.
+
+> 10) do you have "choice" types?
+
+We don't have any sort of an "enum" type -- for example, you can't set 
+up the "party" attribute to have a fixed set of values: [Democratic, 
+Republican, Green, Libertarian].  That's actually an intentional feature 
+omission, rather than just something we haven't gotten around to...
+
+I'm hoping that we can avoid needing an "enum" feature, and instead 
+encourage people to do something similar but modeled by using 
+relationships to other items.  So, instead of the "party" attribute 
+being declared as an enum, it would be declared as a reference to an 
+item in the category "Political Party", which would include items for 
+Democratic, Republican, Green, Libertarian, etc.  That way it's easy to 
+add more info about any of the parties.  The downside is that we then 
+don't restrict the user to *only* picking from one of the existing 
+parties -- the user is free to create new items representing other parties.
+
+> 11) the blue rounded corner styling on the links to items 
+> are getting on my nerves
+
+I'd welcome ideas about alternatives, if you maybe had something in 
+mind.  That's been a hard UI element to design...
+
+We could make the item links look like a traditional links (simple blue 
+underline), but that's maybe confusing, given that the item links aren't 
+traditional links, and don't have quite the same UI affordances.  For 
+example, with a normal link, a single click follows the link.  But, in 
+OpenRecord, on those item connections, we probably need the single click 
+action to select the connection, so that you can then do stuff like 
+cut/copy/paste/drag/etc.  Right now, the UI is set up so that you have 
+to double click to follow the link, although I was hoping to avoid 
+double-click operations entirely.
+
+> 12) create CSS for the plugin generator. =)
+> 15) I think openrecord could use some css-love.
+
+Yup, OpenRecord needs some style.  I've been mostly ignoring that 
+problem.  I'm banking on the dojo widgets getting some unified style, so 
+that then we can just have OpenRecord use dojo widgets, and use some 
+similar style for any custom UI in OpenRecord.
+
+> 13) I'm curious about the reporting capabilities of the engine...
+
+I'm not sure I know what you mean by reporting.  Do you mean, what sort 
+of queries you can use to populate a view with items to display?  Or do 
+you mean some sort of reporting view that's more geared toward printed 
+reports?  Any particular use cases we should be thinking about?
+
+
+> The screencast seems aimed halfway towards developers and 
+> halfway towards users.  I think it would be good to aim more 
+> towards users, and trim some of the jargon (esp. at the end   
+> of the concurrency section).
+
+The screencast is meant to be geared toward developers rather than 
+users.  I figure some of the first things a developer needs to know 
+about OpenRecord are what features the app has and what the app looks 
+like to a user, so that's why the first half of the screencast has a lot 
+of usage examples.
+
+We haven't yet decided what we want to use for a back-end datastore, and 
+until we get something solid in place, I'm actively discouraging users 
+from actually trusting OpenRecord with data they care about.  So, for 
+now, we're not working on attracting users -- so, no need for a 
+user-oriented screencast.
+
+We are definitely interested in inviting developers to work on 
+OpenRecord, and in getting feedback and suggestions from developers (for 
+example, about what datastore components we should be thinking about, 
+and about what other open source projects we should be collaborating with).
+
+> For developers, I'd show more code.  A lot more code =).
+
+Point taken.  I've added that to the to-do list for the next rev of the 
+screencast.
+
+> I'm definitely more interested in openrecord than I was ten 
+> minutes ago.  Cool.
+
+Thanks!
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Mon Feb 27 06:22:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon Feb 27 06:22:01 2006
+Subject: [openrecord-dev] OpenRecord screencast
+In-Reply-To: <B6E67AA6-7E04-4BDE-B1BF-19B66BB3B0BA@cs.stanford.edu>
+References: <43FE7511.1060905@dojotoolkit.org> <B6E67AA6-7E04-4BDE-B1BF-19B66BB3B0BA@cs.stanford.edu>
+Message-ID: <44028C65.6020702@dojotoolkit.org>
+
+Chih-Chao Lam wrote:
+> The screencast looks great! I love your Lessig-style presentation  
+> (did you do that in Camtasia too?)!
+
+Thanks!  I made the slides in OpenOffice Impress, and then flipped 
+through the slides as I was recording in Camtasia Studio.  I think 
+Camtasia does have some built-in thing for doing slides, but I couldn't 
+be bothered to learn how to use, especially since I like the OpenOffice 
+draw tools.
+
+> Patricia has a great voice for doing screencasts. 
+
+Yup, for the next rev of the screencast I'll try to get her to narrate 
+the whole thing, and I can happily end my public speaking career!
+
+> Only feedback I would have is to do a 2-3 minute summary of 
+> the 22 minute screencast for people who are intimidated to 
+> make the 22 minute time investment.
+
+That sounds like a good idea.  A 2-3 minute summary shouldn't take too 
+much time to make, although I'd have to think a lot about what to 
+include and what to leave out.
+
+:o) Brian
+
+

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] experimental data-provider code
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-February/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20experimental%20data-provider%20code&In-Reply-To=%3C43E2E512.6030807%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000270.html">
+   <LINK REL="Next"  HREF="000271.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] experimental data-provider code</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20experimental%20data-provider%20code&In-Reply-To=%3C43E2E512.6030807%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] experimental data-provider code">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Fri Feb  3 06:08:01 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000270.html">[openrecord-dev] OpenRecord news -- January 2006
+</A></li>
+        <LI>Next message: <A HREF="000271.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#268">[ date ]</a>
+              <a href="thread.html#268">[ thread ]</a>
+              <a href="subject.html#268">[ subject ]</a>
+              <a href="author.html#268">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-------- Original Message --------
+Subject: [ng-dhtml] experimental data-provider code
+Date: Thu, 02 Feb 2006 19:32:02 -0800
+From: Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt;
+Reply-To: dojo dev. &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">dojo-contributors at dojotoolkit.org</A>&gt;
+To: dojo dev &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">dojo-contributors at dojotoolkit.org</A>&gt;
+CC: <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev-request at berlios.de</A>
+
+For people who are interested in the Dojo data-provider plans...
+
+Last week I started fooling around with some experimental data-provider 
+code, setting out to write a initial implementation of a data-model. 
+It's far from finished, and far from presentable, but I figured I should 
+mention it here on the dojo-dev list anyway, so that other people can 
+look at it if they want to, on the theory that it's better to get 
+feedback sooner rather than later, and do course correction early.
+
+What I've got so far is some initial data-model code, with a couple 
+simple data-providers that you can use to populate the data model with 
+live content from del.icio.us, or content from .csv and .json files. 
+There's also a *very* crude sort of hack that takes items from the 
+data-provider and force feeds them to the SortableTable widget and the 
+SVG Chart widget.  (I need to replace the crude hack with something that 
+properly populates the widget's via their APIs, but I haven't gotten to 
+that yet.)
+
+If you want to take a look, here are some URLs.  The pages load slowly 
+because I haven't done a build...
+
+Here's an example that grabs live data from del.icio.us and &quot;binds&quot; it 
+to a SortableTable:
+  <A HREF="http://openrecord.org/dojo/2006-01-26/tests/data/test_delicious.html">http://openrecord.org/dojo/2006-01-26/tests/data/test_delicious.html</A>
+
+Here's an example that reads JSON data from a file, creates a ResultSet 
+of data Items, and binds the one ResultSet to both an SVG Chart and a 
+SortableTable.  The bindings register the display widgets as observers 
+of the data set, so when anything changes the data the widgets 
+automatically get redisplayed.  You can edit one of the items by 
+pressing the big button, and then see the widgets get updated:
+  <A HREF="http://openrecord.org/dojo/2006-01-26/tests/data/test_data_binding.html">http://openrecord.org/dojo/2006-01-26/tests/data/test_data_binding.html</A>
+
+And here's a third test page, which tests stuff like multi-valued 
+attributes, CSV file parsing, and ad-hoc attributes (an attribute which 
+is used on just one or two of the items in a result set, but no others):
+  <A HREF="http://openrecord.org/dojo/2006-01-26/tests/data/test_data.html">http://openrecord.org/dojo/2006-01-26/tests/data/test_data.html</A>
+
+Here are the unit tests:
+  <A HREF="http://openrecord.org/dojo/2006-01-26/tests/data/">http://openrecord.org/dojo/2006-01-26/tests/data/</A>
+
+The code itself could use a lot of spring-cleaning, but this is what it 
+looks like so far:
+  <A HREF="http://openrecord.org/dojo/2006-01-26/src/data/">http://openrecord.org/dojo/2006-01-26/src/data/</A>
+
+There's also this to-do list, which has a list of existing features as 
+well as ideas for what to do next:
+  <A HREF="http://openrecord.org/dojo/2006-01-26/src/data/to_do.txt">http://openrecord.org/dojo/2006-01-26/src/data/to_do.txt</A>
+
+Let me know what you think.  I'm happy to keep working on all this, and 
+it'd be great to get some feedback about whether I'm heading in a good 
+direction.  Right now I'm thinking the next big step is to write an 
+example of a data provider that talks to an SQL data store, if that 
+seems like a good idea.
+
+I can check in this experimental code somewhere, if other people are 
+interested in collaborating on it, or if anyone wants to use parts of it 
+for alternative dojo.data experiments or proposals.  If you would like 
+me to check it in, I could use some advice about where to put it. 
+Someday the real implementation will live in dojo.data, but I don't know 
+that there's a place for code which is more just &quot;thinking out loud&quot;. 
+For now I'll just keep working on my own machine.
+
+Cheers,
+   Brian
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000270.html">[openrecord-dev] OpenRecord news -- January 2006
+</A></li>
+	<LI>Next message: <A HREF="000271.html">[openrecord-dev] OpenRecord Data Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#268">[ date ]</a>
+              <a href="thread.html#268">[ thread ]</a>
+              <a href="subject.html#268">[ subject ]</a>
+              <a href="author.html#268">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

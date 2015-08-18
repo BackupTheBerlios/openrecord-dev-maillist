@@ -1,0 +1,349 @@
+From jon_carlson at writeme.com  Mon Sep 18 16:58:02 2006
+From: jon_carlson at writeme.com (Jon Carlson)
+Date: Mon, 18 Sep 2006 09:58:02 -0500
+Subject: [openrecord-dev] Question
+Message-ID: <66e99e000609180758w6b87a13bq83d972bbb1c5e3f5@mail.gmail.com>
+
+It's not clear to me what the OpenRecord server is written in.  I
+briefly looked at the source code and I seemed to only find javascript
+code (although I could have missed it).
+
+Also, would it be possible to try to keep the demo working so people
+don't get put off by a non-working demo?
+
+- Jonathan
+
+-- 
+"Without education we are in a horrible and deadly danger of taking
+educated people seriously." - G.K. Chesterton
+
+
+From jon_carlson at writeme.com  Mon Sep 18 17:03:24 2006
+From: jon_carlson at writeme.com (Jon Carlson)
+Date: Mon, 18 Sep 2006 10:03:24 -0500
+Subject: [openrecord-dev] RESTful data interface?
+Message-ID: <66e99e000609180803t528512det8f33ab60426036@mail.gmail.com>
+
+In my view, Open Record is the tool I've been dreaming about for a
+long time and always wondered why no one had written it yet.   :-)   I
+have a million little tool ideas I'd love to implement with it.
+
+The feature, in my view, that would make it "the cat's meow" would be
+a RESTful XML interface (http://en.wikipedia.org/wiki/REST) for the
+data so people could easily access the data from any scripting
+language that easily parses XML.
+
+Of course, if you had to do it in SOAP, I'd take that over nothing.  I
+just think SOAP is a lot more heavy-weight which would seem to go
+against the philosophy of Open Record.
+
+- Jonathan
+
+-- 
+"Without education we are in a horrible and deadly danger of taking
+educated people seriously." - G.K. Chesterton
+
+
+From skinner at dojotoolkit.org  Tue Sep 19 03:15:28 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon, 18 Sep 2006 18:15:28 -0700
+Subject: [openrecord-dev] OpenRecord demo
+Message-ID: <450F44B0.4020301@dojotoolkit.org>
+
+We've recently posted a new OpenRecord demo:
+   http://openrecord.org/demo.html
+
+This new demo uses our current code, including all the new plugin views 
+that Hiran wrote for his Google Summer of Code project.  We have four 
+new plugin views, for displaying:
+
+   * bar charts
+   * scatter plots
+   * timelines
+   * pivot tables
+
+We're still at an early stage in developing OpenRecord.  We're a long 
+way from being ready to do an alpha release, much less a beta test.  The 
+current code is still buggy and slow, and it only runs in Firefox. 
+We'll be fixing bugs and adding features in the months to come, but the 
+new demo should give you a good feel for where we are now.
+
+I'd like to thank Google for funding Hiran's work on the new plugins.  I 
+also want to thank David Huynh at MIT for his Timeline widget, and Tom 
+Trenka at the Dojo Foundation for his Chart widget, both of which are 
+used in the new OpenRecord plugin views.
+
+:o) Brian
+
+
+
+
+
+
+From skinner at dojotoolkit.org  Tue Sep 19 03:16:10 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon, 18 Sep 2006 18:16:10 -0700
+Subject: [openrecord-dev] Question
+In-Reply-To: <66e99e000609180758w6b87a13bq83d972bbb1c5e3f5@mail.gmail.com>
+References: <66e99e000609180758w6b87a13bq83d972bbb1c5e3f5@mail.gmail.com>
+Message-ID: <450F44DA.7080901@dojotoolkit.org>
+
+Jon Carlson wrote:
+> Also, would it be possible to try to keep the demo working so 
+> people don't get put off by a non-working demo?
+
+Our old demo page was badly out of date.  We've definitely been remiss 
+in not keeping a working demo posted.
+
+We do hope to keep the new demo working.  The demo we have posted now 
+allows different people to each make their own copy of the demo 
+document, each with its own URL.  You can share that URL with colleagues 
+to try out the concurrent editing features.  Those URLs should work for 
+at least a few days or a few weeks, although we will need to 
+periodically delete old demo documents in order to save disk space.
+
+Over the past couple weeks we've been actively working on the new demo. 
+  We hadn't announced the new demo, but we did have a link to it from 
+the openrecord.org web site, and people created a few dozen new demo 
+documents every day.  As we were working on the demo we needed to 
+periodically delete the demo documents that people created, but now that 
+we've announced the demo we will no longer be deleting demo documents 
+every few days.
+
+We're still at a very pre-alpha stage, and you can expect the current 
+demo to be buggy and slow.  But it should basically work -- you should 
+be able to go from page to page, add new items, new pages, etc.  If the 
+demo isn't working, please do let us know, and we'll try to get it fixed.
+
+We're also interested in bug reports, and bug reports with bug fix 
+patches are especially welcome!
+
+:o) Brian
+
+
+
+
+
+
+From skinner at dojotoolkit.org  Tue Sep 19 03:16:17 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon, 18 Sep 2006 18:16:17 -0700
+Subject: [openrecord-dev] Question
+In-Reply-To: <66e99e000609180758w6b87a13bq83d972bbb1c5e3f5@mail.gmail.com>
+References: <66e99e000609180758w6b87a13bq83d972bbb1c5e3f5@mail.gmail.com>
+Message-ID: <450F44E1.8080800@dojotoolkit.org>
+
+Jon Carlson wrote:
+> It's not clear to me what the OpenRecord server is written in.  
+> I briefly looked at the source code and I seemed to only find 
+> javascript code (although I could have missed it).
+
+OpenRecord is 99% client-side JavaScript and only 1% server-side PHP.
+
+We only have about 100 lines of server code, and the server code does 
+almost nothing -- mostly it just appends text packets to a simple 
+transaction log.  If you're browsing through the source code, you can 
+find the PHP files in the directory source/storage/
+
+The current client-centric architecture is only good enough to handle 
+simple demo documents that have a few hundred items or less.  In order 
+to turn OpenRecord into a shipping product we'll need to be able to 
+support documents that have thousands of items (or more), and for that 
+we'll need to have a real server built on top of a real datastore. 
+We're planning to do that in the months to come.
+
+The Dojo Foundation has a small working group that's designing a simple 
+API for a standard Dojo data access layer.  Adam Souzis and I are active 
+in that effort.  The Dojo data access API will be capable of 
+representing semi-structured data structures like OpenRecord items and 
+RDF triples.  Now that the Dojo data access API is starting to take 
+shape, Adam plans to work on an implementation of that API.  Adam's 
+implementation will be able to connect to an RDF data server and make 
+the RDF data available as JavaScript data items.  Once that's available, 
+OpenRecord can use that implementation, and we'll throw out our existing 
+PHP code and our current idiosyncratic OpenRecord data model.
+
+:o) Brian
+
+
+
+
+
+From skinner at dojotoolkit.org  Tue Sep 19 03:16:23 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon, 18 Sep 2006 18:16:23 -0700
+Subject: [openrecord-dev] RESTful data interface?
+In-Reply-To: <66e99e000609180803t528512det8f33ab60426036@mail.gmail.com>
+References: <66e99e000609180803t528512det8f33ab60426036@mail.gmail.com>
+Message-ID: <450F44E7.6000606@dojotoolkit.org>
+
+Jon Carlson wrote:
+> In my view, Open Record is the tool I've been dreaming about for a
+> long time and always wondered why no one had written it yet.   :-)   
+
+Thanks, that's great to hear!
+
+
+> The feature, in my view, that would make it "the cat's meow" would 
+> be a RESTful XML interface (http://en.wikipedia.org/wiki/REST) for 
+> the data so people could easily access the data from any scripting
+> language that easily parses XML.
+> 
+> Of course, if you had to do it in SOAP, I'd take that over nothing.  
+> I just think SOAP is a lot more heavy-weight which would seem to go
+> against the philosophy of Open Record.
+
+Yup, it'd be great to have a RESTful XML interface or a SOAP API to get 
+at the data.  A simple JSON interface would be cool too.
+
+We don't yet have a real server, so we're not quite at that stage yet. 
+But if all goes well we may have an OpenRecord server in the next few 
+months, so hopefully a simple REST interface will be possible soon.
+
+:o) Brian
+
+
+
+
+
+From jon_carlson at writeme.com  Tue Sep 19 03:35:58 2006
+From: jon_carlson at writeme.com (Jon Carlson)
+Date: Mon, 18 Sep 2006 20:35:58 -0500
+Subject: [openrecord-dev] RESTful data interface?
+In-Reply-To: <450F44E7.6000606@dojotoolkit.org>
+References: <66e99e000609180803t528512det8f33ab60426036@mail.gmail.com>
+	<450F44E7.6000606@dojotoolkit.org>
+Message-ID: <66e99e000609181835s29417966l48595ea22d36d81a@mail.gmail.com>
+
+> We don't yet have a real server, so we're not quite at that stage yet.
+> But if all goes well we may have an OpenRecord server in the next few
+> months, so hopefully a simple REST interface will be possible soon.
+
+Thanks for the response.  I'm curious how it supports concurrent
+editing and data persistence without a server.   What are you thinking
+the server will be written in?
+
+- Jonathan
+
+On 9/18/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+> Jon Carlson wrote:
+> > In my view, Open Record is the tool I've been dreaming about for a
+> > long time and always wondered why no one had written it yet.   :-)
+>
+> Thanks, that's great to hear!
+>
+>
+> > The feature, in my view, that would make it "the cat's meow" would
+> > be a RESTful XML interface (http://en.wikipedia.org/wiki/REST) for
+> > the data so people could easily access the data from any scripting
+> > language that easily parses XML.
+> >
+> > Of course, if you had to do it in SOAP, I'd take that over nothing.
+> > I just think SOAP is a lot more heavy-weight which would seem to go
+> > against the philosophy of Open Record.
+>
+> Yup, it'd be great to have a RESTful XML interface or a SOAP API to get
+> at the data.  A simple JSON interface would be cool too.
+>
+> We don't yet have a real server, so we're not quite at that stage yet.
+> But if all goes well we may have an OpenRecord server in the next few
+> months, so hopefully a simple REST interface will be possible soon.
+>
+> :o) Brian
+>
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> https://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+-- 
+"Without education we are in a horrible and deadly danger of taking
+educated people seriously." - G.K. Chesterton
+
+
+From skinner at dojotoolkit.org  Tue Sep 19 04:55:47 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Mon, 18 Sep 2006 19:55:47 -0700
+Subject: [openrecord-dev] RESTful data interface?
+In-Reply-To: <66e99e000609181835s29417966l48595ea22d36d81a@mail.gmail.com>
+References: <66e99e000609180803t528512det8f33ab60426036@mail.gmail.com>	<450F44E7.6000606@dojotoolkit.org>
+	<66e99e000609181835s29417966l48595ea22d36d81a@mail.gmail.com>
+Message-ID: <450F5C33.9050209@dojotoolkit.org>
+
+>> We don't yet have a real server, so we're not quite at that 
+>> stage yet.
+> 
+> Thanks for the response.  I'm curious how it supports concurrent
+> editing and data persistence without a server. 
+
+You bet, let me try to describe how it works now...
+
+Right now we're storing all the data on the server in what amounts to 
+one long transaction log file.  When you create a new item on the 
+client, the JavaScript code creates a little JSON-format text packet 
+that describes the transaction.  The client sends that text packet to 
+the server, and the server appends the packet to the log file.  Same 
+thing whenever a user changes any attribute of any item.
+
+Each new attribute value gets a unique id.  If I edit the Kermit item to 
+set the color attribute to "green", then there will be a new unique id 
+associated with that entry, something like this:
+  {id:XYZ,
+   user:Brian, timestamp:"2006-09-18 16:44:28",
+   item:Kermit, attribute:color, value:"green"}
+
+If you come along and change Kermit's color to "aqua", that creates a 
+new entry, which is marked as a replacement for my old "green" entry:
+  {id:QRP, replaces:XYZ,
+   user:Jon, timestamp:"2006-09-19 13:11:33",
+   item:Kermit, attribute:color, value:"aqua"}
+
+Let's say there's also another user, Amy.  Amy might also be editing 
+Kermit at the same time you are.  Amy would still think Kermit is green, 
+because she hasn't yet seen your change.  She might independently change 
+Kermit's color from "green" to "blue".  Her entry looks like this:
+  {id:ABC, replaces:XYZ,
+   user:Amy, timestamp:"2006-09-19 13:11:33",
+   item:Kermit, attribute:color, value:"blue"}
+
+At this point the transaction log contains all three entries: XYZ, QRP, 
+and ABC.  Entry XYZ is no longer considered as binding, since the other 
+entries mark XYZ as having been replaced.  But QRP and ABC are both 
+still binding, since they were made concurrently and neither one 
+replaces the other.  So at this point Kermit is both "aqua" and "blue". 
+  When a new user opens their browser and looks at that page, the 
+OpenRecord JavaScript code figures out Kermit's current color by reading 
+the entire transaction log and seeing what entries are applicable.
+
+The transaction log approach is not scalable, but it has worked nicely 
+for prototyping.  There's a 4-minute section in our screencast that 
+shows how this all looks from a user's perspective:
+  http://openrecord.org/screencast/2006-02-21/OpenRecord.html?movie=5
+
+
+> What are you thinking the server will be written in?
+
+To get a server up and running quickly, with all the flexible data 
+features that we want, I think the best bet is to build on top of Adam 
+Souzis's RDF server tools, Racoon and Rx4RDF.  I think those tools are 
+written in Python, although I think sites that use those tools can be 
+written using RxSLT, XSLT, and RxUpdate.
+
+There's more info at Adam's web site, although the server seems to be 
+down right now:
+   http://www.liminalzone.org/
+
+~ Brian
+
+
+
+
+
+

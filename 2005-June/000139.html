@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Test for non-null function parameter
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Test%20for%20non-null%20function%20parameter&In-Reply-To=%3C200506151802.j5FI2eI21773%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000138.html">
+   <LINK REL="Next"  HREF="000140.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Test for non-null function parameter</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Test%20for%20non-null%20function%20parameter&In-Reply-To=%3C200506151802.j5FI2eI21773%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Test for non-null function parameter">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed Jun 15 20:03:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000138.html">[openrecord-dev] Test for non-null function parameter
+</A></li>
+        <LI>Next message: <A HREF="000140.html">[openrecord-dev] book hiatus -- sample data on vacation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#139">[ date ]</a>
+              <a href="thread.html#139">[ thread ]</a>
+              <a href="subject.html#139">[ subject ]</a>
+              <a href="author.html#139">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> Problem is my specific example is for matching 
+</I>&gt;<i> value in a query, which could be a string, number, 
+</I>&gt;<i> Date or Item - I just don't want it to be null or 
+</I>&gt;<i> undefined, because that's an error, but I want it 
+</I>&gt;<i> to be open-ended to cater for future types.
+</I>
+Got it.  Okay, so if the only two values you need to guard against are null
+and undefined, then you could do something like this:
+
+  Util.assert((x !== null) &amp;&amp; (x !== Util.UNDEFINED_VALUE));
+
+That line should work as is, but to make things less cryptic you could add a
+declaration at the top of Util:
+
+  var Util.UNDEFINED_VALUE;
+
+
+Do you also want to guard against values that are similar to null, such as:
+  - empty string values (&quot;&quot;)
+  - the number value 0 
+  - the number value NaN
+  - the boolean value false
+  - null
+  - undefined
+
+If you need to do that, then we should probably add a new assert method to
+Util.  Maybe something like this:
+
+  Util.assertNonEmpty = function (value, message) {
+    var booleanValue = Boolean(value);
+    Util.assert(booleanValue, message);
+  }
+
+I'm not sure what the name should be: &quot;assertNonEmpty&quot; seems okay, but we
+could probably do better.  
+
+But, probably we don't want to do that, because then we won't be able to
+query on a boolean-type attribute for items where the value is false (e.g.
+find all tasks where done == false).
+
+:<i>o) Brian
+</I>
+
+
+On Jun 14, 2005, at 7:21 PM, Brian Douglas Skinner wrote:
+
+&gt;<i> Hi Chao,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> What's the best way to test for a non-null function
+</I>&gt;&gt;<i> parameter, given our Lint Tests?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> e.g. function(x,y,z)
+</I>&gt;&gt;<i> I want to make sure that x,y,z are non-null and actually
+</I>&gt;&gt;<i> defined.  What assert statements should I use?
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The thing I do most often is to check that each parameter is of the  
+</I>&gt;<i> right
+</I>&gt;<i> type, like this:
+</I>&gt;<i>   Util.assert(x instanceof Item);
+</I>&gt;<i>   Util.assert(Util.isString(y));
+</I>&gt;<i>   Util.assert(Util.isUuid(z));
+</I>&gt;<i>
+</I>&gt;<i> Those sorts of checks will make sure that the parameters are not  
+</I>&gt;<i> null and
+</I>&gt;<i> not undefined.
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000138.html">[openrecord-dev] Test for non-null function parameter
+</A></li>
+	<LI>Next message: <A HREF="000140.html">[openrecord-dev] book hiatus -- sample data on vacation
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#139">[ date ]</a>
+              <a href="thread.html#139">[ thread ]</a>
+              <a href="subject.html#139">[ subject ]</a>
+              <a href="author.html#139">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

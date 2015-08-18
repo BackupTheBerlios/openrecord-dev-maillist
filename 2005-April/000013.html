@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] RE: single-line text widgets
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20RE%3A%20single-line%20text%20widgets&In-Reply-To=%3C200504120531.j3C5VZm30075%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000012.html">
+   <LINK REL="Next"  HREF="000014.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] RE: single-line text widgets</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20RE%3A%20single-line%20text%20widgets&In-Reply-To=%3C200504120531.j3C5VZm30075%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] RE: single-line text widgets">brian.skinner at gumption.org
+       </A><BR>
+    <I>Tue Apr 12 07:32:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000012.html">[openrecord-dev] mailing list working again!
+</A></li>
+        <LI>Next message: <A HREF="000014.html">[openrecord-dev] RE: Extreme Programming
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#13">[ date ]</a>
+              <a href="thread.html#13">[ thread ]</a>
+              <a href="subject.html#13">[ subject ]</a>
+              <a href="author.html#13">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> | Are you sure the single-line use case actually 
+</I>&gt;<i> | requires an &lt;input type=text&gt; instead of a 
+</I>&gt;<i> | &lt;textarea&gt;?  I wonder if maybe the &lt;textarea&gt; 
+</I>&gt;<i> | would work fine for displaying strings that 
+</I>&gt;<i> | happen to be only one line long.
+</I>&gt;<i>
+</I>&gt;<i> Hmm, you're right &lt;textarea&gt; can handle single 
+</I>&gt;<i> lines too. The biggest difference I see is that 
+</I>&gt;<i> &lt;input type=text&gt; really restricts you to just 
+</I>&gt;<i> one line of text e.g. it filters out &lt;return&gt; 
+</I>&gt;<i> and &lt;enter&gt; keystrokes. Not sure if there are 
+</I>&gt;<i> other germane differences too.
+</I>
+I think that even for the multi-line use case, we'll probably need to have
+the &lt;textarea&gt; filter out the &lt;return&gt; and &lt;enter&gt; keystrokes.  
+
+My understanding is that Firefox has the textarea convert &lt;enter&gt; into a \n,
+while IE on Windows has the textarea treat &lt;enter&gt; as a \r\n, and IE on the
+Mac has the textarea treat &lt;enter&gt; as a \r.  
+
+We could just decide not to allow text strings to have any sort of
+paragraphs breaks at all, at least for the short term.  Which means we need
+to filter out the &lt;enter&gt; strokes as the user types, or after the user
+finishes.
+
+Or, if we do allow text strings to have paragraphs, we need to pick a
+standard format for how we store the string in the datastore.  Probably \n
+is a good convention, except that with our current JSON file format, the app
+bombs out if there's a \n in a string literal.  
+
+When we're not in edit mode, then the string will be displayed in an &lt;h1&gt; or
+a &lt;p&gt; or something, and the \n won't create a line feed, so we'll need to
+replace the \n with a &lt;br/&gt; or a &lt;/p&gt;&lt;p&gt; or something.  That's maybe more
+trouble than it's worth, at least for now.  Plus I like the idea of
+restricting text attributes to only being a single paragraph.  It fits in
+with my whole agenda for having the app be a tool that focuses on items and
+attributes, not pages of text!
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000012.html">[openrecord-dev] mailing list working again!
+</A></li>
+	<LI>Next message: <A HREF="000014.html">[openrecord-dev] RE: Extreme Programming
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#13">[ date ]</a>
+              <a href="thread.html#13">[ thread ]</a>
+              <a href="subject.html#13">[ subject ]</a>
+              <a href="author.html#13">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

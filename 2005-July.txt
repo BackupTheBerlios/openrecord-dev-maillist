@@ -1,0 +1,1579 @@
+From chao at cs.stanford.edu  Fri Jul  1 00:38:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri Jul  1 00:38:00 2005
+Subject: [openrecord-dev] Drag and Drop libraries:
+Message-ID: <7C1CEBC8-3859-463A-8F41-279704913BF6@cs.stanford.edu>
+
+I've been looking at two complementary drag and drop libraries in  
+Javascript that seem quite useful and easy to integrate with our  
+codebase:
+
+http://script.aculo.us/drag-and-drop
+
+script.aculo.us is built on top of prototype:
+http://prototype.conio.net/
+
+I think they'll give us a good leg up in providing better UI  
+functionality. They're both under the MIT license. What do folks  
+think of using these libraries? Minimally, they have pretty inspiring  
+demoes!
+
+chao
+
+
+From brian.skinner at gumption.org  Fri Jul  1 01:35:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Jul  1 01:35:01 2005
+Subject: [openrecord-dev] Drag and Drop libraries:
+In-Reply-To: <7C1CEBC8-3859-463A-8F41-279704913BF6@cs.stanford.edu>
+Message-ID: <200506302334.j5UNYQI22274@bat.berlios.de>
+
+> I've been looking at two complementary drag and 
+> drop libraries in Javascript 
+>   http://script.aculo.us/drag-and-drop
+>   http://prototype.conio.net/
+> ...
+> They're both under the MIT license. What do folks  
+> think of using these libraries? 
+
+Sounds good to me.  I haven't looked at the code, but the demos are cool.
+
+The MIT license is nice liberal license.  If we use one of those libraries,
+we can just check their source code into our "third_party" directory, along
+with their license file. 
+
+If you're looking into this stuff, there are also couple other sites you
+might want to look at...
+
+Tim Taylor has drag-and-drop code that's also under an MIT-style license:
+  http://tool-man.org/examples/sorting.html
+
+Sproutliner also has drag-and-drop features, but their code is under a
+CC-GPL license, which is useless to us:
+  http://sproutliner.com/
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Sat Jul  2 06:50:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Jul  2 06:50:01 2005
+Subject: [openrecord-dev] LiveGrid
+Message-ID: <C2A4DF45-1F89-4A25-BEDA-68ECD7DC058D@cs.stanford.edu>
+
+Here's a project similar to OpenRecord, it's a component for  
+displaying data in tabular format, interesting piece is that it can  
+display a huge table but only retrieves whatever needs to be  
+displayed, a small chunk at a time.
+
+http://openrico.org/livegrid.page
+
+chao
+
+
+From chao at cs.stanford.edu  Tue Jul  5 22:06:04 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Jul  5 22:06:04 2005
+Subject: [openrecord-dev] Adding and manipulating selection objects in OpenRecord
+Message-ID: <8C2CDA81-386A-4504-B48A-6EF4389CA7D5@cs.stanford.edu>
+
+Here's a simple proposal that I'll be implementing for adding and  
+manipulating selected objects for OpenRecord. Proposal is crude and  
+simple, in the extreme-programming style.
+
+On RootView, we have two methods:
+1) SetSelection(View)
+2) AddToSelection(View)
+
+RootView will trap for key strokes and send them to the selection(s)  
+for handling. (Turns out trapping keystrokes needs to be done at the  
+Document level, not Document.body)
+
+On each selectable View, we add 2 methods:
+1) UnSelect()
+2) HandleKeyEvent(Event)
+[also probably a third method Select(), but not necessary for this to  
+work]
+
+Things that I've thought about and we may add later:
+1) Instead of a View being the selection object, we may want to  
+create a Selectable Interface so that other objects can be selected  
+as well (e.g. table row, which isn't a view right now). Not sure  
+exactly how to introduce an "Interface" concept in Javascript.
+
+2) Handling selection by traversing up the view hierarchy.  This is  
+useful if we want to prevent two rows from two different tables from  
+being selected at any one time. Also, we may want a row and an Entry  
+to be selected at the same time. Not dealing with these issues right  
+now.
+
+I'm going to try to implement this, this afternoon but welcome  
+comments before, during and after.
+
+chao
+
+
+
+
+From brian.skinner at gumption.org  Wed Jul  6 00:21:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul  6 00:21:00 2005
+Subject: [openrecord-dev] Adding and manipulating selection objects in OpenRecord
+In-Reply-To: <8C2CDA81-386A-4504-B48A-6EF4389CA7D5@cs.stanford.edu>
+Message-ID: <200507052220.j65MKnI01977@bat.berlios.de>
+
+> Here's a simple proposal that I'll be implementing 
+> for adding and manipulating selected objects for 
+> OpenRecord. Proposal is crude and simple, in the 
+> extreme-programming style.
+
+Sounds good to me.  I'm not sure I fully understand.  Maybe you can explain
+it all to me the next time we get together.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jul  6 04:27:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul  6 04:27:00 2005
+Subject: [openrecord-dev] Drag and Drop libraries:
+In-Reply-To: <7C1CEBC8-3859-463A-8F41-279704913BF6@cs.stanford.edu>
+Message-ID: <200507060226.j662QCI08461@bat.berlios.de>
+
+> I've been looking at two ... 
+> drag and drop libraries   
+>   http://script.aculo.us/drag-and-drop
+>   http://prototype.conio.net/
+
+
+Hey Chao,
+
+Here's another drag-and-drop library that might be worth looking at.  
+
+This one is Aaron Boodman's DOM-drag.  It's the library that Karl O'Keeffe
+used in his cool AJAX Monket Calendar.
+
+Looks like the whole DOM-drag drag-and-drop library is only 120 lines of
+code.  It's not clear what the license is, but we could probably establish
+that with a quick e-mail message to Aaron.
+
+code:
+  http://www.youngpup.net/2001/domdrag/project?file=dom-drag.js
+
+demos:
+  http://www.youngpup.net/_projectDirectories/domdrag/demos/ex4/index.html
+ 
+http://www.youngpup.net/_projectDirectories/domdrag/demos/domdrag/index.html
+
+tutorial:
+  http://www.youngpup.net/2001/domdrag/tutorial
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jul  6 06:07:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul  6 06:07:00 2005
+Subject: [openrecord-dev] re: Advanced DOM techniques
+Message-ID: <200507060406.j66467I10746@bat.berlios.de>
+
+> Here's a great article on Javascript DOM techniques:
+>
+http://www-128.ibm.com/developerworks/xml/library/x-matters41.html?ca=dnt-62
+1
+> 
+> I particularly like the function elem() to create a DOM 
+> element in one function call, setting all its attributes, 
+> styles and text in the same call. 
+> 
+> Brian, what you do think of refactoring View.createAndAppendElement()  
+> in this way?
+
+Hi Chao,
+
+That elem() function is cool.  It's another example of how using JSON can
+make things concise and convenient.  
+
+The View.createAndAppendElement() method encapsulates one thing that elem()
+doesn't, which is the call to parent.appendChild().  If we refactor
+View.createAndAppendElement(), I'd like to keep the appendChild() line, so
+that the caller doesn't have to do it themselves every time.
+
+Our View.createAndAppendElement() actually already does a portion of what
+elem() does.  The createAndAppendElement() method takes a couple optional
+arguments, so you can pass it the className and id, and it will set those
+attributes of the new element.  I think className is the single most likely
+thing you would want to set, so it maybe makes sense to have that as a
+first-class parameter rather than something you have to use JSON to set.
+
+But, createAndAppendElement() doesn't help you at all if you want to set
+other attributes, like "href" or "type" or "value".  And that is something
+we regularly want to do, so it'd be cool to add that feature to
+createAndAppendElement().  And it would be convenient if
+createAndAppendElement() knew how to optionally add a text node within the
+element.
+
+The other thing that elem() offers is a way to set CSS style info.  I'm much
+less keen on that.  From time to time we may want to attach style info to a
+single element, but in general I think we should assign a CSS className for
+the element and then have the element get all its style from the class
+definition in the stylesheet.  So I'd actually like to intentionally make it
+inconvenient to attach style info programmatically.
+
+While we're at it, what do you think of changing the name from
+"createAndAppendElement()" to something like "appendNewElement()"?  That'd
+be a little shorter, while still striving to self-explanatory, in the spirit
+of Knuth's "literate programming".
+
+So, if you buy into those ideas, here's an example of what our code might
+look like:
+
+  var menuItem = View.appendNewElement(mainMenu, "li",
+NavbarView.CSS_CLASS_MENU_ITEM);
+  var link = View.appendNewElement(menuItem, "a", null, {href: menuUrl},
+menuText);
+
+And here's what the implementation might look like:
+
+View.appendNewElement = function(parentElement, tagName, cssClassName,
+attributesInJson, text) {
+  Util.assert(parentElement instanceof HTMLElement);
+  Util.assert(Util.isString(tagName));
+  Util.assert(!cssClassName || Util.isString(cssClassName));
+  Util.assert(!attributesInJson || Util.isObject(attributesInJson));
+  Util.assert(!text|| Util.isString(text));
+
+  var newElement = window.document.createElement(tagName);
+  parentElement.appendChild(newElement);
+  if (cssClassName) {
+    newElement.className = cssClassName;
+  }
+  if (attributesInJson) {
+    for (var key in attributesInJson) {
+      if (key == 'id') {
+        newElement.id = attributesInJson[key];
+      } else {
+        newElement.setAttribute(key, attributesInJson[key]);
+      }
+    }
+  }
+  if (text) {
+    e.appendChild(document.createTextNode(text));
+  }
+  return newElement;
+};
+
+What do you think?
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Wed Jul  6 06:40:04 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jul  6 06:40:04 2005
+Subject: [openrecord-dev] re: Advanced DOM techniques
+In-Reply-To: <200507060406.j66467I10746@bat.berlios.de>
+References: <200507060406.j66467I10746@bat.berlios.de>
+Message-ID: <74DFBD0B-6529-404C-A24F-054762C438A6@cs.stanford.edu>
+
+Hi Brian,
+> The View.createAndAppendElement() method encapsulates one thing  
+> that elem()
+> doesn't, which is the call to parent.appendChild().  If we refactor
+> View.createAndAppendElement(), I'd like to keep the appendChild()  
+> line, so
+> that the caller doesn't have to do it themselves every time.
+>
+Could we have both the createElement() function and  
+createAndAppendElement() function (that utilizes the former)?
+
+There are times where I'll like to create and initialize an element  
+before appending it to its parentNode(), where the initialization may  
+entail code outside of the functionality of these 2 functions. I  
+think our new function should reduce the likelihood of this, but  
+there will probably still be times where I need to, for example, set  
+up sound event handling functions first before displaying the  
+function, or say, attach classNames to the element.
+
+
+> Our View.createAndAppendElement() actually already does a portion  
+> of what
+> elem() does.  The createAndAppendElement() method takes a couple  
+> optional
+> arguments, so you can pass it the className and id, and it will set  
+> those
+> attributes of the new element.  I think className is the single  
+> most likely
+> thing you would want to set, so it maybe makes sense to have that as a
+> first-class parameter rather than something you have to use JSON to  
+> set.
+>
+Yup, sounds reasonable.
+>
+
+> The other thing that elem() offers is a way to set CSS style info.   
+> I'm much
+> less keen on that.  From time to time we may want to attach style  
+> info to a
+> single element, but in general I think we should assign a CSS  
+> className for
+> the element and then have the element get all its style from the class
+> definition in the stylesheet.  So I'd actually like to  
+> intentionally make it
+> inconvenient to attach style info programmatically.
+>
+Yup, that sounds fair too.
+
+> While we're at it, what do you think of changing the name from
+> "createAndAppendElement()" to something like "appendNewElement()"?   
+> That'd
+> be a little shorter, while still striving to self-explanatory, in  
+> the spirit
+> of Knuth's "literate programming".
+>
+That sounds good too, if we can have both functions as described above.
+> What do you think?
+>
+Excellent, thanks for revisiting this issue.
+
+chao
+
+
+
+From brian.skinner at gumption.org  Wed Jul  6 18:02:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul  6 18:02:00 2005
+Subject: [openrecord-dev] dashboard CSS file
+Message-ID: <200507061601.j66G1FI03624@bat.berlios.de>
+
+Chao wrote:
+> I've got a first workable version of the Dashboard view at:
+> <http://coolchaser.com/or/source/demo_page.html>
+> ...
+> The CSS file is located at:
+> <http://coolchaser.com/or/source/base_style.css>
+> 
+> if you want to play around with it. Let me know if you need write  
+> access to the file.
+
+
+Hey Mimi & Chao,
+
+Mimi, I don't know if you've been playing around with the CSS file for the
+Dashboard demo, but I just wanted to give you a heads-up that I've been
+working on how OpenRecord uses CSS.  
+
+I'm not done yet, but I've started making some changes to the JavaScript
+code and to the CSS file.  The latest version of the CSS file is in the main
+subversion repository, but not yet up on the coolchaser site.
+
+Things should start gradually getting cleaner.  One tangible difference is
+that we can now have CSS styles for different types of entries: dates,
+numbers, text, and items.  To test it out, I made dates be italic, numbers
+be bold, and negative numbers be red.  We can play with that and try to come
+up with better choices.
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Wed Jul  6 20:10:06 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul  6 20:10:06 2005
+Subject: [openrecord-dev] selecting and deleting
+Message-ID: <200507061809.j66I9xI08399@bat.berlios.de>
+
+Hey Chao,
+
+> Added initial support for selecting and deleting 
+> Entries. Contains several bugs but thought it's 
+> worth checking it in first. I think I've also 
+> slowed things down. Will look into it, but maybe 
+> Brian can help too (wink :)
+
+The new selection stuff looks great!  
+
+I did timing tests with the old code and with the new selecting and deleting
+code, and the numbers came out same, so I don't think your code slowed
+anything down.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Wed Jul  6 20:18:03 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul  6 20:18:03 2005
+Subject: [openrecord-dev] _ourHashTableOfTypesKeyedByClassName
+Message-ID: <200507061817.j66IHRI08562@bat.berlios.de>
+
+> Small fix to make Entry._ourHashTableOfTypesKeyedByClassName 
+> get used instead of instance variable analogue, so that all 
+> instances share this variable
+
+Thanks!
+
+
+
+From brian.skinner at gumption.org  Wed Jul  6 22:57:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul  6 22:57:00 2005
+Subject: [openrecord-dev] re: Advanced DOM techniques
+In-Reply-To: <74DFBD0B-6529-404C-A24F-054762C438A6@cs.stanford.edu>
+Message-ID: <200507062056.j66Ku0I12782@bat.berlios.de>
+
+Hey Chao,
+
+| > The View.createAndAppendElement() method encapsulates 
+| > one thing that elem() doesn't, which is the call to 
+| > parent.appendChild().  
+| 
+| Could we have both the createElement() function and  
+| createAndAppendElement() function (that utilizes the 
+| former)?
+| 
+| There are times where I'll like to create and initialize
+| an element before appending it to its parentNode()...
+
+
+I just checked in the code for this.  
+The new methods are:
+
+  View.newElement()
+  View.appendNewElement()
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Thu Jul  7 00:39:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jul  7 00:39:01 2005
+Subject: [openrecord-dev] Drag and Drop libraries:
+In-Reply-To: <200507060226.j662QCI08461@bat.berlios.de>
+References: <200507060226.j662QCI08461@bat.berlios.de>
+Message-ID: <24B7F8C7-E510-4580-B0C3-C996DB062B45@cs.stanford.edu>
+
+Yeah, I did have a look at this. I thought it wasn't as complete and  
+well thought out because it's mainly focused on "dragging" and not  
+"dropping". So, for example, there's no code to animate the dragged  
+element back to it's original location if it cannot find a place to  
+be dropped.
+
+BTW, I'm keeping a list of Javascript/ajax bookmarks on del.icio.us,  
+organized by different tags e.g.
+
+http://del.icio.us/chaodoze/javascript
+http://del.icio.us/chaodoze/ajax
+http://del.icio.us/chaodoze/dnd
+http://del.icio.us/chaodoze/dom
+
+chao
+
+On Jul 5, 2005, at 7:26 PM, Brian Douglas Skinner wrote:
+
+>> I've been looking at two ...
+>> drag and drop libraries
+>>   http://script.aculo.us/drag-and-drop
+>>   http://prototype.conio.net/
+>>
+>
+>
+> Hey Chao,
+>
+> Here's another drag-and-drop library that might be worth looking at.
+>
+> This one is Aaron Boodman's DOM-drag.  It's the library that Karl  
+> O'Keeffe
+> used in his cool AJAX Monket Calendar.
+>
+> Looks like the whole DOM-drag drag-and-drop library is only 120  
+> lines of
+> code.  It's not clear what the license is, but we could probably  
+> establish
+> that with a quick e-mail message to Aaron.
+>
+> code:
+>   http://www.youngpup.net/2001/domdrag/project?file=dom-drag.js
+>
+> demos:
+>   http://www.youngpup.net/_projectDirectories/domdrag/demos/ex4/ 
+> index.html
+>
+> http://www.youngpup.net/_projectDirectories/domdrag/demos/domdrag/ 
+> index.html
+>
+> tutorial:
+>   http://www.youngpup.net/2001/domdrag/tutorial
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Jul  7 19:39:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jul  7 19:39:01 2005
+Subject: [openrecord-dev] "Next Action" AJAX app, and the TrimPath "Junction" framework
+Message-ID: <200507071738.j67Hc7I23458@bat.berlios.de>
+
+Hey Chao,
+
+Thought you might be interested in this:
+
+  http://trimpath.com/demos/nextaction_static1/nextaction.htm
+
+"Next Action" is an open source AJAX app for keeping track of todo-list
+items using a Getting Things Done approach.
+
+Next Action has its own little SQL processor, written in JavaScript, backed
+by a JSON datastore.  The JSON datastore is actually contained inside of a
+<pre> element within the html that hosts the app.  To save your changes, you
+just use the browser's "Save Page As..." menu.
+
+Next Action is built on top of TrimPath Junction, which is a JavaScript
+framework modeled after the Ruby On Rails MVC architecture.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Fri Jul  8 06:49:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri Jul  8 06:49:00 2005
+Subject: [openrecord-dev] Registering callbacks for Observers
+Message-ID: <265B13A2-AA62-43B0-97BD-0C4D4154AB38@cs.stanford.edu>
+
+Hi Brian,
+
+This may be a clean, elegant way to register observers' and chaining  
+callback functions:
+http://w3future.com/html/stories/callbacks.xml
+
+chao
+
+
+
+From chao at osafoundation.org  Fri Jul  8 21:40:00 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Fri Jul  8 21:40:00 2005
+Subject: [openrecord-dev] Integrating script.aculo.us into existing javascript codebase
+Message-ID: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org>
+
+Hi,
+
+I'm new to this mailing list, so first off, a big THANK YOU for the  
+script.aculo.us and prototype.js libraries.
+
+I'm trying to integrate script.aculo.us into an existing pretty large  
+Javascript codebase (see http://openrecord.org). I'm running into a  
+problem with prototype.js and the existing codebase's use of for/in  
+loops over an Array.
+
+prototype.js defines Object.prototype.extend as a function. I believe  
+this causes a problem when I do a "for/in" loop on an array e.g.
+
+var anArray = [1,2,3]
+  for (var key in anArray) {/*do some stuff */}
+
+Above code snippet doesn't quite work, because var key gets set to  
+"0", "1", "2" and then "extend" in one of the loop traversal. I  
+believe that's because prototype.js defines object.prototype.extend  
+as a function.
+
+Is this a known problem? Are there workarounds?
+
+Is the use of for/in loop traversal over an Array considered verboten?
+
+Also, looking at prototype.js. In the Object.extend() function,  
+should the variable "prototype" be declared as a local variable  
+rather than a global?
+
+Thanks a lot!
+Chao Lam
+
+
+
+From chao at cs.stanford.edu  Sat Jul  9 01:56:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Jul  9 01:56:01 2005
+Subject: [openrecord-dev] Integrating script.aculo.us into existing javascript codebase
+In-Reply-To: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org>
+References: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org>
+Message-ID: <70CB42A1-826D-496D-8687-AE5EAB859E16@cs.stanford.edu>
+
+> Also, looking at prototype.js. In the Object.extend() function,  
+> should the variable "prototype" be declared as a local variable  
+> rather than a global?
+>
+Oops, I meant variable "property" is a global variable in  
+Object.extend().
+
+chao
+
+
+From chao at osafoundation.org  Sat Jul  9 03:27:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Sat Jul  9 03:27:01 2005
+Subject: [openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+In-Reply-To: <DA62FB23-7F73-44E4-9F3B-C6FA2CDA641D@fesch.at>
+References: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org> <DA62FB23-7F73-44E4-9F3B-C6FA2CDA641D@fesch.at>
+Message-ID: <644C1AFF-4632-4CA7-B432-DDA4E40E1CFF@osafoundation.org>
+
+Hi Thomas,
+
+Thanks for your informative response.
+
+I think the way prototype.js extends (no pun intended) the Object  
+class is way cool, but I'm worried about existing and future  
+compatibility, especially since prototype.js is meant to be a library  
+used by many apps, and thus need to co-exist with many other code bases.
+
+The real problem lies in the fact that Javascript doesn't allow for  
+non-enumerable user-defined properties. But by extending Object, this  
+not only causes a problem with the for/in loop for Arrays, but it  
+also causes unexpected behavior for Objects used as associated arrays  
+or HashMaps. We use this quite extensively in our Javascript code.  
+It's kind of weird that the extend function copies the extend  
+property, every-time the Object.extend() function is invoked.
+
+Can you think of ways we could continue to use Object's as HashMaps  
+while still co-existing with prototype.js?
+
+Alternatively, do you think Sam and others would mind if we modified  
+prototype.js to better co-exist with existing Javascript code?
+
+Thanks a lot!
+chao
+
+On Jul 8, 2005, at 2:13 PM, Thomas Fuchs wrote:
+
+> With prototype is probably a bad idea to iterate through an Array  
+> with for/in.
+>
+> for(var i=0;i<anArray.length;i++) {
+>     /* do something with anArray[i]  */
+> }
+>
+> should do fine. There might be addtional additions (whew) to Object  
+> (and thus Array) and to other basic js object itself
+> in the future, i guess. sam stephenson, the author of prototype.js,  
+> is currently working on some nice stuff, i hear.
+>
+> One example is a .inspect() function:
+>
+> Object.prototype.inspect = function(){
+>   var info = [];
+>   for(property in this)
+>     if(typeof this[property]!="function")
+>       info.push(property + ' => "' + this[property] + '"');
+>   return ("'" + this + "' #" + typeof this +
+>     ": {" + info.join(", ") + "}");
+> }
+>
+> will allow you to get info on any js object by doing something like  
+> alert(myObject.inspect())
+>
+> Currently prototype adds functions to Array (push), Function  
+> (apply,bind,bindAsEventListener) and String (stripTags, escapeHTML,  
+> unescapeHTML) to make life easier and cut down on code size and  
+> repetitions.
+>
+> --
+> Thomas
+>
+> Am 08.07.2005 um 21:39 schrieb Chih-Chao Lam:
+>
+>
+>> Hi,
+>>
+>> I'm new to this mailing list, so first off, a big THANK YOU for  
+>> the script.aculo.us and prototype.js libraries.
+>>
+>> I'm trying to integrate script.aculo.us into an existing pretty  
+>> large Javascript codebase (see http://openrecord.org). I'm running  
+>> into a problem with prototype.js and the existing codebase's use  
+>> of for/in loops over an Array.
+>>
+>> prototype.js defines Object.prototype.extend as a function. I  
+>> believe this causes a problem when I do a "for/in" loop on an  
+>> array e.g.
+>>
+>> var anArray = [1,2,3]
+>>  for (var key in anArray) {/*do some stuff */}
+>>
+>> Above code snippet doesn't quite work, because var key gets set to  
+>> "0", "1", "2" and then "extend" in one of the loop traversal. I  
+>> believe that's because prototype.js defines  
+>> object.prototype.extend as a function.
+>>
+>> Is this a known problem? Are there workarounds?
+>>
+>> Is the use of for/in loop traversal over an Array considered  
+>> verboten?
+>>
+>> Also, looking at prototype.js. In the Object.extend() function,  
+>> should the variable "prototype" be declared as a local variable  
+>> rather than a global?
+>>
+>> Thanks a lot!
+>> Chao Lam
+>>
+>> _______________________________________________
+>> Rails-spinoffs mailing list
+>> Rails-spinoffs at lists.rubyonrails.org
+>> http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs
+>>
+>>
+>
+>
+
+
+
+From chao at osafoundation.org  Sat Jul  9 20:53:00 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Sat Jul  9 20:53:00 2005
+Subject: [openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+In-Reply-To: <C7E19FCA-9793-4364-8617-342E0670583E@fesch.at>
+References: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org> <DA62FB23-7F73-44E4-9F3B-C6FA2CDA641D@fesch.at> <644C1AFF-4632-4CA7-B432-DDA4E40E1CFF@osafoundation.org> <C7E19FCA-9793-4364-8617-342E0670583E@fesch.at>
+Message-ID: <C9D7BAEB-EA8C-47E8-B498-57EC4CD12F89@osafoundation.org>
+
+Hi Thomas,
+
+Thanks for the link. Glad to know other people are encountering the  
+issue and we're working towards more compatbility.
+
+I'm going to try to use Object.extend() instead of  
+Object.prototype.extend() in the prototype.js and script.aculo.us  
+libraries and see if I can get script.aculo.us up and running on  
+OpenRecord, just as an experiment to see how to integrate the two  
+projects.
+
+I'll let you know how it goes.
+
+Thanks,
+chao
+
+
+On Jul 9, 2005, at 1:08 AM, Thomas Fuchs wrote:
+
+>
+> Hi,
+>
+> There some additional discussion on this going on here:
+> http://sourceforge.net/forum/forum.php? 
+> thread_id=1315559&forum_id=379297
+>
+> I think it's all working towards more compatibility.
+>
+> Thomas
+>
+> Am 09.07.2005 um 03:26 schrieb Chih-Chao Lam:
+>
+>
+>> Hi Thomas,
+>>
+>> Thanks for your informative response.
+>>
+>> I think the way prototype.js extends (no pun intended) the Object  
+>> class is way cool, but I'm worried about existing and future  
+>> compatibility, especially since prototype.js is meant to be a  
+>> library used by many apps, and thus need to co-exist with many  
+>> other code bases.
+>>
+>> The real problem lies in the fact that Javascript doesn't allow  
+>> for non-enumerable user-defined properties. But by extending  
+>> Object, this not only causes a problem with the for/in loop for  
+>> Arrays, but it also causes unexpected behavior for Objects used as  
+>> associated arrays or HashMaps. We use this quite extensively in  
+>> our Javascript code. It's kind of weird that the extend function  
+>> copies the extend property, every-time the Object.extend()  
+>> function is invoked.
+>>
+>> Can you think of ways we could continue to use Object's as  
+>> HashMaps while still co-existing with prototype.js?
+>>
+>> Alternatively, do you think Sam and others would mind if we  
+>> modified prototype.js to better co-exist with existing Javascript  
+>> code?
+>>
+>> Thanks a lot!
+>> chao
+>>
+>> On Jul 8, 2005, at 2:13 PM, Thomas Fuchs wrote:
+>>
+>>
+>>
+>>> With prototype is probably a bad idea to iterate through an Array  
+>>> with for/in.
+>>>
+>>> for(var i=0;i<anArray.length;i++) {
+>>>     /* do something with anArray[i]  */
+>>> }
+>>>
+>>> should do fine. There might be addtional additions (whew) to  
+>>> Object (and thus Array) and to other basic js object itself
+>>> in the future, i guess. sam stephenson, the author of  
+>>> prototype.js, is currently working on some nice stuff, i hear.
+>>>
+>>> One example is a .inspect() function:
+>>>
+>>> Object.prototype.inspect = function(){
+>>>   var info = [];
+>>>   for(property in this)
+>>>     if(typeof this[property]!="function")
+>>>       info.push(property + ' => "' + this[property] + '"');
+>>>   return ("'" + this + "' #" + typeof this +
+>>>     ": {" + info.join(", ") + "}");
+>>> }
+>>>
+>>> will allow you to get info on any js object by doing something  
+>>> like alert(myObject.inspect())
+>>>
+>>> Currently prototype adds functions to Array (push), Function  
+>>> (apply,bind,bindAsEventListener) and String (stripTags,  
+>>> escapeHTML, unescapeHTML) to make life easier and cut down on  
+>>> code size and repetitions.
+>>>
+>>> --
+>>> Thomas
+>>>
+>>> Am 08.07.2005 um 21:39 schrieb Chih-Chao Lam:
+>>>
+>>>
+>>>
+>>>
+>>>> Hi,
+>>>>
+>>>> I'm new to this mailing list, so first off, a big THANK YOU for  
+>>>> the script.aculo.us and prototype.js libraries.
+>>>>
+>>>> I'm trying to integrate script.aculo.us into an existing pretty  
+>>>> large Javascript codebase (see http://openrecord.org). I'm  
+>>>> running into a problem with prototype.js and the existing  
+>>>> codebase's use of for/in loops over an Array.
+>>>>
+>>>> prototype.js defines Object.prototype.extend as a function. I  
+>>>> believe this causes a problem when I do a "for/in" loop on an  
+>>>> array e.g.
+>>>>
+>>>> var anArray = [1,2,3]
+>>>>  for (var key in anArray) {/*do some stuff */}
+>>>>
+>>>> Above code snippet doesn't quite work, because var key gets set  
+>>>> to "0", "1", "2" and then "extend" in one of the loop traversal.  
+>>>> I believe that's because prototype.js defines  
+>>>> object.prototype.extend as a function.
+>>>>
+>>>> Is this a known problem? Are there workarounds?
+>>>>
+>>>> Is the use of for/in loop traversal over an Array considered  
+>>>> verboten?
+>>>>
+>>>> Also, looking at prototype.js. In the Object.extend() function,  
+>>>> should the variable "prototype" be declared as a local variable  
+>>>> rather than a global?
+>>>>
+>>>> Thanks a lot!
+>>>> Chao Lam
+>>>>
+>>>> _______________________________________________
+>>>> Rails-spinoffs mailing list
+>>>> Rails-spinoffs at lists.rubyonrails.org
+>>>> http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs
+>>>>
+>>>>
+>>>>
+>>>>
+>>>
+>>>
+>>>
+>>>
+>>
+>>
+>>
+>
+>
+
+
+
+From thomas at fesch.at  Sun Jul 10 18:48:01 2005
+From: thomas at fesch.at (Thomas Fuchs)
+Date: Sun Jul 10 18:48:01 2005
+Subject: [openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+In-Reply-To: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org>
+References: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org>
+Message-ID: <DA62FB23-7F73-44E4-9F3B-C6FA2CDA641D@fesch.at>
+
+With prototype is probably a bad idea to iterate through an Array  
+with for/in.
+
+for(var i=0;i<anArray.length;i++) {
+     /* do something with anArray[i]  */
+}
+
+should do fine. There might be addtional additions (whew) to Object  
+(and thus Array) and to other basic js object itself
+in the future, i guess. sam stephenson, the author of prototype.js,  
+is currently working on some nice stuff, i hear.
+
+One example is a .inspect() function:
+
+Object.prototype.inspect = function(){
+   var info = [];
+   for(property in this)
+     if(typeof this[property]!="function")
+       info.push(property + ' => "' + this[property] + '"');
+   return ("'" + this + "' #" + typeof this +
+     ": {" + info.join(", ") + "}");
+}
+
+will allow you to get info on any js object by doing something like  
+alert(myObject.inspect())
+
+Currently prototype adds functions to Array (push), Function  
+(apply,bind,bindAsEventListener) and String (stripTags, escapeHTML,  
+unescapeHTML) to make life easier and cut down on code size and  
+repetitions.
+
+--
+Thomas
+
+Am 08.07.2005 um 21:39 schrieb Chih-Chao Lam:
+
+> Hi,
+>
+> I'm new to this mailing list, so first off, a big THANK YOU for the  
+> script.aculo.us and prototype.js libraries.
+>
+> I'm trying to integrate script.aculo.us into an existing pretty  
+> large Javascript codebase (see http://openrecord.org). I'm running  
+> into a problem with prototype.js and the existing codebase's use of  
+> for/in loops over an Array.
+>
+> prototype.js defines Object.prototype.extend as a function. I  
+> believe this causes a problem when I do a "for/in" loop on an array  
+> e.g.
+>
+> var anArray = [1,2,3]
+>  for (var key in anArray) {/*do some stuff */}
+>
+> Above code snippet doesn't quite work, because var key gets set to  
+> "0", "1", "2" and then "extend" in one of the loop traversal. I  
+> believe that's because prototype.js defines object.prototype.extend  
+> as a function.
+>
+> Is this a known problem? Are there workarounds?
+>
+> Is the use of for/in loop traversal over an Array considered verboten?
+>
+> Also, looking at prototype.js. In the Object.extend() function,  
+> should the variable "prototype" be declared as a local variable  
+> rather than a global?
+>
+> Thanks a lot!
+> Chao Lam
+>
+> _______________________________________________
+> Rails-spinoffs mailing list
+> Rails-spinoffs at lists.rubyonrails.org
+> http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs
+>
+
+
+
+From thomas at fesch.at  Sun Jul 10 18:48:02 2005
+From: thomas at fesch.at (Thomas Fuchs)
+Date: Sun Jul 10 18:48:02 2005
+Subject: [openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+In-Reply-To: <644C1AFF-4632-4CA7-B432-DDA4E40E1CFF@osafoundation.org>
+References: <F73B52CC-C425-4618-B8F7-380C3CB81458@osafoundation.org> <DA62FB23-7F73-44E4-9F3B-C6FA2CDA641D@fesch.at> <644C1AFF-4632-4CA7-B432-DDA4E40E1CFF@osafoundation.org>
+Message-ID: <C7E19FCA-9793-4364-8617-342E0670583E@fesch.at>
+
+Hi,
+
+There some additional discussion on this going on here:
+http://sourceforge.net/forum/forum.php?thread_id=1315559&forum_id=379297
+
+I think it's all working towards more compatibility.
+
+Thomas
+
+Am 09.07.2005 um 03:26 schrieb Chih-Chao Lam:
+
+> Hi Thomas,
+>
+> Thanks for your informative response.
+>
+> I think the way prototype.js extends (no pun intended) the Object  
+> class is way cool, but I'm worried about existing and future  
+> compatibility, especially since prototype.js is meant to be a  
+> library used by many apps, and thus need to co-exist with many  
+> other code bases.
+>
+> The real problem lies in the fact that Javascript doesn't allow for  
+> non-enumerable user-defined properties. But by extending Object,  
+> this not only causes a problem with the for/in loop for Arrays, but  
+> it also causes unexpected behavior for Objects used as associated  
+> arrays or HashMaps. We use this quite extensively in our Javascript  
+> code. It's kind of weird that the extend function copies the extend  
+> property, every-time the Object.extend() function is invoked.
+>
+> Can you think of ways we could continue to use Object's as HashMaps  
+> while still co-existing with prototype.js?
+>
+> Alternatively, do you think Sam and others would mind if we  
+> modified prototype.js to better co-exist with existing Javascript  
+> code?
+>
+> Thanks a lot!
+> chao
+>
+> On Jul 8, 2005, at 2:13 PM, Thomas Fuchs wrote:
+>
+>
+>> With prototype is probably a bad idea to iterate through an Array  
+>> with for/in.
+>>
+>> for(var i=0;i<anArray.length;i++) {
+>>     /* do something with anArray[i]  */
+>> }
+>>
+>> should do fine. There might be addtional additions (whew) to  
+>> Object (and thus Array) and to other basic js object itself
+>> in the future, i guess. sam stephenson, the author of  
+>> prototype.js, is currently working on some nice stuff, i hear.
+>>
+>> One example is a .inspect() function:
+>>
+>> Object.prototype.inspect = function(){
+>>   var info = [];
+>>   for(property in this)
+>>     if(typeof this[property]!="function")
+>>       info.push(property + ' => "' + this[property] + '"');
+>>   return ("'" + this + "' #" + typeof this +
+>>     ": {" + info.join(", ") + "}");
+>> }
+>>
+>> will allow you to get info on any js object by doing something  
+>> like alert(myObject.inspect())
+>>
+>> Currently prototype adds functions to Array (push), Function  
+>> (apply,bind,bindAsEventListener) and String (stripTags,  
+>> escapeHTML, unescapeHTML) to make life easier and cut down on code  
+>> size and repetitions.
+>>
+>> --
+>> Thomas
+>>
+>> Am 08.07.2005 um 21:39 schrieb Chih-Chao Lam:
+>>
+>>
+>>
+>>> Hi,
+>>>
+>>> I'm new to this mailing list, so first off, a big THANK YOU for  
+>>> the script.aculo.us and prototype.js libraries.
+>>>
+>>> I'm trying to integrate script.aculo.us into an existing pretty  
+>>> large Javascript codebase (see http://openrecord.org). I'm  
+>>> running into a problem with prototype.js and the existing  
+>>> codebase's use of for/in loops over an Array.
+>>>
+>>> prototype.js defines Object.prototype.extend as a function. I  
+>>> believe this causes a problem when I do a "for/in" loop on an  
+>>> array e.g.
+>>>
+>>> var anArray = [1,2,3]
+>>>  for (var key in anArray) {/*do some stuff */}
+>>>
+>>> Above code snippet doesn't quite work, because var key gets set  
+>>> to "0", "1", "2" and then "extend" in one of the loop traversal.  
+>>> I believe that's because prototype.js defines  
+>>> object.prototype.extend as a function.
+>>>
+>>> Is this a known problem? Are there workarounds?
+>>>
+>>> Is the use of for/in loop traversal over an Array considered  
+>>> verboten?
+>>>
+>>> Also, looking at prototype.js. In the Object.extend() function,  
+>>> should the variable "prototype" be declared as a local variable  
+>>> rather than a global?
+>>>
+>>> Thanks a lot!
+>>> Chao Lam
+>>>
+>>> _______________________________________________
+>>> Rails-spinoffs mailing list
+>>> Rails-spinoffs at lists.rubyonrails.org
+>>> http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs
+>>>
+>>>
+>>>
+>>
+>>
+>>
+>
+>
+
+
+
+From chao at osafoundation.org  Thu Jul 14 01:44:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Thu Jul 14 01:44:01 2005
+Subject: [openrecord-dev] Item.getValue()
+Message-ID: <0E89D464-0648-4E82-BD72-DE1187CA042B@osafoundation.org>
+
+Hi Brian,
+
+Nothing urgent, this can definitely wait till you get back...
+
+I was looking through the code, and in Item.js, noticed that there  
+were several places in the code where there's a call
+
+entry.getValue()
+
+without passing it an item parameters. Wouldn't this cause an error,  
+if the entry (usually previousEntry) was a ConnectionEntry?
+
+Should we go through all the code to make sure getValue() gets passed  
+an item if appropriate?
+
+Thanks,
+chao
+
+
+From brian.skinner at gumption.org  Mon Jul 18 01:51:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Jul 18 01:51:00 2005
+Subject: [openrecord-dev] Item.getValue()
+In-Reply-To: <0E89D464-0648-4E82-BD72-DE1187CA042B@osafoundation.org>
+Message-ID: <200507172350.j6HNo2I32140@bat.berlios.de>
+
+Hey Chao,
+
+> I was looking through the code, and in Item.js, 
+> noticed that there were several places in the 
+> code where there's a call
+>
+> entry.getValue()
+> 
+> without passing it an item parameters. Wouldn't 
+> this cause an error, if the entry (usually 
+> previousEntry) was a ConnectionEntry?
+> 
+> Should we go through all the code to make sure 
+> getValue() gets passed an item if appropriate?
+
+
+Yup, that's a problem.  I failed to update the old code when I added support
+for the Connection Entries and changed the API.
+
+But, before we go through the code and make it conform to the current API,
+we might want to step back for a minute and see if we can't come up with a
+better API.  
+
+Like, I was thinking about the idea of getting rid of *all* the public
+methods on Entry, and instead having corresponding methods on Item.  
+
+Here's what the Item and Entry APIs look like now:
+
+  // Entry-centric methods 
+  entry.getType()
+  entry.getPreviousEntry()
+  entry.getItem()                // not valid for connection entries
+  entry.getConnectedItem(item)    
+  entry.getAttribute()           // not valid for connection entries
+  entry.getAttributeForItem(item)
+  entry.getValue(item)           // must pass 'item' for connections
+  entry.getDisplayString(item)   // must pass 'item' for connections
+  entry.hasBeenReplaced()
+  entry.hasBeenDeleted()
+ 
+  // Item-centric methods 
+  item.getAttributes()
+  item.getEntries()
+  item.getEntriesForAttribute()
+  item.addEntry()
+  item.addEntryForAttribute()
+  item.addConnectionEntry()
+  item.replaceEntry()
+  item.replaceEntryWithEntryForAttribute()
+  item.replaceEntryWithConnection()
+
+And here's what they might look like if we moved the Entry methods over to
+Item:
+
+  // Entry-centric methods 
+  item.getTypeForEntry(entry)
+  item.getPreviousEntryForEntry(entry)
+  item.getAttributeForEntry(entry)
+  item.getValueForEntry(entry)
+  item.getDisplayStringForEntry(entry)
+  item.hasEntryBeenReplaced(entry) 
+  item.hasEntryBeenDeleted(entry) 
+
+  // Item-centric methods 
+  item.getAttributes()
+  item.getEntries()
+  item.getEntriesForAttribute()
+  item.addEntry()
+  item.addEntryForAttribute()
+  item.addConnectionEntry()
+  item.replaceEntry()
+  item.replaceEntryWithEntryForAttribute()
+  item.replaceEntryWithConnection()
+
+Maybe we can talk more about that idea when we meet up.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Mon Jul 18 02:01:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Jul 18 02:01:00 2005
+Subject: [openrecord-dev] Context menu code
+In-Reply-To: <F43B49CA-4604-49D4-83FA-44FC5BE31886@cs.stanford.edu>
+Message-ID: <200507180000.j6I00lI32477@bat.berlios.de>
+
+Hi Chao,
+
+Sorry it's taken me so long to reply to this!
+
+> regarding importing of data, what do you think of 
+> supporting data importing just in the context of 
+> a TablePlugin? We can import a CSV file with the 
+> fields described by the Table columns. No need to  
+> support cross references - semantics would be as 
+> if user typed in all the items by hand in that 
+> TablePlugin. Bonus feature is that TablePlugin 
+> already has the code to support transforming 
+> strings to Expect Types and to create new items 
+> where necessary.
+
+I like that idea.  It sounds pretty simple to implement, and it would
+certainly be useful.
+
+When you started working on this, did you run into problems with the
+JavaScript security restrictions and not being able to load the CSV file
+that you wanted to import from?  If so, here's an idea for a simple hack --
+instead of a reading from a file, the import tool could just create a big
+empty text area right below the table, so that the user could paste in the
+ASCII contents of the CSV file that they want to import.  It's an uglier UI
+than just reading the file, but the implementation might be a lot simpler
+and more reliable.
+
+:o) Brian
+
+
+
+From chao at osafoundation.org  Tue Jul 19 00:57:00 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Tue Jul 19 00:57:00 2005
+Subject: [openrecord-dev] Delicious Director
+Message-ID: <F1729A09-D3A3-481B-AD62-BA375AD2A663@osafoundation.org>
+
+Here's a link to the AJAX-style delicious bookmarklet I talked about  
+today:
+http://johnvey.com/
+
+chao
+
+
+From chao at cs.stanford.edu  Tue Jul 19 04:47:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue Jul 19 04:47:01 2005
+Subject: [openrecord-dev] Jimbo Wales on Lessig Blog
+Message-ID: <057C0F09-9BDE-4455-B909-01F4B988DF2A@cs.stanford.edu>
+
+http://www.lessig.org/blog/archives/003023.shtml
+
+Guest blogger for 2 weeks in August. 'Jimbo has a project to figure  
+out what things should be "free." '
+
+chao
+
+
+From brian.skinner at gumption.org  Wed Jul 20 22:23:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed Jul 20 22:23:00 2005
+Subject: [openrecord-dev] DateValue class
+Message-ID: <200507202022.j6KKMrI07379@bat.berlios.de>
+
+Hey Chao,
+
+At our meeting on Monday you mentioned that Mimi had asked for more flexible
+types of Dates, which is something I've been eager for too.
+
+I just checked in a new DateValue class, as a first small step in that
+direction.  The new DateValue class extends the built-in JavaScript Date
+class.  DateValue can parse all the same strings that Date can, plus it adds
+support for like "1944" and "2005".  
+
+DateValue does not yet know how to parse strings like "July 2005",
+"2005/07", or "next Tuesday", but those are things we can gradually add to
+the DateValue parser.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Wed Jul 20 22:47:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Jul 20 22:47:00 2005
+Subject: [openrecord-dev] DateValue class
+In-Reply-To: <200507202022.j6KKMrI07379@bat.berlios.de>
+References: <200507202022.j6KKMrI07379@bat.berlios.de>
+Message-ID: <F5D0E834-E9C0-4C03-8EFF-C25856FC9AB8@cs.stanford.edu>
+
+Hi Brian,
+
+Very cool.
+
+How does the DateValue class store or represent a fuzzy date like  
+"2005"? Would it still store the month, date and time components of  
+the DateValue?
+
+chao
+
+On Jul 20, 2005, at 1:22 PM, Brian Douglas Skinner wrote:
+
+> Hey Chao,
+>
+> At our meeting on Monday you mentioned that Mimi had asked for more  
+> flexible
+> types of Dates, which is something I've been eager for too.
+>
+> I just checked in a new DateValue class, as a first small step in that
+> direction.  The new DateValue class extends the built-in JavaScript  
+> Date
+> class.  DateValue can parse all the same strings that Date can,  
+> plus it adds
+> support for like "1944" and "2005".
+>
+> DateValue does not yet know how to parse strings like "July 2005",
+> "2005/07", or "next Tuesday", but those are things we can gradually  
+> add to
+> the DateValue parser.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Jul 21 05:04:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jul 21 05:04:00 2005
+Subject: [openrecord-dev] DateValue class
+In-Reply-To: <F5D0E834-E9C0-4C03-8EFF-C25856FC9AB8@cs.stanford.edu>
+Message-ID: <200507210303.j6L339I17666@bat.berlios.de>
+
+> How does the DateValue class store or represent 
+> a fuzzy date like "2005"? 
+
+There are two answers to that question: 
+  one is how the fuzzy date is stored in memory
+  the other is how the date is stored in JSON
+
+
+In memory, the DateValue object stores the fuzzy date using a JavaScript
+Date object plus some additional information.  The Date object stores the
+date as milliseconds before or after 1970.  The DateValue object adds one or
+more boolean instance variables: this._hasTime, this._hasDay, and
+this._hasMonth.  
+
+So, for a fuzzy date like "2005", the representation looks like this:
+  this.valueOf() == milliseconds since January 1, 2005
+  this._hasTime == false;
+  this._hasDay == false;
+  this._hasMonth == false;
+
+And for a date like "July 20, 2005", the representation looks like this:
+  this.valueOf() == milliseconds since July 20, 2005
+  this._hasTime == false;
+  this._hasDay == true;
+  this._hasMonth == true;
+
+
+In the JSON file, we're currently storing all the dates just as simple
+strings, like these:
+  value: "Tue Apr 30 2005 09:45:00 GMT-0700 (PST)"
+  value: "Monday, July , 1975"
+  value: "1994"
+
+That string format is easy for people to read, but may not be the best
+choice for client-server interoperation.  We might want to switch to a more
+machine-readable format.  Maybe something vaguely standard?  Like something
+based on what XML-schema uses?  Or, we could use a simple JSON format, with
+values like these:
+  value: [2005, 4, 30, 9, 45]
+  value: [1975, 7, 19]
+  value: [1994]
+
+What do you think?
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Thu Jul 21 07:38:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jul 21 07:38:00 2005
+Subject: [openrecord-dev] DateValue class
+In-Reply-To: <200507210303.j6L339I17666@bat.berlios.de>
+References: <200507210303.j6L339I17666@bat.berlios.de>
+Message-ID: <BE68F357-CF2A-4103-A9F2-27BD0C596DC7@cs.stanford.edu>
+
+Hi Brian,
+
+> In memory, the DateValue object stores the fuzzy date using a  
+> JavaScript
+> Date object plus some additional information.  The Date object  
+> stores the
+> date as milliseconds before or after 1970.  The DateValue object  
+> adds one or
+> more boolean instance variables: this._hasTime, this._hasDay, and
+> this._hasMonth.
+>
+> So, for a fuzzy date like "2005", the representation looks like this:
+>   this.valueOf() == milliseconds since January 1, 2005
+>   this._hasTime == false;
+>   this._hasDay == false;
+>   this._hasMonth == false;
+>
+> And for a date like "July 20, 2005", the representation looks like  
+> this:
+>   this.valueOf() == milliseconds since July 20, 2005
+>   this._hasTime == false;
+>   this._hasDay == true;
+>   this._hasMonth == true;
+>
+Hey, I like this design a lot. Clean and easy to understand. Good  
+thinking!
+
+>
+> In the JSON file, we're currently storing all the dates just as simple
+> strings, like these:
+>   value: "Tue Apr 30 2005 09:45:00 GMT-0700 (PST)"
+>   value: "Monday, July , 1975"
+>   value: "1994"
+
+> That string format is easy for people to read, but may not be the best
+> choice for client-server interoperation.  We might want to switch  
+> to a more
+> machine-readable format.  Maybe something vaguely standard?  Like  
+> something
+> based on what XML-schema uses?  Or, we could use a simple JSON  
+> format, with
+> values like these:
+>   value: [2005, 4, 30, 9, 45]
+>   value: [1975, 7, 19]
+>   value: [1994]
+>
+> What do you think?
+>
+I don't have much of an opinion about the JSON representation. I  
+guess the former is easier to understand but harder to parse? Is  
+"Monday, July 1975" a valid value?
+
+chao
+
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Jul 21 08:20:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Jul 21 08:20:01 2005
+Subject: [openrecord-dev] DateValue class
+In-Reply-To: <BE68F357-CF2A-4103-A9F2-27BD0C596DC7@cs.stanford.edu>
+Message-ID: <200507210619.j6L6JfI22836@bat.berlios.de>
+
+| > JSON file, ... storing ... simple strings, like these:
+| >   value: "Tue Apr 30 2005 09:45:00 GMT-0700 (PST)"
+| >   value: "Monday, July , 1975"
+| >   value: "1994"
+| 
+| Is "Monday, July 1975" a valid value?
+
+Oops, that's not what I meant to say :-(
+I copied it wrong when I was writing the example.  
+It should read:
+   value: "Saturday, July 19, 1975"
+
+"Monday, July 1975" is not a valid value, but "Saturday, July 19, 1975" is
+valid.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Mon Jul 25 02:09:04 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon Jul 25 02:09:04 2005
+Subject: [openrecord-dev] Javascript Templates
+Message-ID: <8FFDDDA6-0430-45E4-B1D5-E7A8913AF78E@cs.stanford.edu>
+
+Hi Brian & Mignon,
+
+This looks very interesting:
+http://trimpath.com/project/wiki/JavaScriptTemplates
+
+It's a little fuzzy in my mind how specifically it's interesting, but  
+I have a feeling that this could be another way we could make Open  
+Record interoperate with other web sites, especially websites that  
+just allow javascript extensions.
+
+We use JSON to exchange data e.g. a template requests for an Open  
+Record query. Our UI plugins and views are used to display the JSON  
+data. User interactions cause some of the data to be written back to  
+a Open Record server.
+
+chao
+
+
+
+From chao at cs.stanford.edu  Thu Jul 28 01:26:02 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Jul 28 01:26:02 2005
+Subject: [openrecord-dev] Bookmarklet tools for Javascript
+Message-ID: <BA744241-1604-48B2-A30B-D56697F28BA5@cs.stanford.edu>
+
+Here's a cool collection of bookmarklets for Javascript web development:
+http://www.squarefree.com/bookmarklets/webdevel.html
+
+chao
+
+

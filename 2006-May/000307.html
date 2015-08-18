@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] UI design questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20UI%20design%20questions&In-Reply-To=%3C8d3cdfc10605122223h242eef30g2d128267d106e492%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000306.html">
+   <LINK REL="Next"  HREF="000308.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] UI design questions</H1>
+    <B>Thomas Kalka</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20UI%20design%20questions&In-Reply-To=%3C8d3cdfc10605122223h242eef30g2d128267d106e492%40mail.gmail.com%3E"
+       TITLE="[openrecord-dev] UI design questions">thomas.kalka at googlemail.com
+       </A><BR>
+    <I>Sat May 13 07:21:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000306.html">[openrecord-dev] UI design questions
+</A></li>
+        <LI>Next message: <A HREF="000308.html">[openrecord-dev] UI design questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#307">[ date ]</a>
+              <a href="thread.html#307">[ thread ]</a>
+              <a href="subject.html#307">[ subject ]</a>
+              <a href="author.html#307">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> 101. Autosave vs. undo
+</I>&gt;<i>
+</I>&gt;<i> Right now we have no &quot;Save&quot; button, and all changes are instantly saved.
+</I>&gt;<i> But that means adding an &quot;Undo&quot; feature is prohibitively difficult.
+</I>&gt;<i> But maybe we could have some sort of  revert/rollback feature that feels
+</I>&gt;<i> lightweight enough to be like an Undo feature. Alternatively, we could
+</I>&gt;<i> have an &quot;Undo&quot; feature, and replace the current autosave behavior with
+</I>&gt;<i> an explicit &quot;Save&quot; button.  Which way is better, or is there some other
+</I>&gt;<i> hybrid solution?
+</I>&gt;<i>
+</I>
+Show a &quot;history&quot;-button while editing. If the user clicks on it show a
+summary about changes to choose an old state of the object /
+attribute. Like the history in photoshop.
+
+&gt;<i> 103. Delete vs. retire
+</I>&gt;<i>
+</I>&gt;<i> When you delete an item, it's never really gone.  You can always see it
+</I>&gt;<i> again by going to its URL, or by looking at an old version of a page
+</I>&gt;<i> that used to show it.  Should we use the term &quot;retire&quot; instead of &quot;delete&quot;?
+</I>
+One could mark the deleted object as beeing in the trashcan while
+showing the old revision.
+
+
+&gt;<i> 104. Edit mode vs. view mode
+</I>&gt;<i>
+</I>&gt;<i> If you try to start editing a page, but you're not able to edit because
+</I>&gt;<i> you haven't logged in yet, how do we help you figure out that you need
+</I>&gt;<i> to log in?
+</I>&gt;<i>
+</I>
+Allow edit ever. Insert a message into the page alerting the user that
+saving is active until he logs in.
+
+&gt;<i> 105. Show Tools
+</I>&gt;<i>
+</I>&gt;<i> Can we get rid of the &quot;Show Tools&quot; button, and instead be in &quot;Show
+</I>&gt;<i> Tools&quot; mode all the time.  How do we do that without cluttering the page
+</I>&gt;<i> with stuff like the &quot;New Page&quot; and &quot;New Section&quot; buttons?
+</I>&gt;<i>
+</I>
+Add a toolbar with one &quot;add new&quot;-button. Choosing this and selecting
+any object a new object of this type can be added.
+
+
+&gt;<i>
+</I>&gt;<i> 107. Date/time annotations for Entries
+</I>&gt;<i>
+</I>
+One possibility is to allow to edit the time-ranges in the history.
+
+&gt;<i> 108. Annotations for Entries
+</I>&gt;<i>
+</I>&gt;<i> Can each Entry have other associated annotations?
+</I>&gt;<i>   - Units for numbers, like {45 mph}
+</I>&gt;<i>   - Language specifiers for strings, like {&quot;Germany&quot; lang=en} or
+</I>&gt;<i> {&quot;Deutchland&quot; lang=de}
+</I>&gt;<i>   - Citations or annotations, like {284 cite=&quot;CIA World Factbook, page 84&quot;}
+</I>&gt;<i>   - Timespans, like {&quot;Leslie Lynch King, Jr.&quot; from=1913-1915}
+</I>&gt;<i>
+</I>&gt;<i> How much work is it to have all the UI views deal with all this?
+</I>
+Missing annotations like &quot;who changed which attribute for what reason&quot;
+ to feed the history.
+Units for numbers seems to be a different topic: this should be part
+of the attribute type (for the example: velocity), allowing automatic
+translation into different units.
+
+&gt;<i> 201. How do you create a new section on a page?
+</I>&gt;<i>    - current solution: &quot;New Section&quot; button
+</I>
+Have a toolbar with actions to perform on existing objects.
+User selects &quot;add&quot;.
+a) User selects an object.
+UI shows options about which object can be created for this object.
+b) User selects no object for some time:
+Decorate the objects, for which somethig can be added.
+
+&gt;<i> 202. How do you change the order of the sections on a page?
+</I>&gt;<i>    - grab the section and drag it up or down
+</I>aditionaly: Have attributes for the sections. Allow page to choose on
+which attribute the section-display should  be sorted.
+
+&gt;<i>
+</I>&gt;<i> 203. How do you delete/retire a section?
+</I>&gt;<i>    - select the section by...
+</I>Have a trashicon in the toolbar.
+a) drag the section into the trash
+b) select trash and then select section
+
+&gt;<i> 204. How do you select a section?
+</I>
+by double clicking its title. what to do if there is no title ?
+
+&gt;<i> 206. Can you move a section from one page to another?
+</I>
+Can you include a section from one page into an other ?
+
+
+&gt;<i> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i> Categories
+</I>&gt;<i> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i>
+</I>Allow hierarchical categories ?
+
+&gt;<i> 301. If you create a new section, and create an item in the section,
+</I>&gt;<i> what category is the item in?
+</I>
+A default category for the object type being edited.
+
+&gt;<i> 302. How do you create a new category?
+</I>&gt;<i>    - current solution: create a new Section, and in the query editor for
+</I>&gt;<i> the section, type in a new category name
+</I>
+Having hierarchical categories:
+- allow to add to the &quot;childrens list&quot; of categories for one category.
+- allow to add to the &quot;parents list&quot; of categories for one category.
+
+&gt;<i>
+</I>&gt;<i> 401. How do you create a new page?
+</I>&gt;<i>    - current solution: &quot;New Page&quot; button
+</I>
+Select &quot;toolbar add&quot; and chose page-title.
+
+&gt;<i> 402. How do you delete/retire a page?
+</I>&gt;<i>    - right click on the nav bar menu item for the page, and select
+</I>&gt;<i> &quot;Retire Page&quot;
+</I>&gt;<i>    - navigate to the page, click the &quot;Show Tools&quot; button, and then the
+</I>&gt;<i> &quot;Retire Page&quot; button
+</I>
+- drag the title  to the trashicon in the toolbar.
+- drag the trashicon on the title
+- select trash , then select title
+
+
+&gt;<i> 403. How do you see a list of the deleted/retired pages?
+</I>
+Open the trashbin and search there.
+
+
+&gt;<i> 701. Input validation -- In table view or detail view, if the expected
+</I>&gt;<i> type of an attribute is Number (or Date), and you enter &quot;Clinton&quot;, do we
+</I>&gt;<i> offer any UI feedback about the type mis-match?
+</I>&gt;<i>    - current solution: no feedback, or very subtle font color differences
+</I>&gt;<i>    - red underline, like mis-spelled words in a word processor
+</I>&gt;<i>    - little red dot next to the entry
+</I>
+Have also a view &quot;things to fix&quot;.
+
+&gt;<i> 702. When a cell in a table includes two entries, how do they appear?
+</I>&gt;<i>    - current solution: both on one line, separated by a gray dot
+</I>&gt;<i>    - on two lines within the same cell
+</I>If there is a filter: display only matching entries.
+
+&gt;<i> 703. How do you add a second entry to a cell in a table?
+</I>&gt;<i>    - select an existing entry and then press Alt-Enter on the keyboard
+</I>&gt;<i>    - click on the &quot;+&quot; icon within the cell
+</I>&gt;<i>    - right click in the cell for a context menu, and select &quot;Add entry&quot;
+</I>If there is an overall toolbar: select &quot;add&quot; and then select the cell.
+
+
+&gt;<i> 706. Can you select the text within an entry and change it?
+</I>&gt;<i>    - yes, for any type of entry
+</I>&gt;<i>    - not in item-reference lozenges
+</I>for item-references the text should be editable, but the widget to
+edit it should be aware of object-queries, allowing kinds of
+autocompletion / hierarchical browsing ...
+
+~~~~~
+
+Quite a lot of the suggestions rely on having a toolbar. Sorry, when I
+missed a design desision not to have such modal input. In my opinion
+its usefull to have &quot;a box of tools in one location&quot; to apply on
+different objects shown on a page.
+As I understood the UI should help the user to be aware of available
+actions on objects (add new section, add new page). If any of these
+options are shown, the page is full of buttons for all kind of
+objects, which can be acted upon.
+If there is a toolbar. the user can select the action first. The UI
+can help him, if for some time he does not choose an object to act
+upon.
+Available actions on objects could also be highlighted in the toolbox
+/ bar  while hovering around the page.
+
+--Thomas Kalka
+<A HREF="http://coforum.de/?ThomasKalka">http://coforum.de/?ThomasKalka</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000306.html">[openrecord-dev] UI design questions
+</A></li>
+	<LI>Next message: <A HREF="000308.html">[openrecord-dev] UI design questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#307">[ date ]</a>
+              <a href="thread.html#307">[ thread ]</a>
+              <a href="subject.html#307">[ subject ]</a>
+              <a href="author.html#307">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

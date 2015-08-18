@@ -1,0 +1,1766 @@
+From brian.skinner at gumption.org  Wed May  4 04:26:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Wed May  4 04:26:01 2005
+Subject: [openrecord-dev] existing user/login API
+Message-ID: <200505040225.j442PPm22353@bat.berlios.de>
+
+Hey Chao,
+
+Here's the API that the new data model offers for creating users/accounts
+and logging in (see below).  
+
+You can also look at the data model unit tests, to see some examples of code
+that creates new users and logs them in and out:
+http://svn.berlios.de/viewcvs/openrecord/trunk/source/model/ModelTest.js?vie
+w=markup
+
+The new data model already has a working implementation of this API,
+although we can always refactor the API and implementation if this turns out
+to be the wrong design.
+
+Good luck!
+
+:o) Brian
+
+
+
+----------------------------------------------------------------------
+/**
+ * Creates a new item, where the new item represents a user of this 
+ * datastore.
+ *
+ * @scope    public instance method
+ * @param    inName    A string, which will be assigned to the name 
+ *                     attribute of the new item. 
+ * @param    inAuthentication    A string which will be used as the 
+ *                               login password for the user. 
+ * @param    inObserver    Optional. An object or method to be 
+ *                         registered as an observer of the returned item. 
+ * @return   A newly created item representing a user.
+ */
+World.prototype.newUser = function (inName, inAuthentication, inObserver) 
+
+
+
+/**
+ * Returns an list of all the items that represent users of this datastore.
+ *
+ * @scope    public instance method
+ * @return   A list of items.
+ */
+World.prototype.getUsers = function () 
+
+
+
+/**
+ * Returns an item representing the user who is currently logged in.
+ *
+ * @scope    public instance method
+ * @return   An item representing the user who is currently logged in.
+ */
+World.prototype.getCurrentUser = function () 
+
+
+
+/**
+ * Attempts to login a user.
+ *
+ * @scope    public instance method
+ * @param    inUser    The user to be logged in. 
+ * @param    inAuthentication    Authentication info for the user. 
+ * @return   True if we were able to log in the user. False if the login
+failed.
+ */
+World.prototype.login = function (inUser, inAuthentication) 
+
+
+
+/**
+ * Logs out the current user.
+ *
+ * @scope    public instance method
+ * @return   True if the current user was logged out. False if there was no
+current user logged in.
+ */
+World.prototype.logout = function () 
+
+
+
+From chao at cs.stanford.edu  Thu May  5 06:33:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu May  5 06:33:01 2005
+Subject: [openrecord-dev] Object-Oriented Event Listening through Partial Application in JavaScript
+Message-ID: <2E09DCB9-F68F-47BB-B4B0-224CDCBB7656@cs.stanford.edu>
+
+Long-winded title, but quite an interesting technical on using  
+anonymous functions and variable binding in Javascript. I'm using a  
+similar technique for our associating openrecord classes with HTML  
+classes.
+
+http://www.deepwood.net/writing/method-references.html.utf8
+
+chao
+
+
+From chao at cs.stanford.edu  Sun May  8 08:33:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun May  8 08:33:00 2005
+Subject: [openrecord-dev] Cool resource: Javascript (and others) snippets repository
+Message-ID: <02BE4F01-6B9A-420C-BB79-4605A377A093@cs.stanford.edu>
+
+http://www.bigbold.com/snippets/
+
+When can OpenRecord host a site like this? :)
+
+chao
+
+
+From Mignon_Belongie at yahoo.com  Tue May 10 02:48:56 2005
+From: Mignon_Belongie at yahoo.com (Mignon Belongie)
+Date: Tue May 10 02:48:56 2005
+Subject: [openrecord-dev] How does a user add a new row?
+In-Reply-To: <02BE4F01-6B9A-420C-BB79-4605A377A093@cs.stanford.edu>
+References: <02BE4F01-6B9A-420C-BB79-4605A377A093@cs.stanford.edu>
+Message-ID: <2dd67bc0e20822fc262c38e6970385fc@yahoo.com>
+
+Chao,
+
+After your last two updates of TablePlugin.js, how is a user supposed 
+to add a new row to a table?  As of version 56, a new row appeared 
+automatically in edit mode, but as of version 58, it doesn't.  I 
+haven't yet figured out a way to compare two files on my iBook other 
+than unix diff, so about all I can see is that there was a very large 
+amount of code changed....
+
+Mignon
+
+
+
+From chao at cs.stanford.edu  Tue May 10 03:12:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue May 10 03:12:01 2005
+Subject: [openrecord-dev] How does a user add a new row?
+In-Reply-To: <2dd67bc0e20822fc262c38e6970385fc@yahoo.com>
+References: <02BE4F01-6B9A-420C-BB79-4605A377A093@cs.stanford.edu> <2dd67bc0e20822fc262c38e6970385fc@yahoo.com>
+Message-ID: <ECD58BE6-3A29-417D-A6FE-03DE2B956632@cs.stanford.edu>
+
+Hi Mignon,
+
+Sorry, you can't add a new row to a table at this time. To get the  
+sorting code in, I had to first refactor TablePlugin to be DOM  
+Level-2 style. I removed the functionality to add a new row as part  
+of that effort, because 1) sorting made it such that the "last row"  
+wasn't necessarily the newly added row 2) there's were bugs in the  
+old code anyway.
+
+I was hoping to wait till Brian gets back to discuss how to add the  
+"add new row" functionality back. But now I see that you may be  
+relying on that functionality (sorry!). If you are, I can try to add  
+the functionality back in a maybe hacky way.
+
+chao
+
+On May 9, 2005, at 1:02 PM, Mignon Belongie wrote:
+
+> Chao,
+>
+> After your last two updates of TablePlugin.js, how is a user  
+> supposed to add a new row to a table?  As of version 56, a new row  
+> appeared automatically in edit mode, but as of version 58, it  
+> doesn't.  I haven't yet figured out a way to compare two files on  
+> my iBook other than unix diff, so about all I can see is that there  
+> was a very large amount of code changed....
+>
+> Mignon
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Tue May 10 06:12:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Tue May 10 06:12:01 2005
+Subject: [openrecord-dev] How does a user add a new row?
+In-Reply-To: <ECD58BE6-3A29-417D-A6FE-03DE2B956632@cs.stanford.edu>
+References: <02BE4F01-6B9A-420C-BB79-4605A377A093@cs.stanford.edu> <2dd67bc0e20822fc262c38e6970385fc@yahoo.com> <ECD58BE6-3A29-417D-A6FE-03DE2B956632@cs.stanford.edu>
+Message-ID: <641CA076-E1D0-4CF8-B7FD-3143A54546DB@cs.stanford.edu>
+
+I'd like to throw up a suggestion for creating new rows, and perhaps  
+more generally creating new items.
+
+The problem is that I'd like each table cell to correspond to a  
+specific item's attribute entry, the table cell then knows how to  
+persist itself. This works pretty well now, except of course for the  
+creation of new items. Some problems are:
+     1) You need to create a new blank item every time a table is  
+being edited
+     2) You don't really want to save the blank item if it's really  
+blank (what it does now)
+     3) You don't want the blank item to be part of the sort list
+
+What I think I'll like (but not completely crystallized) is an Item  
+template or proxy. It acts like an item in most ways, when it is  
+being queried in a read-only way, responding as an item would through  
+the item API. However, it is not instantiated in the repository. Only  
+when it is actually written (i.e. when it acquires a value or  
+attribute), then it becomes a full-fledge Item object with a  
+representation in the repository.
+
+Does this make sense? Is it do-able in our repository? I think it's  
+do-able in Javascript since it's a reasonably typeless language.
+
+Thanks,
+chao
+
+
+On May 9, 2005, at 6:11 PM, Chih-Chao Lam wrote:
+
+> Hi Mignon,
+>
+> Sorry, you can't add a new row to a table at this time. To get the  
+> sorting code in, I had to first refactor TablePlugin to be DOM  
+> Level-2 style. I removed the functionality to add a new row as part  
+> of that effort, because 1) sorting made it such that the "last row"  
+> wasn't necessarily the newly added row 2) there's were bugs in the  
+> old code anyway.
+>
+> I was hoping to wait till Brian gets back to discuss how to add the  
+> "add new row" functionality back. But now I see that you may be  
+> relying on that functionality (sorry!). If you are, I can try to  
+> add the functionality back in a maybe hacky way.
+>
+> chao
+>
+> On May 9, 2005, at 1:02 PM, Mignon Belongie wrote:
+>
+>
+>> Chao,
+>>
+>> After your last two updates of TablePlugin.js, how is a user  
+>> supposed to add a new row to a table?  As of version 56, a new row  
+>> appeared automatically in edit mode, but as of version 58, it  
+>> doesn't.  I haven't yet figured out a way to compare two files on  
+>> my iBook other than unix diff, so about all I can see is that  
+>> there was a very large amount of code changed....
+>>
+>> Mignon
+>>
+>> ___________________________________________________________________
+>> Copyright rights relinquished. This work is in the Public Domain.
+>> For details see: http://creativecommons.org/licenses/publicdomain/
+>>
+>> openrecord-dev mailing list
+>> openrecord-dev at lists.berlios.de
+>> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>>
+>>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Mon May 16 20:12:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon May 16 20:12:00 2005
+Subject: [openrecord-dev] Two cool PIM ajax apps
+Message-ID: <8D7ECF50-0CDF-41C8-A853-21476F86CF40@cs.stanford.edu>
+
+http://backpackit.com/
+http://shared.snapgrid.com/gtd_tiddlywiki.html
+
+Incidentally, backpack was created on "ruby on rails", a web app  
+framework. They created an even more ambitious earlier website called  
+basecamp, a project management tool. I watched a video on Ruby On  
+Rails, and the (sole) developer claimed that Basecamp was created in  
+a few months by two web designers and this developer (who was at the  
+same time finishing his Bachelors degree!). The programming was done  
+in 2 man-months! That's inspiration for us.
+
+chao
+
+
+From brian.skinner at gumption.org  Mon May 16 20:14:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon May 16 20:14:00 2005
+Subject: [openrecord-dev] new TablePlugin code!
+Message-ID: <200505161813.j4GIDcm07554@bat.berlios.de>
+
+Hey Chao,
+
+I read through all the new TablePlugin code.  Nice work.  It looks so much
+better without all the cell delegates and cell ids and other cruft.  And
+it's cool that the TextView class was flexible enough to that you could use
+it in the TablePlugin after only a handful of changes.
+
+The table-sorting UI feels great -- simple and snappy.  There are a couple
+new bugs now with the arrow keys.  I think they might just be off-by-one
+errors.  We can look at them this afternoon.  The new code no longer passes
+all the unit tests, but that should be really easy to fix too.  Actually,
+the unit test lint tests may be overly restrictive.  Maybe this afternoon we
+can talk about that, and about relaxing the coding conventions in other
+ways, if that makes sense.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Mon May 16 21:13:03 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon May 16 21:13:03 2005
+Subject: [openrecord-dev] new TablePlugin code!
+In-Reply-To: <200505161813.j4GIDcm07554@bat.berlios.de>
+References: <200505161813.j4GIDcm07554@bat.berlios.de>
+Message-ID: <CACDD32D-1CA1-4268-B6BF-2437ACD3C9A4@cs.stanford.edu>
+
+Hi Brian,
+
+Thanks, I think I fixed the arrow key bug (or at least one of them) -  
+I was calculating the number of columns in the table incorrectly.  
+Also added a few comments to the private functions in TablePlugin.
+
+Embarrassed to say I finally figured out how to add SVN log comments  
+through my client.
+
+chao
+
+On May 16, 2005, at 11:13 AM, Brian Douglas Skinner wrote:
+
+> Hey Chao,
+>
+> I read through all the new TablePlugin code.  Nice work.  It looks  
+> so much
+> better without all the cell delegates and cell ids and other  
+> cruft.  And
+> it's cool that the TextView class was flexible enough to that you  
+> could use
+> it in the TablePlugin after only a handful of changes.
+>
+> The table-sorting UI feels great -- simple and snappy.  There are a  
+> couple
+> new bugs now with the arrow keys.  I think they might just be off- 
+> by-one
+> errors.  We can look at them this afternoon.  The new code no  
+> longer passes
+> all the unit tests, but that should be really easy to fix too.   
+> Actually,
+> the unit test lint tests may be overly restrictive.  Maybe this  
+> afternoon we
+> can talk about that, and about relaxing the coding conventions in  
+> other
+> ways, if that makes sense.
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Mon May 16 21:33:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon May 16 21:33:01 2005
+Subject: [openrecord-dev] weblog tidbits
+Message-ID: <200505161932.j4GJWKm09604@bat.berlios.de>
+
+Here are a few interesting tidbits from some of the weblogs I follow...
+
+Packages/Namespaces in JavaScript:
+  http://www.ditchnet.org/wp/?p=7
+
+Calling superclass constructors in JavaScript:
+ 
+http://www.ditchnet.org/wp/2005/05/12/calling-superclass-constructors-javasc
+ript/
+
+Joel on Hungarian notation, and how it went wrong:
+  http://www.joelonsoftware.com/articles/Wrong.html
+
+
+
+
+From chao at osafoundation.org  Thu May 19 05:38:01 2005
+From: chao at osafoundation.org (Chih-Chao Lam)
+Date: Thu May 19 05:38:01 2005
+Subject: [openrecord-dev] Interesting article on AJAX usability
+Message-ID: <4EC96234-DF64-4845-B10A-63951D417476@osafoundation.org>
+
+http://www.baekdal.com/articles/usability/usable-XMLHttpRequest/
+
+
+From brian.skinner at gumption.org  Fri May 20 00:08:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri May 20 00:08:01 2005
+Subject: [openrecord-dev] new data model code; login/logout; "provisional items"
+Message-ID: <200505192207.j4JM7Im17044@bat.berlios.de>
+
+Hey Chao,
+
+I switched all our code over to use the new data model, and everything seems
+to work fine!
+
+I wired up your sign-in/sign-out code so that it calls the login/logout
+methods that the new data model offers.  I did a quick-and-dirty job of
+that, so we'll probably want to revisit it at some point.  Next time we meet
+up I can explain what I did and what I didn't do, and we can talk about how
+we really want it to work.  
+
+The data model now supports password-checking authentication, so we can add
+UI for that whenever we want to.  The password storage isn't yet the least
+bit secure, but I figured it was a step in the right direction to at least
+have a functional API for authentication.
+
+I also added a new method to the data model, so that a view can create a
+"provisional item".  I new provisional items are intended to meet the need
+for creating "blank items" or "template items" when the user is entering a
+brand new row in a table.
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Fri May 20 00:28:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri May 20 00:28:00 2005
+Subject: [openrecord-dev] How does a user add a new row?
+In-Reply-To: <641CA076-E1D0-4CF8-B7FD-3143A54546DB@cs.stanford.edu>
+Message-ID: <200505192227.j4JMRFm17665@bat.berlios.de>
+
+Hey Chao,
+
+> I'd like to throw up a suggestion for creating new 
+> rows, and perhaps more generally creating new items.
+
+I made a method called "newProvisionalItem()", which creates a new item that
+can be used in a new blank row at the bottom of a table:
+
+  var newItem = world.newProvisionalItem();
+
+The "provisional items" should work just the way you described in your
+proposal.  Let me know what you think of the name.  We can change it if
+something else would be better: newBlankItem(), newTemplateItem(), etc. 
+
+I tested it some, but not as much as I would have liked to, because we're
+not yet really set up to test actions that make changes in the saved
+repository.  We can talk more about that sometime when we're looking at our
+unit tests.
+
+:o) Brian
+
+
+ 
+
+-----Original Message-----
+From: openrecord-dev-admin at berlios.de
+[mailto:openrecord-dev-admin at berlios.de] On Behalf Of Chih-Chao Lam
+Sent: Monday, May 09, 2005 9:11 PM
+To: openrecord-dev at berlios.de
+Subject: Re: [openrecord-dev] How does a user add a new row?
+
+I'd like to throw up a suggestion for creating new rows, and perhaps  
+more generally creating new items.
+
+The problem is that I'd like each table cell to correspond to a  
+specific item's attribute entry, the table cell then knows how to  
+persist itself. This works pretty well now, except of course for the  
+creation of new items. Some problems are:
+     1) You need to create a new blank item every time a table is  
+being edited
+     2) You don't really want to save the blank item if it's really  
+blank (what it does now)
+     3) You don't want the blank item to be part of the sort list
+
+What I think I'll like (but not completely crystallized) is an Item  
+template or proxy. It acts like an item in most ways, when it is  
+being queried in a read-only way, responding as an item would through  
+the item API. However, it is not instantiated in the repository. Only  
+when it is actually written (i.e. when it acquires a value or  
+attribute), then it becomes a full-fledge Item object with a  
+representation in the repository.
+
+Does this make sense? Is it do-able in our repository? I think it's  
+do-able in Javascript since it's a reasonably typeless language.
+
+Thanks,
+chao
+
+
+On May 9, 2005, at 6:11 PM, Chih-Chao Lam wrote:
+
+> Hi Mignon,
+>
+> Sorry, you can't add a new row to a table at this time. To get the  
+> sorting code in, I had to first refactor TablePlugin to be DOM  
+> Level-2 style. I removed the functionality to add a new row as part  
+> of that effort, because 1) sorting made it such that the "last row"  
+> wasn't necessarily the newly added row 2) there's were bugs in the  
+> old code anyway.
+>
+> I was hoping to wait till Brian gets back to discuss how to add the  
+> "add new row" functionality back. But now I see that you may be  
+> relying on that functionality (sorry!). If you are, I can try to  
+> add the functionality back in a maybe hacky way.
+>
+> chao
+>
+> On May 9, 2005, at 1:02 PM, Mignon Belongie wrote:
+>
+>
+>> Chao,
+>>
+>> After your last two updates of TablePlugin.js, how is a user  
+>> supposed to add a new row to a table?  As of version 56, a new row  
+>> appeared automatically in edit mode, but as of version 58, it  
+>> doesn't.  I haven't yet figured out a way to compare two files on  
+>> my iBook other than unix diff, so about all I can see is that  
+>> there was a very large amount of code changed....
+>>
+>> Mignon
+
+
+
+From brian.skinner at gumption.org  Fri May 20 00:39:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri May 20 00:39:00 2005
+Subject: [openrecord-dev] Interesting article on AJAX usability
+In-Reply-To: <4EC96234-DF64-4845-B10A-63951D417476@osafoundation.org>
+Message-ID: <200505192238.j4JMc3m19332@bat.berlios.de>
+
+> Interesting article on AJAX usability
+> 
+> http://www.baekdal.com/articles/usability/usable-XMLHttpRequest/
+
+
+That's a great page.  I think we should do a number of things just like
+that.
+
+I added one new task to our to-do list, about letting the user press the
+Escape key when editing.
+
+I think it would be good if we gave the user visual cues about what fields
+are editable.  Actually, our code used to do a better job of that, back in
+April.  Try going to our old April demo page:
+  http://openrecord.org/demo/current/trunk/source/demo_page.html
+
+If you press the "Edit" button, then you see bordered "edit boxes" whenever
+you hover the mouse over the text fields.  Our current code doesn't give
+visual cues until you actually click on the text.  Is that something we
+should fix before 0.1?
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri May 20 01:31:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri May 20 01:31:01 2005
+Subject: [openrecord-dev] i++ in JSLint
+Message-ID: <200505192330.j4JNUsm20479@bat.berlios.de>
+
+Just following up from our conversation on Monday about JSLint and the ++
+operator...
+
+Happily, JSLint only complains about postfix operations, not prefix
+operations: i++ and i--, not ++i and --i.
+
+Here's what Douglas Crockford has to say about why he considers i++ to be
+dangerous:
+  "The ++ (post-increment) and -- (post-decrement) operators have been known
+to contribute to bad code by encouraging excessive trickiness. They are
+second only to faulty architecture in enabling to viruses and other security
+menaces. JSLint does not expect to see them by default. JSLint currently
+tolerates the pre-increment and pre-decrement forms."
+
+If you're interested, here's the complete list of things JSLint checks for,
+and the rational behind the checks:
+  http://www.crockford.com/javascript/lint.html
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Fri May 20 02:55:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri May 20 02:55:01 2005
+Subject: [openrecord-dev] Interesting article on AJAX usability
+In-Reply-To: <200505192238.j4JMc3m19332@bat.berlios.de>
+References: <200505192238.j4JMc3m19332@bat.berlios.de>
+Message-ID: <78AC7C90-AA95-4D80-93DC-EE5A84DB73A5@cs.stanford.edu>
+
+Hi Brian,
+
+> If you press the "Edit" button, then you see bordered "edit boxes"  
+> whenever
+> you hover the mouse over the text fields.  Our current code doesn't  
+> give
+> visual cues until you actually click on the text.  Is that  
+> something we
+> should fix before 0.1?
+>
+You're right, the mouseover behavior has changed with the hovering.
+
+I would prefer to have a UI design and CSS architecture melding  
+before fixing it, as I see this as part of getting CSS done right?  
+I'm much more fixated on the shrinking and expanding textedit box,  
+'tho :(, as that's just plain wrong regardless of what UI design we  
+choose.
+
+chao
+
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Mon May 23 18:59:06 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon May 23 18:59:06 2005
+Subject: [openrecord-dev] Two cool PIM ajax apps
+In-Reply-To: <8D7ECF50-0CDF-41C8-A853-21476F86CF40@cs.stanford.edu>
+Message-ID: <200505231657.j4NGvDm05206@bat.berlios.de>
+
+> http://backpackit.com/
+> http://shared.snapgrid.com/gtd_tiddlywiki.html 
+
+Thanks for the links Chao!
+
+Wow, that TiddlyWiki thing is doing something very interesting.  I had seen
+TiddlyWiki before, but I hadn't bothered to spend more than a few minutes
+looking at it.  This time I spent a little more time, and I'm very glad I
+did.
+
+TiddlyWiki is designed to run on your local machine, running from a
+"file://" URL rather than an "http://" URL, so that you don't have to have
+Apache running on your local machine.  
+
+Whenever you make a change to a wiki entry, the TiddlyWiki JavaScript code
+saves your new data file to the local file system.  I actually had thought
+that was impossible.  I thought JavaScript had no mechanism for saving data
+to a file on the local machine.  
+
+Sometime when we have time, it'd be great to study the TiddlyWiki code that
+does local saves, and understand the mechanism they're using.  It involves a
+bunch of JavaScript components I know nothing about: the "netscape" object's
+security PrivilegeManager, and UniversalXPConnect, and
+Components.interfaces.nsILocalFile and
+Components.interfaces.nsIFileOutputStream.  Looks like it might all be a
+little brittle, but it'd be wonderful if OpenRecord could support the
+entirely new use case of having someone run OpenRecord on their home machine
+to manage personal data!
+
+:o) Brian
+ 
+
+
+
+
+From brian.skinner at gumption.org  Mon May 23 19:10:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon May 23 19:10:00 2005
+Subject: [openrecord-dev] Interesting article on AJAX usability
+In-Reply-To: <78AC7C90-AA95-4D80-93DC-EE5A84DB73A5@cs.stanford.edu>
+Message-ID: <200505231709.j4NH9qm05730@bat.berlios.de>
+
+| > If you press the "Edit" button, then you see 
+| > bordered "edit boxes" whenever you hover the 
+| > mouse over the text fields.  Our current code 
+| > doesn't give visual cues until you actually 
+| > click on the text.  Is that something we
+| > should fix before 0.1?
+| 
+| You're right, the mouseover behavior has changed with 
+| the hovering.
+| 
+| I would prefer to have a UI design and CSS architecture 
+| melding before fixing it, as I see this as part of getting 
+| CSS done right?  
+
+Okay, let's wait on that fix until we've done more UI design and re-thought
+the CSS architecture.
+
+
+| I'm much more fixated on the shrinking and expanding 
+| textedit box, 'tho :(, as that's just plain wrong 
+| regardless of what UI design we choose.
+
+Yup, the shrinking and expanding is just plain wrong.  But I'm reluctant to
+fix that right now...  
+
+We still haven't thought much about what sort of UI components we want to
+have within each table cell.  I think in the long run we're going to want to
+have a UI that lets people add more than one entry into a table cell, and a
+UI for selecting entries, deleting entries, reordering entries, etc.  Also a
+UI for doing data type validation, and a UI for auto completion as you're
+typing.  And a UI for entering references to other items by selecting them
+from pull-down lists, or via drag-and-drop.  
+
+All of which means that code for what's going on within a table cell is
+likely to change a great deal in next few months, so it might not be worth
+spending much time debugging the visual glitch in the current code.
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Mon May 23 19:23:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon May 23 19:23:00 2005
+Subject: [openrecord-dev] Linus Torvalds: collaboration tools and immutable history
+Message-ID: <200505231722.j4NHMOm06310@bat.berlios.de>
+
+Here's an interesting tidbit from Ted Leung's weblog...
+
+It's a quote from Linus Torvalds about a data model architectural issue in a
+collaborative content management tool:
+
+ "I argued with Larry about it, but Larry (correctly, I 
+  believe) argued that efficient and reliable distribution 
+  really requires the concept of "history is immutable". 
+  It makes replication much easier when you know that the 
+  known subset _never_ shrinks or changes - you only add 
+  on top of it."
+
+That's part of what I had in mind in designing our OpenRecord data model to
+have immutable history as fundamental feature.  It feels validating to find
+a supporting quote from Linus!
+
+Here's the full entry on Ted Leung's weblog.  The Linus Torvalds quote goes
+on to talk about the group dynamics of on-line collaboration, and the value
+of designing your tools to support a "arbitrary network" of people rather
+than a "hierarchy" of collaborators: 
+  http://www.sauria.com/blog/2005/May/10
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Thu May 26 03:18:49 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu May 26 03:18:49 2005
+Subject: [openrecord-dev] new login accounts
+Message-ID: <200505260117.j4Q1HYm15685@bat.berlios.de>
+
+I did a little more work today on the login UI.  While I was at it I created
+user accounts for all of us, in the demo repository.  
+
+If you check out the latest release and open demo_page.html, you should be
+able to log in without having to create a new account first.  I didn't make
+passwords, so just leave the password field blank.  You can add a password
+if you want to.  We don't yet have a UI for changing your password, but you
+can edit the user list file in the repository and then check in your
+changes.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Thu May 26 19:34:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu May 26 19:34:00 2005
+Subject: [openrecord-dev] Web Input Completion Kit
+Message-ID: <598DFAAB-4420-44B1-8B97-05BEEA2FC95E@cs.stanford.edu>
+
+This is a project we could use when it becomes more polished. Maybe  
+we can contribute to it too...
+http://wick.sourceforge.net/wick_sample/
+
+In general, this is a great site about AJAX where I came across this  
+project:
+http://ajaxian.com/
+
+chao
+
+
+From brian.skinner at gumption.org  Fri May 27 20:18:23 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri May 27 20:18:23 2005
+Subject: [openrecord-dev] meeting on Monday?
+Message-ID: <200505271813.j4RIDpm24702@bat.berlios.de>
+
+Hey Chao and Mignon,
+
+Last time we got together, we made tentative plans to meet again this coming
+Monday (May 30).  Does that still sound good, like at 1:00 or 1:15 at
+Chao's?
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Fri May 27 20:23:50 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri May 27 20:23:50 2005
+Subject: [openrecord-dev] md5 password encryption
+Message-ID: <200505271802.j4RI2pm24349@bat.berlios.de>
+
+Hey Chao,
+
+I just checked in a new version of OpenRecord that saves the user passwords
+as encrypted md5 hashes instead of clear-text passwords.  
+
+Surprisingly, it only took about 20 minutes to add that feature, including
+writing a few unit tests for the md5 code.  It's funny what ends up being
+hard and what ends up being easy!
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Fri May 27 20:58:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri May 27 20:58:01 2005
+Subject: [openrecord-dev] meeting on Monday?
+In-Reply-To: <200505271813.j4RIDpm24702@bat.berlios.de>
+References: <200505271813.j4RIDpm24702@bat.berlios.de>
+Message-ID: <340A831B-3BEC-4172-A987-3150469CA8DC@cs.stanford.edu>
+
+Hi Brian and Mignon,
+
+Sorry for the late notice but do you mind if we move it to Weds or  
+the following Monday?
+
+Since it's memorial day, Elaine wanted to do something.
+
+Thanks,
+chao
+
+On May 27, 2005, at 11:13 AM, Brian Douglas Skinner wrote:
+
+> Hey Chao and Mignon,
+>
+> Last time we got together, we made tentative plans to meet again  
+> this coming
+> Monday (May 30).  Does that still sound good, like at 1:00 or 1:15 at
+> Chao's?
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Fri May 27 21:11:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Fri May 27 21:11:00 2005
+Subject: [openrecord-dev] md5 password encryption
+In-Reply-To: <200505271802.j4RI2pm24349@bat.berlios.de>
+References: <200505271802.j4RI2pm24349@bat.berlios.de>
+Message-ID: <90E734A6-723B-4152-8034-917BD7E12E4A@cs.stanford.edu>
+
+Hey Brian,
+
+That's very cool! And I like the auto completion menu too. Would like  
+to discuss with you how we can get it to work with TextView.
+
+chao
+
+On May 27, 2005, at 11:02 AM, Brian Douglas Skinner wrote:
+
+> Hey Chao,
+>
+> I just checked in a new version of OpenRecord that saves the user  
+> passwords
+> as encrypted md5 hashes instead of clear-text passwords.
+>
+> Surprisingly, it only took about 20 minutes to add that feature,  
+> including
+> writing a few unit tests for the md5 code.  It's funny what ends up  
+> being
+> hard and what ends up being easy!
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From mignon_belongie at yahoo.com  Sat May 28 01:37:00 2005
+From: mignon_belongie at yahoo.com (Mignon Belongie)
+Date: Sat May 28 01:37:00 2005
+Subject: [openrecord-dev] meeting on Monday?
+In-Reply-To: <340A831B-3BEC-4172-A987-3150469CA8DC@cs.stanford.edu>
+Message-ID: <20050527233558.74240.qmail@web51003.mail.yahoo.com>
+
+Sorry, I'll be at work on Wednesday.
+
+Mignon
+
+--- Chih-Chao Lam <chao at cs.stanford.edu> wrote:
+
+> Hi Brian and Mignon,
+> 
+> Sorry for the late notice but do you mind if we move it to Weds or  
+> the following Monday?
+> 
+> Since it's memorial day, Elaine wanted to do something.
+> 
+> Thanks,
+> chao
+> 
+> On May 27, 2005, at 11:13 AM, Brian Douglas Skinner wrote:
+> 
+> > Hey Chao and Mignon,
+> >
+> > Last time we got together, we made tentative plans to meet again  
+> > this coming
+> > Monday (May 30).  Does that still sound good, like at 1:00 or 1:15
+> at
+> > Chao's?
+> >
+> > :o) Brian
+> >
+> > ___________________________________________________________________
+> > Copyright rights relinquished. This work is in the Public Domain.
+> > For details see: http://creativecommons.org/licenses/publicdomain/
+> >
+> > openrecord-dev mailing list
+> > openrecord-dev at lists.berlios.de
+> > http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> >
+> 
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+> 
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> 
+
+
+
+From chao at cs.stanford.edu  Sat May 28 01:44:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat May 28 01:44:00 2005
+Subject: [openrecord-dev] meeting on Monday?
+In-Reply-To: <20050527233558.74240.qmail@web51003.mail.yahoo.com>
+References: <20050527233558.74240.qmail@web51003.mail.yahoo.com>
+Message-ID: <F7F41DAF-37CA-4FF2-B0FE-FA173FE0A51A@cs.stanford.edu>
+
+How 'bout the following Monday?
+
+chao
+
+On May 27, 2005, at 4:35 PM, Mignon Belongie wrote:
+
+> Sorry, I'll be at work on Wednesday.
+>
+> Mignon
+>
+> --- Chih-Chao Lam <chao at cs.stanford.edu> wrote:
+>
+>
+>> Hi Brian and Mignon,
+>>
+>> Sorry for the late notice but do you mind if we move it to Weds or
+>> the following Monday?
+>>
+>> Since it's memorial day, Elaine wanted to do something.
+>>
+>> Thanks,
+>> chao
+>>
+>> On May 27, 2005, at 11:13 AM, Brian Douglas Skinner wrote:
+>>
+>>
+>>> Hey Chao and Mignon,
+>>>
+>>> Last time we got together, we made tentative plans to meet again
+>>> this coming
+>>> Monday (May 30).  Does that still sound good, like at 1:00 or 1:15
+>>>
+>> at
+>>
+>>> Chao's?
+>>>
+>>> :o) Brian
+>>>
+>>> ___________________________________________________________________
+>>> Copyright rights relinquished. This work is in the Public Domain.
+>>> For details see: http://creativecommons.org/licenses/publicdomain/
+>>>
+>>> openrecord-dev mailing list
+>>> openrecord-dev at lists.berlios.de
+>>> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>>>
+>>>
+>>
+>> ___________________________________________________________________
+>> Copyright rights relinquished. This work is in the Public Domain.
+>> For details see: http://creativecommons.org/licenses/publicdomain/
+>>
+>> openrecord-dev mailing list
+>> openrecord-dev at lists.berlios.de
+>> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>>
+>>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From mignon_belongie at yahoo.com  Sat May 28 02:15:01 2005
+From: mignon_belongie at yahoo.com (Mignon Belongie)
+Date: Sat May 28 02:15:01 2005
+Subject: [openrecord-dev] meeting on Monday?
+In-Reply-To: <F7F41DAF-37CA-4FF2-B0FE-FA173FE0A51A@cs.stanford.edu>
+Message-ID: <20050528001420.38216.qmail@web51007.mail.yahoo.com>
+
+That's fine with me.
+
+Mignon
+
+--- Chih-Chao Lam <chao at cs.stanford.edu> wrote:
+
+> How 'bout the following Monday?
+> 
+> chao
+> 
+> On May 27, 2005, at 4:35 PM, Mignon Belongie wrote:
+> 
+> > Sorry, I'll be at work on Wednesday.
+> >
+> > Mignon
+> >
+> > --- Chih-Chao Lam <chao at cs.stanford.edu> wrote:
+> >
+> >
+> >> Hi Brian and Mignon,
+> >>
+> >> Sorry for the late notice but do you mind if we move it to Weds or
+> >> the following Monday?
+> >>
+> >> Since it's memorial day, Elaine wanted to do something.
+> >>
+> >> Thanks,
+> >> chao
+> >>
+> >> On May 27, 2005, at 11:13 AM, Brian Douglas Skinner wrote:
+> >>
+> >>
+> >>> Hey Chao and Mignon,
+> >>>
+> >>> Last time we got together, we made tentative plans to meet again
+> >>> this coming
+> >>> Monday (May 30).  Does that still sound good, like at 1:00 or
+> 1:15
+> >>>
+> >> at
+> >>
+> >>> Chao's?
+> >>>
+> >>> :o) Brian
+> >>>
+> >>>
+> ___________________________________________________________________
+> >>> Copyright rights relinquished. This work is in the Public Domain.
+> >>> For details see:
+> http://creativecommons.org/licenses/publicdomain/
+> >>>
+> >>> openrecord-dev mailing list
+> >>> openrecord-dev at lists.berlios.de
+> >>> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> >>>
+> >>>
+> >>
+> >>
+> ___________________________________________________________________
+> >> Copyright rights relinquished. This work is in the Public Domain.
+> >> For details see: http://creativecommons.org/licenses/publicdomain/
+> >>
+> >> openrecord-dev mailing list
+> >> openrecord-dev at lists.berlios.de
+> >> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> >>
+> >>
+> >
+> > ___________________________________________________________________
+> > Copyright rights relinquished. This work is in the Public Domain.
+> > For details see: http://creativecommons.org/licenses/publicdomain/
+> >
+> > openrecord-dev mailing list
+> > openrecord-dev at lists.berlios.de
+> > http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> >
+> 
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+> 
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+> 
+
+
+
+From brian.skinner at gumption.org  Sat May 28 02:53:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat May 28 02:53:01 2005
+Subject: [openrecord-dev] meeting on Monday?
+In-Reply-To: <20050528001420.38216.qmail@web51007.mail.yahoo.com>
+Message-ID: <200505280052.j4S0qMm02048@bat.berlios.de>
+
+| > How 'bout the following Monday? 
+| > 
+| > chao
+| 
+| That's fine with me.
+| 
+| Mignon
+
+
+That works for me too.  Let's plan on meeting Monday (June 6) at Chao's at
+1:00.
+
+That'll be the first Monday in June.  A month ago, on the first Monday in
+May, was the meeting where we did the release planning for 0.1 and talked
+about what tasks to do in the first iteration.  We talked about maybe having
+1-month iterations.  
+
+How about we say that the meeting on Monday June 6 will mark the end of the
+first iteration and the start of the second iteration?  We can measure our
+observed velocity for iteration 1, and make estimates for the iteration 2
+tasks.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Sat May 28 06:11:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat May 28 06:11:00 2005
+Subject: [openrecord-dev] Model Testsuite problems
+Message-ID: <2C09A374-4E33-4A0B-9F70-13ED99FD6E9A@cs.stanford.edu>
+
+Hi Brian,
+
+I tested the modeltest TestSuite over on my Windows PC, with the  
+pages serving off my mac's apache server, and everything ran fine.  
+So, I suspect it's a mac vs. pc firefox issue.
+
+I'm going to checkin my code because I think the bug is likely to be  
+already present on the mac.
+
+As far as I can tell, the bug on the mac is that there are two  
+entries created for the "Name" attribute on an item. The two entries  
+point to the same identical item.
+
+Anyway, maybe you can help figure it out with Mignon Sunday? I'm also  
+available tomorrow (sat).
+
+Thanks,
+chao
+
+
+From brian.skinner at gumption.org  Sat May 28 09:41:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat May 28 09:41:00 2005
+Subject: [openrecord-dev] Model Testsuite problems
+In-Reply-To: <2C09A374-4E33-4A0B-9F70-13ED99FD6E9A@cs.stanford.edu>
+Message-ID: <200505280740.j4S7e7m10093@bat.berlios.de>
+
+Hey Chao,
+
+This seems like a really weird bug.  I'm a little bit baffled about what
+might be causing it.  And, unfortunately, I don't own a Mac, so I don't have
+any good way to reproduce it.  But, I did have a couple thoughts...  
+
+I'm kind of grasping at straws here, but one thing you could do is to try
+loading  TestSuite.html from a file:/// prefix rather than an
+http://localhost: prefix.  That tends tease out potential problems that
+result from Apache caching some files. 
+
+My only other thought is that there's maybe some connection between this bug
+and all the new UUID code that I just checked in.  The UUIDs seem to work
+fine in Firefox on Windows, but maybe the Mac Firefox implementation has
+some slightly different implementation of the Core JavaScript functions --
+Number, Math.random(), etc. 
+
+I'll be available by phone on Saturday, and then on Sunday Mignon and I can
+look at the code and maybe debug it on a Mac and PC side by side.
+
+:o) Brian  
+
+
+ 
+
+-----Original Message-----
+From: openrecord-dev-admin at berlios.de
+[mailto:openrecord-dev-admin at berlios.de] On Behalf Of Chih-Chao Lam
+Sent: Friday, May 27, 2005 9:11 PM
+To: openrecord-dev at berlios.de
+Subject: [openrecord-dev] Model Testsuite problems
+
+Hi Brian,
+
+I tested the modeltest TestSuite over on my Windows PC, with the  
+pages serving off my mac's apache server, and everything ran fine.  
+So, I suspect it's a mac vs. pc firefox issue.
+
+I'm going to checkin my code because I think the bug is likely to be  
+already present on the mac.
+
+As far as I can tell, the bug on the mac is that there are two  
+entries created for the "Name" attribute on an item. The two entries  
+point to the same identical item.
+
+Anyway, maybe you can help figure it out with Mignon Sunday? I'm also  
+available tomorrow (sat).
+
+Thanks,
+chao
+___________________________________________________________________
+Copyright rights relinquished. This work is in the Public Domain.
+For details see: http://creativecommons.org/licenses/publicdomain/
+
+openrecord-dev mailing list
+openrecord-dev at lists.berlios.de
+http://lists.berlios.de/mailman/listinfo/openrecord-dev
+
+
+
+From chao at cs.stanford.edu  Sat May 28 20:31:08 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat May 28 20:31:08 2005
+Subject: [openrecord-dev] Model Testsuite problems
+In-Reply-To: <200505280740.j4S7e7m10093@bat.berlios.de>
+References: <200505280740.j4S7e7m10093@bat.berlios.de>
+Message-ID: <C4A02229-8011-40A0-AD02-B26C2C8F4553@cs.stanford.edu>
+
+Hi Brian,
+
+
+> I'm kind of grasping at straws here, but one thing you could do is  
+> to try
+> loading  TestSuite.html from a file:/// prefix rather than an
+> http://localhost: prefix.  That tends tease out potential problems  
+> that
+> result from Apache caching some files.
+>
+OK, all the test suites now work on my mac ?!
+
+I tried using file:/// as you suggested and that worked, and then I  
+went back to http://localhost and that worked too.
+
+Either I was in an alternate reality yesterday or there's some weird  
+Apache caching going on or that I'm clueless in some other way :(
+
+chao
+
+On May 28, 2005, at 12:40 AM, Brian Douglas Skinner wrote:
+
+> Hey Chao,
+>
+> This seems like a really weird bug.  I'm a little bit baffled about  
+> what
+> might be causing it.  And, unfortunately, I don't own a Mac, so I  
+> don't have
+> any good way to reproduce it.  But, I did have a couple thoughts...
+>
+> I'm kind of grasping at straws here, but one thing you could do is  
+> to try
+> loading  TestSuite.html from a file:/// prefix rather than an
+> http://localhost: prefix.  That tends tease out potential problems  
+> that
+> result from Apache caching some files.
+>
+> My only other thought is that there's maybe some connection between  
+> this bug
+> and all the new UUID code that I just checked in.  The UUIDs seem  
+> to work
+> fine in Firefox on Windows, but maybe the Mac Firefox  
+> implementation has
+> some slightly different implementation of the Core JavaScript  
+> functions --
+> Number, Math.random(), etc.
+>
+> I'll be available by phone on Saturday, and then on Sunday Mignon  
+> and I can
+> look at the code and maybe debug it on a Mac and PC side by side.
+>
+> :o) Brian
+>
+>
+>
+>
+> -----Original Message-----
+> From: openrecord-dev-admin at berlios.de
+> [mailto:openrecord-dev-admin at berlios.de] On Behalf Of Chih-Chao Lam
+> Sent: Friday, May 27, 2005 9:11 PM
+> To: openrecord-dev at berlios.de
+> Subject: [openrecord-dev] Model Testsuite problems
+>
+> Hi Brian,
+>
+> I tested the modeltest TestSuite over on my Windows PC, with the
+> pages serving off my mac's apache server, and everything ran fine.
+> So, I suspect it's a mac vs. pc firefox issue.
+>
+> I'm going to checkin my code because I think the bug is likely to be
+> already present on the mac.
+>
+> As far as I can tell, the bug on the mac is that there are two
+> entries created for the "Name" attribute on an item. The two entries
+> point to the same identical item.
+>
+> Anyway, maybe you can help figure it out with Mignon Sunday? I'm also
+> available tomorrow (sat).
+>
+> Thanks,
+> chao
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Sun May 29 06:54:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun May 29 06:54:01 2005
+Subject: [openrecord-dev] Model Testsuite problems
+In-Reply-To: <C4A02229-8011-40A0-AD02-B26C2C8F4553@cs.stanford.edu>
+Message-ID: <200505290453.j4T4rFm08515@bat.berlios.de>
+
+> OK, all the test suites now work on my mac ?!
+
+Cool, that's excellent news.  Sounds like there wasn't really a bug in our
+code after all, and I'm excited about having one less bug to debug!
+
+
+> I tried using file:/// as you suggested and that
+> worked, and then I went back to http://localhost 
+> and that worked too.
+> 
+> Either I was in an alternate reality yesterday or 
+> there's some weird Apache caching going on or that 
+> I'm clueless in some other way :(
+
+My guess is that there's some weird Apache caching going on.  Mignon and I
+ran into some weird glitches too, earlier this month.  I forget exactly what
+happened, but I think that everything got better when we just shut down
+Apache and re-started it.  It might be worth investing some time in figuring
+out if there are ways to configure Apache so that it never caches anything.
+That, or getting in the habit of re-starting Apache at the first sign of
+trouble!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Sun May 29 07:04:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun May 29 07:04:01 2005
+Subject: [openrecord-dev] RE: checkin
+Message-ID: <200505290503.j4T534m08695@bat.berlios.de>
+
+> I'm done with my checkins. I added new row support 
+> for tables. I also have an experimental version of 
+> utilizing your cool SuggestionBox class in TextView 
+> for Tables. 
+
+Wonderful!  Thanks!  I just checked out all the new code and tried it out.
+The new row entry stuff works perfectly and looks great!  And I like the
+experimental auto-completion UI in the table cells.  We'll have to figure
+out answers to all the UI question you raised about the auto-completion, but
+auto-completion definitely feels like the right direction to be moving in. 
+
+This is all really exciting.  I feel like the app is starting to come
+together.  I'm eager to see where we'll be a month from now!
+
+:o) Brian 
+
+
+
+
+From brian.skinner at gumption.org  Sun May 29 07:04:02 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun May 29 07:04:02 2005
+Subject: [openrecord-dev] RE: checkin
+In-Reply-To: <B04E232C-ED63-4FA8-B2FA-6355D2267670@cs.stanford.edu>
+Message-ID: <200505290503.j4T53jm08707@bat.berlios.de>
+
+Hey Chao,
+
+Thanks for re-sending the message -- the original message didn't ever
+arrive. There must have been some problem with the berlios mail server -- I
+also didn't ever get a copy of the automatic message that subversion should
+have sent out when you did the check in.
+
+:o) Brian
+
+
+
+
+-----Original Message-----
+From: Chih-Chao Lam
+Sent: Saturday, May 28, 2005 7:18 PM
+To: Brian Douglas Skinner; Mignon Belongie
+Subject: Fwd: checkin
+
+Hi Brian & Mignon,
+
+Not sure if you got this message.
+
+chao
+
+Begin forwarded message:
+
+> From: MAILER-DAEMON at yahoo.com
+> Date: May 28, 2005 7:04:28 PM PDT
+> To: chao at cs.stanford.edu
+> Subject: failure notice
+>
+>
+> Hi. This is the qmail-send program at yahoo.com.
+> I'm afraid I wasn't able to deliver your message to the following  
+> addresses.
+> This is a permanent error; I've given up. Sorry it didn't work out.
+>
+> <openrecord-dev at berlios.de>:
+> 195.37.77.135 does not like recipient.
+> Remote host said: 550 5.1.1 <openrecord-dev at berlios.de>... User  
+> unknown
+> Giving up on 195.37.77.135.
+>
+> --- Below this line is a copy of the message.
+>
+> Return-Path: <chao at cs.stanford.edu>
+> Received: (qmail 36365 invoked from network); 29 May 2005 02:04:26  
+> -0000
+> Received: from unknown (HELO ?10.0.1.24?) (chaodoze at 67.126.8.91  
+> with plain)
+>   by smtp103.mail.sc5.yahoo.com with SMTP; 29 May 2005 02:04:26 -0000
+> Mime-Version: 1.0 (Apple Message framework v730)
+> Content-Transfer-Encoding: 7bit
+> Message-Id: <A79FEF49-7AB7-4735-9EDB-986AC30827A5 at cs.stanford.edu>
+> Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+> To: openrecord-dev at berlios.de
+> From: Chih-Chao Lam <chao at cs.stanford.edu>
+> Subject: Checkin
+> Date: Sat, 28 May 2005 19:04:22 -0700
+> X-Mailer: Apple Mail (2.730)
+>
+> Hi Brian,
+>
+> I'm done with my checkins. I added new row support for tables. I also
+> have an experimental version of utilizing your cool SuggestionBox
+> class in TextView for Tables. I decided to create a separate class
+> for now just to get things going. There are numerous UI fixes still
+> to be made, so if you find it annoying, you can comment out this
+> experimental feature at:
+>
+> TablePlugin: Line 318
+>
+> A few more questions/comments for discussion after working on the  
+> code:
+> 1) Should there be a Query class? Maybe also Attribute?
+> 2) Should we create a Plugin base abstract class? I think this will
+> be helpful, and will help refactoring all the other plugins to not
+> depend on SectionView.getListOfContentItems()
+> 3) We need to discuss the usage and UI for Auto Completion (i.e.
+> SuggestionBox):
+>      - we need to add arrow key and tab/return support
+>          - implementation issue: what's the easiest way to implement
+> selection of SuggestionBox item?
+>      - should only certain attributes do "Auto Completion" by default
+> and not others? if so, what criteria do we use to decide?
+>      - when doing auto-completion for attributes, should we can
+> through all entries for this attribute? or just all entries within a
+> certain context e.g. all entries for attribute X in Table Y?
+>
+> 4) In model/StubVirtualServer.js Line 193, I'm making a call to a
+> protected method, can you see what's the best way to fix this problem?
+>
+> 5) How do you do Util.assert(x != null)? Util.assert(x) doesn't pass
+> the LintTest
+>
+> 6) Should we consider not supporting "strict line ending" in the
+> LintTest? the ";" at the end of prototype functions is really getting
+> to me.
+>
+> Happy pair programming tomorrow!
+>
+> Thanks,
+> chao
+>
+
+
+
+From brian.skinner at gumption.org  Sun May 29 07:04:04 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun May 29 07:04:04 2005
+Subject: [openrecord-dev] RE: Mac vs. PC
+In-Reply-To: <9787DE6A-2ACA-4798-86CF-96EC6FAE2B90@cs.stanford.edu>
+Message-ID: <200505290503.j4T53sm08712@bat.berlios.de>
+
+> BTW, the Test Suite runs 5-8 times faster on my 
+> 3 year old PC compared to my mac. I think PC's 
+> javascript must run that much faster. That may 
+> be one reason why running the test suites often  
+> isn't so big an issue for you.
+> 
+> chao
+
+Hey Chao, 
+
+Yup, I've been doing everything only on a brand new desktop PC, which has
+maybe really been insulating me from the performance issues.  
+
+I just did a few timing tests...  On my PC, it takes just 10 seconds to run
+the *entire* suite of unit tests, including all the lint tests
+(.../trunk/source/TestSuite.html).
+
+I'd be curious to see how that number compares to the different machines
+that you and Mignon are using.  It'd be good to get a sense of just how wide
+the gap is between our different machines.  And then we should start talking
+about what we need to do differently... maybe start taking performance
+tuning more seriously? ... or take the lint tests out of the main test
+suite? ... or get faster machines to do development on ;-)
+
+:o) Brian
+
+
+ 
+
+
+
+From chao at cs.stanford.edu  Sun May 29 07:26:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun May 29 07:26:01 2005
+Subject: [openrecord-dev] Checkin
+Message-ID: <BD1664C4-78A0-43FD-914F-078AE88B8EEF@cs.stanford.edu>
+
+Hi Brian,
+
+I'm done with my checkins. I added new row support for tables. I also  
+have an experimental version of utilizing your cool SuggestionBox  
+class in TextView for Tables. I decided to create a separate class  
+for now just to get things going. There are numerous UI fixes still  
+to be made, so if you find it annoying, you can comment out this  
+experimental feature at:
+
+TablePlugin: Line 318
+
+A few more questions/comments for discussion after working on the code:
+1) Should there be a Query class? Maybe also Attribute?
+2) Should we create a Plugin base abstract class? I think this will  
+be helpful, and will help refactoring all the other plugins to not  
+depend on SectionView.getListOfContentItems()
+3) We need to discuss the usage and UI for Auto Completion (i.e.  
+SuggestionBox):
+     - we need to add arrow key and tab/return support
+         - implementation issue: what's the easiest way to implement  
+selection of SuggestionBox item?
+     - should only certain attributes do "Auto Completion" by default  
+and not others? if so, what criteria do we use to decide?
+     - when doing auto-completion for attributes, should we can  
+through all entries for this attribute? or just all entries within a  
+certain context e.g. all entries for attribute X in Table Y?
+
+4) In model/StubVirtualServer.js Line 193, I'm making a call to a  
+protected method, can you see what's the best way to fix this problem?
+
+5) How do you do Util.assert(x != null)? Util.assert(x) doesn't pass  
+the LintTest
+
+6) Should we consider not supporting "strict line ending" in the  
+LintTest? the ";" at the end of prototype functions is really getting  
+to me.
+
+Happy pair programming tomorrow!
+
+Thanks,
+chao
+
+
+
+From chao at cs.stanford.edu  Sun May 29 07:37:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun May 29 07:37:00 2005
+Subject: [openrecord-dev] Open Record mailing list
+Message-ID: <14DF3703-720D-45C1-AE9E-A326F7DA85ED@cs.stanford.edu>
+
+Hi Mimi,
+
+It was great getting your UI advice Thurs evening.
+
+If you're interested, you should sign up on the mailing list for open  
+record:
+http://lists.berlios.de/mailman/listinfo/openrecord-svn
+
+I wrote up some UI issues about auto-completion here:
+http://lists.berlios.de/pipermail/openrecord-dev/2005-May/000077.html
+
+You can also try out a recent build at:
+http://coolchaser.com/openrecord/demo_page.html
+
+Try out the 1) account login/creation 2) table editing/sorting/auto  
+completion to get the sense of UI help we'll need.
+
+Have fun,
+chao
+
+
+
+From brian.skinner at gumption.org  Sun May 29 07:55:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun May 29 07:55:01 2005
+Subject: [openrecord-dev] Open Record mailing list
+In-Reply-To: <14DF3703-720D-45C1-AE9E-A326F7DA85ED@cs.stanford.edu>
+Message-ID: <200505290554.j4T5sUm09552@bat.berlios.de>
+
+> Hi Mimi,
+> 
+> It was great getting your UI advice Thurs evening.
+
+Yup, thanks for meeting up with us Mimi!
+
+
+> If you're interested, you should sign up on the 
+> mailing list for open record:
+> http://lists.berlios.de/mailman/listinfo/openrecord-svn
+
+Actually, that's the list that just has all the source code check-ins.  The
+interesting list is the dev discussion list:
+  http://lists.berlios.de/mailman/listinfo/openrecord-dev
+
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Sun May 29 19:00:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun May 29 19:00:01 2005
+Subject: [openrecord-dev] weblog tidbits
+In-Reply-To: <200505161932.j4GJWKm09604@bat.berlios.de>
+References: <200505161932.j4GJWKm09604@bat.berlios.de>
+Message-ID: <79243ECD-756D-435A-BEEC-EC76D020F609@cs.stanford.edu>
+
+Two more issues to bring up:
+
+1) We should think about conventions or patterns on separating blocks  
+of view set up code from data model code which could have view  
+observers that call possibly interfering view code. This bit me a few  
+times when implementing the "add new row" feature.
+
+e.g. when a TextView stopEditing() is called, it replaces the  
+editField with a text node, and writes out the new value to the  
+repository. If the latter is done first, an observer could be called,  
+say on the enclosing TablePlugin to add a new row (if the edited item  
+is a provisional item). Adding a new row, causes onblur to be called  
+on the TextView, which calls stopEditing() again!
+There are definitely ways to prevent this from happening, but I think  
+having conventions would make such issues less prevalent.
+
+2) We should think about a convention to prevent malicious Javascript/ 
+HTML code from executing as user input as Joel describes in the  
+article below that Brian that Brian sent out.
+
+chao
+
+> Joel on Hungarian notation, and how it went wrong:
+>   http://www.joelonsoftware.com/articles/Wrong.html
+>
+Joel also has a specific point
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Sun May 29 20:11:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sun May 29 20:11:00 2005
+Subject: [openrecord-dev] General Interface
+Message-ID: <65EDA56D-E293-4A82-B9D4-23BA9DFFD4EE@cs.stanford.edu>
+
+Interesting screencast on a impressive AJAX-stlye GUI builder from  
+Tibco.
+
+http://weblog.infoworld.com/udell/2005/05/25.html#a1238
+
+chao
+
+
+From chao at cs.stanford.edu  Mon May 30 23:47:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon May 30 23:47:01 2005
+Subject: [openrecord-dev] New Mozilla features
+Message-ID: <4860A116-F1AB-4517-A59F-D5E238D7803F@cs.stanford.edu>
+
+http://www.mozilla.org/projects/deerpark/new-web-dev-features.html
+
+
+
+

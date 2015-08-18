@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] latest checkin -- good news and bad news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20latest%20checkin%20--%20good%20news%20and%20bad%20news&In-Reply-To=%3C200506022156.j52LuCm03231%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000105.html">
+   <LINK REL="Next"  HREF="000111.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] latest checkin -- good news and bad news</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20latest%20checkin%20--%20good%20news%20and%20bad%20news&In-Reply-To=%3C200506022156.j52LuCm03231%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] latest checkin -- good news and bad news">brian.skinner at gumption.org
+       </A><BR>
+    <I>Thu Jun  2 23:57:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000105.html">[openrecord-dev] latest checkin -- good news and bad news
+</A></li>
+        <LI>Next message: <A HREF="000111.html">[openrecord-dev] whos working on what
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#106">[ date ]</a>
+              <a href="thread.html#106">[ thread ]</a>
+              <a href="subject.html#106">[ subject ]</a>
+              <a href="author.html#106">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+|<i> &gt;  7. when you pick from a suggestion box and a new entry
+</I>|<i> &gt;     is created, the entry is now a reference to the item
+</I>|<i> &gt;     you picked, rather than just a text string
+</I>|<i> 
+</I>|<i> As discussed, I'll love the ability to automatically 
+</I>|<i> create a new item, when the new entry is entered by 
+</I>|<i> manual typing (instead of picking a auto suggestion) 
+</I>|<i> on a column that has an expected data type of an item 
+</I>|<i> reference.
+</I>
+Yup, that sounds good to me.  That should be very easy to implement, I just
+didn't get that far.  Do you want to add that?  I think it just means adding
+a handful of lines somewhere in TextView, but I'm still not really up to
+speed with TextView.
+
+
+|<i> &gt; -2. there's still no way to add a new attribute to an item
+</I>|<i> &gt; -3. there's still no way to add a column to a table
+</I>|<i> 
+</I>|<i> (2) &amp; (3) are pretty closely related to each other, right? 
+</I>|<i> If we add the ability to add a column (which corresponds 
+</I>|<i> to an attribute type) to a table, then we have the ability 
+</I>|<i> to add a new attribute to an item in that table?
+</I>
+Yes.  Or, if that seems like a lot of work to implement, there is also
+another approach which might be good enough to meet our short term needs.
+If it seemed easy to do, you could wire up DetailPlugin to use the new
+MultiEntriesView code, so that we could edit entries in detail view.  Then
+we would also need a little bit of extra UI that allowed you to add a new
+attribute to an item in detail view, but that might be easier than adding a
+column in table view.  Just an idea.
+
+
+|<i> I'm interested in working on this feature but not sure 
+</I>|<i> if anyone else is working on it too?
+</I>
+I think it'd be great if you wanted to tackle it.  But I don't know what
+Mignon wants to work on next.  I'm planning on mostly just resting on my
+laurels until Monday.  I'm going to do some non-progamming tasks, and
+possibly do some pair programming with Mignon on Saturday on whatever she's
+working on.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000105.html">[openrecord-dev] latest checkin -- good news and bad news
+</A></li>
+	<LI>Next message: <A HREF="000111.html">[openrecord-dev] whos working on what
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#106">[ date ]</a>
+              <a href="thread.html#106">[ thread ]</a>
+              <a href="subject.html#106">[ subject ]</a>
+              <a href="author.html#106">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

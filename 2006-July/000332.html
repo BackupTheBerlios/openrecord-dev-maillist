@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Gantt Chart ideas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Gantt%20Chart%20ideas&In-Reply-To=%3C44B7283F.4060304%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000334.html">
+   <LINK REL="Next"  HREF="000338.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Gantt Chart ideas</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Gantt%20Chart%20ideas&In-Reply-To=%3C44B7283F.4060304%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Gantt Chart ideas">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Fri Jul 14 07:14:39 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000334.html">[openrecord-dev] Pivot Table ideas
+</A></li>
+        <LI>Next message: <A HREF="000338.html">[openrecord-dev] lost mail messages?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#332">[ date ]</a>
+              <a href="thread.html#332">[ thread ]</a>
+              <a href="subject.html#332">[ subject ]</a>
+              <a href="author.html#332">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Hiran,
+
+If you decide to work on the OpenRecord Gantt Chart plugin next, you 
+should look into using the Timeline widget from the SIMILE project. 
+Adam Souzis just posted a message about it to the openrecord-dev list 
+yesterday -- I don't know if you've had a chance to look at it yet.
+
+Here are a few demo pages...
+
+Try dragging left and right, and clicking on the dots and bars:
+  <A HREF="http://simile.mit.edu/timeline/">http://simile.mit.edu/timeline/</A>
+
+Check out the text-highlighting feature, by typing in one of the colored 
+text-boxes:
+  <A HREF="http://simile.mit.edu/timeline/examples/religions/religions.html">http://simile.mit.edu/timeline/examples/religions/religions.html</A>
+
+And here's one that has 4 bands to scroll time at 4 different time-scales:
+  <A HREF="http://simile.mit.edu/timeline/examples/dinosaurs/dinosaurs2.html">http://simile.mit.edu/timeline/examples/dinosaurs/dinosaurs2.html</A>
+
+Also available in both vertical and horizontal:
+  <A HREF="http://simile.mit.edu/timeline/docs/basics.html">http://simile.mit.edu/timeline/docs/basics.html</A>
+
+And it seems be extremely well documented:
+  <A HREF="http://simile.mit.edu/timeline/docs/">http://simile.mit.edu/timeline/docs/</A>
+
+The code is available under a BSD license, so we can safely include that 
+code in our own SVN repository as long as we're careful to preserve and 
+include the original copyright and license statements.
+
+The Timeline widget can be populated with data in JSON format, so it 
+should be fairly easy to feed it data from OpenRecord.  Realistically, I 
+imagine that there'll be a ton of little issues involved in actually 
+getting the Timeline wired up to work within OpenRecord, but the work 
+involved in resolving those issues is probably a small fraction of what 
+it would take to do a good Gantt Chart from scratch.  There's also some 
+overlap/duplication where both the Timeline widget and Dojo each have 
+their own way of doing something (localization, for example), but that's 
+okay.
+
+:<i>o) Brian
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000334.html">[openrecord-dev] Pivot Table ideas
+</A></li>
+	<LI>Next message: <A HREF="000338.html">[openrecord-dev] lost mail messages?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#332">[ date ]</a>
+              <a href="thread.html#332">[ thread ]</a>
+              <a href="subject.html#332">[ subject ]</a>
+              <a href="author.html#332">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

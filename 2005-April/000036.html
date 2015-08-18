@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] MusicBrainz
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20MusicBrainz&In-Reply-To=%3C200504220711.j3M7Bcm09149%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000035.html">
+   <LINK REL="Next"  HREF="000038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] MusicBrainz</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20MusicBrainz&In-Reply-To=%3C200504220711.j3M7Bcm09149%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] MusicBrainz">brian.skinner at gumption.org
+       </A><BR>
+    <I>Fri Apr 22 09:12:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000035.html">[openrecord-dev] Fwd: [Cosmo] jcr white paper
+</A></li>
+        <LI>Next message: <A HREF="000038.html">[openrecord-dev] data model ideas -- experimental prototype
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I just found out about the MusicBrainz project, and I wanted to share it
+with you:
+  <A HREF="http://www.musicbrainz.org/">http://www.musicbrainz.org/</A>
+
+I've only spent an hour or so looking at it, but it's a cool project, and a
+bunch of what they're doing is similar to what I had in mind for OpenRecord
+and OpenAgenda.  I'm not actually much interested in music, but it's a
+wonderful example of a feature-rich web-based collaborative database...
+
+
+Things of interest:
+
+
+(1) A web-based collaborative database
+
+MusicBrainz is doing Wikipedia-style web-based collaboration and content
+aggregation, but MusicBrainz does it with structured database entries, not
+text-based wiki pages.
+
+
+
+(2) Item relationships
+
+MusicBrainz is *not* a big flat-file database, but rather a database where
+different types of records are all interrelated.  In MusicBrainz there are
+relationships between artists, bands, albums, tracks, URLs, etc.  (This is
+the way Wikiquotes should be set up, but isn't, with relationships between
+books, authors, quotes, etc. -- or at least, wasn't, last time I looked.)
+
+
+
+(3) Extensible schema
+
+MusicBrainz started out with a fixed content schema that only knew about
+artists, albums, tracks, and a couple other things.  They've now got an
+&quot;Advanced Relationships&quot; feature, which will allow for all sorts of new
+content types and relationships.  For more info, see:
+<A HREF="http://wiki.musicbrainz.org/wiki.pl?AdvancedRelationshipType">http://wiki.musicbrainz.org/wiki.pl?AdvancedRelationshipType</A>
+
+
+
+(4) Voting to establish content
+
+MusicBrainz has a content moderation system based on voting and automatic
+resolution of votes, like what I'm proposing for OpenRecord.  In contrast to
+the wiki-style system of &quot;last edit wins&quot;, or the Content Management System
+approach of &quot;process and permissions&quot;.  For more info, see:
+<A HREF="http://www.musicbrainz.org/mod_intro.html">http://www.musicbrainz.org/mod_intro.html</A>
+
+
+
+(5) UUID-based URLs
+
+MusicBrainz uses UUIDs to identify content items, just like Chandler and
+JCR.  I think OpenRecord should do that too.  MusicBrainz also uses UUIDs
+for their permanent URLs, which I think is great.  For example:
+<A HREF="http://musicbrainz.org/album/5240094f-9d79-44fd-9985-77c7287bcc16.html">http://musicbrainz.org/album/5240094f-9d79-44fd-9985-77c7287bcc16.html</A>
+  
+
+
+(6) RDF and Web Services
+
+MusicBrainz publishes all the database content not only on human-readable
+HTML pages, but also in machine-readable form via RDF and Web Services.  For
+more info see: <A HREF="http://logicerror.com/musicbrainzArticle">http://logicerror.com/musicbrainzArticle</A> or
+<A HREF="http://crschmidt.net/blog/archives/47/menow-and-musicbrainz/">http://crschmidt.net/blog/archives/47/menow-and-musicbrainz/</A>
+
+
+
+(7) Open source, open content
+
+The MusicBrainz source code is all either GPL and LGPL.  
+
+Some of the MusicBrainz database content is under the Creative Commons
+Attribution-NonCommercial-ShareAlike license.  The core MusicBrainz data is
+under the Creative Commons Public Domain Dedication, which is what the
+OpenRecord project is operating under.
+
+
+
+(8) Transparent finances
+
+MusicBrainz is run by the MetaBrainz foundation, which prides themselves on
+&quot;transparent finances&quot;.  Very much in the same spirit as the openness stuff
+I was advocating on the OpenAgenda site.  For more info, see:
+<A HREF="http://metabrainz.org/finances/">http://metabrainz.org/finances/</A>
+
+
+
+(9) Interesting people
+
+All sorts of interesting people have been involved:
+
+Board of directors includes:
+ * Dan Brickley of W3C and the FOAF Project
+ * Cory Doctorow of Electronic Frontier Foundation
+ * Lawrence Lessig of Stanford Law School and Creative Commons
+
+Sponsors include:
+ * O'Reilly and Associates
+
+Contributors include:
+ * Aaron Swartz of the W3C's RDF Core Working Group
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000035.html">[openrecord-dev] Fwd: [Cosmo] jcr white paper
+</A></li>
+	<LI>Next message: <A HREF="000038.html">[openrecord-dev] data model ideas -- experimental prototype
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

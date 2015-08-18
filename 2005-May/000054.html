@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] new data model code; login/logout; &quot;provisional items&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20new%20data%20model%20code%3B%20login/logout%3B%20%22provisional%20items%22&In-Reply-To=%3C200505192207.j4JM7Im17044%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000060.html">
+   <LINK REL="Next"  HREF="000057.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] new data model code; login/logout; &quot;provisional items&quot;</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20new%20data%20model%20code%3B%20login/logout%3B%20%22provisional%20items%22&In-Reply-To=%3C200505192207.j4JM7Im17044%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] new data model code; login/logout; &quot;provisional items&quot;">brian.skinner at gumption.org
+       </A><BR>
+    <I>Fri May 20 00:08:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000060.html">[openrecord-dev] Interesting article on AJAX usability
+</A></li>
+        <LI>Next message: <A HREF="000057.html">[openrecord-dev] i++ in JSLint
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#54">[ date ]</a>
+              <a href="thread.html#54">[ thread ]</a>
+              <a href="subject.html#54">[ subject ]</a>
+              <a href="author.html#54">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+I switched all our code over to use the new data model, and everything seems
+to work fine!
+
+I wired up your sign-in/sign-out code so that it calls the login/logout
+methods that the new data model offers.  I did a quick-and-dirty job of
+that, so we'll probably want to revisit it at some point.  Next time we meet
+up I can explain what I did and what I didn't do, and we can talk about how
+we really want it to work.  
+
+The data model now supports password-checking authentication, so we can add
+UI for that whenever we want to.  The password storage isn't yet the least
+bit secure, but I figured it was a step in the right direction to at least
+have a functional API for authentication.
+
+I also added a new method to the data model, so that a view can create a
+&quot;provisional item&quot;.  I new provisional items are intended to meet the need
+for creating &quot;blank items&quot; or &quot;template items&quot; when the user is entering a
+brand new row in a table.
+
+:<i>o) Brian
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000060.html">[openrecord-dev] Interesting article on AJAX usability
+</A></li>
+	<LI>Next message: <A HREF="000057.html">[openrecord-dev] i++ in JSLint
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#54">[ date ]</a>
+              <a href="thread.html#54">[ thread ]</a>
+              <a href="subject.html#54">[ subject ]</a>
+              <a href="author.html#54">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

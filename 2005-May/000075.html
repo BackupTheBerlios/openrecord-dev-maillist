@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Model Testsuite problems
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Model%20Testsuite%20problems&In-Reply-To=%3C200505290453.j4T4rFm08515%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000074.html">
+   <LINK REL="Next"  HREF="000076.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Model Testsuite problems</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Model%20Testsuite%20problems&In-Reply-To=%3C200505290453.j4T4rFm08515%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Model Testsuite problems">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sun May 29 06:54:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000074.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+        <LI>Next message: <A HREF="000076.html">[openrecord-dev] RE: checkin
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#75">[ date ]</a>
+              <a href="thread.html#75">[ thread ]</a>
+              <a href="subject.html#75">[ subject ]</a>
+              <a href="author.html#75">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> OK, all the test suites now work on my mac ?!
+</I>
+Cool, that's excellent news.  Sounds like there wasn't really a bug in our
+code after all, and I'm excited about having one less bug to debug!
+
+
+&gt;<i> I tried using <A HREF="file:///">file:///</A> as you suggested and that
+</I>&gt;<i> worked, and then I went back to <A HREF="http://localhost">http://localhost</A> 
+</I>&gt;<i> and that worked too.
+</I>&gt;<i> 
+</I>&gt;<i> Either I was in an alternate reality yesterday or 
+</I>&gt;<i> there's some weird Apache caching going on or that 
+</I>&gt;<i> I'm clueless in some other way :(
+</I>
+My guess is that there's some weird Apache caching going on.  Mignon and I
+ran into some weird glitches too, earlier this month.  I forget exactly what
+happened, but I think that everything got better when we just shut down
+Apache and re-started it.  It might be worth investing some time in figuring
+out if there are ways to configure Apache so that it never caches anything.
+That, or getting in the habit of re-starting Apache at the first sign of
+trouble!
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000074.html">[openrecord-dev] Model Testsuite problems
+</A></li>
+	<LI>Next message: <A HREF="000076.html">[openrecord-dev] RE: checkin
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#75">[ date ]</a>
+              <a href="thread.html#75">[ thread ]</a>
+              <a href="subject.html#75">[ subject ]</a>
+              <a href="author.html#75">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

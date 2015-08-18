@@ -1,0 +1,65 @@
+From brian.skinner at gumption.org  Mon Dec 19 23:01:14 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Dec 19 23:01:14 2005
+Subject: [openrecord-dev] dojo data-provider discussion
+In-Reply-To: <989aa6910512181624u31f5ca6awc90666f9566d380a@mail.gmail.com>
+Message-ID: <200512192200.jBJM0t018742@bat.berlios.de>
+
+Hi Rowan,
+
+There's a good discussion taking place on the dojo developer mailing list.
+If you're not too busy, you might be interested in keeping tabs on it, or
+jumping in.  
+
+The conversation is about dojo building a general purpose data-provider API,
+with bindings to different UI widgets, and bindings to different server
+content stores.  I think this may be a very positive development for the
+OpenRecord project, and we may want to design our whole server/data-store
+layer around it.
+
+The dojo project has a couple mailing lists: the dojo-interest list, and the
+ng-dhtml developer list...  
+
+  The dojo-interest list is pretty high volume, with hundreds of subscribers
+and hundreds of message per month, largely about using dojo widgets.  You
+probably wouldn't want to subscribe unless you're actively using dojo
+widgets, but I'm finding it a wonderful resource, given all the dojo stuff
+I've been doing lately.  
+
+  The developer list (ng-dhtml) is much lower volume, with dozens of
+subscribers and dozens of message per month, mostly about developing the
+dojo code itself, rather than using it.  Have a look at the whole
+data-provider thread, and if you're interested you can subscribe to the
+list:
+ http://thread.gmane.org/gmane.comp.web.dojo.devel/684
+ http://thread.gmane.org/gmane.comp.web.dojo.devel/755
+ http://thread.gmane.org/gmane.comp.web.dojo.devel/753
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Mon Dec 19 23:43:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Dec 19 23:43:01 2005
+Subject: [openrecord-dev] Dabble clips
+Message-ID: <200512192242.jBJMg9019824@bat.berlios.de>
+
+I haven't yet been able to try out Dabble, but everything I see about it
+looks great.  Here are a couple of good 2-minute video clips about Dabble...
+
+The first one shows how you can take a simple text field and convert the
+values from being text to being references to other items ("entries"), with
+inverse fields that point back to the original item ("entry"):
+  http://smallthought.com/blog/?p=13
+  http://smallthought.com/clips/1/
+
+The second one shows a table view with a nice UI for sorting and grouping
+and such: 
+  http://smallthought.com/blog/?p=19
+  http://smallthought.com/clips/2/
+
+:o) Brian
+
+
+

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-September/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Question&In-Reply-To=%3C450F44E1.8080800%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000368.html">
+   <LINK REL="Next"  HREF="000366.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Question</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Question&In-Reply-To=%3C450F44E1.8080800%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Question">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Tue Sep 19 03:16:17 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000368.html">[openrecord-dev] Question
+</A></li>
+        <LI>Next message: <A HREF="000366.html">[openrecord-dev] RESTful data interface?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#369">[ date ]</a>
+              <a href="thread.html#369">[ thread ]</a>
+              <a href="subject.html#369">[ subject ]</a>
+              <a href="author.html#369">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Jon Carlson wrote:
+&gt;<i> It's not clear to me what the OpenRecord server is written in.  
+</I>&gt;<i> I briefly looked at the source code and I seemed to only find 
+</I>&gt;<i> javascript code (although I could have missed it).
+</I>
+OpenRecord is 99% client-side JavaScript and only 1% server-side PHP.
+
+We only have about 100 lines of server code, and the server code does 
+almost nothing -- mostly it just appends text packets to a simple 
+transaction log.  If you're browsing through the source code, you can 
+find the PHP files in the directory source/storage/
+
+The current client-centric architecture is only good enough to handle 
+simple demo documents that have a few hundred items or less.  In order 
+to turn OpenRecord into a shipping product we'll need to be able to 
+support documents that have thousands of items (or more), and for that 
+we'll need to have a real server built on top of a real datastore. 
+We're planning to do that in the months to come.
+
+The Dojo Foundation has a small working group that's designing a simple 
+API for a standard Dojo data access layer.  Adam Souzis and I are active 
+in that effort.  The Dojo data access API will be capable of 
+representing semi-structured data structures like OpenRecord items and 
+RDF triples.  Now that the Dojo data access API is starting to take 
+shape, Adam plans to work on an implementation of that API.  Adam's 
+implementation will be able to connect to an RDF data server and make 
+the RDF data available as JavaScript data items.  Once that's available, 
+OpenRecord can use that implementation, and we'll throw out our existing 
+PHP code and our current idiosyncratic OpenRecord data model.
+
+:<i>o) Brian
+</I>
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000368.html">[openrecord-dev] Question
+</A></li>
+	<LI>Next message: <A HREF="000366.html">[openrecord-dev] RESTful data interface?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#369">[ date ]</a>
+              <a href="thread.html#369">[ thread ]</a>
+              <a href="subject.html#369">[ subject ]</a>
+              <a href="author.html#369">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

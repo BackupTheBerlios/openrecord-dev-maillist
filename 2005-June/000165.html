@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] faster now!
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20faster%20now%21&In-Reply-To=%3C200506290458.j5T4wSI07115%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000164.html">
+   <LINK REL="Next"  HREF="000167.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] faster now!</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20faster%20now%21&In-Reply-To=%3C200506290458.j5T4wSI07115%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] faster now!">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed Jun 29 06:59:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000164.html">[openrecord-dev] dogfood site template
+</A></li>
+        <LI>Next message: <A HREF="000167.html">[openrecord-dev] faster now!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#165">[ date ]</a>
+              <a href="thread.html#165">[ thread ]</a>
+              <a href="subject.html#165">[ subject ]</a>
+              <a href="author.html#165">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> the dogfood site is sluggish ... a page  
+</I>&gt;<i> with a hundred entries on it takes nearly 
+</I>&gt;<i> 3 seconds to load. 
+</I>
+Okay, things are faster now.  
+
+I got it from 2.9 seconds down to 1.2 seconds, just by changing one single
+line of code.
+
+I removed this line: 
+ Util.assert(inAttribute instanceof Item, inAttribute + ' is not an item');
+and replaced it with this one:
+ Util.assert(inAttribute instanceof Item);
+
+The assert condition always evaluated to true, but even though the assert
+was never triggered, each call caused us to evaluate the expression:
+ inAttribute + ' is not an item'
+
+In the course of loading the page, we called that assert statement 7,500
+times, and evaluating that expression took some time, because the
+item.toString() method involves some look-ups.
+
+So, I figure there are maybe 4 lessons in this story:
+
+ 1. the venkman profiler tool is super helpful
+ 2. one slow line of line can make a big difference
+ 3. javascript is plenty fast, if we're careful with it
+ 4. someday soon we need to figure why we make 
+    7,500 calls to item.isInCategory() when we're 
+    loading a page that only shows a hundred entries!
+
+:<i>o) Brian
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000164.html">[openrecord-dev] dogfood site template
+</A></li>
+	<LI>Next message: <A HREF="000167.html">[openrecord-dev] faster now!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#165">[ date ]</a>
+              <a href="thread.html#165">[ thread ]</a>
+              <a href="subject.html#165">[ subject ]</a>
+              <a href="author.html#165">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

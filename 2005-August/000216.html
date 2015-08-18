@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] FileStorage vs. FakeStorage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20FileStorage%20vs.%20FakeStorage&In-Reply-To=%3C200508132149.j7DLn3f21448%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000217.html">
+   <LINK REL="Next"  HREF="000218.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] FileStorage vs. FakeStorage</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20FileStorage%20vs.%20FakeStorage&In-Reply-To=%3C200508132149.j7DLn3f21448%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] FileStorage vs. FakeStorage">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sat Aug 13 23:50:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000217.html">[openrecord-dev] article about open source patents
+</A></li>
+        <LI>Next message: <A HREF="000218.html">[openrecord-dev] New JavaScript Lint tool
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Mignon,
+
+I was thinking about the problem we ran into last week: when
+DeltaVirtualServer creates a new FileSaver (FileStorage) it doesn't pass the
+_pathToTrunkDirectory parameter the way it does when it creates a new
+HttpSaver (HttpStorage), so you can only run unit tests loaded from an http:
+URL, not from a file: URL.
+
+I think it might take a some real work to get FileSaver to be able to
+properly handle the _pathToTrunkDirectory parameter.  If you're feeling
+bold, you could undertake that, but I think maybe a better path to follow
+would be to create a new FakeStorage class and use that in the unit tests.  
+
+The FakeStorage class wouldn't write to disk at all, so it could simply
+ignore the _pathToTrunkDirectory issue.  Instead the FakeStorage class would
+just have an instance variable that would keep a copy of all the text that
+it had been told to store.  A unit test could do some work within a
+transaction (e.g. import some XML data), and then the unit test could query
+the FakeStorage instance to make sure that the right content got written to
+storage.
+
+I can work on that sometime after our demos, or if you need it sooner you
+can undertake it.  I don't think it should be too much work.  I'm home
+working this weekend.  Feel free to give me a call if this is a pressing
+issue and you want to talk it over.
+
+:<i>o) Brian
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000217.html">[openrecord-dev] article about open source patents
+</A></li>
+	<LI>Next message: <A HREF="000218.html">[openrecord-dev] New JavaScript Lint tool
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

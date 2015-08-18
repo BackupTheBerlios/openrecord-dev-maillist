@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Client-Server API -- first thoughts
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Client-Server%20API%20--%20first%20thoughts&In-Reply-To=%3C200504060642.j366gQm23538%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000003.html">
+   <LINK REL="Next"  HREF="000005.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Client-Server API -- first thoughts</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Client-Server%20API%20--%20first%20thoughts&In-Reply-To=%3C200504060642.j366gQm23538%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] Client-Server API -- first thoughts">brian.skinner at gumption.org
+       </A><BR>
+    <I>Wed Apr  6 08:43:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000003.html">[openrecord-dev] Welcome to the openrecord-dev list!
+</A></li>
+        <LI>Next message: <A HREF="000005.html">[openrecord-dev] Proposal: Item Ordering in Query Result Sets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Mignon &amp; Chao,
+
+Here are some first thoughts about what we might want our client-server API
+to look like. I don't have a lot of experience with web-based client-server
+APIs, and I haven't thought this all through carefully, but maybe we can use
+this as a starting point to iterate on.
+
+:<i>o) Brian
+</I>
+
+==============================================================
+Client-Server API
+
+I can think of four or five types of calls that we might want the web
+browser to make to the server:
+  (1) Queries
+  (2) Additions
+  (3) Notifications
+  (4) Page Views
+  (5) RSS
+  
+
+--------------------------
+(1) Queries
+
+Context: 
+  The JavaScript client code is running in the browser, and the user browses
+within a page such that the client code needs to fetch more data from the
+server.
+
+Example: 
+  In outline view, a user &quot;zooms in&quot; on an item, so that the client code now
+needs to show all the attributes of the item, rather than just the item's
+name.
+
+Summary: 
+  The JavaScript client code sends a query to the server, and the server
+responds with the query result set.
+
+Transport: 
+  The query message should probably be an HTTP POST, but could maybe be an
+HTTP GET. The server replies with the query result set in the response to
+the HTTP POST/GET.
+
+Data format: 
+  The query message should probably be in JSON or XML, and the query result
+set also in JSON or XML. Here's an example of what a JSON query might look
+like:
+  
+  { &quot;query&quot;:               /* Query for all items in category &quot;Book&quot; */
+    { &quot;uuid&quot;: 873902,      /* Unique id for the query itself */
+      &quot;category&quot;: 544862   /* Books */
+    }
+  }
+  
+What's in the query message:
+  A garden variety query will be something like, &quot;tell me all the current
+attribute values for the item identified by UUID=834577 (The Hobbit)&quot;, or
+maybe, &quot;tell me all the current attribute values for all the items that are
+in the category identified by UUID=544862 (Books)&quot;.
+  
+  In the far-term future, we might want to have more complicated queries,
+like queries that ask for all the books with &quot;Tower&quot; as part of their title.
+But for now I don't think we need to worry about that.  
+  
+  In the nearer-term future, we might want to have queries that ask for just
+particular attributes of the result set items. For example, it might be very
+common to have views that would need to make queries like, &quot;tell me about
+all the items that are in the category identified by UUID=544862 (Books),
+but only tell me the current attribute values for the attribute identified
+by UUID=216653 (Title)&quot;
+  
+  We'll also want to have queries that ask for information about previous
+version of items, or ask about what changes have been made to an item. Maybe
+something like, &quot;tell me about all the previous versions of the item
+identified by UUID=834577 (The Hobbit)&quot;, or &quot;for the item identified by
+UUID=834577 (The Hobbit), tell me what all the attribute values were as of
+revision number 47&quot;, or &quot;... as of 2005/10/24 2:34&quot;. 
+  
+  Each query sent to the server should have its own unique identifier, so
+that the client and server can have follow-up conversations where they refer
+back to the original query.
+
+What's in the result set:
+  A garden variety result set will just be a collection of items, including
+values for all the attributes of all the items. Some result sets might only
+include some attribute values for some attributes, based on what the query
+asked for. Or, a result set might include revision history info.  
+  
+  
+--------------------------
+(2) Additions
+
+Context: 
+  The JavaScript client code is running in the browser, and the user changes
+the value of some attribute. Or, the user creates a new item, or adds a
+&quot;deleted&quot; mark to an item.
+
+Example: 
+  In table view, a user clicks on a cell, and changes a text string from
+&quot;Tolkien&quot; to &quot;J.R.R. Tolkien&quot;.
+  
+Summary: 
+  The JavaScript client code sends a change object to the server to inform
+the server of the new change to be added to the repository. The server
+records the change in the repository and returns a confirmation to the
+client.
+
+Transport: 
+  I'm assuming the addition message should be an HTTP POST. The server
+replies with a confirmation in the response to the HTTP POST.
+
+Data format: 
+  The addition message should probably be in JSON or XML.
+  
+What's in the addition message:
+  An addition message will probably just have a single change object, or a
+list of change objects. I think we'll want to have at least a few different
+types of change objects: change objects for creating new items, change
+objects for assigning attribute values, and change objects for marking items
+as deleted.
+  
+  In a simple change object for assigning an attribute value, there might
+just be the UUID of the item being changed, the UUID of the attribute being
+set, and the new data value. But, the change objects could get more
+complicated, depending on what the core data model ends up looking like.
+More on that later.
+
+ 
+--------------------------
+(3) Notifications
+
+Context: 
+  The JavaScript client code is running in the browser, and it periodically
+checks with the server to find out if any of the other clients have made any
+changes to any of the items being displayed in this client.
+  
+Example: 
+  Pat is looking at a list of the 24 books that were returned in the result
+set of some query. Pat goes to the bathroom. Chris happens to also be
+looking at one of those books. Chris changes the author of one of the books
+from &quot;Tolkien&quot; to &quot;J.R.R. Tolkien&quot;. When Pat comes back from the bathroom,
+Pat's screen shows the author as &quot;J.R.R. Tolkien&quot;.
+
+Summary: 
+  The client code polls the server to check for any update notifications
+associated with a previous query. If there have been any changes that impact
+the query result set, the server returns information about the changes, and
+the client code refreshes the screen to show the changes.
+
+Transport: 
+  The notification request message should probably be an HTTP POST, but
+could maybe be an HTTP GET. The server replies with update notifications in
+the response to the HTTP POST/GET.
+  
+Data format: 
+  The notification request message and the resulting update notifications
+should probably both be in JSON or XML.
+  
+What's in the notification request message:
+  I think the notification request message just needs to provide the unique
+identifier of the original query.
+  
+What's in the resulting update notification:
+  Most of the time, there won't have been any changes that impact the query
+result set, so the update notification will just have to say that: &quot;no
+changes&quot;. When there have been changes, the update notification will be a
+list of change objects. Potentially, these might be the exact same change
+objects that the server received in the addition messages when some client
+originally made the changes. 
+
+
+--------------------------
+(4) Page Views
+
+Context:
+  A user launches their browser, and types in a URL for a web page served by
+the server. No OpenRecord page has been loaded yet, and no JavaScript client
+code is running in the browser. 
+  
+Example 1: 
+  A search engine like Google is trying to index my page of favorite books,
+after following a link to the page from some page on some other web site.
+For Google to be able to index the page, our server needs to return a bunch
+of HTML that's already laid out with lists and tables containing strings
+that reflect the attribute values of my favorite books. We can't rely on
+JavaScript client code to execute a query and fill in the page.
+  
+Example 2:
+  90% of users will just view static pages, without ever editing anything.
+If a user follows a link to one of our pages, the page should appear
+quickly, without the need for loading JavaScript client code and running
+queries and whatnot. Ideally pages should be viewable by people using
+browsers that don't have JavaScript.
+  
+Summary: 
+  The server has a cache of static HTML pages that it can hand out in
+response to requests. The server updates the cached pages when needed (or
+drops pages from the cache). If the server gets a request for a page that
+isn't in the cache, the server can build a new static HTML page from the
+information in the repository, and add that page to the cache.
+  
+Transport: 
+  The request is a simple HTTP GET.  The response is some static HTML.
+ 
+  
+--------------------------
+(5) RSS
+
+Example:
+  In Pat's RSS reader, Pat has subscribed to an RSS feed for all the new
+Bugs filed against a product. Or, in Chris's RSS reader, Chris has
+subscribed to an RSS feed to see all the comments posted in response to a
+proposal.
+  
+Summary: 
+  I don't know much about RSS, so I don't know what the server needs to do
+to provide the info the RSS reader needs. I don't think this is too hard to
+do, but it's certainly not a near-term feature anyway.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000003.html">[openrecord-dev] Welcome to the openrecord-dev list!
+</A></li>
+	<LI>Next message: <A HREF="000005.html">[openrecord-dev] Proposal: Item Ordering in Query Result Sets
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

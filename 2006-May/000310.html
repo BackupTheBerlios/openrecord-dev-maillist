@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] open record re-architecture strawman
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20open%20record%20re-architecture%20strawman&In-Reply-To=%3C44726D24.7010909%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000303.html">
+   <LINK REL="Next"  HREF="000311.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] open record re-architecture strawman</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20open%20record%20re-architecture%20strawman&In-Reply-To=%3C44726D24.7010909%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] open record re-architecture strawman">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Tue May 23 04:01:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000303.html">[openrecord-dev] open record re-architecture strawman
+</A></li>
+        <LI>Next message: <A HREF="000311.html">[openrecord-dev] open record re-architecture strawman
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Adam,
+
+Thanks for posting about re-architecting OpenRecord.  It's great to be 
+thinking about how we can simply the design and focus on shipping 
+something usable as soon as possible.
+
+Responses in-line...
+
+Adam Souzis wrote:
+&gt;<i> Brian and I have been talking about re-architecting OpenRecord 
+</I>&gt;<i> and I thought I'd try to summarize this for the list.
+</I>&gt;<i> 
+</I>&gt;<i> At the face-to-face meeting Brian said that one of the things
+</I>&gt;<i> OpenRecord is &quot;is a usable product in Jan 2007&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> To accomplish this OpenRecord needs to major changes, most 
+</I>&gt;<i> important of which is that it needs to talk to a server. Also 
+</I>&gt;<i> another goal of OpenRecord is to create data that doesn't 
+</I>&gt;<i> &quot;bitrot&quot;. At the very least, this requires using a standard 
+</I>&gt;<i> data format. So the idea now is to use RDF instead OR's 
+</I>&gt;<i> home-grown data model.
+</I>
+Yes, in hindsight, we should have used RDF from the beginning.  I don't 
+think it'll be too hard to switch from our home-grown data model to an 
+RDF model.  Once we've done that we'll be able to take advantage of 
+existing RDF data-stores and servers.  This'll be one step towards 
+making it possible for people to easily get their data into and out of 
+OpenRecord, and a hedge against &quot;bitrot&quot; and lock-in.
+
+&gt;<i> Brian proposed the following steps for re-architecting:
+</I>&gt;<i> 
+</I>&gt;&gt;<i>   1. invent a data model (or meta-model) for dojo
+</I>&gt;&gt;<i>   2. throw together some experimental dojo.data code
+</I>&gt;&gt;<i>   3. get feedback about the design on the dojo dev list
+</I>&gt;&gt;<i>   4. iterate on 2 and 3, improving the data handling layer
+</I>&gt;&gt;<i>   5. merge our dojo.data layer with IBM's contribution
+</I>&gt;&gt;<i>   6. make a couple bindings that talk to data stores
+</I>&gt;&gt;<i>       - a binding to Raccoon, or some RDF store
+</I>&gt;&gt;<i>       - simple bindings for CSV, file system files, etc.
+</I>&gt;&gt;<i>   7. make bindings to dojo widgets, or invite other dojo
+</I>&gt;&gt;<i>      contributors to do that
+</I>&gt;&gt;<i>       - table widget
+</I>&gt;&gt;<i>       - chart widget
+</I>&gt;&gt;<i>       - tree widget
+</I>&gt;&gt;<i>   8. port OpenRecord UI over to dojo.data model, thereby
+</I>&gt;&gt;<i>       making OpenRecord be able to talk to server-side
+</I>&gt;&gt;<i>       data stores
+</I>&gt;&gt;<i>   (6, 7, and 8 can happen in parallel, once 1-5 are done)
+</I>
+At Dojo Developer Day, Chris Mitchell from IBM gave a demo of the work 
+they've been doing on a dojo.data layer.  IBM is still working on that 
+code, but hopefully they'll have something they're ready to contribute 
+to Dojo before too long.
+
+So, at this point, I don't think the above steps 1 to 5 make sense. 
+Probably it's better to wait and see what the IBM model looks like, and 
+then think about what's involved in taking that and connecting it to an 
+RDF data store.
+
+&gt;<i> However, IMHO this will still take too long to meet the 
+</I>&gt;<i> Jan 2007 goal.
+</I>
+Yes, Jan 2007 does seem ambitious.  It would be great to make some 
+simplifying assumptions if we can.
+
+&gt;<i> So here's a straw man proposal:
+</I>&gt;<i> 
+</I>&gt;<i> Currently OR has several layers including: Views (with a 
+</I>&gt;<i> plugin api), Data (the data model), and Storage.  Forget 
+</I>&gt;<i> about them all (for now).
+</I>&gt;<i> 
+</I>&gt;<i> Instead just focus on extending the Dojo table control to 
+</I>&gt;<i> be fully editable: adding columns and rows, in-editing of 
+</I>&gt;<i> cells, basic data validation, undo/redo, change notifications, 
+</I>&gt;<i> etc.
+</I>&gt;<i> 
+</I>&gt;<i> One thing this doesn't require is a binding to some data 
+</I>&gt;<i> model (like the one IBM is contributing to Dojo). Instead 
+</I>&gt;<i> it just has the appropriate hooks where something like that 
+</I>&gt;<i> can be implemented in the future. And instead of being 
+</I>&gt;<i> depending on the data model, OR can for now implement those 
+</I>&gt;<i> hooks with a simple api for reading and writing RDF with 
+</I>&gt;<i> some back-end (e.g. Raccoon).
+</I>
+I know we've talked about this before, but I'm not sure I follow.  Are 
+you saying we can have a design where there simply isn't a data model 
+layer?  Somehow set things up so that a change made in the table widget 
+is translated directly into a call to the back-end data store, without 
+having a JavaScript object in memory?
+
+If we're going to get rid of our auto-save UI and instead have an 
+explicit save button, don't we then need to have an in-memory list of 
+the changes that have been made in the UI, so that we send all those 
+changes to the server as one atomic operation?
+
+
+&gt;<i> But if we're ignoring the View layer what about all the other 
+</I>&gt;<i> layout elements? Answer: Layout is not stored as part of the 
+</I>&gt;<i> data model. The code for adding sections, building queries, etc. 
+</I>&gt;<i> would just be like any other Dojo app -- i.e. manipulate the DOM. 
+</I>&gt;<i> The layout can then be saved like any other HTML page.
+</I>
+Yes, in hindsight it may have been a mistake to try to save all the page 
+layout info as just a bunch of items and attributes.  It seems to have a 
+&quot;turtles all the way down&quot; elegance, but in practice it may not be a 
+good idea to mix content data with layout data.
+
+But, if we store the layout info by manipulating the DOM and saving it 
+as HTML, that's a whole new set of work that has to get done by Jan 
+2007.  Don't we then need to come up with DOM-based representations for 
+the notions of pages, sections, queries, etc?  And when the user hits 
+save, do we have to read through the DOM and serialize the layout info 
+into HTML, while stripping out the content data?  And then we need to 
+save the layout HTML via one server API and the content data via a 
+different server API?
+
+&gt;<i> Finally there's a lot of nuts &amp; bolts functionality: versioning 
+</I>&gt;<i> &amp; history, user authentication &amp; authorization, conflict detection 
+</I>&gt;<i> and consistency validation, etc.   These should be handled by the
+</I>&gt;<i> back-end/host application (again, e.g. Raccoon).
+</I>
+Yes, that strikes me a huge win.  If we can think of OpenRecord as a 
+plug-in that runs within some existing framework like Raccoon or 
+MediaWiki, then a ton of stuff about user authentication &amp; authorization 
+and whatnot get handled for us.
+
+&gt;<i> The benefits of this approach:
+</I>&gt;<i> 
+</I>&gt;<i> * the core widgets would be broadly reusable and so hopefully will
+</I>&gt;<i> attract outside support by other Dojo users
+</I>&gt;<i> * this architecture is emenable to using OR as a plugin in other
+</I>&gt;<i> wikis, and so hopefully will attract outside support.
+</I>&gt;<i> * much less dependencies on outside tasks
+</I>&gt;<i> * overall a less complex system
+</I>&gt;<i> * most importantly, if we're focused, i believe we could actually ship
+</I>&gt;<i> something usable in 7 months.
+</I>
+Yup, those sound good.  Right now OpenRecord has a bunch of custom view 
+code, based on a View class which is something different from a Dojo 
+widget.  That's only because we hadn't heard of Dojo back when we 
+started on OpenRecord.  Eventually it would be good if the OpenRecord UI 
+was composed entirely of Dojo widgets, and we got rid of all our home 
+grown View code.
+
+:<i>o) Brian
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000303.html">[openrecord-dev] open record re-architecture strawman
+</A></li>
+	<LI>Next message: <A HREF="000311.html">[openrecord-dev] open record re-architecture strawman
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

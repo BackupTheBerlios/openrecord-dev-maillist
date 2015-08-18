@@ -1,0 +1,435 @@
+From brian.skinner at gumption.org  Thu Nov  3 00:55:02 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Nov  3 00:55:02 2005
+Subject: [openrecord-dev] Links to discussion about OpenRecord as a Dojo project
+Message-ID: <200511022354.jA2NsXN21717@bat.berlios.de>
+
+Hey Alex,
+
+I'm not on the ng-dhtml list, so I'm sending this to you instead (and cc'ing
+it to the openrecord-dev list).  Feel free to forward this mail to ng-dhtml,
+and to add me to the ng-dhtml list if that's appropriate.
+
+> dylanks:
+>   cool, we will send out voting stuff asap
+> brian_skinner: 
+>   let me know if I can help in any way (e.g. coming up with a
+>   collection of links to discussion about OpenRecord as a Dojo 
+>   project)
+> slightlyoff:   
+>   actually, can you mail something like that to the ng-dhtml 
+>   list?  (and if you're not already on that, mail me and 
+>   we'll get you and your contributors added)
+
+Here's a list of pointers that might be useful for people who are voting on
+taking in the OpenRecord project...
+
+The OpenRecord site:
+  http://openrecord.org/
+
+OpenRecord archives -- mailing list and SVN repository:
+  http://openrecord.org/dev.html
+
+OpenRecord committers:
+  http://openrecord.org/people.html
+
+Dojo committers:
+ 
+http://dojotoolkit.org/~alex/dojo/trunk/documents/website/community/contribu
+tors.shtml
+
+Dojo Licensing Goals:
+  http://dojotoolkit.org/docs/licensing.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-January/000
+643.html
+
+Discussion on the Dojo ng-dhtml list:
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+077.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+078.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+079.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+080.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+081.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+082.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+083.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+085.html
+
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+102.html
+ 
+http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-October/001
+110.html
+
+There's also been some discussion on the #dojo IRC channel in the past
+couple weeks:
+  http://log.dojotoolkit.org/irc/2005-10-19.html starting at 21:54:59
+  http://log.dojotoolkit.org/irc/2005-10-26.html starting at 21:10:08
+
+And here's some info about the OpenRecord IP provenance trail:
+  Alex Russell wrote:
+  > We can (and, perhaps, should) ask for a copy of their 
+  > SVN repo and see how far back it goes. I'm not keen to 
+  > spend a lot of time patting them down, esp given the 
+  > relative (small) risks.
+  
+  Brian Skinner wrote:
+  | In the case of OpenRecord, the provenance trail is short 
+  | and simple.  All of the code was written between February 
+  | 2005 and now, and we've had only three programmers 
+  | contributing code to the project: Brian Skinner, Chao Lam, 
+  | and Mignon Belongie.  
+  | 
+  | The SVN repository is available at "svn://svn.berlios.de/openrecord", 
+  | and available via WebSVN at <http://svn.berlios.de/wsvn/openrecord>.  
+  | The first SVN commit was in March 2005.  In the 8 weeks before 
+  | that first commit, all the code lived on my local hard drive.
+  | 
+  | Chao was working part-time for OSAF during most of 2005, and 
+  | working on OpenRecord in his spare time.  Mignon works 
+  | not-quite-full-time at DitigalPersona, and has been working on 
+  | OpenRecord on her own time.  Mignon talked with DitigalPersona 
+  | before starting on OpenRecord, and she has a signed agreement 
+  | with DitigalPersona giving her a green light to contribute to 
+  | OpenRecord.  I've been unemployed for all of 2005, so there's 
+  | no employer who could claim title to the work I've been doing 
+  | on OpenRecord.
+
+Let me know if there's other info I can provide, or if questions come up
+that I can answer.
+
+Cheers,
+  Brian Skinner
+  brian.skinner at gumption.org
+
+
+
+From brian.skinner at gumption.org  Fri Nov  4 23:43:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Nov  4 23:43:01 2005
+Subject: [openrecord-dev] public domain dedication combined with open source license?
+Message-ID: <200511042242.jA4MgBN25292@bat.berlios.de>
+
+Hey Joi,
+
+I'm very glad I got a chance to speak with you at the Creative Commons
+fundraiser last night.  Thanks for offering to put me in touch with people
+at OSI who can help me.
+
+Here's the 2-minute summary of the problem I'm trying to solve.  Feel free
+to forward this to other people...
+
+I've started a small open source software project, openrecord.org, with a
+few volunteer programmers.  We want to distribute our work with no
+restrictions, so that anyone can take all of it, or any small part of it,
+and use it for any purpose.  
+
+We've been making the work available using the Creative Commons Public
+Domain Dedication (CC-PDD), but unfortunately the CC-PDD only addresses
+copyright issues, not patent rights.  We plan to also start making the work
+available under the Academic Free License (AFL), which addresses patent
+rights and is OSI certified.  
+
+I have never seen a project release code under a dual-license using a
+conventional open source license in combination with a public domain
+dedication.  So I'm looking for some advice...  Can we do this?  Are we on
+solid legal footing?  Is there some simpler alternative?  What language
+should we use in the "copyright" statement in our files?
+
+The AFL, like other open source licenses, carries a perpetual attribution
+requirement.  If I understand correctly, all derivative works and remixes,
+and derivatives of those derivates, forever after, will have to carry the
+original copyright notice and an AFL attribution notice.  If all open source
+projects used the same license, or if open source projects never borrowed
+code from one another, then the attribution notice might not be a big deal.
+In practice, I think the attribution requirement is a significant barrier to
+free remixing of code.  If someone wants to take 20 lines of code from one
+project and mix that in with code from a dozen other projects licensed under
+a dozen other licenses, it's simply too much trouble to try to keep track of
+exactly which lines of code need to be attributed to whom.  I'd like to
+solve that problem.  I'd like to make our code freely available, with no
+burden of attribution, and with clear, comprehensive grants of both patent
+and copyright rights.  Is a CC-PDD/AFL dual-license a good way to try do
+that?
+
+Thanks for your help.
+
+Cheers,
+  Brian Skinner
+  brian.skinner at gumption.org
+  http://openrecord.org
+
+___________________________________________________________________
+Copyright rights relinquished. This work is in the Public Domain.
+For details see: http://creativecommons.org/licenses/publicdomain/
+
+
+
+From brian.skinner at gumption.org  Sun Nov  6 23:41:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sun Nov  6 23:41:00 2005
+Subject: [openrecord-dev] good news -- Dojo takes in OpenRecord
+Message-ID: <200511062240.jA6MeBN12618@bat.berlios.de>
+
+Good news -- the Dojo contributors have officially voted to take the
+OpenRecord project under their wing.  This is a huge milestone for the
+OpenRecord project.  Here are the posts on the Dojo developer list:
+ 
+<http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-November/0
+01155.html>
+ 
+<http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005-November/0
+01157.html>
+
+:o) Brian
+
+
+
+From Mignon_Belongie at yahoo.com  Sun Nov  6 23:52:03 2005
+From: Mignon_Belongie at yahoo.com (Mignon Belongie)
+Date: Sun Nov  6 23:52:03 2005
+Subject: [openrecord-dev] good news -- Dojo takes in OpenRecord
+In-Reply-To: <200511062240.jA6MeBN12618@bat.berlios.de>
+References: <200511062240.jA6MeBN12618@bat.berlios.de>
+Message-ID: <6098fa5126feb6237bb847c71265dd2c@yahoo.com>
+
+Hurray!
+
+Thanks, Brian, for all your work in making this happen.  And thanks to  
+Dojo, too, of course.
+
+Mignon
+
+On Nov 6, 2005, at 2:40 PM, Brian Douglas Skinner wrote:
+
+> Good news -- the Dojo contributors have officially voted to take the
+> OpenRecord project under their wing.  This is a huge milestone for the
+> OpenRecord project.  Here are the posts on the Dojo developer list:
+>
+> <http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005- 
+> November/0
+> 01155.html>
+>
+> <http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005- 
+> November/0
+> 01157.html>
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From chao at cs.stanford.edu  Mon Nov  7 01:00:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Mon Nov  7 01:00:01 2005
+Subject: [openrecord-dev] good news -- Dojo takes in OpenRecord
+In-Reply-To: <6098fa5126feb6237bb847c71265dd2c@yahoo.com>
+References: <200511062240.jA6MeBN12618@bat.berlios.de> <6098fa5126feb6237bb847c71265dd2c@yahoo.com>
+Message-ID: <B51424F3-1804-44F0-933C-716F2D0CC8BA@cs.stanford.edu>
+
+Yes, three cheers and a big thank you to Brian for making this happen  
+- very cool!
+
+I spoke to Alex Russell at SuperHappyDevHouse yesterday, and if  
+understood him correctly he'd like us to be on the commits list on  
+the dojo project itself, and also as voters for the foundation. That  
+sounded really cool too.
+
+chao
+
+On Nov 6, 2005, at 2:55 PM, Mignon Belongie wrote:
+
+> Hurray!
+>
+> Thanks, Brian, for all your work in making this happen.  And thanks  
+> to Dojo, too, of course.
+>
+> Mignon
+>
+> On Nov 6, 2005, at 2:40 PM, Brian Douglas Skinner wrote:
+>
+>> Good news -- the Dojo contributors have officially voted to take the
+>> OpenRecord project under their wing.  This is a huge milestone for  
+>> the
+>> OpenRecord project.  Here are the posts on the Dojo developer list:
+>>
+>> <http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005- 
+>> November/0
+>> 01155.html>
+>>
+>> <http://www.netwindows.org/pipermail/ng-dhtml_netwindows.org/2005- 
+>> November/0
+>> 01157.html>
+>>
+>> :o) Brian
+>>
+>> ___________________________________________________________________
+>> Copyright rights relinquished. This work is in the Public Domain.
+>> For details see: http://creativecommons.org/licenses/publicdomain/
+>>
+>> openrecord-dev mailing list
+>> openrecord-dev at lists.berlios.de
+>> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+
+
+
+From brian.skinner at gumption.org  Mon Nov  7 05:16:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Mon Nov  7 05:16:00 2005
+Subject: [openrecord-dev] Sparrow Web
+Message-ID: <200511070415.jA74F4N22314@bat.berlios.de>
+
+Rowan Nairn wrote:
+> 
+> I remembered this project at PARC:
+> http://www2.parc.com/istl/projects/sparrow/
+> 
+> ... openrecord reminded me a bit of this
+
+Turns out Socialtext just hired Ken Pier, who was the principal engineer of
+Sparrow Web at (Xerox) PARC.  I still haven't played with Sparrow Web, but I
+read through some of the documentation last week.  Seems like Sparrow Web
+must have been years ahead of its time, back when it first got written, in
+the mid-1990s.
+
+Chao and I went to Socialtext's "Wiki Wednesday" gathering last week, and
+Ken Pier was there.  I got a chance to ask him questions about Sparrow Web,
+and he sat in on the demo of OpenRecord I gave.  I'm hoping I'll be able to
+talk with him more -- he probably has years and years of real world
+experience about what features users actually do and don't need in a tool
+like Sparrow Web or OpenRecord.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Thu Nov 10 09:01:04 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Thu Nov 10 09:01:04 2005
+Subject: [openrecord-dev] WikiCalc
+Message-ID: <1E6652AF-20D9-4564-B7CF-CD5CCCA9E9CB@cs.stanford.edu>
+
+Dan Bricklin, co-inventor of the spreadsheet, has a new project  
+WikiCalc:
+
+http://clipclip.org/chao/clips/detail/387
+
+chao
+
+
+
+From openrecord at gumption.org  Mon Nov 21 00:03:01 2005
+From: openrecord at gumption.org (Brian Douglas Skinner)
+Date: Mon Nov 21 00:03:01 2005
+Subject: [openrecord-dev] Ning, Dabble, Google Base, etc.
+Message-ID: <4381008C.6020303@gumption.org>
+
+I added links from the OpenRecord website to some projects that have 
+similar features:
+  http://openrecord.org/bookmarks.html#similar
+
+The new links include pointers to:
+   Google Base
+   The Ning Content Store
+   Dabble DB
+   Dan Bricklan's wikiCalc
+   Sproutliner
+   Sparrow Web
+   MediaWiki projects: Wikidata and the Semantic MediaWiki project
+   Daisy CMS
+   Intuit QuickBase
+   Semantic wiki projects: Platypus, Rhizome, Gnowsis, etc.
+
+Here are some notes about a few of the projects...
+
+--------------------------------------------------
+Google Base
+
+Google Base has a data model that's vaguely similar to the OpenRecord 
+data model. For example, in Google Base any item can have any number of 
+ad-hoc attributes, any attribute can be multi-valued, any date value can 
+have an end-date as well as a start-date, and numbers can have units 
+(like "meters" or "meters/second").
+
+However, I think the similarities end there. Google Base seems to be 
+oriented toward "monolithic" items, rather than big structures of small 
+items -- for example Google Base does not seem to be designed to support 
+any type of references between items, or multi-item transactions.
+
+--------------------------------------------------
+The Ning Content Store
+
+On the Ning web site there's a nice one-page description of their "Ning 
+Content Store":
+   http://developerdocumentation.ning.com/post.php?Post:slug=ContentStore
+
+Ning uses a custom Content Store that has a data model which is similar 
+in many ways to the OpenRecord data model.
+
+A Ning "Content Object" is like an OpenRecord "Item". The most 
+significant similarity is that both Ning and OpenRecord lack any notion 
+of pre-defined schema -- any items (content objects) can have any 
+attributes. Ning and OpenRecord are also similar in that they both 
+support bi-directional references.
+
+However, there are a number of differences. In Ning, each Object can be 
+of only one type, and the type of an Object cannot change once the 
+Object is created -- OpenRecord has no similar notion. In Ning, an 
+attribute is identified by its name (a string) -- in OpenRecord 
+attributes are identified by UUID, an attribute can have different names 
+in different languages, and each attribute is itself an item, so it can 
+have not only a 'name', but also a 'summary' description, and other 
+descriptive attributes. Like OpenRecord, Ning allows any attribute to be 
+multi-valued, but in Ning all the values of a multi-valued attribute 
+must be of the same type. Ning has a notion of public vs. private 
+content, whereas OpenRecord treats all content as public. OpenRecord 
+includes some support for transactions, whereas Ning generally doesn't.
+
+--------------------------------------------------
+Dabble DB
+
+The Dabble web site currently only has a few screenshots, and doesn't 
+have much written documentation. So, it's hard to know quite what Dabble 
+is, but judging by what is posted it certainly looks like Dabble and 
+OpenRecord are both trying to solve the same problems. Their weblog has 
+some appealing posts talking about usability and the relationship 
+between spreadsheets and databases:
+   http://smallthought.com/blog/
+
+
+:o) Brian
+
+

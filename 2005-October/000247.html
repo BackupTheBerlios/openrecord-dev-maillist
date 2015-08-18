@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] openrecord news
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20openrecord%20news&In-Reply-To=%3C200510272215.j9RMFYw17949%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000246.html">
+   <LINK REL="Next"  HREF="000248.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] openrecord news</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20openrecord%20news&In-Reply-To=%3C200510272215.j9RMFYw17949%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] openrecord news">brian.skinner at gumption.org
+       </A><BR>
+    <I>Fri Oct 28 00:16:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000246.html">[openrecord-dev] links about the Google Base site
+</A></li>
+        <LI>Next message: <A HREF="000248.html">[openrecord-dev] ideas about the backend store
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#247">[ date ]</a>
+              <a href="thread.html#247">[ thread ]</a>
+              <a href="subject.html#247">[ subject ]</a>
+              <a href="author.html#247">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Rowan,
+
+I'm glad to hear you made it safely back to Ireland.  Let me fill you in on
+the OpenRecord news from the past couple months.  I'll cc this to the
+openrecord-dev mailing list, as other people might be interested too.
+
+-------------
+Recent Coding
+-------------
+  Back during the summer we focused mainly on UI features, and on creating
+demo documents for the demos we gave in August.  In September and October we
+took a break from the UI code, and we've been focused on the underlying
+infrastructure.  So, if you run the app, it should look exactly the same as
+it did two months ago, but now there's a more solid foundation underneath.  
+
+  We've made a bunch of incremental improvements in the past couple months:
+added unit tests, improved the data model API, started work on an automatic
+plugin loader, cleaned up the UUID code, etc.  None of that is too dramatic.
+The one dramatic change is that we've adopted the Dojo Toolkit
+(dojotoolkit.org).
+
+  We did a big sweep to convert all our code to use the Dojo package system
+and Dojo style namespaces.  Now we're incrementally adopting other Dojo
+tools.  We've switched all the event registration code to use
+dojo.event.connect, and we've started to replace our home-grown utility
+functions with &quot;standard&quot; Dojo functions.  When we get around to it, we can
+switch over to using Dojo for drag-and-drop, and for MD5 encryption, and for
+cookie access, and then we can get rid of our dependencies on several third
+party JavaScript packages (script.aculo.us, prototype.js, md5.js) and
+hopefully end up with Dojo as our only dependency.
+
+---------------
+Upcoming Coding
+---------------
+  Now that the foundation code is in better shape, it's time to shift back
+to adding new functionality.  We've got a to-do list file with about 70
+detailed tasks on it, but here are the main things we need to do next,
+roughly in priority order: 
+ 
+(1) Create a real backend 
+With our current transaction-log approach, page loads get sluggish for
+repositories with over a few hundred items or a few thousand entries.   We
+don't yet need an industrial strength backend, but it would be good to have
+some intermediate solution that could handle thousands of items and hundreds
+of thousands of entries.  
+
+Mignon and Jason and Marty and I have been talking about design ideas for an
+intermediate backend store.  I'll write something up about that ASAP.  Jason
+has volunteered to work on the PHP for the proposed design, if we decide on
+that approach.  Jason is away is China for the next two weeks, but he'll be
+available after that.
+ 
+(2) Start writing plugin views
+Finish up the new data model API and plugin system, and write up some
+documentation and example plugins.  Invite lots of friends to start writing
+experimental plugin views: Bar Chart, Scatter Plot, Gantt Chart, FAQ View,
+Thumbnail View, Version History View, etc.
+
+(3) Stabilize the file format
+Clean up a few little things about how we represent Dates and Ordinals and
+whatnot in our file format, and get to a point where we'll promise backward
+compatibility: &quot;Items that you save using OpenRecord 0.2 will not be lost
+when we upgrade to OpenRecord 0.3.&quot;
+
+(4) Make a UI for new users
+Think carefully about the basic UI.  Design and implement a UI that works
+well for new users.  Figure out how to make everything intuitive for
+somebody who is setting up their very first repository and creating their
+first few items.  Back in August, Mimi volunteered to help us with this UI
+design work.  We weren't ready then, but hopefully she'll still be available
+when we are.
+
+(5) Work on interoperation
+Look into what it would take to be able to embed OpenRecord views inside
+MediaWiki pages.  Work on import/export tools for interoperation with things
+like googlebase.com.
+
+(6) Stabilize the URL format
+Get to a point where we promise backward compatibility for URLs: &quot;Bookmarks
+that you make to OpenRecord 0.2 pages will continue to work when we upgrade
+to OpenRecord 0.3.&quot;
+
+(7) Do ongoing Dojoification
+Continue to replace our home-grown utility functions with Dojo utilities,
+and replace other third-party dependencies with Dojo modules.  Look into
+replacing our notion of Views with Dojo's notion of Widgets.
+
+(8) Port to IE
+Make OpenRecord run in IE, not just Firefox.  Figure out how to do automated
+unit tests for the UI code.
+
+---------------
+Legal structure
+---------------
+  We have ten people on the openrecord-dev mailing list, and we've had a
+dozen or so people who've attended design meetings or reviewed parts of the
+design and offered feedback.  We have a number of people who've expressed
+interest in writing code, but so far we've only had three people coding.  
+
+  We've been slow to get more programmers involved, partly because we
+weren't really ready until now -- we've had a fairly small code base, with
+APIs that were in flux, and I was worried about getting too many of us
+bumping into each other.  Now that we've got a more settled structure, I'm
+eager to get more people involved.  
+ 
+  In order to accept contributions from lots of people, we need some legal
+structure for handling contributor license agreements, both from individuals
+and potentially also from their employers.  For several months now we've
+been looking into different options.  We could have started our own new
+Software Foundation, but that would have taken lots of time and money.  Or
+we could have used some sort of peer-to-peer license agreement, but that
+would have been risky and brittle.  It seemed clear that the best thing to
+do was to become a project of an existing open source foundation.
+
+  I talked with people at a few different open source foundations, and the
+Dojo Foundation looked like the best fit for us.  I've been following up
+with them about running the OpenRecord project under the auspices of the
+Dojo Foundation, so that we'll be sheltered under their legal umbrella.
+They still need to vote on it, but I think they'll vote yes, so probably in
+another week we'll be a Dojo project.  They said we can go ahead and send in
+our Dojo contributor license agreements (CLAs) now.  The Dojo CLA is a clone
+of the Apache one, so it's a standard, widely used CLA.  Have a look at it,
+and if you're okay with it, you can print it and sign it
+&lt;<A HREF="http://dojotoolkit.org/icla.txt">http://dojotoolkit.org/icla.txt</A>&gt;.  Please mail it to me instead of to the
+Dojo address; I'll collect all of our CLAs and them send them in one bundle
+to Dojo.  Here's my address:
+  Brian Skinner
+  2043 Ninth Avenue
+  San Francisco, CA 94116-1302
+  USA
+
+  I'm excited about being affiliated with Dojo.  They're doing great work
+and I think they have a lot of momentum and are likely to really take off.
+It looks like we'll be able to ship OpenRecord under a dual license, so that
+we can continue to make the OpenRecord code available under the terms of the
+Creative Commons Public Domain Dedication that we've been using, as well
+having it under the terms of the Academic Free License used by the rest of
+the Dojo code.  Hopefully we'll also be able to contribute some of the
+OpenRecord utility classes into the main Dojo release.
+
+-------------
+Collaboration
+-------------
+  In the past couple months, I've approached both Socialtext and Jotspot
+about the idea of collaborating with one of them.  I think both those
+companies are interested in features for working with structured content on
+a wiki.  I'd love to make OpenRecord interoperate with one of their tools,
+so that our users could exchange content smoothly.  
+
+  Or, better still, I'd love to do some sort of joint development project,
+so that we worked together on a single code base.  The OpenRecord project
+could ship the code as a free open source app that users install and
+administer themselves.  Socialtext or Jotspot could add additional
+proprietary enterprise features, and ship a fully supported commercial
+version as a hosted service.  I don't know whether that's a realistic
+scenario, but neither company has yet said &quot;no&quot;, so something might come of
+it.  I'll keep you posted if anything develops.
+
+  Another option is to collaborate with the MediaWiki developers.  They're
+interested in adding structured-content features to MediaWiki, and they've
+started working on a &quot;Wikidata&quot; project for that
+&lt;<A HREF="http://meta.wikimedia.org/wiki/Wikidata">http://meta.wikimedia.org/wiki/Wikidata</A>&gt;.  Plus there are other projects we
+might want to look at more closely, like the SemperWiki project
+&lt;<A HREF="http://m3pe.org/semperwiki/">http://m3pe.org/semperwiki/</A>&gt; and googlebase (when it ships).  
+
+------------------
+OpenRecord Retreat
+------------------
+  In mid-November we're having a week-long programming retreat where we're
+going to work on the OpenRecord code.  We've renting a big cabin a couple
+hours north of San Francisco, and we're going to hunker down and code for a
+week.  Mignon and Chao and I will be there, as well as few other people who
+will be working on other projects but may have some time to contribute to
+OpenRecord.  
+
+
+Okay, that's all the news I can think of.  I'll get to work on a write up
+about backend ideas, and then hopefully this weekend do a check in of the
+code with the new data model API!
+
+Cheers,
+  Brian
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000246.html">[openrecord-dev] links about the Google Base site
+</A></li>
+	<LI>Next message: <A HREF="000248.html">[openrecord-dev] ideas about the backend store
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#247">[ date ]</a>
+              <a href="thread.html#247">[ thread ]</a>
+              <a href="subject.html#247">[ subject ]</a>
+              <a href="author.html#247">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

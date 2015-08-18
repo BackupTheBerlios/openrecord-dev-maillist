@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] new items for recording table column positions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20new%20items%20for%20recording%20table%20column%20positions&In-Reply-To=%3C200506170309.j5H391I18514%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000151.html">
+   <LINK REL="Next"  HREF="000149.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] new items for recording table column positions</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20new%20items%20for%20recording%20table%20column%20positions&In-Reply-To=%3C200506170309.j5H391I18514%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] new items for recording table column positions">brian.skinner at gumption.org
+       </A><BR>
+    <I>Fri Jun 17 05:10:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000151.html">[openrecord-dev] Query as Javascript Class
+</A></li>
+        <LI>Next message: <A HREF="000149.html">[openrecord-dev] Any order in the way Entries are stored for an Attribute?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#147">[ date ]</a>
+              <a href="thread.html#147">[ thread ]</a>
+              <a href="subject.html#147">[ subject ]</a>
+              <a href="author.html#147">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Chao,
+
+I just did a check-in that added the new attributes and categories we talked
+about.
+
+It should be pretty much the way we talked about, except for the attribute
+we called &quot;pluginData&quot;.  I named that one &quot;Layout Data&quot; instead, because it
+seemed less confusing to me.  But it's very easy to change the name, if
+&quot;Layout Data&quot; isn't good.
+
+Here's what I added...
+
+
+Two new items representing Categories:
+--------------+------------
+name          | category
+--------------+------------
+Plugin View   | Category
+Layout Data   | Category
+--------------+------------
+
+
+Four new items representing Plugin Views:
+---------------+------------+-------------
+name           | short name | category
+---------------+------------+-------------
+Table View     | Table      | Plugin View
+Outline View   | Outline    | Plugin View
+Detail View    | Detail     | Plugin View
+Bar Chart View | Bar Chart  | Plugin View
+---------------+------------+-------------
+
+
+Four new items representing Attributes:
+------------------+---------------+-----------
+name              | expected type | category
+------------------+---------------+-----------
+Plugin View       | Plugin View   | Attribute
+Layout Data       | Layout Data   | Attribute
+Applies To Plugin | Plugin View   | Attribute
+Table Columns     | Attribute     | Attribute
+------------------+---------------+-----------
+
+
+So, for example...
+
+  a Section item like [My Favorite Books] might have a [Plugin View]
+attribute, with a value of [Table View]
+
+  and the Section item [My Favorite Books] would have a [Layout Data]
+attribute where the value was an item called [some-layout-data]
+
+  and [some-layout-data] would have a [Category] attribute with the value
+[Layout Data]
+
+  and [some-layout-data] would have an [Applies To Plugin] attribute with
+the value [Table View]
+
+  and [some-layout-data] would have an [Table Columns] attribute with the
+values [Name], [Author], [Publisher]
+
+
+You can get all the new items (attributes, categories, and plugin view
+items) via their UUIDs, which are available in SectionView:
+
+  SectionView.UUID_FOR_ATTRIBUTE_PLUGIN_NAME   // deprecated
+  SectionView.UUID_FOR_ATTRIBUTE_PLUGIN_VIEW
+  SectionView.UUID_FOR_ATTRIBUTE_LAYOUT_DATA
+  SectionView.UUID_FOR_ATTRIBUTE_APPLIES_TO_PLUGIN
+  SectionView.UUID_FOR_ATTRIBUTE_TABLE_COLUMNS
+  
+  SectionView.UUID_FOR_CATEGORY_PLUGIN_VIEW
+  SectionView.UUID_FOR_CATEGORY_LAYOUT_DATA
+
+  SectionView.UUID_FOR_PLUGIN_VIEW_TABLE
+  SectionView.UUID_FOR_PLUGIN_VIEW_OUTLINE
+  SectionView.UUID_FOR_PLUGIN_VIEW_DETAIL
+  SectionView.UUID_FOR_PLUGIN_VIEW_BAR_CHART
+
+The PLUGIN_VIEW attribute is intended to replace the existing PLUGIN_NAME
+attribute, but I didn't actually start working on that.  For now all I did
+was create the new items.  Hopefully that's enough so that you'll be able to
+get started on recording the column layout info.  Let me know if you run
+into problems!
+
+:<i>o) Brian
+</I>
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000151.html">[openrecord-dev] Query as Javascript Class
+</A></li>
+	<LI>Next message: <A HREF="000149.html">[openrecord-dev] Any order in the way Entries are stored for an Attribute?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#147">[ date ]</a>
+              <a href="thread.html#147">[ thread ]</a>
+              <a href="subject.html#147">[ subject ]</a>
+              <a href="author.html#147">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

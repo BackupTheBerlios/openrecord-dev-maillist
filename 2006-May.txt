@@ -1,0 +1,1787 @@
+From adamsz at gmail.com  Fri May 12 12:57:20 2006
+From: adamsz at gmail.com (Adam Souzis)
+Date: Fri May 12 12:57:20 2006
+Subject: [openrecord-dev] open record re-architecture strawman
+Message-ID: <d7cee4a70605101207h5ab5454w81ff31b1720feb9c@mail.gmail.com>
+
+Brian and I have been talking about re-architecting OpenRecord and I
+thought I'd try to summarize this for the list.
+
+At the face-to-face meeting Brian said that one of the things
+OpenRecord is "is a usable product in Jan 2007".
+
+To accomplish this OpenRecord needs to major changes, most important
+of which is that it needs to talk to a server. Also another goal of
+OpenRecord is to create data that doesn't "bitrot". At the very least,
+this requires using a standard data format. So the idea now is to use
+RDF instead OR's home-grown data model.
+
+Brian proposed the following steps for re-architecting:
+
+> >>
+> >>   1. invent a data model (or meta-model) for dojo
+> >>   2. throw together some experimental dojo.data code
+> >>   3. get feedback about the design on the dojo dev list
+> >>   4. iterate on 2 and 3, improving the data handling layer
+> >>   5. merge our dojo.data layer with IBM's contribution
+> >>   6. make a couple bindings that talk to data stores
+> >>       - a binding to Raccoon, or some RDF store
+> >>       - simple bindings for CSV, file system files, etc.
+> >>   7. make bindings to dojo widgets, or invite other dojo
+> >>      contributors to do that
+> >>       - table widget
+> >>       - chart widget
+> >>       - tree widget
+> >>   8. port OpenRecord UI over to dojo.data model, thereby
+> >>       making OpenRecord be able to talk to server-side
+> >>       data stores
+> >>   (6, 7, and 8 can happen in parallel, once 1-5 are done)
+
+However, IMHO this will still take too long to meet the Jan 2007 goal.
+
+So here's a straw man proposal:
+
+Currently OR has several layers including: Views (with a plugin api),
+Data (the data model), and Storage.  Forget about them all (for now).
+
+Instead just focus on extending the Dojo table control to be fully
+editable: adding columns and rows, in-editing of cells, basic data
+validation, undo/redo, change notifications, etc.
+
+On thing this doesn't require is a binding to some data model (like
+the one IBM is contributing to Dojo). Instead it just has the
+appropriate hooks where something like that can be implemented in the
+future. And instead of being depending on the data model, OR can for
+now implement those hooks with a simple api for reading and writing
+RDF with some back-end (e.g. Raccoon).
+
+But if we're ignoring the View layer what about all the other layout
+elements? Answer: Layout is not stored as part of the data model. The
+code for adding sections, building queries, etc. would just be like
+any other Dojo app -- i.e. manipulate the DOM. The layout can then be
+saved like any other HTML page.
+
+Finally there's a lot of nuts & bolts functionality: versioning &
+history, user authentication & authorization, conflict detection and
+consistency validation, etc.   These should be handled by the
+back-end/host application (again, e.g. Raccoon).
+
+The benefits of this approach:
+
+* the core widgets would be broadly reusable and so hopefully will
+attract outside support by other Dojo users
+* this architecture is emenable to using OR as a plugin in other
+wikis, and so hopefully will attract outside support.
+* much less dependencies on outside tasks
+* overall a less complex system
+* most importantly, if we're focused, i believe we could actually ship
+something usable in 7 months.
+
+thoughts?
+
+cheers,
+adam
+
+
+From skinner at dojotoolkit.org  Fri May 12 21:13:02 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri May 12 21:13:02 2006
+Subject: [openrecord-dev] Dojo Developer Day -- Sat May 13, 2006 -- Mountain View CA
+Message-ID: <4464DEC0.7080103@dojotoolkit.org>
+
+Just a reminder, for people in the San Francisco Bay Area...
+
+Dojo is hosting a "Dojo Developer Day"
+Saturday May 13, 2006 -- 10am to 6pm
+
+At the AOL offices:
+  401 Ellis Street
+  Mountain View, CA
+
+More info:
+   http://dojo.jot.com/WikiHome/DojoDevDay
+   http://dojotoolkit.org/
+
+I'm planning on going -- hope to see you there!
+
+:o) Brian
+
+
+
+
+
+From skinner at dojotoolkit.org  Fri May 12 21:23:59 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri May 12 21:23:59 2006
+Subject: [openrecord-dev] welcome
+Message-ID: <4464E0E8.1060303@dojotoolkit.org>
+
+Hi,
+
+Just wanted to welcome everybody who has recently subscribed to the 
+openrecord-dev mailing list.  A number of new people have joined the 
+list recently, and there now about 25 of us subscribed:
+   http://lists.berlios.de/mailman/roster/openrecord-dev
+
+Feel free to ask lots of questions on the mailing list.  We don't yet 
+have much documentation about OpenRecord, so this is the best place for 
+learning more about OpenRecord.  Or you can send questions directly to 
+me, if you prefer not to have them archived on the mailing list.
+
+Cheers,
+   Brian Skinner
+   skinner at dojotoolkit.org
+
+
+
+
+
+From skinner at dojotoolkit.org  Fri May 12 21:43:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri May 12 21:43:01 2006
+Subject: [openrecord-dev] UI design questions
+Message-ID: <4464E5AB.1080708@dojotoolkit.org>
+
+Last Saturday a few of us who are local to San Francisco got together to 
+talk about the User Interface for OpenRecord.
+
+We worked on coming up with answers for some of our pending UI design 
+questions.  After the meeting we decided to continue the conversation 
+here on the mailing list, and on a wiki page once we get that set up.
+
+Here's the big list of 62 open UI questions that we've been talking about...
+
+:o) Brian
+
+
+
+==============================================================
+OpenRecord UI Design Questions
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+General questions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+101. Autosave vs. undo
+
+Right now we have no "Save" button, and all changes are instantly saved. 
+  But that means adding an "Undo" feature is prohibitively difficult. 
+But maybe we could have some sort of  revert/rollback feature that feels 
+lightweight enough to be like an Undo feature. Alternatively, we could 
+have an "Undo" feature, and replace the current autosave behavior with 
+an explicit "Save" button.  Which way is better, or is there some other 
+hybrid solution?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+102. Remove vs. delete
+
+Have we made the UI too complicated if we ask the user to understand the 
+distinction between (a) removing an item from a particular view, vs. (b) 
+deleting the item from the repository?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+103. Delete vs. retire
+
+When you delete an item, it's never really gone.  You can always see it 
+again by going to its URL, or by looking at an old version of a page 
+that used to show it.  Should we use the term "retire" instead of "delete"?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+104. Edit mode vs. view mode
+
+If you try to start editing a page, but you're not able to edit because 
+you haven't logged in yet, how do we help you figure out that you need 
+to log in?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+105. Show Tools
+
+Can we get rid of the "Show Tools" button, and instead be in "Show 
+Tools" mode all the time.  How do we do that without cluttering the page 
+with stuff like the "New Page" and "New Section" buttons?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+106. What can I edit?
+
+How do we provide GUI feedback to show what text is editable?
+   - border appears on hover?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+107. Date/time annotations for Entries
+
+World almanacs have lots of tables that show how values change over 
+time, like this table showing the number of cases of different diseases 
+in the United States:
+
+           |  1970   |  1980  |  1990  |  2000  |
+   --------+---------+--------+--------+--------+
+   Mumps   | 104,953 |  8,576 |  5,292 |    323 |
+   Measles |  56,552 |  3,904 |  1,125 |    152 |
+   TB      |  37,137 | 27,749 | 25,701 | 12,942 |
+   --------+---------+--------+--------+--------+
+
+How do we represent this information in our data model of Items and 
+Attributes?
+
+Is Mumps an Item, with Attributes like [Name], [Description], 
+[Treatments], and [Number of Cases]?  Can the [Number of Cases] 
+Attribute have multiple Entries (104953, 8576, 5292, 323), with each 
+Entry having an associated "date/time context" (8,576 as of 1980)?
+
+That way the [President] Attribute of the Item [United States] would 
+have 43 Entries, one of which was ([Gerald Ford] from 1974-1977).  And 
+the [Gerald Ford] Item would have a [Name] Attribute with two Entries: 
+("Gerald Ford" from 1915 onward) and ("Leslie Lynch King, Jr." from 
+1913-1915).
+
+Our current Table-View has an Item in each row, and an Attribute in each 
+column.  Do we create some new Time-Table-View that shows only one 
+Attribute, and has an Item in each row, and a timespan in each column? 
+That might work for Time-Table-View, but how do Table-View and 
+Detail-View handle the display and editing of timespan info?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+108. Annotations for Entries
+
+Can each Entry have other associated annotations?
+  - Units for numbers, like {45 mph}
+  - Language specifiers for strings, like {"Germany" lang=en} or 
+{"Deutchland" lang=de}
+  - Citations or annotations, like {284 cite="CIA World Factbook, page 84"}
+  - Timespans, like {"Leslie Lynch King, Jr." from=1913-1915}
+
+How much work is it to have all the UI views deal with all this?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sections
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+201. How do you create a new section on a page?
+   - current solution: "New Section" button
+
+202. How do you change the order of the sections on a page?
+   - grab the section and drag it up or down
+
+203. How do you delete/retire a section?
+   - select the section by...
+
+204. How do you select a section?
+
+205. When you first create a new section, what does it show?
+   - query editor
+   - table view
+
+206. Can you move a section from one page to another?
+
+207. Can you drag an item from one section on a page to anther section 
+on the same page -- for example, from the "Places I Should Visit" 
+section to the "Places I've Visited" section?  Can you do that even if 
+the two sections show different types of views (table vs. bar chart vs. 
+outline)?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Categories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+301. If you create a new section, and create an item in the section, 
+what category is the item in?
+
+302. How do you create a new category?
+   - current solution: create a new Section, and in the query editor for 
+the section, type in a new category name
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+401. How do you create a new page?
+   - current solution: "New Page" button
+
+402. How do you delete/retire a page?
+   - right click on the nav bar menu item for the page, and select 
+"Retire Page"
+   - navigate to the page, click the "Show Tools" button, and then the 
+"Retire Page" button
+
+403. How do you see a list of the deleted/retired pages?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Nav Bar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+501. Can you hide the navbar?  If so, how?
+
+502. What does the navbar look like once the site has 200 pages?
+
+503. Should the "New Page" button somehow be *in* the navbar?  If so, 
+what happens when you try to drag a menu item below it?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Queries and Plugin Views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+601. How do you see the query for a section?
+
+602. How do you edit the query for a section?
+
+603. Can you see/edit a query without going into "Show Tools" mode?
+
+604. Can you "filter" an existing view, without changing the query (e.g. 
+filter the Book items to see just the ones that include the word "Hobbit")?
+
+605. Is every change to the query and/or filter automatically saved, or 
+can you safely browse and explore without impacting other users?  If 
+changes aren't automatically saved, how do you save them?
+
+606. How do you switch a section from Table View to Bar Chart View?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Table view and Detail view
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+701. Input validation -- In table view or detail view, if the expected 
+type of an attribute is Number (or Date), and you enter "Clinton", do we 
+offer any UI feedback about the type mis-match?
+   - current solution: no feedback, or very subtle font color differences
+   - red underline, like mis-spelled words in a word processor
+   - little red dot next to the entry
+
+702. When a cell in a table includes two entries, how do they appear?
+   - current solution: both on one line, separated by a gray dot
+   - on two lines within the same cell
+
+703. How do you add a second entry to a cell in a table?
+   - select an existing entry and then press Alt-Enter on the keyboard
+   - click on the "+" icon within the cell
+   - right click in the cell for a context menu, and select "Add entry"
+
+704. Which types of entries can you drag from one cell to another?
+   - just item-reference lozenges
+   - any type of entry: text, number, date, image, item-reference lozenge
+
+705. Which types of entries can you select?
+   - just item-reference lozenges
+   - any type of entry: text, number, date, image, item-reference lozenge
+
+706. Can you select the text within an entry and change it?
+   - yes, for any type of entry
+   - not in item-reference lozenges
+
+707. What menu items are on the table column header context menu?
+   - sort (ascending, descending)
+   - group
+   - remove column
+   - rename attribute
+   - move column (left, right)
+   - change data type
+   - change inverse attribute
+
+708. How do you retire/delete an item from table view?
+   - select the row and press the Delete button on the keyboard?
+   - right click on the "row handle" to get a context menu, and choose 
+"Retire"
+
+709. How do you retire/delete an item from detail view?
+   - a "Retire" button
+
+710. How do you remove a row from a table?
+   - right click on the "row handle" to get a context menu, and choose 
+"Remove"
+
+711. How do you add a row to a table?
+   - current solution: extra row at bottom of table
+
+712. How do you select a row in a table?
+   - click on the "row handle"
+
+713. What do the "row handles" in a table look like?
+   - leftmost column of the table -- narrow column -- little icons
+   - grabby surface like what you see on the navbar
+   - all items use the same icon
+   - items in different categories (Book, Author) can have different icons
+   - individual items can have different icons (Mansfield Park, The Hobbit)
+
+714. What happens when you click on a table column header?
+   - sort by that column
+   - pop up a context menu with options like: sort, group, remove, 
+rename, etc.
+
+715. How do you add a existing attribute to a table view or a detail view?
+   - click "Show Tools", and then select the attribute in the combo box
+
+716. How do you create a new attribute and add it to a table view or a 
+detail view?
+   - click "Show Tools", and then type in the combo box
+
+717. How do you set the expected type for an attribute?
+   - current solution: in table view, the expected type shows in the 
+column header when you're in "Show Tools" mode
+
+718. Can you drag a row up or down to re-order the rows in a table? What 
+if the table was already sorted based on some column?
+
+719. Can you drag a row from one table to another (from one section to 
+another)?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Context menus
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+801. What UI elements have context menus?
+   - none, because context menus are evil, and users don't find them
+   - almost every UI element, because context menus are great
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version History and Provenance Attribution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+901. How do you see who created an item, and when?
+
+902. How do you see who added an entry, and when?
+
+903. In detail view, how do you look at older versions of an item?
+   - a separate tab named "History", just like Wikipedia
+
+904. How do you look at an older version of a page?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Hover
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1001. What do you see when you hover over different UI elements?
+    + a menu item in navbar
+    + a "row handle"
+    + a table row
+      - the row background color changes to yellow or gray
+    + an empty table cell
+      - the cell background color changes to yellow or gray
+      - we show bold lines for the border of the cell, like in Excel
+    + an item-reference lozenge in a table cell
+      - current solution: slight color change
+    + a text entry in a table cell
+    + a column header in a table
+    + user name in in the login view
+      - current solution: color change
+    + a page title on a page
+    + a summary paragraph on a page
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Import
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1101. What should the "Import Data" workflow be?
+
+1102. What should the "Import Data" UI look like?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+User Accounts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1201. How are new accounts created?  Do people create new accounts for 
+themselves?  Do old users create new accounts for new users?  Can only 
+the site admin create new accounts?  Can the site admin configure the 
+site and pick any one of these new-account creation regimes?
+
+1202. When a user creates a new account for themselves, do they need to 
+provide a valid e-mail address, and do we mail them an access token?
+
+1203. How do you log in and log out?
+   - current solution: "sign in"/"sign out" controls in upper right corner
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Concurrent editing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1301. What do we do if Bill and Hillary concurrently change the title of 
+the same page?  When Al visits the page, does he see both page titles?
+
+1302. What do we do if Bill and Hillary concurrently change the query 
+for a section, or change the section from showing a Bar Chart to showing 
+some other view?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"Out of the box" experience
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1401. When you create a brand new site, what does it look like?  How do 
+we make it obvious what you need to do to create some initial pages, 
+categories, attributes, and content items?
+
+
+
+
+From thomas.kalka at googlemail.com  Sat May 13 07:21:01 2006
+From: thomas.kalka at googlemail.com (Thomas Kalka)
+Date: Sat May 13 07:21:01 2006
+Subject: [openrecord-dev] UI design questions
+In-Reply-To: <4464E5AB.1080708@dojotoolkit.org>
+References: <4464E5AB.1080708@dojotoolkit.org>
+Message-ID: <8d3cdfc10605122223h242eef30g2d128267d106e492@mail.gmail.com>
+
+> 101. Autosave vs. undo
+>
+> Right now we have no "Save" button, and all changes are instantly saved.
+> But that means adding an "Undo" feature is prohibitively difficult.
+> But maybe we could have some sort of  revert/rollback feature that feels
+> lightweight enough to be like an Undo feature. Alternatively, we could
+> have an "Undo" feature, and replace the current autosave behavior with
+> an explicit "Save" button.  Which way is better, or is there some other
+> hybrid solution?
+>
+
+Show a "history"-button while editing. If the user clicks on it show a
+summary about changes to choose an old state of the object /
+attribute. Like the history in photoshop.
+
+> 103. Delete vs. retire
+>
+> When you delete an item, it's never really gone.  You can always see it
+> again by going to its URL, or by looking at an old version of a page
+> that used to show it.  Should we use the term "retire" instead of "delete"?
+
+One could mark the deleted object as beeing in the trashcan while
+showing the old revision.
+
+
+> 104. Edit mode vs. view mode
+>
+> If you try to start editing a page, but you're not able to edit because
+> you haven't logged in yet, how do we help you figure out that you need
+> to log in?
+>
+
+Allow edit ever. Insert a message into the page alerting the user that
+saving is active until he logs in.
+
+> 105. Show Tools
+>
+> Can we get rid of the "Show Tools" button, and instead be in "Show
+> Tools" mode all the time.  How do we do that without cluttering the page
+> with stuff like the "New Page" and "New Section" buttons?
+>
+
+Add a toolbar with one "add new"-button. Choosing this and selecting
+any object a new object of this type can be added.
+
+
+>
+> 107. Date/time annotations for Entries
+>
+
+One possibility is to allow to edit the time-ranges in the history.
+
+> 108. Annotations for Entries
+>
+> Can each Entry have other associated annotations?
+>   - Units for numbers, like {45 mph}
+>   - Language specifiers for strings, like {"Germany" lang=en} or
+> {"Deutchland" lang=de}
+>   - Citations or annotations, like {284 cite="CIA World Factbook, page 84"}
+>   - Timespans, like {"Leslie Lynch King, Jr." from=1913-1915}
+>
+> How much work is it to have all the UI views deal with all this?
+
+Missing annotations like "who changed which attribute for what reason"
+ to feed the history.
+Units for numbers seems to be a different topic: this should be part
+of the attribute type (for the example: velocity), allowing automatic
+translation into different units.
+
+> 201. How do you create a new section on a page?
+>    - current solution: "New Section" button
+
+Have a toolbar with actions to perform on existing objects.
+User selects "add".
+a) User selects an object.
+UI shows options about which object can be created for this object.
+b) User selects no object for some time:
+Decorate the objects, for which somethig can be added.
+
+> 202. How do you change the order of the sections on a page?
+>    - grab the section and drag it up or down
+aditionaly: Have attributes for the sections. Allow page to choose on
+which attribute the section-display should  be sorted.
+
+>
+> 203. How do you delete/retire a section?
+>    - select the section by...
+Have a trashicon in the toolbar.
+a) drag the section into the trash
+b) select trash and then select section
+
+> 204. How do you select a section?
+
+by double clicking its title. what to do if there is no title ?
+
+> 206. Can you move a section from one page to another?
+
+Can you include a section from one page into an other ?
+
+
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> Categories
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+Allow hierarchical categories ?
+
+> 301. If you create a new section, and create an item in the section,
+> what category is the item in?
+
+A default category for the object type being edited.
+
+> 302. How do you create a new category?
+>    - current solution: create a new Section, and in the query editor for
+> the section, type in a new category name
+
+Having hierarchical categories:
+- allow to add to the "childrens list" of categories for one category.
+- allow to add to the "parents list" of categories for one category.
+
+>
+> 401. How do you create a new page?
+>    - current solution: "New Page" button
+
+Select "toolbar add" and chose page-title.
+
+> 402. How do you delete/retire a page?
+>    - right click on the nav bar menu item for the page, and select
+> "Retire Page"
+>    - navigate to the page, click the "Show Tools" button, and then the
+> "Retire Page" button
+
+- drag the title  to the trashicon in the toolbar.
+- drag the trashicon on the title
+- select trash , then select title
+
+
+> 403. How do you see a list of the deleted/retired pages?
+
+Open the trashbin and search there.
+
+
+> 701. Input validation -- In table view or detail view, if the expected
+> type of an attribute is Number (or Date), and you enter "Clinton", do we
+> offer any UI feedback about the type mis-match?
+>    - current solution: no feedback, or very subtle font color differences
+>    - red underline, like mis-spelled words in a word processor
+>    - little red dot next to the entry
+
+Have also a view "things to fix".
+
+> 702. When a cell in a table includes two entries, how do they appear?
+>    - current solution: both on one line, separated by a gray dot
+>    - on two lines within the same cell
+If there is a filter: display only matching entries.
+
+> 703. How do you add a second entry to a cell in a table?
+>    - select an existing entry and then press Alt-Enter on the keyboard
+>    - click on the "+" icon within the cell
+>    - right click in the cell for a context menu, and select "Add entry"
+If there is an overall toolbar: select "add" and then select the cell.
+
+
+> 706. Can you select the text within an entry and change it?
+>    - yes, for any type of entry
+>    - not in item-reference lozenges
+for item-references the text should be editable, but the widget to
+edit it should be aware of object-queries, allowing kinds of
+autocompletion / hierarchical browsing ...
+
+~~~~~
+
+Quite a lot of the suggestions rely on having a toolbar. Sorry, when I
+missed a design desision not to have such modal input. In my opinion
+its usefull to have "a box of tools in one location" to apply on
+different objects shown on a page.
+As I understood the UI should help the user to be aware of available
+actions on objects (add new section, add new page). If any of these
+options are shown, the page is full of buttons for all kind of
+objects, which can be acted upon.
+If there is a toolbar. the user can select the action first. The UI
+can help him, if for some time he does not choose an object to act
+upon.
+Available actions on objects could also be highlighted in the toolbox
+/ bar  while hovering around the page.
+
+--Thomas Kalka
+http://coforum.de/?ThomasKalka
+
+
+From skinner at dojotoolkit.org  Fri May 19 01:13:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri May 19 01:13:01 2006
+Subject: [openrecord-dev] UI design questions
+In-Reply-To: <8d3cdfc10605122223h242eef30g2d128267d106e492@mail.gmail.com>
+References: <4464E5AB.1080708@dojotoolkit.org> <8d3cdfc10605122223h242eef30g2d128267d106e492@mail.gmail.com>
+Message-ID: <446CFFE8.2040005@dojotoolkit.org>
+
+Hi Thomas --
+
+It's great to have a new voice on mailing list.  Thanks for all the 
+suggestions about the UI questions.  It's good to have some new ideas 
+getting tossed into the mix.  Up to now we've only had a half dozen 
+people actively involved in the UI design.
+
+Sorry it's taken me almost a week to respond.  It's been a busy week for 
+me, what with Dojo Developer Day, and moving to a new computer, and 
+coordinating Dojo's involvement in the Google "Summer of Code" program. 
+  We're almost done with the Summer of Code application process now -- 
+next week we'll find out how many students proposals have been accepted, 
+and whether any of them are the ones for OpenRecord projects.
+
+UI responses inline...
+
+Thomas Kalka wrote:
+>> 101. Autosave vs. undo
+>>
+>> Right now we have no "Save" button, and all changes are instantly saved.
+>> But that means adding an "Undo" feature is prohibitively difficult.
+>> But maybe we could have some sort of  revert/rollback feature that feels
+>> lightweight enough to be like an Undo feature. Alternatively, we could
+>> have an "Undo" feature, and replace the current autosave behavior with
+>> an explicit "Save" button.  Which way is better, or is there some other
+>> hybrid solution?
+> 
+> Show a "history"-button while editing. If the user clicks on it show a
+> summary about changes to choose an old state of the object /
+> attribute. Like the history in photoshop.
+
+Sounds good.  This one is especially topical -- one of the Summer of 
+Code student proposals is about getting undo/redo implemented.  I'll 
+have to go look at the photoshop UI, since I've never seen that.
+
+
+>> 104. Edit mode vs. view mode
+>>
+>> If you try to start editing a page, but you're not able to edit because
+>> you haven't logged in yet, how do we help you figure out that you need
+>> to log in?
+> 
+> Allow edit ever. Insert a message into the page alerting the user that
+> saving is active until he logs in.
+
+Ah, good idea.  Yes, now that we're taking about having an explicit save 
+button instead of auto-save, that makes your suggestion a natural 
+extension.  And that way all the people who don't even have accounts can 
+play around with changing page layouts and whatnot.
+
+
+>> 105. Show Tools
+>>
+>> Can we get rid of the "Show Tools" button, and instead be in "Show
+>> Tools" mode all the time.  How do we do that without cluttering the page
+>> with stuff like the "New Page" and "New Section" buttons?
+> 
+> Add a toolbar with one "add new"-button. Choosing this and selecting
+> any object a new object of this type can be added.
+> 
+> 
+>> 201. How do you create a new section on a page?
+>>    - current solution: "New Section" button
+> 
+> Have a toolbar with actions to perform on existing objects.
+> User selects "add".
+> a) User selects an object.
+> UI shows options about which object can be created for this object.
+> b) User selects no object for some time:
+> Decorate the objects, for which somethig can be added.
+> 
+> 
+>> 401. How do you create a new page?
+>>    - current solution: "New Page" button
+> 
+> Select "toolbar add" and chose page-title.
+
+Right, I think introducing a toolbar may be a good idea.  We would have 
+to think about what other controls it would make sense to have on the 
+toolbar.  If we do have a toolbar, maybe we can just have two buttons 
+for add-page and add-section, so that adding is a one-click action, 
+rather than having to click a generic add button to enter an add mode, 
+and then also select an object.  We've been talking about trying to 
+avoid having modes and modal interfaces, if possible.
+
+
+>> 108. Annotations for Entries
+>>
+>> Can each Entry have other associated annotations?
+>>   - Units for numbers, like {45 mph}
+>>   - Language specifiers for strings, like {"Germany" lang=en} or
+>> {"Deutchland" lang=de}
+>>   - Citations or annotations, like {284 cite="CIA World Factbook, page 
+>> 84"}
+>>   - Timespans, like {"Leslie Lynch King, Jr." from=1913-1915}
+>>
+>> How much work is it to have all the UI views deal with all this?
+> 
+> Missing annotations like "who changed which attribute for what reason"
+> to feed the history.
+
+Right, I'll add that to the list of annotation types.
+
+
+> Units for numbers seems to be a different topic: this should be part
+> of the attribute type (for the example: velocity), allowing automatic
+> translation into different units.
+
+I had only been thinking about the case where individual entries might 
+have units associated with them.  But you're right, we're also going to 
+want attributes themselves to have associated units (like kg or kph), or 
+at least associated "properties" (like weight or velocity).
+
+
+>> 202. How do you change the order of the sections on a page?
+>>    - grab the section and drag it up or down
+> 
+> aditionaly: Have attributes for the sections. Allow page to choose on
+> which attribute the section-display should  be sorted.
+
+Do you have an example in mind, where this would be useful?  My first 
+reaction is that most users wouldn't need that feature.  Seems like it's 
+probably enough to just let users explicitly re-order the sections, 
+without needing to do automatic sorting.
+
+
+>> 203. How do you delete/retire a section?
+>>    - select the section by...
+> Have a trashicon in the toolbar.
+> a) drag the section into the trash
+> b) select trash and then select section
+
+Option (a) sounds good to me.  I don't like option (b) so much, because 
+it's a modal UI.  We had talking about having a trashcan, but we got 
+stuck because we weren't sure where on the page to put it.  If we have a 
+toolbar then that does seem like a natural place.
+
+
+>> 204. How do you select a section?
+> 
+> by double clicking its title. what to do if there is no title ?
+
+We have it set up now so that if you click on the title text, that 
+selects the text and you can edit it.  If you double click somewhere on 
+the title, that selects the word you clicked on, just like it would in a 
+word processor or an e-mail client.  I think we should keep double-click 
+for that use.  It'd be good if we could find some other way to select 
+the section as a whole.
+
+
+>> 206. Can you move a section from one page to another?
+> 
+> Can you include a section from one page into an other ?
+
+Nope, right now a section can only appear on a single page.
+
+
+>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> Categories
+>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>
+> Allow hierarchical categories ?
+
+That's not something we allow for now, but I can see where that would be 
+useful.
+
+
+>> 301. If you create a new section, and create an item in the section,
+>> what category is the item in?
+> 
+> A default category for the object type being edited.
+
+Can you explain a little more, or give an example?  I don't understand 
+what you mean by "the object type being edited".
+
+
+>> 302. How do you create a new category?
+>>    - current solution: create a new Section, and in the query editor for
+>> the section, type in a new category name
+> 
+> Having hierarchical categories:
+> - allow to add to the "childrens list" of categories for one category.
+> - allow to add to the "parents list" of categories for one category.
+
+So we add somewhere new in the UI where you can browse the existing 
+hierarchy of categories, and that's where you add new categories?
+
+
+>> 402. How do you delete/retire a page?
+>>    - right click on the nav bar menu item for the page, and select
+>> "Retire Page"
+>>    - navigate to the page, click the "Show Tools" button, and then the
+>> "Retire Page" button
+> 
+> - drag the title  to the trashicon in the toolbar.
+> - drag the trashicon on the title
+> - select trash , then select title
+
+If the user starts dragging somewhere on the title, I think that should 
+select a region of text, just like it does in a word processor or an 
+e-mail client.  So I don't think there's a good way to let the user drag 
+the title to the trashcan.  Dragging the trashcan to the title doesn't 
+seem intuitive to me.  I'm not familiar with any other program where you 
+drag the trashcan around in order to throw things in the trash.  It 
+seems like we need a way to select the page as a whole, and then drag 
+the page to the trashcan.
+
+
+>> 403. How do you see a list of the deleted/retired pages?
+> 
+> Open the trashbin and search there.
+
+Sounds good to me.
+
+
+>> 706. Can you select the text within an entry and change it?
+>>    - yes, for any type of entry
+>>    - not in item-reference lozenges
+> 
+> for item-references the text should be editable, but the widget to
+> edit it should be aware of object-queries, allowing kinds of
+> autocompletion / hierarchical browsing ...
+
+Okay, so if when you select the text within an item-reference entry and 
+change the text from "Boston" to "Berlin" (with autocompletion), then 
+that changes the entry to point to the Berlin item, rather than simply 
+renaming the Boston item?
+
+
+> Quite a lot of the suggestions rely on having a toolbar. Sorry, when I
+> missed a design desision not to have such modal input. In my opinion
+> its usefull to have "a box of tools in one location" to apply on
+> different objects shown on a page.
+
+Yes, I think that sounds good.
+
+
+> As I understood the UI should help the user to be aware of available
+> actions on objects (add new section, add new page). 
+
+Agreed.
+
+
+> If there is a toolbar. the user can select the action first. The UI
+> can help him, if for some time he does not choose an object to act
+> upon.
+> Available actions on objects could also be highlighted in the toolbox
+> / bar  while hovering around the page.
+
+Ah, another good idea.  I like that one.
+
+
+Thanks for all the suggestions!
+
+:o) Brian
+
+
+
+From skinner at dojotoolkit.org  Tue May 23 02:50:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue May 23 02:50:01 2006
+Subject: [openrecord-dev] OpenLaszlo "Database Connector" protocol
+Message-ID: <44725C7C.7030404@dojotoolkit.org>
+
+Hey Adam,
+
+Thought you might be interested in this "Database Connector" protocol 
+that the OpenLaszlo people have been working on:
+   http://article.gmane.org/gmane.comp.web.dojo.devel/1711
+   http://wiki.openlaszlo.org/Database_Connector
+
+At Dojo Developer Day they brought it up as an idea for use with the 
+Dojo data layer.  The "Database Connector" protocol seems to be oriented 
+toward structured content -- I'm not sure it would be practical to 
+extend it to embrace things like RDF.  I haven't looked much at the REST 
+APIs that RDF servers offer -- I'll be curious to see how much 
+similarity there is.
+
+:o) Brian
+
+
+
+-------- Original Message --------
+Subject: [dojo-contributors] Pointer to RESTian data syncronization spec
+Date: Sat, 13 May 2006 16:16:51 -0700
+From: Max Carlson <max at laszlosystems.com>
+Reply-To: dojo dev. <dojo-contributors at dojotoolkit.org>
+To: dojo-contributors at dojotoolkit.org
+
+Be nice to it - it's messy and needs a little cleanup.  It's also a
+little rough.  I'm not too sure about some of the features, esp.
+callbacks and default methods.  It's a start:
+
+http://wiki.openlaszlo.org/Database_Connector
+
+The first reference implementation can be found here:
+http://laszlo-plugin.rubyforge.org/
+
+All the code, including LZX is generated using Rails' generators.
+This version binds a rails model (aka database table) to an editable
+datagrid.  As the grid is scrolled, records are paged in.  Creates,
+updates and deletes are sent back to the server individually.
+
+This isn't tied to the datagrid component at all.  Instead the system
+watches for changes to the underlying XML data model, meaning anything
+bound into the data can use the system.
+
+The protocol itself could work with any back end.  I'd love feedback,
+particularly around diffgrams.  Feel free to edit the wiki, and thanks!
+
+-- 
+Regards,
+Max Carlson
+OpenLaszlo.org
+_______________________________________________
+dojo-contributors mailing list
+dojo-contributors at dojotoolkit.org
+http://dojotoolkit.org/mailman/listinfo/dojo-contributors
+
+
+From skinner at dojotoolkit.org  Tue May 23 04:01:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue May 23 04:01:01 2006
+Subject: [openrecord-dev] open record re-architecture strawman
+In-Reply-To: <d7cee4a70605101207h5ab5454w81ff31b1720feb9c@mail.gmail.com>
+References: <d7cee4a70605101207h5ab5454w81ff31b1720feb9c@mail.gmail.com>
+Message-ID: <44726D24.7010909@dojotoolkit.org>
+
+Hey Adam,
+
+Thanks for posting about re-architecting OpenRecord.  It's great to be 
+thinking about how we can simply the design and focus on shipping 
+something usable as soon as possible.
+
+Responses in-line...
+
+Adam Souzis wrote:
+> Brian and I have been talking about re-architecting OpenRecord 
+> and I thought I'd try to summarize this for the list.
+> 
+> At the face-to-face meeting Brian said that one of the things
+> OpenRecord is "is a usable product in Jan 2007".
+> 
+> To accomplish this OpenRecord needs to major changes, most 
+> important of which is that it needs to talk to a server. Also 
+> another goal of OpenRecord is to create data that doesn't 
+> "bitrot". At the very least, this requires using a standard 
+> data format. So the idea now is to use RDF instead OR's 
+> home-grown data model.
+
+Yes, in hindsight, we should have used RDF from the beginning.  I don't 
+think it'll be too hard to switch from our home-grown data model to an 
+RDF model.  Once we've done that we'll be able to take advantage of 
+existing RDF data-stores and servers.  This'll be one step towards 
+making it possible for people to easily get their data into and out of 
+OpenRecord, and a hedge against "bitrot" and lock-in.
+
+> Brian proposed the following steps for re-architecting:
+> 
+>>   1. invent a data model (or meta-model) for dojo
+>>   2. throw together some experimental dojo.data code
+>>   3. get feedback about the design on the dojo dev list
+>>   4. iterate on 2 and 3, improving the data handling layer
+>>   5. merge our dojo.data layer with IBM's contribution
+>>   6. make a couple bindings that talk to data stores
+>>       - a binding to Raccoon, or some RDF store
+>>       - simple bindings for CSV, file system files, etc.
+>>   7. make bindings to dojo widgets, or invite other dojo
+>>      contributors to do that
+>>       - table widget
+>>       - chart widget
+>>       - tree widget
+>>   8. port OpenRecord UI over to dojo.data model, thereby
+>>       making OpenRecord be able to talk to server-side
+>>       data stores
+>>   (6, 7, and 8 can happen in parallel, once 1-5 are done)
+
+At Dojo Developer Day, Chris Mitchell from IBM gave a demo of the work 
+they've been doing on a dojo.data layer.  IBM is still working on that 
+code, but hopefully they'll have something they're ready to contribute 
+to Dojo before too long.
+
+So, at this point, I don't think the above steps 1 to 5 make sense. 
+Probably it's better to wait and see what the IBM model looks like, and 
+then think about what's involved in taking that and connecting it to an 
+RDF data store.
+
+> However, IMHO this will still take too long to meet the 
+> Jan 2007 goal.
+
+Yes, Jan 2007 does seem ambitious.  It would be great to make some 
+simplifying assumptions if we can.
+
+> So here's a straw man proposal:
+> 
+> Currently OR has several layers including: Views (with a 
+> plugin api), Data (the data model), and Storage.  Forget 
+> about them all (for now).
+> 
+> Instead just focus on extending the Dojo table control to 
+> be fully editable: adding columns and rows, in-editing of 
+> cells, basic data validation, undo/redo, change notifications, 
+> etc.
+> 
+> One thing this doesn't require is a binding to some data 
+> model (like the one IBM is contributing to Dojo). Instead 
+> it just has the appropriate hooks where something like that 
+> can be implemented in the future. And instead of being 
+> depending on the data model, OR can for now implement those 
+> hooks with a simple api for reading and writing RDF with 
+> some back-end (e.g. Raccoon).
+
+I know we've talked about this before, but I'm not sure I follow.  Are 
+you saying we can have a design where there simply isn't a data model 
+layer?  Somehow set things up so that a change made in the table widget 
+is translated directly into a call to the back-end data store, without 
+having a JavaScript object in memory?
+
+If we're going to get rid of our auto-save UI and instead have an 
+explicit save button, don't we then need to have an in-memory list of 
+the changes that have been made in the UI, so that we send all those 
+changes to the server as one atomic operation?
+
+
+> But if we're ignoring the View layer what about all the other 
+> layout elements? Answer: Layout is not stored as part of the 
+> data model. The code for adding sections, building queries, etc. 
+> would just be like any other Dojo app -- i.e. manipulate the DOM. 
+> The layout can then be saved like any other HTML page.
+
+Yes, in hindsight it may have been a mistake to try to save all the page 
+layout info as just a bunch of items and attributes.  It seems to have a 
+"turtles all the way down" elegance, but in practice it may not be a 
+good idea to mix content data with layout data.
+
+But, if we store the layout info by manipulating the DOM and saving it 
+as HTML, that's a whole new set of work that has to get done by Jan 
+2007.  Don't we then need to come up with DOM-based representations for 
+the notions of pages, sections, queries, etc?  And when the user hits 
+save, do we have to read through the DOM and serialize the layout info 
+into HTML, while stripping out the content data?  And then we need to 
+save the layout HTML via one server API and the content data via a 
+different server API?
+
+> Finally there's a lot of nuts & bolts functionality: versioning 
+> & history, user authentication & authorization, conflict detection 
+> and consistency validation, etc.   These should be handled by the
+> back-end/host application (again, e.g. Raccoon).
+
+Yes, that strikes me a huge win.  If we can think of OpenRecord as a 
+plug-in that runs within some existing framework like Raccoon or 
+MediaWiki, then a ton of stuff about user authentication & authorization 
+and whatnot get handled for us.
+
+> The benefits of this approach:
+> 
+> * the core widgets would be broadly reusable and so hopefully will
+> attract outside support by other Dojo users
+> * this architecture is emenable to using OR as a plugin in other
+> wikis, and so hopefully will attract outside support.
+> * much less dependencies on outside tasks
+> * overall a less complex system
+> * most importantly, if we're focused, i believe we could actually ship
+> something usable in 7 months.
+
+Yup, those sound good.  Right now OpenRecord has a bunch of custom view 
+code, based on a View class which is something different from a Dojo 
+widget.  That's only because we hadn't heard of Dojo back when we 
+started on OpenRecord.  Eventually it would be good if the OpenRecord UI 
+was composed entirely of Dojo widgets, and we got rid of all our home 
+grown View code.
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Tue May 23 05:14:00 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue May 23 05:14:00 2006
+Subject: [openrecord-dev] open record re-architecture strawman
+In-Reply-To: <d7cee4a70605101207h5ab5454w81ff31b1720feb9c@mail.gmail.com>
+References: <d7cee4a70605101207h5ab5454w81ff31b1720feb9c@mail.gmail.com>
+Message-ID: <44727E58.6080708@dojotoolkit.org>
+
+Adam Souzis wrote:
+> Instead just focus on extending the Dojo table control to be 
+> fully editable: adding columns and rows, in-editing of cells, 
+> basic data validation, undo/redo, change notifications, etc.
+
+We can start from the Dojo SortableTable widget if we want, and create 
+something like an EditableTable.  Tom Trenka is the original author and 
+current maintainer of the SortableTable widget.  I think Tom wants to 
+keep the SortableTable widget fairly simple and lightweight, so we'd 
+need to create a new widget if we wanted to add lots of features.
+
+IBM has an editable Table widget which they've talked about contributing 
+to Dojo.  Plus it already works with their data model layer.  But, I 
+doubt it has features for adding columns and rows, multi-valued cells, 
+etc.  And I don't know how soon that code will land in the Dojo trunk.
+
+A third alternative is to take our current Table view and turn it into a 
+Dojo widget.  I've never actually made a Dojo widget before, so I don't 
+know what all is involved in that, but I figure it can't be too hard, 
+given that we can refer to the SortableTable code as an example.
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Thu May 25 05:06:00 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Thu May 25 05:06:00 2006
+Subject: [openrecord-dev] Summer of Code news
+Message-ID: <44751F62.6030000@dojotoolkit.org>
+
+Just a quick update about Google's Summer of Code...
+
+Google will be funding 3 student projects for Dojo and OpenRecord, and 
+we're still hoping to find funding for at least a couple more student 
+projects.
+
+Here are the three projects we have so far are:
+
+  + Satish Sekharan will be working on a JavaScript linker,
+    with James Burke and Morris Johns as mentors.
+
+  + Heng Liu will be working on enhancements to the Editor widget,
+    with Paul Sowden and Alex Russell as mentors.
+
+  + Hiran Ganegedara will be working on OpenRecord charting plugins,
+    with Brian Skinner, Dylan Schiemann, and Eugene Lazutkin.
+
+Some overall stats:
+
+   102 mentoring organizations are involved, including Dojo
+  3050 students submitted proposals to Google
+  6338 proposals were submitted by the 3050 students
+  1280 student projects were requested by the mentoring organizations
+   636 projects will be funded by Google
+     3 million US dollars of funding will be provided by Google
+
+Dojo stats:
+
+   20 students sent in project proposals
+   10 developers volunteered to be mentors
+   12 projects are ones that developers volunteered to mentor
+    3 projects will be funded by Google
+
+
+
+
+From Thomas.Kalka at googlemail.com  Thu May 25 08:48:01 2006
+From: Thomas.Kalka at googlemail.com (Thomas Kalka)
+Date: Thu May 25 08:48:01 2006
+Subject: [openrecord-dev] UI design questions
+In-Reply-To: <446CFFE8.2040005@dojotoolkit.org>
+References: <4464E5AB.1080708@dojotoolkit.org> <8d3cdfc10605122223h242eef30g2d128267d106e492@mail.gmail.com> <446CFFE8.2040005@dojotoolkit.org>
+Message-ID: <44755373.9010808@googlemail.com>
+
+Hi Brian,
+
+it's a pleasure to find a project doing all the work, which was in my 
+dreams agenda :-)
+I'm happy that my suggestions find resonance.
+
+ >>> 401. How do you create a new page?
+ >>>    - current solution: "New Page" button
+ >>
+ >> Select "toolbar add" and chose page-title.
+ >
+ > Right, I think introducing a toolbar may be a good idea.  We would 
+have to think about what other controls it would make sense to have on 
+the toolbar.  If we do have a toolbar, maybe we can just have two 
+buttons for add-page and add-section, so that adding is a one-click 
+action, rather than having to click a generic add button to enter an add 
+mode, and then also select an object.  We've been talking about trying 
+to avoid having modes and modal interfaces, if possible.
+
+In my opinion it is better to have less but powerfull tools in the toolbox.
+You always have the design-option to expand multi-level selections to a 
+broader range of selections but you loose focus doing that. A mix of 
+these design-patterns are the "auto-hiding" menues of current ms 
+software. The same way the "add-tool" could be expanded or accompanied 
+by the most common choices. It could be a user preference option wether 
+to show them allways or only if the "main action button" is selected.  
+If the UI supports the  user by showing options in places they are 
+appropriate , a kind of modal interface is nice in my opinion. You can 
+think of the "add-icon" as "show add-controls icon", making it not modal 
+(if modal means: there is a state of the application the user has to 
+keep in mind, since it is not visible to him).
+You can see this design-pattern working in older text/graphical adventures.
+
+ >>> 202. How do you change the order of the sections on a page?
+ >>>    - grab the section and drag it up or down
+ >>
+ >> aditionaly: Have attributes for the sections. Allow page to choose on
+ >> which attribute the section-display should  be sorted.
+ >
+ > Do you have an example in mind, where this would be useful?  My first 
+reaction is that most users wouldn't need that feature.  Seems like it's 
+probably enough to just let users explicitly re-order the sections, 
+without needing to do automatic sorting.
+
+This depends on what "section" means. If for example on a page about a 
+person you add sections about his children, you can order them by name, 
+birth date, location etc.
+
+ >>> 203. How do you delete/retire a section?
+ >>>    - select the section by...
+ >> Have a trashicon in the toolbar.
+ >> a) drag the section into the trash
+ >> b) select trash and then select section
+ >
+ > Option (a) sounds good to me.  I don't like option (b) so much, 
+because it's a modal UI.  We had talking about having a trashcan, but we 
+got stuck because we weren't sure where on the page to put it.  If we 
+have a toolbar then that does seem like a natural place.
+
+This is the same topic as the "add-icon" question. Thinking b) as "show 
+delete action-buttons" makes it not modal.
+
+ >
+ >>> 204. How do you select a section?
+ >>
+ >> by double clicking its title. what to do if there is no title ?
+ >
+ > We have it set up now so that if you click on the title text, that 
+selects the text and you can edit it.  If you double click somewhere on 
+the title, that selects the word you clicked on, just like it would in a 
+word processor or an e-mail client.  I think we should keep double-click 
+for that use.  It'd be good if we could find some other way to select 
+the section as a whole.
+
+Add a "select action", like the pointer in any vector-drawing application.
+
+ >>> 206. Can you move a section from one page to another?
+ >>
+ >> Can you include a section from one page into an other ?
+ >
+ > Nope, right now a section can only appear on a single page.
+ >
+I would like to think about a section as also beeing a page. Having a 
+section in a page might expand to having a special view of a page inside 
+another page.
+
+ >>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ >>> Categories
+ >>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ >>>
+ >> Allow hierarchical categories ?
+ >
+ > That's not something we allow for now, but I can see where that would 
+be useful.
+
+Having hierarchical categories is (IMO) crucial for collecting bigger 
+amounts of data.
+Think about organizing your books / bibliographic data. You want to be 
+able to do a querry about all of the data, but also about special kinds.
+
+ >>> 301. If you create a new section, and create an item in the section,
+ >>> what category is the item in?
+ >>
+ >> A default category for the object type being edited.
+ >
+ > Can you explain a little more, or give an example?  I don't 
+understand what you mean by "the object type being edited".
+
+I'm perceive categories as object hierarchies, giving new pages 
+(objects) attribute-sets and also default values for attributs.
+
+ >>> 302. How do you create a new category?
+ >>>    - current solution: create a new Section, and in the query 
+editor for
+ >>> the section, type in a new category name
+ >>
+ >> Having hierarchical categories:
+ >> - allow to add to the "childrens list" of categories for one category.
+ >> - allow to add to the "parents list" of categories for one category.
+ >
+ > So we add somewhere new in the UI where you can browse the existing 
+hierarchy of categories, and that's where you add new categories?
+
+Yes.
+
+ >>> 402. How do you delete/retire a page?
+ >>>    - right click on the nav bar menu item for the page, and select
+ >>> "Retire Page"
+ >>>    - navigate to the page, click the "Show Tools" button, and then the
+ >>> "Retire Page" button
+ >>
+ >> - drag the title  to the trashicon in the toolbar.
+ >> - drag the trashicon on the title
+ >> - select trash , then select title
+ >
+ > If the user starts dragging somewhere on the title, I think that 
+should select a region of text, just like it does in a word processor or 
+an e-mail client.  So I don't think there's a good way to let the user 
+drag the title to the trashcan.  Dragging the trashcan to the title 
+doesn't seem intuitive to me.  I'm not familiar with any other program 
+where you drag the trashcan around in order to throw things in the 
+trash.  It seems like we need a way to select the page as a whole, and 
+then drag the page to the trashcan.
+
+Add an "select tool" to the toolbar.
+If there are many choices for a region in a page for selections this 
+button would show  appropriate controls in these places.
+
+ >>> 706. Can you select the text within an entry and change it?
+ >>>    - yes, for any type of entry
+ >>>    - not in item-reference lozenges
+ >>
+ >> for item-references the text should be editable, but the widget to
+ >> edit it should be aware of object-queries, allowing kinds of
+ >> autocompletion / hierarchical browsing ...
+ >
+ > Okay, so if when you select the text within an item-reference entry 
+and change the text from "Boston" to "Berlin" (with autocompletion), 
+then that changes the entry to point to the Berlin item, rather than 
+simply renaming the Boston item?
+
+Yes. Different kinds of attributes could be accompanied by different 
+controls.
+Choosing places could be supported by a hierarchical geographical browser,
+limiting the available autocompletion options to something the user can 
+quickly select from.
+
+In general I find multi-hierarchies (t.m. an object can have multiple 
+parents) the best solution to help selecting along big amounts of data.
+
+
+--tk
+
+
+
+
+From skinner at dojotoolkit.org  Thu May 25 22:06:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Thu May 25 22:06:01 2006
+Subject: [openrecord-dev] Fwd: back-end datastore alternatives
+Message-ID: <44760E88.2010209@dojotoolkit.org>
+
+Tom Bevington wrote to me yesterday, with a list of existing datastores 
+that we might want to consider using for OpenRecord -- one associative 
+database, plus several XML repositories.
+
+With Tom's permission, I'm including the message below.  (Unfortunately, 
+the links in message got lost along the way, but just knowing the names 
+of the projects is enough to find them on Google).
+
+:o) Brian
+
+
+
+-----Original Message-----
+From: Tom_Bevington at capgroup.com
+Sent: Wednesday, May 24, 2006 11:43 AM
+To: skinner at gumption.org
+Subject: openrecord.org followup
+
+Brian,
+
+Visited the Dojo site yesterday evening and found the OpenRecord Webcast 
+which intrigued me quite a bit.
+
+After reading OpenRecords requirements/roadmap document and noticing 
+you're still looking deciding upon the appropriate type of back-end 
+store, i thought I'd forward you the following links for your perusal.
+
+Given OpenRecord's associative and relationship-related roots, (and 
+apparent RDF leanings) you might want to take a look at whether an 
+associative database might be appropriate.   Such an approach might help 
+minimize any potential "impedance mismatch" between your general data 
+architecture and its underlying persistence mechanism.   Pure/Native XML 
+databases that use Xpath/Xquery rather than SQL might also have some 
+advantages over a traditional Relational repository.
+
+Here are some links for your consideration:
+
+Lazysoft's Sentences - the only true associative database I've ever come 
+across.  You can also obtain a PDF version of Simon Williams' book - The 
+Associative Model of Data.    Sentences was the first thing that jumped 
+into my mind as I read your OpenRecord requirements document.
+
+Mark Logic - A heavy-weight, commercial XML-based Content Repository/Server
+- used by in-house by O'Reilly's Publishing.
+
+Xpriori - Another native XML repository
+
+Xindice - Apache's Take on Native XML repository
+
+Berkeley DBXML 2.2 - Sleepycat's Embeddable Native XML database
+
+Wish you much luck/success with OpenRecord.
+
+Regards,
+
+Tom Bevington
+Sr. Technology Analyst
+Capital Group
+
+
+
+
+
+
+From jack.park at sri.com  Thu May 25 22:19:02 2006
+From: jack.park at sri.com (Jack Park)
+Date: Thu May 25 22:19:02 2006
+Subject: [openrecord-dev] Fwd: back-end datastore alternatives
+In-Reply-To: <44760E88.2010209@dojotoolkit.org>
+References: <44760E88.2010209@dojotoolkit.org>
+Message-ID: <44761194.2020400@sri.com>
+
+I would like to submit that the JCR (JSR-170) as expressed in jackrabbit 
+[1] and one of its extensions, jlibrary [2] are dandy ways to capture 
+information resources usable by OR.
+
+Jack
+[1] jackrabbit.apache.org
+[2] jlibrary.sf.net
+
+Brian Douglas Skinner wrote:
+> Tom Bevington wrote to me yesterday, with a list of existing 
+> datastores that we might want to consider using for OpenRecord -- one 
+> associative database, plus several XML repositories.
+>
+> With Tom's permission, I'm including the message below.  
+> (Unfortunately, the links in message got lost along the way, but just 
+> knowing the names of the projects is enough to find them on Google).
+>
+> :o) Brian
+>
+>
+>
+> -----Original Message-----
+> From: Tom_Bevington at capgroup.com
+> Sent: Wednesday, May 24, 2006 11:43 AM
+> To: skinner at gumption.org
+> Subject: openrecord.org followup
+>
+> Brian,
+>
+> Visited the Dojo site yesterday evening and found the OpenRecord 
+> Webcast which intrigued me quite a bit.
+>
+> After reading OpenRecords requirements/roadmap document and noticing 
+> you're still looking deciding upon the appropriate type of back-end 
+> store, i thought I'd forward you the following links for your perusal.
+>
+> Given OpenRecord's associative and relationship-related roots, (and 
+> apparent RDF leanings) you might want to take a look at whether an 
+> associative database might be appropriate.   Such an approach might 
+> help minimize any potential "impedance mismatch" between your general 
+> data architecture and its underlying persistence mechanism.   
+> Pure/Native XML databases that use Xpath/Xquery rather than SQL might 
+> also have some advantages over a traditional Relational repository.
+>
+> Here are some links for your consideration:
+>
+> Lazysoft's Sentences - the only true associative database I've ever 
+> come across.  You can also obtain a PDF version of Simon Williams' 
+> book - The Associative Model of Data.    Sentences was the first thing 
+> that jumped into my mind as I read your OpenRecord requirements document.
+>
+> Mark Logic - A heavy-weight, commercial XML-based Content 
+> Repository/Server
+> - used by in-house by O'Reilly's Publishing.
+>
+> Xpriori - Another native XML repository
+>
+> Xindice - Apache's Take on Native XML repository
+>
+> Berkeley DBXML 2.2 - Sleepycat's Embeddable Native XML database
+>
+> Wish you much luck/success with OpenRecord.
+>
+> Regards,
+>
+> Tom Bevington
+> Sr. Technology Analyst
+> Capital Group
+
+
+
+From skinner at dojotoolkit.org  Fri May 26 00:28:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri May 26 00:28:01 2006
+Subject: [openrecord-dev] Fwd: back-end datastore alternatives
+In-Reply-To: <44761194.2020400@sri.com>
+References: <44760E88.2010209@dojotoolkit.org> <44761194.2020400@sri.com>
+Message-ID: <44762FE2.4020003@dojotoolkit.org>
+
+Thanks for the pointers -- I hadn't ever heard of jLibrary before.
+
+:o) Brian
+
+
+Jack Park wrote:
+> I would like to submit that the JCR (JSR-170) as expressed in jackrabbit 
+> [1] and one of its extensions, jlibrary [2] are dandy ways to capture 
+> information resources usable by OR.
+> 
+> Jack
+> [1] jackrabbit.apache.org
+> [2] jlibrary.sf.net
+
+
+
+
+From skinner at dojotoolkit.org  Wed May 31 01:47:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Wed May 31 01:47:01 2006
+Subject: [openrecord-dev] UI design questions
+In-Reply-To: <44755373.9010808@googlemail.com>
+References: <4464E5AB.1080708@dojotoolkit.org> <8d3cdfc10605122223h242eef30g2d128267d106e492@mail.gmail.com> <446CFFE8.2040005@dojotoolkit.org> <44755373.9010808@googlemail.com>
+Message-ID: <447CD969.9000305@dojotoolkit.org>
+
+Thomas Kalka wrote:
+> it's a pleasure to find a project doing all the work, which was in my 
+> dreams agenda :-)
+
+Thanks!
+
+> >>> 401. How do you create a new page?
+> >>>    - current solution: "New Page" button
+> >>
+> >> Select "toolbar add" and chose page-title.
+> >
+> > Right, I think introducing a toolbar may be a good idea...
+> 
+> In my opinion it is better to have less but powerfull tools in the toolbox.
+> You always have the design-option to expand multi-level selections to a 
+> broader range of selections but you loose focus doing that. A mix of 
+> these design-patterns are the "auto-hiding" menues of current ms 
+> software. The same way the "add-tool" could be expanded or accompanied 
+> by the most common choices. It could be a user preference option wether 
+> to show them allways or only if the "main action button" is selected.  
+> If the UI supports the  user by showing options in places they are 
+> appropriate , a kind of modal interface is nice in my opinion. You can 
+> think of the "add-icon" as "show add-controls icon", making it not modal 
+> (if modal means: there is a state of the application the user has to 
+> keep in mind, since it is not visible to him).
+
+Yes, that sounds good.  Thanks for the clarification.
+
+> >>> 202. How do you change the order of the sections on a page?
+> >>>    - grab the section and drag it up or down
+> >>
+> >> aditionaly: Have attributes for the sections. Allow page to choose on
+> >> which attribute the section-display should be sorted.
+> >
+> > Do you have an example in mind, where this would be useful?  My first 
+> reaction is that most users wouldn't need that feature.  Seems like it's 
+> probably enough to just let users explicitly re-order the sections, 
+> without needing to do automatic sorting.
+> 
+> This depends on what "section" means. If for example on a page about a 
+> person you add sections about his children, you can order them by name, 
+> birth date, location etc.
+
+Ah, I see.  In the current implementation "section" has a more 
+restricted meaning.  Right now each section has an associated query and 
+an associated plugin view, and the section shows that plugin view to 
+show the list of items returned by the query.  In the current 
+arrangement is not designed for sections that only show one item, like a 
+section that shows just one of the children of a person.
+
+> >>> 203. How do you delete/retire a section?
+> >>>    - select the section by...
+> >> Have a trashicon in the toolbar.
+> >> a) drag the section into the trash
+> >> b) select trash and then select section
+> >
+> > Option (a) sounds good to me.  I don't like option (b) so much, 
+> because it's a modal UI.  We had talking about having a trashcan, but we 
+> got stuck because we weren't sure where on the page to put it.  If we 
+> have a toolbar then that does seem like a natural place.
+> 
+> This is the same topic as the "add-icon" question. Thinking b) as "show 
+> delete action-buttons" makes it not modal.
+
+Okay, I see now.
+
+> >>> 206. Can you move a section from one page to another?
+> >>
+> >> Can you include a section from one page into an other ?
+> >
+> > Nope, right now a section can only appear on a single page.
+> 
+> I would like to think about a section as also beeing a page. Having a 
+> section in a page might expand to having a special view of a page inside 
+> another page.
+
+That's an interesting idea.  We talked about that once, back last year, 
+but didn't get around to implementing it.  I'm glad to see you raising 
+the idea again.  I think we should consider doing this next time we're 
+working on that part of the code.
+
+
+> >>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >>> Categories
+> >>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >>>
+> >> Allow hierarchical categories ?
+> >
+> > That's not something we allow for now, but I can see where that would 
+> be useful.
+> 
+> Having hierarchical categories is (IMO) crucial for collecting bigger 
+> amounts of data.
+> Think about organizing your books / bibliographic data. You want to be 
+> able to do a querry about all of the data, but also about special kinds.
+
+Yes, I guess we should start designing for that now.
+
+> >>> 301. If you create a new section, and create an item in the section,
+> >>> what category is the item in?
+> >>
+> >> A default category for the object type being edited.
+> >
+> > Can you explain a little more, or give an example?  I don't 
+> understand what you mean by "the object type being edited".
+> 
+> I'm perceive categories as object hierarchies, giving new pages 
+> (objects) attribute-sets and also default values for attributs.
+
+Okay, I think I understand.  So if you create a new section on a page 
+which is about Books, then by default when you create a new item in that 
+new section, the new item will be a Book.
+
+> >>> 706. Can you select the text within an entry and change it?
+> >>>    - yes, for any type of entry
+> >>>    - not in item-reference lozenges
+> >>
+> >> for item-references the text should be editable, but the widget to
+> >> edit it should be aware of object-queries, allowing kinds of
+> >> autocompletion / hierarchical browsing ...
+> >
+> > Okay, so if when you select the text within an item-reference entry 
+> and change the text from "Boston" to "Berlin" (with autocompletion), 
+> then that changes the entry to point to the Berlin item, rather than 
+> simply renaming the Boston item?
+> 
+> Yes. Different kinds of attributes could be accompanied by different 
+> controls.
+> Choosing places could be supported by a hierarchical geographical browser,
+> limiting the available autocompletion options to something the user can 
+> quickly select from.
+
+Right, that sounds good.
+
+> In general I find multi-hierarchies (t.m. an object can have multiple 
+> parents) the best solution to help selecting along big amounts of data.
+
+Yes -- I think that notion of multiple parents is a big part of the 
+current enthusiasm about "tagging".
+
+Thanks for all the suggestions.  It may be some time before we'll get a 
+chance to work on all of these, but now we have these suggestions on 
+file so that we can draw on them as we're adding features.  If you're a 
+programmer, let me know if you'd like to work on implementing any of this!
+
+:o) Brian
+
+

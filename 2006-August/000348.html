@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] svn:externals for Timeline code?
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-August/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20svn%3Aexternals%20for%20Timeline%20code%3F&In-Reply-To=%3C44E3FBB1.4010703%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000347.html">
+   <LINK REL="Next"  HREF="000349.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] svn:externals for Timeline code?</H1>
+    <B>Dustin Machi</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20svn%3Aexternals%20for%20Timeline%20code%3F&In-Reply-To=%3C44E3FBB1.4010703%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] svn:externals for Timeline code?">dmachi at dojotoolkit.org
+       </A><BR>
+    <I>Thu Aug 17 07:16:33 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000347.html">[openrecord-dev] svn:externals for Timeline code?
+</A></li>
+        <LI>Next message: <A HREF="000349.html">[openrecord-dev] svn:externals for Timeline code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#348">[ date ]</a>
+              <a href="thread.html#348">[ thread ]</a>
+              <a href="subject.html#348">[ subject ]</a>
+              <a href="author.html#348">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I would think using the svn external would be a good thing.  Since you 
+can specify the revision that you want checkout, its just quite nice :) 
+  However, I had difficulties on some occasions.  I think you can only 
+have one extern in any particular directory, so we'll need to test that 
+or see if there is some directory structure that eliminates this 
+wierdness.  I could of course just be misinterpreting the information 
+i've read about it...the docs on externals seems to be somewhat lacking 
+to me, but thats how it goes.
+
+Dustin
+
+
+Brian Douglas Skinner wrote:
+&gt;<i> Hey Hiran, Mignon, and anyone else who might have advice on this,
+</I>&gt;<i> 
+</I>&gt;<i> I've been thinking about the new SIMILE Timeline code that we just added 
+</I>&gt;<i> to the &quot;third_party&quot; directory in our SVN repository.  Right now, the 
+</I>&gt;<i> Timeline code in our SVN repository is a copy of the code from the 
+</I>&gt;<i> SIMILE project SVN repository.  Alternatively, we could add an 
+</I>&gt;<i> &quot;svn:externals&quot; property to our &quot;third_party&quot; directory, to include the 
+</I>&gt;<i> Timeline code &quot;by reference&quot; instead of &quot;by copy&quot;.  (More info about 
+</I>&gt;<i> svn:externals here: <A HREF="http://svnbook.red-bean.com/en/1.0/ch07s03.html">http://svnbook.red-bean.com/en/1.0/ch07s03.html</A> )
+</I>&gt;<i> 
+</I>&gt;<i> We're already using an &quot;svn:externals&quot; property setting to include the 
+</I>&gt;<i> dojo source tree in our OpenRecord &quot;third_party&quot; directory.  Using 
+</I>&gt;<i> &quot;svn:externals&quot; has the advantages that, (a) it makes it really easy to 
+</I>&gt;<i> periodically upgrade to the current version of the third-party code, and 
+</I>&gt;<i> (b) it discourages us (prevents us) from making any modifications to the 
+</I>&gt;<i> code in the third-party directory.  The disadvantage is that it creates 
+</I>&gt;<i> a dependency on the SVN server of the third-party project.  There isn't 
+</I>&gt;<i> much practical downside to OpenRecord having a dependency on the SVN 
+</I>&gt;<i> repository of the Dojo Toolkit, since both the Dojo Toolkit SVN 
+</I>&gt;<i> repository and OpenRecord SVN repository are on the same server, 
+</I>&gt;<i> administered by the same person.  But is it a mistake to introduce a 
+</I>&gt;<i> dependency on the SIMILE SVN server, which could be intermittently down, 
+</I>&gt;<i> or might someday move to a new address (or go away)?
+</I>&gt;<i> 
+</I>&gt;<i> I'm inclined to use the &quot;svn:externals&quot; property for the SIMILE Timeline 
+</I>&gt;<i> code instead of having a copy in our repository, but I feel like I'm 
+</I>&gt;<i> just guessing about this, and I was hoping somebody else might have 
+</I>&gt;<i> advice to offer.
+</I>&gt;<i> 
+</I>&gt;<i> Also, is there a better name for the &quot;third_party&quot; directory?  I figure 
+</I>&gt;<i> this sort of directory must be common in software projects -- anybody 
+</I>&gt;<i> know of a standard name for it?
+</I>&gt;<i> 
+</I>&gt;<i> :o) Brian
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000347.html">[openrecord-dev] svn:externals for Timeline code?
+</A></li>
+	<LI>Next message: <A HREF="000349.html">[openrecord-dev] svn:externals for Timeline code?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#348">[ date ]</a>
+              <a href="thread.html#348">[ thread ]</a>
+              <a href="subject.html#348">[ subject ]</a>
+              <a href="author.html#348">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

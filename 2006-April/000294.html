@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Rhizome and OpenRecord
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Rhizome%20and%20OpenRecord&In-Reply-To=%3C4437503F.8080306%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000295.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Rhizome and OpenRecord</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Rhizome%20and%20OpenRecord&In-Reply-To=%3C4437503F.8080306%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Rhizome and OpenRecord">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Sat Apr  8 07:55:04 CEST 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000295.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#294">[ date ]</a>
+              <a href="thread.html#294">[ thread ]</a>
+              <a href="subject.html#294">[ subject ]</a>
+              <a href="author.html#294">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi everyone,
+
+One of the people who's recently joined the openrecord-dev mailing list 
+is Adam Souzis, author of the Rhizome Wiki and the Raccoon RDF-based 
+application server.  (More good info at <A HREF="http://www.liminalzone.org/">http://www.liminalzone.org/</A> )
+
+Adam has been digging into the OpenRecord code recently, looking at what 
+it would take to get OpenRecord talking to an RDF server, and looking at 
+re-using the OpenRecord table view in the Rhizome Wiki.  He and I have 
+exchanged a couple messages today, and I thought this thread might be 
+interesting to other people on the openrecord-dev list, so with Adam's 
+permission I'm including the (slightly abridged) messages here...
+
+:<i>o) Brian
+</I>
+
+-------- Original Message --------
+Subject: Re: [swikig] ANNOUNCE: Rhizome 0.6.0
+Date: Fri, 7 Apr 2006 03:01:20 -0700
+From: Adam Souzis
+To: Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt;
+
+hi brian,
+
+thanks... now that i finally got that out of the way (and finished my
+paper for the semantic wiki conference) i have some time look at open
+record again.
+
+When we last talked i was investigating writing an openrecord json to
+RDF converter. But as I dug into the code, i'm reconsidering whether
+that's the best starting point. Right now i'm thinking about trying to
+hack the tableplugin into rhizome.  It'll be messy and not a 100%
+AJAX-y but this is fastest path i can think of to get something that
+can actually be used. Here's how I am thinking of implementing this:
+
+* map RDF resource to Items
+** treat the resource URI as the UUID
+** multiple valued entries map to multiple statements with the same
+attribute as the property (this doesn't preserve the order of the
+values in the entry but its not clear to me if that's part of your
+model)
+** map orp data types to the XML schema datatypes that RDF uses
+** map rdf:type to Category attribute, rdfs:range to ExpectedType,
+rdfs:label to shortname, rdfs:comment to name
+** ignore inverse attributes for now
+
+* Have the server generate a list of all the items that the table
+plugin may need to access:
+Here are the RxPath queries for this, assuming the table contains all
+resource of given Category/RDF class:
+
+** items = /*[rdf:type=$category]
+** attributes = id($items/*)
+** expectedTypes = id($attributes/rdfs:range/*)
+** suggestedItems = /*[rdf:type = $expectedTypes]
+** plus the layout item resource for this table instance
+
+* derive an simple archive class from StubArchive. The archive is
+initialized with only these items (plus it loads the axiomatic ones).
+When committing a transaction it converts the items back to RDF
+(probably in JSON format) and sends it back to the server. I'm not
+sure I understand what records can be in the transaction list: It
+looks like votes represent items added or removed, Items can be added
+to the transaction list directly and then there are these Ordinal
+things that I don't understand.
+
+* write a new View class for containing the plugin view and
+intializing everything; hack tableplugin, plugin view, entry view,
+etc. as necessary
+
+Does this make sense? Am I missing anything?
+
+cheers,
+adam
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000295.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#294">[ date ]</a>
+              <a href="thread.html#294">[ thread ]</a>
+              <a href="subject.html#294">[ subject ]</a>
+              <a href="author.html#294">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

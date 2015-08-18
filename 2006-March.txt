@@ -1,0 +1,515 @@
+From jeffrey at skyhouseconsulting.com  Thu Mar  2 02:53:02 2006
+From: jeffrey at skyhouseconsulting.com (Jeffrey Harris)
+Date: Thu Mar  2 02:53:02 2006
+Subject: [openrecord-dev] OpenRecord screencast
+In-Reply-To: <43FE7511.1060905@dojotoolkit.org>
+References: <43FE7511.1060905@dojotoolkit.org>
+Message-ID: <44064FEA.1050303@skyhouseconsulting.com>
+
+Hi Brian,
+
+Brian Douglas Skinner wrote:
+> We've been working on a screencast about OpenRecord, and I've posted a
+> copy of it on our web site.
+> 
+> It's not as polished or professional as it could be, but hopefully it
+> still gives a pretty good overview of what OpenRecord is about.
+
+Wow.  That's a super-duper terrific screencast!  Are you wanting it
+promoted?  You should really send a link to Jon Udell.
+
+Sincerely,
+Jeffrey
+
+
+From skinner at dojotoolkit.org  Fri Mar  3 21:34:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Fri Mar  3 21:34:01 2006
+Subject: [openrecord-dev] OpenRecord screencast
+In-Reply-To: <44064FEA.1050303@skyhouseconsulting.com>
+References: <43FE7511.1060905@dojotoolkit.org> <44064FEA.1050303@skyhouseconsulting.com>
+Message-ID: <4408A7F6.202@dojotoolkit.org>
+
+Hey Jeffrey,
+
+> Wow.  That's a super-duper terrific screencast!  
+
+Thanks!
+
+> Are you wanting it promoted?  You should really send 
+> a link to Jon Udell.
+
+I've started sending out mail to people who might be interested, like 
+people who are working on similar semantic wiki projects.  Right now I'm 
+swamped, trying to respond to e-mail -- the screencast came up on the 
+Semantic Wiki mailing list, and I need to respond to questions there 
+too.  I also still need to send mail to Mimi and Mitch and Ted, and 
+other people who were interested in OpenRecord last fall.  After that it 
+might be good to send a link to Jon Udell.  I'm very much looking 
+forward to someday having some down-time -- OpenRecord has been eating 
+too much of my life lately!
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Tue Mar  7 03:57:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Mar  7 03:57:01 2006
+Subject: [openrecord-dev] welcome
+Message-ID: <440CE8AA.4090501@dojotoolkit.org>
+
+Hey,
+
+I want to welcome everybody who has recently subscribed to the 
+openrecord-dev mailing list.
+
+Since we posted our screencast a couple weeks ago, a half dozen more 
+people have joined the list, and there are now about 20 of us subscribed:
+   http://lists.berlios.de/mailman/roster/openrecord-dev
+
+Feel free to ask lots of questions here.  We don't yet have much 
+documentation about OpenRecord, so this is the best place for learning 
+more about OpenRecord.
+
+Cheers,
+   Brian
+
+
+From skinner at dojotoolkit.org  Tue Mar  7 04:51:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Mar  7 04:51:01 2006
+Subject: [openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured wiki]
+Message-ID: <440CF52C.6090101@dojotoolkit.org>
+
+One of the people who's recently joined the openrecord-dev mailing list 
+is Erik M?ller.  Erik has been an active member of the Wikimedia 
+communities, including Wikipedia.  He's contributed to articles, added 
+important features to the MediaWiki software, helped launch new projects 
+like Wikinews, and more.
+
+Erik is one of the people working on the Wikidata project, a wiki-like 
+database for handling different types of structured content in 
+MediaWiki.  Last week he and I exchanged a couple messages about 
+OpenRecord and Wikidata, and I thought this thread might be interesting 
+to other people on the openrecord-dev list, so with Erik's permission 
+I'm including the most recent message below...
+
+:o) Brian
+
+
+-------- Original Message --------
+Subject: Re: OpenRecord screencast -- semi-structured wiki
+Date: Thu, 02 Mar 2006 21:50:26 -0800
+From: Brian Douglas Skinner <skinner at dojotoolkit.org>
+To: Erik Moeller
+
+Hello Erik,
+
+Thanks for writing.  Let me try to answer your questions...
+
+> I'm glad you put your content in the public domain,
+> and I'd encourage you to stick with that option 
+
+I appreciate your encouragement.  It has taken some time and effort to 
+figure out how to run OpenRecord as a public domain project.  It's been 
+difficult to find open source role models, to get legal advice, etc.  I 
+hope it will end up having been worth the effort.  Life would certainly 
+be simpler if we could gradually shift more work into the public domain.
+
+> 1) The screencasts didn't say much (anything?) about
+> versioning/changelogging. I've seen on the site that
+> this is supposedly implemented.
+
+The OpenRecord data model keeps a complete record of the version/change 
+information, but we don't yet have user interface views where you can 
+see old versions, which is why we weren't able to demo that in the 
+screencasts.
+
+> I'm particularly interested in how you handle versioning
+> in the backend. 
+
+We don't yet have a real backend for OpenRecord.  We're still looking at 
+different datastores or servers that we might want to use.  We've talked 
+about using Apache Jackrabbit, RDF datastores like Sesame, etc.  And 
+we've also talked about building our own custom datastore, maybe storing 
+content in a complicated set of files, or maybe building a datastore on 
+top of tools like Berkeley DB, MySQL, or Lucene.  There's no obvious 
+good choice.
+
+Right now almost all of our code is JavaScript code that runs in the 
+browser.  On the server we have less than 100 lines of PHP code, and the 
+main thing the PHP code does is just accept text-packets from the client 
+and append the text-packets to a transaction log file on the server.
+
+When you open an OpenRecord page in your browser, the JavaScript client 
+code reads the entire transaction log to figure out the current state of 
+the data model.  When you edit an item in the browser, the client code 
+bundles that change up in a little text-packet and sends it to the 
+server where the text-packet is appended to the transaction log.  That 
+architecture has worked passably well for small demos and for models 
+that have up to maybe 1,000 items (thousands of RDF triples), but soon 
+we will need a real backend.
+
+> This has been a major challenge for us in Wikidata, as
+> we wish to build highly complex relational applications,
+> and versioning everything that is associated with a 
+> record with every change to it is not an option.
+
+That sounds like a very hard problem.  I wish I had some useful advice 
+to offer, but unfortunately I don't.
+
+> 3) I didn't see anything in the screencast about languages. 
+> In your specifications, i18n is not even targeted for 
+> the 1.0 release. This is a bit disappointing, though
+> not surprising. 
+
+We don't yet have any support for multilingual content.  I'm eager to 
+add those features, but we're swamped with work.
+
+There are only two programmers working regularly on OpenRecord right 
+now, and there's a huge pile of work to be done.  I'm hopeful that 
+through the screencast we may meet other volunteers who want to work on 
+OpenRecord.
+
+I've also been approaching companies, hoping that we might find a 
+corporate partner that would contribute to the development of 
+OpenRecord.  When OpenRecord 1.0 ships I'd like for there to be both a 
+free open-source version as well as a fully supported, hosted, 
+commercial version.
+
+> For Wikidata, i18n is core functionality. We're basing 
+> our work around the Wikimedia projects, where you have 
+> 125 languages, and 30 highly active ones. If we want
+> something like an almanac in Wikipedia, it's essential 
+> that we do not have to duplicate and maintain the same 
+> data in all those languages -- only data which has to be 
+> manually translated should be manually maintained. 
+
+Yes, for a world almanac, it would be good to have the content available 
+in 125 languages without having 125 separate copies of every fact and 
+figure.
+
+In OpenRecord, I'm hoping we'll have "polyglot strings" -- meaning that 
+we'll record translations at the level of individual entries rather than 
+at the level of whole pages.  For example, to keep track of information 
+about Germany, we would have a single Germany item, like this:
+
+  {item-id: 45862,
+    name: [{lang:"en", value:"Germany"},
+           {lang:"de", value:"Deutschland"},
+           {lang:"tr", value:"Almanya"},
+           ...],
+    area: {value: 357021, unit:"sq km"},
+    pop:  82431390,
+    capital: ([pointer to item representing Berlin]) }
+
+In a more complete example, the attributes, like "pop" and "area", would 
+actually be items themselves, and their names would have polyglot 
+strings too:
+
+  {item-id: 45862,
+    12465: [{lang:"en", value:"Germany"},
+            {lang:"de", value:"Deutschland"},
+            {lang:"tr", value:"Almanya"},
+            ...],
+    23865: {value: 357021, unit:"sq km"},
+    35984:  82431390,
+    69875: ([pointer to item representing Berlin]) }
+
+  {item-id: 23865,
+    12465: [{lang:"en", value:"Area"},
+            {lang:"en", value:"Gebiet"},
+            ...]}
+
+  {item-id: 12465,
+    12465: [{lang:"en", value:"Name"}, ...]}
+
+  {item-id: 35984,
+    12465: [{lang:"en", value:"Population"}, ...]}
+
+  {item-id: 69875,
+    12465: [{lang:"en", value:"Capital"}, ...]}
+
+
+> 2) I'd also be interested in the level of database
+> complexity you can model. For example, you have something
+> like a Book=>Author relationship. This is nice, but in
+> one of our first Wikidata applications, WiktionaryZ, we
+> have very complex relationship like: 
+> - Every record has a lexical item, which includes its 
+>    expression ("dog"), language, and some other attributes
+> - Some lexical items define a meaning
+> - A defined meaning can be associated with any number of 
+>    lexical items, which allows for synonyms and translations
+> - A meaning can be associated with a collection
+> - A meaning is associated with meaning texts in multiple 
+>    languages
+> - There can be arbitrary relations between meanings, which 
+>    themselves are meanings, and arbitrary attributes 
+>    associated with them.
+
+I think all of that would be fairly easy to model in OpenRecord.  The 
+OpenRecord data model is very similar to RDF, so it's fairly flexible.
+
+If you wanted to model that example in terms of OpenRecord items and 
+attributes, you could make each "lexical item" be an item, and each 
+"meaning" be an item.  Each lexical item would have attributes for 
+things like "expression" (e.g. "dog"), "gender", "partOfSpeech", 
+"meaning", etc.  Each meaning item would have attributes like "pictures" 
+and "meaningText", where the "meaningText" would be a polyglot string 
+with different entries for different languages.  In OpenRecord, any 
+attribute can be multi-valued, so any lexical item could be related to 
+more than one meaning item, and any meaning item could be related to 
+more than one lexical item.
+
+> So you can end up with something like a term with 100
+> translations, 4 different meanings, 50 meaning texts
+> for each of them, 20 relations, etc. - it becomes clear
+> that I can't just version the whole thing whenever I
+> make a single change somewhere. It also must be possible
+> to query the data and its relations in an efficient
+> manner, so we're making use of MySQL indexes and other 
+> traditional optimization strategies for relational 
+> databases.
+
+Yup, that's a hard problem.  Relational databases have good facilities 
+for indexing and fast queries across large data sets, but relational 
+databases aren't so convenient for doing versioning, polyglot content, 
+many-to-many relationships, loosely-typed fields, etc.  Some newer 
+datastores have appealing features, but it takes a lot of work to 
+evaluate each different datastore.
+
+> And this is just the core functionality -- this is a logical 
+> chart that shows all the functionality that we want to have
+> in WiktionaryZ:
+> http://upload.wikimedia.org/wikipedia/commons/6/67/ERD.jpg
+
+Impressive chart.  I imagine a great deal of work went into just making 
+that logical model, completely apart from implementing it.
+
+> Yes, we're very ambitious ;-). On the positive side, we 
+> have multiple sources of funding. 
+
+It's good to hear you've got funding.  I'm hopeful that OpenRecord might 
+someday get some funding too.  Having one or two more full-time 
+programmers working on OpenRecord would make a huge difference.
+
+> So I'd like to know how complex you think an OpenRecord 
+> application can realistically get.
+
+The answer to that question is entirely dependent on what datastore we 
+end up using, and how well our abstract data structures map to what's 
+available in the datastore.
+
+Right now I think it would be pretty easy to build a complex model in 
+OpenRecord, with lots of different kinds of items.  As long as you had 
+very few instances of each kind of item, OpenRecord would be very fast, 
+since the entire model is loaded in memory.  But as soon as you have a 
+few thousand items, then OpenRecord won't be able to open the data file 
+at all.  It's okay for demos, but useless for setting up real sites.
+
+I hope to have the OpenRecord UI hooked up to a real datastore later 
+this year.  Once that's done, we can run performance benchmarks and I 
+can give you actual numbers about scalability.
+
+> 4) As the person who created section editing for Wikipedia 
+> back in 2002, I like the OpenRecord in-place editing, and 
+> would love to try to break it ;-). I think you made a good 
+> choice in implementing things from scratch, as it really 
+> allows you to experiment freely with these ideas. 
+
+Yes, it's fun to get to experiment freely, and do things however seems 
+best.  The downside is that it will take a long time before we have a 
+production quality system that has all the features that existing wikis 
+have.
+
+> This in turn allows me to steal them from you. ;-)
+
+Please do.  Feel free to steal code, and feature ideas, and whatever 
+else.  That's why we have it all in the public domain.  I'll be 
+delighted if OpenRecord features start showing up in tools like 
+MediaWiki.  Let me know if I can help.
+
+> In seriousness, perhaps we can work together on some of
+> the UI level stuff.
+
+Yup, that'd be great.
+
+> However, there are also good reasons that we're basing our
+> work on MediaWiki, as it saves us a lot of time that would
+> otherwise be spent replicating functionality that is already 
+> there. It also makes it easier to adapt to the Wikimedia 
+> projects and culture.
+
+Right, it's much safer to incrementally build on MediaWiki than to try 
+to invent something new.  Inventing is fun, but it's risky and slow.
+
+> Nevertheless, I could see an OpenRecord-based almanac being
+> used by Wikimedia to store data that would then be loaded
+> into MediaWiki.
+
+That would be great.  I'd love to see OpenRecord dovetailing with 
+MediaWiki and being used by Wikimedia projects.
+
+> We should think about the options when you have a 1.0 release,
+> and we can compare the state of OR to WD to see which one is
+> closer to being usable.
+
+That sounds good.  OpenRecord is still a long way from having a 1.0 
+release, but I'd love to stay in touch as we keep progressing.
+
+> Thanks for bringing this project to my attention. I'm looking
+> forward to seeing future releases. I'm glad the "structured wiki"
+> idea is taking off in multiple places now -- it is bound to
+> eventually break through to the masses.
+
+Yes, there are lots of interesting projects in the works right now. 
+Even if most of them fall by the wayside, I think we can still look 
+forward to having good tools available in a few years time.  Thanks for 
+working on the Wikidata project!
+
+Cheers,
+   Brian
+
+
+
+From stefano.campanini at gmail.com  Tue Mar  7 10:07:02 2006
+From: stefano.campanini at gmail.com (Stefano Campanini)
+Date: Tue Mar  7 10:07:02 2006
+Subject: [openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured wiki]
+In-Reply-To: <440CF52C.6090101@dojotoolkit.org>
+References: <440CF52C.6090101@dojotoolkit.org>
+Message-ID: <380f6a190603070007v692c01deq34838f0ff0a15c98@mail.gmail.com>
+
+On 3/7/06, Brian Douglas Skinner <skinner at dojotoolkit.org> wrote:
+> One of the people who's recently joined the openrecord-dev mailing list
+> is Erik M?ller.
+> ......
+> > I'm particularly interested in how you handle versioning
+> > in the backend.
+>
+> We don't yet have a real backend for OpenRecord.  We're still looking at
+> different datastores or servers that we might want to use.  We've talked
+> about using Apache Jackrabbit, RDF datastores like Sesame, etc.  And
+> we've also talked about building our own custom datastore, maybe storing
+> content in a complicated set of files, or maybe building a datastore on
+> top of tools like Berkeley DB, MySQL, or Lucene.  There's no obvious
+> good choice.
+
+Hi,
+In my opinion having an RDF performant and scalable repository,is an
+hard challenge.
+So I think is better to separate contents (long text, binary data, ..)
+from RDF data.
+The "link" between this two bags is done using URIs.
+
+I'm working, in the short free time, on a Content Repository API using
+JackRabbit for PlatypusWiki.... at the moment it is a prototype.. but
+is well tied to work coupled with a RDF repository.
+
+es:
+String classText = ContentRepo.getResource("rdfs", "Class");
+String rdfSchemaText = ContentRepo.getResource("rdfs", null);
+
+
+If you are interested evaluating it, I can put it on a server.. ..
+I've played with JackRabbit because I' hope someone implement WebDav
+back-end support ... these enable a way to exchange contents between
+Wikis...
+
+Sorry for my bad English..
+Cheers
+Stefano
+
+
+From skinner at dojotoolkit.org  Thu Mar  9 23:30:14 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Thu Mar  9 23:30:14 2006
+Subject: [openrecord-dev] [Fwd: Re: OpenRecord screencast -- semi-structured
+ wiki]
+In-Reply-To: <380f6a190603070007v692c01deq34838f0ff0a15c98@mail.gmail.com>
+References: <440CF52C.6090101@dojotoolkit.org> <380f6a190603070007v692c01deq34838f0ff0a15c98@mail.gmail.com>
+Message-ID: <44109E76.9000904@dojotoolkit.org>
+
+Stefano Campanini wrote:
+> In my opinion having an RDF performant and scalable repository,
+> is an hard challenge. So I think is better to separate contents 
+> (long text, binary data, ..) from RDF data. The "link" between 
+> this two bags is done using URIs.
+
+Yes, that sounds like a good approach.  Back last October we were 
+thinking of writing our own custom repository for OpenRecord, and we 
+were also thinking of using that sort of technique for handling images 
+and large data blobs.
+
+
+> I'm working, in the short free time, on a Content Repository 
+> API using JackRabbit for PlatypusWiki.... at the moment it is
+> a prototype.. but is well tied to work coupled with a RDF 
+> repository.
+
+Ah, I am glad to hear you are working on that!  I have not used 
+JackRabbit, and I have not yet had time to look at it carefully, but 
+JackRabbit seems like it might be good choice for OpenRecord.
+
+If you find JackRabbit to be a good choice for PlatypusWiki, that will 
+be a very encouraging development.  I will be interested to hear about 
+your experiences.
+
+
+> If you are interested evaluating it, I can put it on a server.
+> I've played with JackRabbit because I' hope someone implement
+> WebDav back-end support ... these enable a way to exchange 
+> contents between Wikis...
+
+I would like to look at how you are using JackRabbit with RDF. 
+Unfortunately it might be some time before I get a chance to look at 
+your code.  I have too much work on my to-do list right now, so I doubt 
+I would manage to look at the code in the next month.  But, hopefully 
+after that.
+
+
+> Sorry for my bad English..
+
+Your English is far better than my Italian!  Thank you for writing.
+
+:o) Brian
+
+
+From skinner at dojotoolkit.org  Tue Mar 14 04:29:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Mar 14 04:29:01 2006
+Subject: [openrecord-dev] OpenLaszlo demos -- San Francisco -- Thursday
+Message-ID: <44162A90.9090703@dojotoolkit.org>
+
+For folks who are in the San Francisco area...
+
+On Thursday evening (3/16/2006 7:00 pm) Laszlo Systems is going to be 
+giving a demo of their OpenLaszlo tools, along with demos from 
+developers using the OpenLaszlo tools.  I'll probably be going, if you 
+want to meet up.  More info here:
+  http://www.laszlosystems.com/developers/community/event_060314.php
+
+- Brian
+
+
+From skinner at dojotoolkit.org  Tue Mar 28 04:58:01 2006
+From: skinner at dojotoolkit.org (Brian Douglas Skinner)
+Date: Tue Mar 28 04:58:01 2006
+Subject: [openrecord-dev] Dabble DB screencast
+Message-ID: <4428A616.20904@dojotoolkit.org>
+
+Dabble DB is a web-based spreadsheet/database tool similar to 
+OpenRecord.  Dabble isn't open source, but it is cool, and it's much 
+farther along than OpenRecord.
+
+Here's a great 7-minute screencast about Dabble:
+  http://dabbledb.com/utr/
+
+And there's a 40-minute movie too.  This movie won't play on either of 
+my Windows machines, so I haven't seen this one yet:
+   http://smallthought.com/clips/lispvan.mov
+
+:o) Brian
+
+

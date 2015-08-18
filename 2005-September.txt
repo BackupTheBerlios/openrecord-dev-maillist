@@ -1,0 +1,218 @@
+From brian.skinner at gumption.org  Sat Sep  3 00:30:05 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Sat Sep  3 00:30:05 2005
+Subject: [openrecord-dev] Wiki Wednesdays -- Sept 7th, 7-9pm at Socialtext in Palo Alto
+In-Reply-To: <82331646-CDFB-4D70-9059-CF4747472C28@cs.stanford.edu>
+Message-ID: <200509022228.j82MSr114515@bat.berlios.de>
+
+I'm thinking of going to this, if anybody else is interested...
+
+:o) Brian
+
+
+> Wiki Wednesdays
+>
+> http://www.socialtext.net/wikiwed/index.cgi
+>
+http://www.socialtext.net/wikiwed/index.cgi?palo_alto_wednesday_sept_7_2005 
+> 
+> - Wiki Wednesdays are held the first Wednesday of each month
+> - People get together to chat, learn about wikis, find jobs, 
+>   talk deals and generally cavort
+> - Socialtext picks a location, buys some ice cream 
+> - You RSVP and swing by if you like
+> 
+> Wednesday, Sept 7 -- 7:00p-9:00p
+>
+> Socialtext
+> 665 High Street
+> (650) 323-0800
+
+
+
+
+From chao at cs.stanford.edu  Sat Sep  3 00:39:01 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Sat Sep  3 00:39:01 2005
+Subject: [openrecord-dev] Wiki Wednesdays -- Sept 7th, 7-9pm at Socialtext in Palo Alto
+In-Reply-To: <200509022228.j82MSr114515@bat.berlios.de>
+References: <200509022228.j82MSr114515@bat.berlios.de>
+Message-ID: <FAA573D5-FB9F-4C30-B6E5-D78517300753@cs.stanford.edu>
+
+Sorry, I can't - have a clipclip meeting that evening. Sounds fun tho'.
+
+chao
+
+On Sep 2, 2005, at 3:28 PM, Brian Douglas Skinner wrote:
+
+> I'm thinking of going to this, if anybody else is interested...
+>
+> :o) Brian
+>
+>
+>
+>> Wiki Wednesdays
+>>
+>> http://www.socialtext.net/wikiwed/index.cgi
+>>
+>>
+> http://www.socialtext.net/wikiwed/index.cgi? 
+> palo_alto_wednesday_sept_7_2005
+>
+>>
+>> - Wiki Wednesdays are held the first Wednesday of each month
+>> - People get together to chat, learn about wikis, find jobs,
+>>   talk deals and generally cavort
+>> - Socialtext picks a location, buys some ice cream
+>> - You RSVP and swing by if you like
+>>
+>> Wednesday, Sept 7 -- 7:00p-9:00p
+>>
+>> Socialtext
+>> 665 High Street
+>> (650) 323-0800
+>>
+>
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Tue Sep 13 19:07:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Sep 13 19:07:01 2005
+Subject: [openrecord-dev] SuperHappyDevHouse - Friday at 7pm
+Message-ID: <200509131706.j8DH6l123199@bat.berlios.de>
+
+Alex Russell will be showing off the Dojo toolkit this Friday evening.
+He'll be giving a demo at "SuperHappyDevHouse #4" in Hillsborough.  I'm
+planning on going.  Here's more info...
+
+  http://upcoming.org/event/29829
+  http://superhappydevhouse.com/
+
+Let me know if you're interested and we can plan to meet up!
+
+:o) Brian
+
+
+
+From brian.skinner at gumption.org  Tue Sep 13 21:47:01 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Tue Sep 13 21:47:01 2005
+Subject: [openrecord-dev] UUIDs for ViewPlugins
+Message-ID: <200509131946.j8DJkK127572@bat.berlios.de>
+
+Hey Mignon,
+
+I was thinking more about our conversation about the ViewPlugin registration
+API, and how to assign UUIDs to ViewPlugins, and I remembered another one of
+the original design goals -- namely that we'd really like the ViewPlugin's
+UUID to uniquely identify it across a number of repositories, not just the
+repository that the ViewPlugin is currently being installed in.  That could
+complicate things.  Give me a call sometime before you start to work on it
+and we can talk through the issues.
+
+:o) Brian
+
+
+
+From chao at cs.stanford.edu  Wed Sep 14 03:17:00 2005
+From: chao at cs.stanford.edu (Chih-Chao Lam)
+Date: Wed Sep 14 03:17:00 2005
+Subject: [openrecord-dev] SuperHappyDevHouse - Friday at 7pm
+In-Reply-To: <200509131706.j8DH6l123199@bat.berlios.de>
+References: <200509131706.j8DH6l123199@bat.berlios.de>
+Message-ID: <CAD4169D-C86C-440D-BE2D-5C5BF44C2F8A@cs.stanford.edu>
+
+Hi Brian,
+
+Thanks for sharing this. Sounds fun.
+
+I've got a friend visiting from Singapore and I it thought it'll be a  
+good intro into silicon valley if I brought him along, but probably  
+after dinner. Maybe around 9pm?
+
+Are you planning on showing Open Record? Sounds like a good venue.
+
+chao
+
+On Sep 13, 2005, at 10:06 AM, Brian Douglas Skinner wrote:
+
+> Alex Russell will be showing off the Dojo toolkit this Friday evening.
+> He'll be giving a demo at "SuperHappyDevHouse #4" in Hillsborough.   
+> I'm
+> planning on going.  Here's more info...
+>
+>   http://upcoming.org/event/29829
+>   http://superhappydevhouse.com/
+>
+> Let me know if you're interested and we can plan to meet up!
+>
+> :o) Brian
+>
+> ___________________________________________________________________
+> Copyright rights relinquished. This work is in the Public Domain.
+> For details see: http://creativecommons.org/licenses/publicdomain/
+>
+> openrecord-dev mailing list
+> openrecord-dev at lists.berlios.de
+> http://lists.berlios.de/mailman/listinfo/openrecord-dev
+>
+
+
+
+From brian.skinner at gumption.org  Thu Sep 15 21:38:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Thu Sep 15 21:38:00 2005
+Subject: [openrecord-dev] Re: SuperHappyDevHouse - Friday at 7pm
+In-Reply-To: <CAD4169D-C86C-440D-BE2D-5C5BF44C2F8A@cs.stanford.edu>
+Message-ID: <200509151937.j8FJbS106115@bat.berlios.de>
+
+Hi Chao,
+
+| > Alex Russell will be showing off the Dojo toolkit 
+| > this Friday evening.  He'll be giving a demo at 
+| > "SuperHappyDevHouse #4" in Hillsborough.   
+| 
+| I've got a friend visiting from Singapore and I it 
+| thought it'll be a good intro into silicon valley if 
+| I brought him along, but probably after dinner. Maybe 
+| around 9pm?
+
+Sounds good.  I'm planning on arriving there at 7:00 and staying at least a
+couple hours, so I should see you there.
+
+| Are you planning on showing Open Record? Sounds like 
+| a good venue.
+
+I'd definitely like to show Open Record to Alex, and maybe we'll end up
+showing it to other people too.
+
+:o) Brian
+
+
+
+
+From brian.skinner at gumption.org  Fri Sep 30 01:36:00 2005
+From: brian.skinner at gumption.org (Brian Douglas Skinner)
+Date: Fri Sep 30 01:36:00 2005
+Subject: [openrecord-dev] Zimbra PIM with AJAX UI
+Message-ID: <200509292335.j8TNZZ916604@bat.berlios.de>
+
+If you've got a few minutes to kill, here's a short movie that shows off the
+new Zimbra web-based e-mail and calendaring tool.  It's a nice example of an
+AJAX UI:
+  http://www.zimbra.com/flash_demo/flash_demo.html
+
+:o) Brian
+
+
+

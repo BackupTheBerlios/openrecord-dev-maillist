@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20%5BRails-spinoffs%5D%20Integrating%20script.aculo.us%20into%20existing%20javascript%20codebase&In-Reply-To=%3CDA62FB23-7F73-44E4-9F3B-C6FA2CDA641D%40fesch.at%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000185.html">
+   <LINK REL="Next"  HREF="000186.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase</H1>
+    <B>Thomas Fuchs</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20%5BRails-spinoffs%5D%20Integrating%20script.aculo.us%20into%20existing%20javascript%20codebase&In-Reply-To=%3CDA62FB23-7F73-44E4-9F3B-C6FA2CDA641D%40fesch.at%3E"
+       TITLE="[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase">thomas at fesch.at
+       </A><BR>
+    <I>Sun Jul 10 18:48:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000185.html">[openrecord-dev] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+        <LI>Next message: <A HREF="000186.html">[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#188">[ date ]</a>
+              <a href="thread.html#188">[ thread ]</a>
+              <a href="subject.html#188">[ subject ]</a>
+              <a href="author.html#188">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>With prototype is probably a bad idea to iterate through an Array  
+with for/in.
+
+for(var i=0;i&lt;anArray.length;i++) {
+     /* do something with anArray[i]  */
+}
+
+should do fine. There might be addtional additions (whew) to Object  
+(and thus Array) and to other basic js object itself
+in the future, i guess. sam stephenson, the author of prototype.js,  
+is currently working on some nice stuff, i hear.
+
+One example is a .inspect() function:
+
+Object.prototype.inspect = function(){
+   var info = [];
+   for(property in this)
+     if(typeof this[property]!=&quot;function&quot;)
+       info.push(property + ' =&gt; &quot;' + this[property] + '&quot;');
+   return (&quot;'&quot; + this + &quot;' #&quot; + typeof this +
+     &quot;: {&quot; + info.join(&quot;, &quot;) + &quot;}&quot;);
+}
+
+will allow you to get info on any js object by doing something like  
+alert(myObject.inspect())
+
+Currently prototype adds functions to Array (push), Function  
+(apply,bind,bindAsEventListener) and String (stripTags, escapeHTML,  
+unescapeHTML) to make life easier and cut down on code size and  
+repetitions.
+
+--
+Thomas
+
+Am 08.07.2005 um 21:39 schrieb Chih-Chao Lam:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I'm new to this mailing list, so first off, a big THANK YOU for the  
+</I>&gt;<i> script.aculo.us and prototype.js libraries.
+</I>&gt;<i>
+</I>&gt;<i> I'm trying to integrate script.aculo.us into an existing pretty  
+</I>&gt;<i> large Javascript codebase (see <A HREF="http://openrecord.org">http://openrecord.org</A>). I'm running  
+</I>&gt;<i> into a problem with prototype.js and the existing codebase's use of  
+</I>&gt;<i> for/in loops over an Array.
+</I>&gt;<i>
+</I>&gt;<i> prototype.js defines Object.prototype.extend as a function. I  
+</I>&gt;<i> believe this causes a problem when I do a &quot;for/in&quot; loop on an array  
+</I>&gt;<i> e.g.
+</I>&gt;<i>
+</I>&gt;<i> var anArray = [1,2,3]
+</I>&gt;<i>  for (var key in anArray) {/*do some stuff */}
+</I>&gt;<i>
+</I>&gt;<i> Above code snippet doesn't quite work, because var key gets set to  
+</I>&gt;<i> &quot;0&quot;, &quot;1&quot;, &quot;2&quot; and then &quot;extend&quot; in one of the loop traversal. I  
+</I>&gt;<i> believe that's because prototype.js defines object.prototype.extend  
+</I>&gt;<i> as a function.
+</I>&gt;<i>
+</I>&gt;<i> Is this a known problem? Are there workarounds?
+</I>&gt;<i>
+</I>&gt;<i> Is the use of for/in loop traversal over an Array considered verboten?
+</I>&gt;<i>
+</I>&gt;<i> Also, looking at prototype.js. In the Object.extend() function,  
+</I>&gt;<i> should the variable &quot;prototype&quot; be declared as a local variable  
+</I>&gt;<i> rather than a global?
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot!
+</I>&gt;<i> Chao Lam
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> Rails-spinoffs mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">Rails-spinoffs at lists.rubyonrails.org</A>
+</I>&gt;<i> <A HREF="http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs">http://lists.rubyonrails.org/mailman/listinfo/rails-spinoffs</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000185.html">[openrecord-dev] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+	<LI>Next message: <A HREF="000186.html">[openrecord-dev] Re: [Rails-spinoffs] Integrating script.aculo.us into existing javascript codebase
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#188">[ date ]</a>
+              <a href="thread.html#188">[ thread ]</a>
+              <a href="subject.html#188">[ subject ]</a>
+              <a href="author.html#188">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

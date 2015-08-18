@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] UI design questions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-May/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20UI%20design%20questions&In-Reply-To=%3C447CD969.9000305%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000313.html">
+   <LINK REL="Next"  HREF="000309.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] UI design questions</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20UI%20design%20questions&In-Reply-To=%3C447CD969.9000305%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] UI design questions">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Wed May 31 01:47:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000313.html">[openrecord-dev] UI design questions
+</A></li>
+        <LI>Next message: <A HREF="000309.html">[openrecord-dev] OpenLaszlo &quot;Database Connector&quot; protocol
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#317">[ date ]</a>
+              <a href="thread.html#317">[ thread ]</a>
+              <a href="subject.html#317">[ subject ]</a>
+              <a href="author.html#317">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thomas Kalka wrote:
+&gt;<i> it's a pleasure to find a project doing all the work, which was in my 
+</I>&gt;<i> dreams agenda :-)
+</I>
+Thanks!
+
+&gt;<i> &gt;&gt;&gt; 401. How do you create a new page?
+</I>&gt;<i> &gt;&gt;&gt;    - current solution: &quot;New Page&quot; button
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Select &quot;toolbar add&quot; and chose page-title.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Right, I think introducing a toolbar may be a good idea...
+</I>&gt;<i> 
+</I>&gt;<i> In my opinion it is better to have less but powerfull tools in the toolbox.
+</I>&gt;<i> You always have the design-option to expand multi-level selections to a 
+</I>&gt;<i> broader range of selections but you loose focus doing that. A mix of 
+</I>&gt;<i> these design-patterns are the &quot;auto-hiding&quot; menues of current ms 
+</I>&gt;<i> software. The same way the &quot;add-tool&quot; could be expanded or accompanied 
+</I>&gt;<i> by the most common choices. It could be a user preference option wether 
+</I>&gt;<i> to show them allways or only if the &quot;main action button&quot; is selected.  
+</I>&gt;<i> If the UI supports the  user by showing options in places they are 
+</I>&gt;<i> appropriate , a kind of modal interface is nice in my opinion. You can 
+</I>&gt;<i> think of the &quot;add-icon&quot; as &quot;show add-controls icon&quot;, making it not modal 
+</I>&gt;<i> (if modal means: there is a state of the application the user has to 
+</I>&gt;<i> keep in mind, since it is not visible to him).
+</I>
+Yes, that sounds good.  Thanks for the clarification.
+
+&gt;<i> &gt;&gt;&gt; 202. How do you change the order of the sections on a page?
+</I>&gt;<i> &gt;&gt;&gt;    - grab the section and drag it up or down
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; aditionaly: Have attributes for the sections. Allow page to choose on
+</I>&gt;<i> &gt;&gt; which attribute the section-display should be sorted.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Do you have an example in mind, where this would be useful?  My first 
+</I>&gt;<i> reaction is that most users wouldn't need that feature.  Seems like it's 
+</I>&gt;<i> probably enough to just let users explicitly re-order the sections, 
+</I>&gt;<i> without needing to do automatic sorting.
+</I>&gt;<i> 
+</I>&gt;<i> This depends on what &quot;section&quot; means. If for example on a page about a 
+</I>&gt;<i> person you add sections about his children, you can order them by name, 
+</I>&gt;<i> birth date, location etc.
+</I>
+Ah, I see.  In the current implementation &quot;section&quot; has a more 
+restricted meaning.  Right now each section has an associated query and 
+an associated plugin view, and the section shows that plugin view to 
+show the list of items returned by the query.  In the current 
+arrangement is not designed for sections that only show one item, like a 
+section that shows just one of the children of a person.
+
+&gt;<i> &gt;&gt;&gt; 203. How do you delete/retire a section?
+</I>&gt;<i> &gt;&gt;&gt;    - select the section by...
+</I>&gt;<i> &gt;&gt; Have a trashicon in the toolbar.
+</I>&gt;<i> &gt;&gt; a) drag the section into the trash
+</I>&gt;<i> &gt;&gt; b) select trash and then select section
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Option (a) sounds good to me.  I don't like option (b) so much, 
+</I>&gt;<i> because it's a modal UI.  We had talking about having a trashcan, but we 
+</I>&gt;<i> got stuck because we weren't sure where on the page to put it.  If we 
+</I>&gt;<i> have a toolbar then that does seem like a natural place.
+</I>&gt;<i> 
+</I>&gt;<i> This is the same topic as the &quot;add-icon&quot; question. Thinking b) as &quot;show 
+</I>&gt;<i> delete action-buttons&quot; makes it not modal.
+</I>
+Okay, I see now.
+
+&gt;<i> &gt;&gt;&gt; 206. Can you move a section from one page to another?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Can you include a section from one page into an other ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Nope, right now a section can only appear on a single page.
+</I>&gt;<i> 
+</I>&gt;<i> I would like to think about a section as also beeing a page. Having a 
+</I>&gt;<i> section in a page might expand to having a special view of a page inside 
+</I>&gt;<i> another page.
+</I>
+That's an interesting idea.  We talked about that once, back last year, 
+but didn't get around to implementing it.  I'm glad to see you raising 
+the idea again.  I think we should consider doing this next time we're 
+working on that part of the code.
+
+
+&gt;<i> &gt;&gt;&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i> &gt;&gt;&gt; Categories
+</I>&gt;<i> &gt;&gt;&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt; Allow hierarchical categories ?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; That's not something we allow for now, but I can see where that would 
+</I>&gt;<i> be useful.
+</I>&gt;<i> 
+</I>&gt;<i> Having hierarchical categories is (IMO) crucial for collecting bigger 
+</I>&gt;<i> amounts of data.
+</I>&gt;<i> Think about organizing your books / bibliographic data. You want to be 
+</I>&gt;<i> able to do a querry about all of the data, but also about special kinds.
+</I>
+Yes, I guess we should start designing for that now.
+
+&gt;<i> &gt;&gt;&gt; 301. If you create a new section, and create an item in the section,
+</I>&gt;<i> &gt;&gt;&gt; what category is the item in?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; A default category for the object type being edited.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Can you explain a little more, or give an example?  I don't 
+</I>&gt;<i> understand what you mean by &quot;the object type being edited&quot;.
+</I>&gt;<i> 
+</I>&gt;<i> I'm perceive categories as object hierarchies, giving new pages 
+</I>&gt;<i> (objects) attribute-sets and also default values for attributs.
+</I>
+Okay, I think I understand.  So if you create a new section on a page 
+which is about Books, then by default when you create a new item in that 
+new section, the new item will be a Book.
+
+&gt;<i> &gt;&gt;&gt; 706. Can you select the text within an entry and change it?
+</I>&gt;<i> &gt;&gt;&gt;    - yes, for any type of entry
+</I>&gt;<i> &gt;&gt;&gt;    - not in item-reference lozenges
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; for item-references the text should be editable, but the widget to
+</I>&gt;<i> &gt;&gt; edit it should be aware of object-queries, allowing kinds of
+</I>&gt;<i> &gt;&gt; autocompletion / hierarchical browsing ...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Okay, so if when you select the text within an item-reference entry 
+</I>&gt;<i> and change the text from &quot;Boston&quot; to &quot;Berlin&quot; (with autocompletion), 
+</I>&gt;<i> then that changes the entry to point to the Berlin item, rather than 
+</I>&gt;<i> simply renaming the Boston item?
+</I>&gt;<i> 
+</I>&gt;<i> Yes. Different kinds of attributes could be accompanied by different 
+</I>&gt;<i> controls.
+</I>&gt;<i> Choosing places could be supported by a hierarchical geographical browser,
+</I>&gt;<i> limiting the available autocompletion options to something the user can 
+</I>&gt;<i> quickly select from.
+</I>
+Right, that sounds good.
+
+&gt;<i> In general I find multi-hierarchies (t.m. an object can have multiple 
+</I>&gt;<i> parents) the best solution to help selecting along big amounts of data.
+</I>
+Yes -- I think that notion of multiple parents is a big part of the 
+current enthusiasm about &quot;tagging&quot;.
+
+Thanks for all the suggestions.  It may be some time before we'll get a 
+chance to work on all of these, but now we have these suggestions on 
+file so that we can draw on them as we're adding features.  If you're a 
+programmer, let me know if you'd like to work on implementing any of this!
+
+:<i>o) Brian
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000313.html">[openrecord-dev] UI design questions
+</A></li>
+	<LI>Next message: <A HREF="000309.html">[openrecord-dev] OpenLaszlo &quot;Database Connector&quot; protocol
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#317">[ date ]</a>
+              <a href="thread.html#317">[ thread ]</a>
+              <a href="subject.html#317">[ subject ]</a>
+              <a href="author.html#317">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

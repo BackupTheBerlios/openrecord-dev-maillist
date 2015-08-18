@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] Re: Rhizome and OpenRecord
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2006-April/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20Rhizome%20and%20OpenRecord&In-Reply-To=%3C44375136.3080206%40dojotoolkit.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000294.html">
+   <LINK REL="Next"  HREF="000296.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] Re: Rhizome and OpenRecord</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20Re%3A%20Rhizome%20and%20OpenRecord&In-Reply-To=%3C44375136.3080206%40dojotoolkit.org%3E"
+       TITLE="[openrecord-dev] Re: Rhizome and OpenRecord">skinner at dojotoolkit.org
+       </A><BR>
+    <I>Sat Apr  8 07:59:01 CEST 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000294.html">[openrecord-dev] Rhizome and OpenRecord
+</A></li>
+        <LI>Next message: <A HREF="000296.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#295">[ date ]</a>
+              <a href="thread.html#295">[ thread ]</a>
+              <a href="subject.html#295">[ subject ]</a>
+              <a href="author.html#295">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>And my reply to Adam's mail...
+
+
+-------- Original Message --------
+Subject: Re: [swikig] ANNOUNCE: Rhizome 0.6.0
+Date: Fri, 07 Apr 2006 15:32:56 -0700
+From: Brian Douglas Skinner &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">skinner at dojotoolkit.org</A>&gt;
+To: Adam Souzis
+
+Hi Adam,
+
+ &gt; now that i finally got that out of the way ... i have
+ &gt; some time look at open record again.
+
+Cool, let me know how I can help.
+
+ &gt; Right now i'm thinking about trying to hack the tableplugin
+ &gt; into rhizome.  It'll be messy and not a 100% AJAX-y but
+ &gt; this is fastest path i can think of to get something that
+ &gt; can actually be used.
+
+Yup, sounds good.  Unfortunately the tableplugin hasn't been designed as
+a stand alone component, so there may be a bunch of crude hacking
+involved to provide it with an environment that it thinks it can live in.
+
+ &gt;  Here's how I am thinking of implementing this:
+ &gt;
+ &gt; * map RDF resource to Items
+ &gt; ** treat the resource URI as the UUID
+ &gt; ** multiple valued entries map to multiple statements with
+ &gt; the same attribute as the property
+ &gt; ** map orp data types to the XML schema datatypes that RDF uses
+ &gt; ** map rdf:type to Category attribute, rdfs:range to
+ &gt; ExpectedType, rdfs:label to shortname, rdfs:comment to name
+ &gt; ** ignore inverse attributes for now
+
+Yes, those mappings sounds good.  It's not entirely clear to me what the
+name/label mappings should be, and I'm not fluent enough in RDF to know
+how rdfs:label and rdfs:comment are typically used.  You might think
+about mapping rdfs:label to name and rdfs:comment to summary, and then
+figuring out something else to do with shortname.
+
+ &gt; * Have the server generate a list of all the items that the
+ &gt; table plugin may need to access:
+ &gt; Here are the RxPath queries for this, assuming the table
+ &gt; contains all resource of given Category/RDF class:
+ &gt;
+ &gt; ** items = /*[rdf:type=$category]
+ &gt; ** attributes = id($items/*)
+ &gt; ** expectedTypes = id($attributes/rdfs:range/*)
+ &gt; ** suggestedItems = /*[rdf:type = $expectedTypes]
+ &gt; ** plus the layout item resource for this table instance
+
+I don't know XPath (or RxPath), but those queries look good as far as I
+can tell.
+
+ &gt; * derive an simple archive class from StubArchive. The archive
+ &gt; is initialized with only these items (plus it loads the axiomatic
+ &gt;  ones). When committing a transaction it converts the items back
+ &gt; to RDF (probably in JSON format) and sends it back to the server.
+
+Yup, sounds good.  I'd be interested in talking to you sometime about
+different JSON representations for RDF.  I just recently learned that
+there are RDF stores that return SPARQL results as JSON, which would be
+very convenient for an AJAX app.  I'm curious about other flavors of
+JSON/RDF.
+
+ &gt; I'm not sure I understand what records can be in the transaction
+ &gt; list: It looks like votes represent items added or removed, Items
+ &gt; can be added to the transaction list directly and then there are
+ &gt; these Ordinal things that I don't understand.
+
+There are four types of records: Entries, Items, Votes, and Ordinals.
+
+Most records will just be Entries, and most Entries are essentially RDF
+statements.
+
+Item records have *only* the UUID of the item, and just serve to state
+that the Item exists.  You might be able to get rid of the notion of the
+Item record, and simply infer the existence of the Item from the fact
+that some Entry is making a statement about it.
+
+A &quot;Vote&quot; (perhaps poorly named) just flags an Item or Entry as having
+been deleted by a user, or undeleted again by the same user or another user.
+
+The Ordinal records are a mechanism for representing ordered lists --
+ordered lists of items (resources) or ordered list of entries
+(statements)...
+
+ &gt; ** multiple valued entries map to multiple statements with
+ &gt; the same attribute as the property (this doesn't preserve
+ &gt; the order of the values in the entry but its not clear to
+ &gt; me if that's part of your model)
+
+I know RDF has some mechanism(s) for representing ordered lists, but I
+don't know much about it.  Probably my notion of Ordinal values doesn't
+map cleanly to any RDF notion.  The goal with the Ordinal mechanism was
+to come up with a representation of the ordering that would work
+smoothly with multi-user concurrent access and with a distributed
+datastore.  I wanted users to be able to independently move two of
+the elements in a list, and then be able to merge those actions later.
+
+So the idea is that each element in a list has an ordinal number --
+ordered lists themselves are never explicitly represented -- you can
+take any query result set (a set of items/resources or a set of
+entries/statements) and view the results as an ordered list simply by
+sorting the results based on their ordinal numbers.
+
+ &gt; * write a new View class for containing the plugin view and
+ &gt; intializing everything; hack tableplugin, plugin view, entry
+ &gt; view, etc. as necessary
+ &gt;
+ &gt; Does this make sense? Am I missing anything?
+
+Sounds great.  You're all over it.  I can't think of anything you're
+missing!
+
+:<i>o) Brian
+</I>
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000294.html">[openrecord-dev] Rhizome and OpenRecord
+</A></li>
+	<LI>Next message: <A HREF="000296.html">[openrecord-dev] Re: Rhizome and OpenRecord
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#295">[ date ]</a>
+              <a href="thread.html#295">[ thread ]</a>
+              <a href="subject.html#295">[ subject ]</a>
+              <a href="author.html#295">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

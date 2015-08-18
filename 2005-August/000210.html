@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] scriptaculous slowness
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-August/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20scriptaculous%20slowness&In-Reply-To=%3C3FCC32D2-D233-4F4E-A3A5-9C8F66032252%40cs.stanford.edu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000209.html">
+   <LINK REL="Next"  HREF="000212.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] scriptaculous slowness</H1>
+    <B>Chih-Chao Lam</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20scriptaculous%20slowness&In-Reply-To=%3C3FCC32D2-D233-4F4E-A3A5-9C8F66032252%40cs.stanford.edu%3E"
+       TITLE="[openrecord-dev] scriptaculous slowness">chao at cs.stanford.edu
+       </A><BR>
+    <I>Fri Aug  5 05:52:02 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000209.html">[openrecord-dev] scriptaculous slowness
+</A></li>
+        <LI>Next message: <A HREF="000212.html">[openrecord-dev] scriptaculous slowness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#210">[ date ]</a>
+              <a href="thread.html#210">[ thread ]</a>
+              <a href="subject.html#210">[ subject ]</a>
+              <a href="author.html#210">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+Wow, that's good investigation! I wonder why new Draggable() is  
+taking such a long time. Did you look at its code? Maybe it's worth  
+asking the scriptaculous people about this.
+
+chao
+
+On Aug 4, 2005, at 8:41 PM, Brian Douglas Skinner wrote:
+
+&gt;<i> Hey Chao,
+</I>&gt;<i>
+</I>&gt;<i> I'm working on creating on some larger example documents.  I've  
+</I>&gt;<i> been using
+</I>&gt;<i> the CSV import tool to create documents with anywhere from 100 to  
+</I>&gt;<i> 1,000
+</I>&gt;<i> items.
+</I>&gt;<i>
+</I>&gt;<i> As the documents get larger, performance starts to be a real problem.
+</I>&gt;<i> Thankfully, part of that is easy to fix.  Right now the data model  
+</I>&gt;<i> code is
+</I>&gt;<i> needlessly sorting lists over and over, which eats up more and more  
+</I>&gt;<i> time as
+</I>&gt;<i> the lists get longer.  I'll fix that.
+</I>&gt;<i>
+</I>&gt;<i> Unfortunately, one of the big performance problems seems to be in the
+</I>&gt;<i> scriptaculous code.  Drawing the TablePlugin is one our slowest  
+</I>&gt;<i> operations,
+</I>&gt;<i> and most of the time is spent just to register the lozenges to be  
+</I>&gt;<i> draggable.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I have a table with about 1,000 items and 800 lozenges.  Our code  
+</I>&gt;<i> takes
+</I>&gt;<i> about 30 seconds to refresh the table, and about 20 seconds of that  
+</I>&gt;<i> time is
+</I>&gt;<i> spent in this one line of code:
+</I>&gt;<i>   this._draggable = new Draggable(this._textSpan, {revert:true});
+</I>&gt;<i>
+</I>&gt;<i> As a quick fix, for now I've changed the EntryView code so that the  
+</I>&gt;<i> lozenges
+</I>&gt;<i> are only draggable after the &quot;Show Tools&quot; button has been pressed.   
+</I>&gt;<i> That
+</I>&gt;<i> makes most page loads 3-times faster, while still leaving the  
+</I>&gt;<i> ability to
+</I>&gt;<i> demo the drag-and-drop feature.
+</I>&gt;<i>
+</I>&gt;<i> In the long run, I'm not sure what to do.  Maybe we can figure out  
+</I>&gt;<i> some way
+</I>&gt;<i> to do lazy registration of the lozenges?  Or maybe we should switch  
+</I>&gt;<i> to a
+</I>&gt;<i> different drag-and-drop library?  Or write our own code and make it  
+</I>&gt;<i> far less
+</I>&gt;<i> general?
+</I>&gt;<i>
+</I>&gt;<i> :o) Brian
+</I>&gt;<i>
+</I>&gt;<i> ___________________________________________________________________
+</I>&gt;<i> Copyright rights relinquished. This work is in the Public Domain.
+</I>&gt;<i> For details see: <A HREF="http://creativecommons.org/licenses/publicdomain/">http://creativecommons.org/licenses/publicdomain/</A>
+</I>&gt;<i>
+</I>&gt;<i> openrecord-dev mailing list
+</I>&gt;<i> <A HREF="https://lists.berlios.de/mailman/listinfo/openrecord-dev">openrecord-dev at lists.berlios.de</A>
+</I>&gt;<i> <A HREF="http://lists.berlios.de/mailman/listinfo/openrecord-dev">http://lists.berlios.de/mailman/listinfo/openrecord-dev</A>
+</I>&gt;<i>
+</I>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000209.html">[openrecord-dev] scriptaculous slowness
+</A></li>
+	<LI>Next message: <A HREF="000212.html">[openrecord-dev] scriptaculous slowness
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#210">[ date ]</a>
+              <a href="thread.html#210">[ thread ]</a>
+              <a href="subject.html#210">[ subject ]</a>
+              <a href="author.html#210">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>

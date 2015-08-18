@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [openrecord-dev] SectionView code question
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/openrecord-dev/2005-June/index.html" >
+   <LINK REL="made" HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20SectionView%20code%20question&In-Reply-To=%3C200506050145.j551jjm22773%40bat.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000114.html">
+   <LINK REL="Next"  HREF="000115.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[openrecord-dev] SectionView code question</H1>
+    <B>Brian Douglas Skinner</B> 
+    <A HREF="mailto:openrecord-dev%40lists.berlios.de?Subject=Re%3A%20%5Bopenrecord-dev%5D%20SectionView%20code%20question&In-Reply-To=%3C200506050145.j551jjm22773%40bat.berlios.de%3E"
+       TITLE="[openrecord-dev] SectionView code question">brian.skinner at gumption.org
+       </A><BR>
+    <I>Sun Jun  5 03:46:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000114.html">[openrecord-dev] SectionView code question
+</A></li>
+        <LI>Next message: <A HREF="000115.html">[openrecord-dev] Poor man's undo: use &lt;esc&gt;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#117">[ date ]</a>
+              <a href="thread.html#117">[ thread ]</a>
+              <a href="subject.html#117">[ subject ]</a>
+              <a href="author.html#117">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> I was browsing through the section view code to better 
+</I>&gt;<i> understand queries, when I stumbled on the method:  
+</I>&gt;<i> SectionView.prototype.clickOnQueryCategorySelectionMenu 
+</I>&gt;<i> at the end of the file. In this method, I'm wondering 
+</I>&gt;<i> why at the end of the function, it tries to add or 
+</I>&gt;<i> replace the entry of the plugin name? Is this an error? 
+</I>&gt;<i> Possibly an cut/copy/paste issue?
+</I>
+I'm guessing that's a copy/paste mistake.  I think lines 373 to 380 could be
+deleted.  
+
+But I think it may be important to keep likes 370 to 372, and 381, in order
+to make sure the view gets updated to reflect the new query.  When we get a
+chance we should probably do some refactoring so that the plugin can
+register as an observer of the query item, and then the plugin itself can
+know what to do when the query item changes.  
+
+- Brian
+
+
+370    var pluginName = this._myPlugin.getPluginName();
+371    this._myPlugin.endOfLife();
+372    this._myPlugin = this.getPluginFromPluginName(pluginName,
+this._myPluginDiv);
+373    var attributeCalledPluginName =
+this.getWorld().getItemFromUuid(SectionView.UUID_FOR_ATTRIBUTE_PLUGIN_NAME);
+374    var pluginNameEntries =
+this.mySection.getEntriesForAttribute(attributeCalledPluginName);
+375    if (pluginNameEntries &amp;&amp; pluginNameEntries[0]) {
+376      var oldEntry = pluginNameEntries[0];
+377      this.mySection.replaceEntry(oldEntry, pluginName);
+378    } else {
+379      this.mySection.addEntryForAttribute(attributeCalledPluginName,
+pluginName);
+380    }
+381    this.refresh();
+
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000114.html">[openrecord-dev] SectionView code question
+</A></li>
+	<LI>Next message: <A HREF="000115.html">[openrecord-dev] Poor man's undo: use &lt;esc&gt;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#117">[ date ]</a>
+              <a href="thread.html#117">[ thread ]</a>
+              <a href="subject.html#117">[ subject ]</a>
+              <a href="author.html#117">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/openrecord-dev">More information about the openrecord-dev
+mailing list</a><br>
+</body></html>
